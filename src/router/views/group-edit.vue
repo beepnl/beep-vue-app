@@ -420,13 +420,13 @@
 import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm-dialog.vue'
-import { mapGetters } from 'vuex'
 import Layout from '@layouts/back-layout.vue'
-import { momentify } from '@mixins/momentMixin'
 import {
   readApiariesAndGroupsIfNotPresent,
   readGroups,
 } from '@mixins/methodsMixin'
+import { momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -475,7 +475,9 @@ export default {
     },
     colorPicker: {
       get() {
-        if (this.activeGroup) {
+        if (this.colorPickerValue !== '') {
+          return this.colorPickerValue
+        } else if (this.activeGroup) {
           return this.activeGroup.hex_color
         } else {
           return '#F8B133'

@@ -558,7 +558,9 @@ export default {
     ...mapGetters('locations', ['apiaries', 'apiaryEdited', 'groups']),
     colorPicker: {
       get() {
-        if (this.newHive) {
+        if (this.colorPickerValue !== '') {
+          return this.colorPickerValue
+        } else if (this.newHive) {
           return this.newHive.hex_color
         } else {
           return '#F8B133'

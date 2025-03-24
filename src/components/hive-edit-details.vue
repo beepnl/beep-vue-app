@@ -195,14 +195,14 @@
 
 <script>
 import HiveFactory from '@components/hive-factory.vue'
-import { mapGetters } from 'vuex'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   convertComma,
   getMaxFramecount,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import { ElInputNumber } from 'element-plus'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -241,7 +241,9 @@ export default {
     },
     colorPicker: {
       get() {
-        if (this.hive) {
+        if (this.colorPickerValue !== '') {
+          return this.colorPickerValue
+        } else if (this.hive) {
           return this.hive.color !== null ? this.hive.color : '#F8B133'
         } else {
           return ''

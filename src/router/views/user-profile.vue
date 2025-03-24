@@ -167,7 +167,6 @@
                   <v-btn
                     class="mt-2"
                     tile
-                    outlined
                     color="secondary"
                     type="submit"
                     @click="saveApiToken"
@@ -181,37 +180,6 @@
         </v-row>
       </v-container>
     </v-form>
-
-    <v-container v-if="userIsAdmin">
-      <v-row>
-        <v-col>
-          <v-card outlined>
-            <v-card-text>
-              <v-text-field
-                v-model="apiToken"
-                :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
-                :label="$t('api_token')"
-                :type="show4 ? 'text' : 'password'"
-                @click:append="show4 = !show4"
-              />
-              <div class="d-flex justify-space-between">
-                <v-spacer />
-                <v-btn
-                  class="mt-2"
-                  tile
-                  outlined
-                  color="secondary"
-                  type="submit"
-                  @click="saveApiToken"
-                >
-                  <v-icon left>mdi-check</v-icon>{{ $t('save_api') }}</v-btn
-                >
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
 
     <Confirm ref="confirm"></Confirm>
   </Layout>
@@ -304,9 +272,6 @@ export default {
     },
   },
   methods: {
-    consoleLog(val) {
-      console.log('DEBUG user-profile', val)
-    },
     async deleteUser() {
       this.clearMessages()
       this.showDeleteLoadingIcon = true

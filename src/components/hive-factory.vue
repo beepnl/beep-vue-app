@@ -29,6 +29,7 @@
               :group="{ name: 'layers', pull: 'clone', put: true }"
               :clone="cloneLayer"
               :sort="false"
+              item-key="key"
               class="d-flex flex-column justify-flex-start"
             >
               <template v-slot:item="{ element }">
@@ -69,6 +70,7 @@
                   v-model="hiveLayers"
                   :group="{ name: 'layers', pull: 'sort' }"
                   delay="100"
+                  item-key="key"
                   delay-on-touch-only="true"
                 >
                   <template v-slot:item="{ element }">
@@ -138,9 +140,9 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
 import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 import draggable from 'vuedraggable'
-import Confirm from '@/src/components/confirm-dialog.vue'
 
 let keyGlobal = 0
 
@@ -171,9 +173,9 @@ export default {
   data: function() {
     return {
       swatches: [
-        ['#e9eae1', '#EAD49E', '#F8B133'],
-        ['#2dbde5', '#094da0', '#27820e'],
-        ['#ffe900', '#d80d0d', '#754B1F'],
+        ['#E9EAE1', '#EAD49E', '#F8B133'],
+        ['#2DBDE5', '#094DA0', '#27820E'],
+        ['#FFE900', '#D80D0D', '#754B1F'],
       ],
       overlayLayerColor: false,
       currentLayer: null,
@@ -196,7 +198,12 @@ export default {
         }
       },
       set(value) {
-        this.layerColorPickerValue = value
+        if (this.currentLayer) {
+          this.layerColorPickerValue = value
+          this.currentLayer.color = value
+        } else {
+          this.hive.color = value
+        }
       },
     },
     hiveLayers: {

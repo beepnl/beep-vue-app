@@ -317,13 +317,13 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
 import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
 import { ElInputNumber } from 'element-plus'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -359,7 +359,9 @@ export default {
     },
     colorPicker: {
       get() {
-        if (this.activeApiary && this.activeApiary.hex_color !== null) {
+        if (this.colorPickerValue !== '') {
+          return this.colorPickerValue
+        } else if (this.activeApiary && this.activeApiary.hex_color !== null) {
           return this.activeApiary.hex_color
         } else {
           return '#F8B133'
