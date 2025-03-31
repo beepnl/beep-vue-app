@@ -440,168 +440,22 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr
+                            <template
                               v-for="(sensorDef,
                               indexSensor) in sortedSensorDefinitions(
                                 ownedDevice.sensor_definitions
                               )"
-                              :key="indexSensor"
-                              :class="
-                                sensorDef.delete === true
-                                  ? 'sensordef-delete'
-                                  : ''
-                              "
                             >
-                              <td class="td--small">
-                                <v-text-field
-                                  v-model="sensorDef.name"
-                                  :disabled="sensorDef.delete"
-                                  :placeholder="`${$t('Name')}`"
-                                  class="mt-2"
-                                  dense
-                                  @input="sensorDefEdited = true"
-                                ></v-text-field>
-                              </td>
-                              <td>
-                                <yesNoRating
-                                  v-if="sensorDef"
-                                  :object="sensorDef"
-                                  property="inside"
-                                  :disabled="sensorDef.delete"
-                                  :small="true"
-                                  class="device-yes-no mt-n3 mb-n5"
-                                ></yesNoRating>
-                              </td>
-                              <td>
-                                <el-input-number
-                                  v-model="sensorDef.offset"
-                                  :disabled="sensorDef.delete"
-                                  size="small"
-                                  @input.native="
-                                    convertComma($event, sensorDef, 'offset')
-                                    sensorDefEdited = true
-                                  "
-                                  @change="sensorDefEdited = true"
-                                ></el-input-number>
-                              </td>
-                              <td>
-                                <el-input-number
-                                  v-model="sensorDef.multiplier"
-                                  :disabled="sensorDef.delete"
-                                  size="small"
-                                  @input.native="
-                                    convertComma(
-                                      $event,
-                                      sensorDef,
-                                      'multiplier'
-                                    ),
-                                      (sensorDefEdited = true)
-                                  "
-                                  @change="sensorDefEdited = true"
-                                ></el-input-number>
-                              </td>
-                              <td class="td--small">
-                                <v-select
-                                  v-model="sensorDef.input_measurement_id"
-                                  :disabled="sensorDef.delete"
-                                  :items="sortedSensorMeasurements"
-                                  item-text="abbreviation"
-                                  item-value="id"
-                                  :label="
-                                    `${$t('Select')} ${$tc(
-                                      'measurement',
-                                      1
-                                    )} ...`
-                                  "
-                                  class="mt-2 mb-n5"
-                                  solo
-                                  @input="
-                                    selectInputMeasurementId(sensorDef, $event)
-                                  "
-                                ></v-select>
-                              </td>
-                              <td class="td--small">
-                                <v-select
-                                  v-model="sensorDef.output_measurement_id"
-                                  :disabled="sensorDef.delete"
-                                  :items="sortedSensorMeasurements"
-                                  item-text="abbreviation"
-                                  item-value="id"
-                                  :label="
-                                    `${$t('Select')} ${$tc(
-                                      'measurement',
-                                      1
-                                    )} ...`
-                                  "
-                                  class="mt-2 mb-n5"
-                                  solo
-                                  @input="sensorDefEdited = true"
-                                ></v-select>
-                              </td>
-                              <td>
-                                <span
-                                  v-text="
-                                    sensorDef.updated_at !== null
-                                      ? momentify(sensorDef.updated_at, true)
-                                      : $t('Not_yet_saved')
-                                  "
-                                ></span>
-                              </td>
-                              <td>
-                                <div class="d-flex flex-no-wrap">
-                                  <v-progress-circular
-                                    v-if="
-                                      showLoadingIconById.indexOf(
-                                        sensorDef.id
-                                      ) > -1
-                                    "
-                                    class="progress-icon mr-3"
-                                    size="18"
-                                    width="2"
-                                    color="green"
-                                    indeterminate
-                                  />
-                                  <v-tooltip
-                                    v-if="
-                                      showLoadingIconById.indexOf(
-                                        sensorDef.id
-                                      ) === -1
-                                    "
-                                    open-delay="500"
-                                    bottom
-                                  >
-                                    <template v-slot:activator="{ on }">
-                                      <v-icon
-                                        dark
-                                        class="mr-3"
-                                        color="green"
-                                        v-on="on"
-                                        @click="updateSensorDef(sensorDef)"
-                                        >mdi-check</v-icon
-                                      >
-                                    </template>
-                                    <span>{{ $t('save') }}</span>
-                                  </v-tooltip>
-                                  <v-tooltip open-delay="500" bottom>
-                                    <template v-slot:activator="{ on }">
-                                      <v-icon
-                                        dark
-                                        color="red"
-                                        v-on="on"
-                                        @click="
-                                          deleteSensorDef(
-                                            ownedDevice,
-                                            sensorDef
-                                          )
-                                        "
-                                        >mdi-delete</v-icon
-                                      >
-                                    </template>
-                                    <span>{{ $t('Delete') }}</span>
-                                  </v-tooltip>
-                                </div>
-                              </td>
-                            </tr>
+                              <SensorDefinitionRow
+                                :key="indexSensor"
+                                :sensor-def="sensorDef"
+                                @get-devices-for-list="getDevicesForList"
+                                @remove-sensor-def="
+                                  removeSensorDef(ownedDevice, sensorDef)
+                                "
+                                @sensor-def-edited="sensorDefEdited = $event"
+                              />
+                            </template>
                           </tbody>
                         </template>
                       </v-simple-table>
@@ -650,29 +504,27 @@
 <script>
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
+import SensorDefinitionRow from '@components/sensor-definition-row.vue'
 import Layout from '@layouts/back.vue'
-import { mapGetters } from 'vuex'
-import { momentify } from '@mixins/momentMixin'
 import {
-  convertComma,
   readApiariesAndGroups,
   readGeneralInspections,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import { SlideYUpTransition } from 'vue2-transitions'
+import { momentify } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import { SlideYUpTransition } from 'vue2-transitions'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Confirm,
     Layout,
+    SensorDefinitionRow,
     SlideYUpTransition,
     Treeselect,
-    yesNoRating,
   },
   mixins: [
-    convertComma,
     momentify,
     readApiariesAndGroups,
     readGeneralInspections,
@@ -698,7 +550,6 @@ export default {
       ready: false,
       showDevicesByIndex: [],
       showLoadingIcon: false,
-      showLoadingIconById: [],
       showDescription: false,
       showInfo: true,
       sensorDefEdited: false,
@@ -709,12 +560,18 @@ export default {
   },
   computed: {
     ...mapGetters('locations', ['apiaries', 'groups']),
-    ...mapGetters('taxonomy', ['sensorMeasurementsList', 'sensorTypesList']),
+    ...mapGetters('taxonomy', ['sensorTypesList']),
     deletedButNotSavedDevices() {
       const unsavedDeletions = this.ownedDevices.filter((ownedDevice) => {
         return ownedDevice.delete
       })
       return unsavedDeletions.length > 0
+    },
+    locale() {
+      return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     newButNotSavedSensorDefs() {
       const unsavedChanges = this.ownedDevices.filter((ownedDevice) => {
@@ -727,9 +584,6 @@ export default {
       })
 
       return unsavedChanges.length > 0
-    },
-    mobile() {
-      return this.$vuetify.breakpoint.mobile
     },
     ownedDevices() {
       var ownedDevices = this.devices
@@ -746,18 +600,6 @@ export default {
           return 0
         })
       return sortedOwnedDevices
-    },
-    sortedSensorMeasurements() {
-      var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {
-        if (a.abbreviation > b.abbrevation) {
-          return 1
-        }
-        if (b.abbreviation > a.abbreviation) {
-          return -1
-        }
-        return 0
-      })
-      return sortedSMs
     },
   },
   created() {
@@ -838,58 +680,6 @@ export default {
         }
       }
     },
-    async updateSensorDef(sensorDef) {
-      this.errorMessage = null
-      this.showLoadingIconById.push(sensorDef.id)
-      var sensorDefId =
-        typeof sensorDef.id !== 'undefined' ? sensorDef.id : null
-      this.sensorDefEdited = false
-      try {
-        var response = false
-        if (sensorDef.delete === true) {
-          response = await Api.deleteRequest(
-            '/sensordefinition/',
-            sensorDefId,
-            sensorDef
-          )
-        } else if (sensorDefId !== null) {
-          response = await Api.putRequest(
-            '/sensordefinition/' + sensorDefId,
-            sensorDef
-          )
-        } else {
-          response = await Api.postRequest('/sensordefinition', sensorDef)
-        }
-        if (!response) {
-          this.errorMessage =
-            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-          this.showLoadingIconById.splice(
-            this.showLoadingIconById.indexOf(sensorDef.id),
-            1
-          )
-        }
-        this.getDevicesForList().then(() => {
-          this.showLoadingIconById.splice(
-            this.showLoadingIconById.indexOf(sensorDef.id),
-            1
-          )
-        })
-        // TODO: this.readApiaries() for latest measurement data? Groups as well??
-        return true
-      } catch (error) {
-        this.showLoadingIconById.splice(
-          this.showLoadingIconById.indexOf(sensorDef.id),
-          1
-        )
-        if (error.response) {
-          console.log('Error: ', error.response)
-          const msg = error.response.data.message
-          this.errorMessage = this.$i18n.t(msg)
-        } else {
-          this.errorMessage = this.$i18n.tc('Error', 1)
-        }
-      }
-    },
     addDevice() {
       var key = this.randomString(16).toLowerCase()
       this.devices.splice(0, 0, {
@@ -952,28 +742,6 @@ export default {
       }
       device.delete = !device.delete
     },
-    deleteSensorDef(device, sensorDef) {
-      if (typeof sensorDef.id === 'undefined') {
-        this.removeSensorDef(device, sensorDef)
-      } else {
-        sensorDef.delete = !sensorDef.delete
-        this.$refs.confirm
-          .open(
-            this.$i18n.t('delete_sensordef'),
-            this.$i18n.t('delete_sensordef') + ' (' + sensorDef.name + ')?',
-            {
-              color: 'red',
-            }
-          )
-          .then((confirm) => {
-            this.updateSensorDef(sensorDef)
-          })
-          .catch((reject) => {
-            sensorDef.delete = !sensorDef.delete
-            return true
-          })
-      }
-    },
     deviceExpanded(index) {
       return this.showDevicesByIndex.length > 0
         ? this.showDevicesByIndex.indexOf(index) > -1
@@ -1016,10 +784,6 @@ export default {
       if (device.sensor_definitions[sensorDefIndex] !== 'undefined') {
         device.sensor_definitions.splice(sensorDefIndex, 1)
       }
-    },
-    selectInputMeasurementId(sensorDef, $event) {
-      sensorDef.output_measurement_id = $event
-      this.sensorDefEdited = true
     },
     sortedSensorDefinitions(sensordefs) {
       // sort sensor_definitions: newly added first (if multiple new: sory by name), then first by output_abbr then input_abbr then updated_at
@@ -1129,9 +893,6 @@ export default {
     .device-title-row--border-bottom {
       border-bottom: 1px solid $color-red;
     }
-  }
-  .sensordef-delete {
-    background-color: rgba(255, 0, 0, 0.2);
   }
 }
 </style>

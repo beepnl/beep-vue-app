@@ -704,6 +704,8 @@ const translations = {
     'Un mail contenant un lien de vérification a été envoyé. Cliquez sur le lien pour confirmer votre nouvelle adresse email et vous connectez.',
   sensordef_info:
     'Une définition de capteur permet de convertir une valeur brute en valeur physique (ex. w_v = 1098273 => weight_kg = 62,400 kg) ou pour calibrer un capteur (ex. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Ceci peut être accompli grace à un "décalage" et un "multiplicateur". La valeur brute reste inchangée si le décalage est "0" et le multiplicateur "1". L\'application mobile BEEP vous donnera les définitions des capteurs au moment de la configuration initiale.',
+  sensordef_date_info:
+    "Cet étalonnage s'applique à partir de la date définie jusqu'à maintenant (ou une autre valeur d'étalonnage définie)",
   or: 'ou',
   select_all_hives: 'Sélectionner toutes les ruches',
   select_all_editable_hives: 'Selectionner toutes les ruches modifiables',

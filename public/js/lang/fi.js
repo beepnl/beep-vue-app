@@ -637,6 +637,8 @@ const translations = {
     'Vahvistuslinkillä varustettu viesti on lähetetty uuteen sähköpostiosoitteeseesi. Napsauta sähköpostissa olevaa linkkiä vahvistaaksesi uuden sähköpostiosoitteesi ja kirjautuaksesi sisään.',
   sensordef_info:
     "Anturimäärityksen tarkoituksena on muuntaa anturin arvo saapuvasta \"raaka\" anturiarvosta arvoksi fyysisen määrän ja yksikön mukaan (esim. W_v = 1098273 => paino_kg = 62400 kg) tai kalibroida anturi (esim. T_0 = 15,3 ° C => t_0 = 15,8 ° C). Tämä voidaan tehdä asettamalla 'offset' ja 'kerroin'. Tulo- ja lähtöarvo pysyvät samana, jos offset '0' ja kerroin '1' on asetettu. BEEP-perussovellus (App Storesta) tarjoaa oikeat anturimääritykset BEEP-tukiaseman alkuasetuksissa.",
+  sensordef_date_info:
+    'Tämä kalibrointi on voimassa asetetusta päivämäärästä tähän asti (tai muuhun asetettuun kalibrointiarvoon)',
   or: 'tai',
   select_all_hives: 'Valitse kaikki pesät',
   select_all_editable_hives: 'Valitse kaikki muokattavat pesät',
