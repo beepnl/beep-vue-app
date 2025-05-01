@@ -620,6 +620,8 @@ const translations = {
     'Es wurde eine Nachricht mit einem Verifizierungslink an Deine neue E-Mail-Adresse gesendet. Klicke auf den Link in der E-Mail, um Deine neue E-Mail-Adresse zu bestätigen und dich anzumelden.',
   sensordef_info:
     "Eine Sensordefinition dient dazu, einen Sensorwert aus einem eingehenden 'rohen' Sensorwert in einen Wert gemäß einer physikalischen Größe und Einheit umzuwandeln (z.B. w_v = 1098273 => Gewicht_kg = 62.400 kg) oder einen Sensor zu kalibrieren (z.B. t_0 = 15,3 ° C => t_0 = 15,8 ° C). Dies kann durch die Einstellung eines 'Offsets' und eines 'Multiplikators' erfolgen. Der Ein- und Ausgangswert bleibt gleich, wenn Offset '0' und Multiplikator '1' eingestellt ist. Die BEEP-Base-App (aus dem App Store) liefert Ihnen bei der Ersteinrichtung Ihrer BEEP-Base die richtigen Sensor-Definitionen.",
+  sensordef_date_info:
+    'Diese Kalibrierung gilt vom eingestellten Datum bis jetzt (oder einem anderen eingestellten Kalibrierungswert)',
   or: 'oder',
   select_all_hives: 'Selektiere alle Beuten',
   select_all_editable_hives: 'Alle bearbeitbaren Beuten auswählen',

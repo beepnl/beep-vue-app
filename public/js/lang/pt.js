@@ -631,6 +631,8 @@ const translations = {
     'Foi enviada para o seu novo endereço de email uma mensagem com uma ligação de verificação. Clique nessa ligação, no email, para confirmar o seu novo endereço de email e conectar-se.',
   sensordef_info:
     "Uma definição de sensor destina-se a converter um valor do sensor, a partir de um valor de entrada 'em bruto' no sensor, num valor de acordo com uma quantidade física e unidade (por exemplo, w_v = 1098273 => peso_kg = 62.400 kg) ou para calibrar um sensor (por exemplo, t_0 = 15,3 ° C => t_0 = 15,8 ° C). Isto pode ser feito definindo um 'alinhamento' e um 'multiplicador'. Os valores de entrada e saída permanecem os mesmos se o alinhamento '0' e o multiplicador '1' forem definidos. A aplicação base BEEP (da App Store) fornecerá as definições de sensor corretas na configuração inicial da sua base BEEP.",
+  sensordef_date_info:
+    'Esta calibração aplica-se a partir da data definida até ao momento (ou outro valor de calibração definido)',
   or: 'ou',
   select_all_hives: 'Selecionar todas as colmeias',
   select_all_editable_hives: 'Selecione todas as colmeias personalizáveis',

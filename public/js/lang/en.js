@@ -526,6 +526,8 @@ const translations = {
     'A message with a verification link has been sent to your new email address. Click the link in the email to confirm your new email address and log in.',
   sensordef_info:
     "A sensor definition is intended to convert a sensor value from an incoming 'raw' sensor value into a value according to a physical quantity and unit (e.g. w_v = 1098273 => weight_kg = 62,400 kg) or to calibrate a sensor (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). This can be done by setting an 'offset' and a 'multiplier'. The input and output value remains the same if offset '0' and multiplier '1' is set. The BEEP base app (from the App Store) will provide you with the right sensor definitions at the initial setup of your BEEP base.",
+  sensordef_date_info:
+    'This calibration is valid from the set date to now (or another set calibration value)',
   or: 'or',
   select_all_hives: 'Select all hives',
   select_all_editable_hives: 'Select all editable hives',

@@ -528,6 +528,8 @@ const translations = {
     'Na vaši novou e-mailovou adresu byla odeslána zpráva s ověřovacím odkazem. Kliknutím na odkaz v e-mailu potvrďte svou novou e-mailovou adresu a přihlaste se.',
   sensordef_info:
     "Definice senzoru je určena k převodu hodnoty senzoru z příchozí „surové“ hodnoty senzoru na hodnotu podle fyzikální veličiny a jednotky (např. w_v = 1098273 => hmotnost_kg = 62 400 kg) nebo ke kalibraci senzoru (např. t_0 = 15,3 °C => t_0 = 15,8 °C). To lze provést nastavením „offsetu“ a „multiplikátoru“. Vstupní a výstupní hodnota zůstává stejná, pokud je nastaven offset '0' a multiplikátor '1'. Základní aplikace BEEP (z App Store) vám poskytne správné definice senzorů při počátečním nastavení vaší základny BEEP.",
+  sensordef_date_info:
+    'Tato kalibrace platí od nastaveného data doteď (nebo jiné nastavené kalibrační hodnoty)',
   or: 'nebo',
   select_all_hives: 'Vybrat všechny úly',
   select_all_editable_hives: 'Vybrat všechny upravitelné úly',

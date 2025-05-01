@@ -589,6 +589,8 @@ const translations = {
     'Ett meddelande med en verifikationslänk har skickats till din email. Klicka på länken I mailet för att bekräfta din email adress och logga in.',
   sensordef_info:
     "En givar definition har som mål att konvertera inkommande 'råa' givarvärde till ett värde och en enhet eller att kalibrera givaren. Detta kan göras genom att ställa in en òffset` och en `multiplier`. Indata och utdata förblir desamma om offset är 0 och multiplier är 1. BEEP base appen kommer att förse dig med korrekta givardefinitioner när du ställer in den för första gången.",
+  sensordef_date_info:
+    'Denna kalibrering gäller från det inställda datumet fram till nu (eller ett annat inställt kalibreringsvärde)',
   or: 'eller',
   select_all_hives: 'Välj samtliga kupor',
   select_all_editable_hives: 'Välj samtliga redigerbara kupor',

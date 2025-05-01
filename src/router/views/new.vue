@@ -2,8 +2,20 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>4.0.26 (24-03-2025) - Current
+        ><span class="lowercase">v</span>4.0.27 (31-03-2025) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'devices' }">Devices</router-link>:
+            sensor definitions 'Updated At' field is now editable</li
+          >
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.26 (24-03-2025)</div
       >
       <div class="rounded-border mb-4">
         <ul>

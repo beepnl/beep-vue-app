@@ -605,6 +605,8 @@ const translations = {
     "Un messaggio con un link di verifica è stato inviato al tuo nuovo indirizzo e-mail. Clicca sul link per confermare la tua e-mail ed eseguire l'accesso.",
   sensordef_info:
     "Una Definizione Sensore serve a convertire il valore 'grezzo' in una quantità fisica misurabile e sua unità di misura (e.g. w_v = 1098273 => weight_kg = 62,400 kg) oppure a calibrare un sensore (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Questo può essere fatto impostanto un 'valore base' ed un 'coefficiente di moltiplicazione'. I valori 'grezzi' e quelli calcolati non cambiano se il valore di base è '0' ed il moltiplicatore è '1'. La app BEEP (da App Store) ti fornirà le giuste Definizioni Sensore alla prima configurazione della tua base BEEP.",
+  sensordef_date_info:
+    'Questa calibrazione si applica dalla data impostata fino ad ora (o un altro valore di calibrazione impostato)',
   or: 'oppure',
   select_all_hives: 'Seleziona tutti gli alveari',
   select_all_editable_hives: 'Seleziona tutti gli alveari modificabili',
