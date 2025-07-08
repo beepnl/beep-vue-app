@@ -526,6 +526,8 @@ const translations = {
     'En melding med en bekreftelselenke er sendt til den nye e-postadressen din. Klikk på koblingen i e-posten for å bekrefte din nye e-postadresse og logge på.',
   sensordef_info:
     "En sensordefinisjon er ment å konvertere en sensorverdi fra en innkommende 'rå' sensorverdi til en verdi i henhold til en fysisk mengde og enhet (f.eks. w_v = 1098273 => weight_kg = 62.400 kg) eller å kalibrere en sensor (f.eks. t_0 = 15,3 °C => t_0 = 15,8 °C). Dette kan gjøres ved å sette en 'offset' og en 'multiplikator'. Inn- og utgangsverdien forblir den samme hvis offset '0' og multiplikator '1' er satt. BEEP base-appen (fra App Store) vil gi deg de riktige sensordefinisjonene ved første oppsett av BEEP-basen.",
+  sensordef_date_info:
+    'Denne kalibreringen gjelder fra den angitte datoen til nå (eller en annen innstilt kalibreringsverdi)',
   or: 'eller',
   select_all_hives: 'Velg alle bikuber',
   select_all_editable_hives: 'Velg alle redigerbare bikuber',

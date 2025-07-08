@@ -609,6 +609,8 @@ const translations = {
     'Un mesaj nou cu un link de verificare a fost trimis la noua dvs. adresă de e-mail. Faceți clic pe linkul din e-mail pentru a vă confirma noua adresă de e-mail și pentru a vă autentifica',
   sensordef_info:
     'O definiție a senzorului este destinată să convertească o valoare a senzorului dintr-o valoare primară a senzorului „brut” într-o valoare în funcție de o cantitate fizică și o unitate (e.x. w_v = 1098273 => weight_kg = 62,400 kg) sau o calibrare a senzorului (e.x. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Acest lucru se poate face prin setarea unui „offset” și a unui „multiplicator”. Valoarea de intrare și ieșire rămâne aceeași dacă este setat decalajul „0” și multiplicatorul „1”. Aplicația  BEEP base (din App Store) vă va oferi definițiile corecte ale senzorilor la configurarea inițială a bazei dvs. BEEP. ',
+  sensordef_date_info:
+    'Această calibrare se aplică de la data setată până în prezent (sau o altă valoare de calibrare setată)',
   or: 'sau',
   select_all_hives: 'Selectați toți stupii',
   select_all_editable_hives: 'Selectați toate stupii personalizabili',
