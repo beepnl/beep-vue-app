@@ -7,9 +7,6 @@ const instance = axios.create({
     process.env.VUE_APP_API_URL || process.env.VUE_APP_BASE_API_URL_FALLBACK,
 })
 
-// Alter defaults after instance has been created
-instance.defaults.headers.common['Content-Type'] = 'application/json'
-
 // On 401 error, reset user and redirect to login
 const UNAUTHORIZED = 401
 instance.interceptors.response.use(
@@ -45,11 +42,14 @@ instance.interceptors.response.use(
 // Dynamically add Accept-Language to requests
 instance.interceptors.request.use(
   function(config) {
-    // config.headers.common['Content-Type'] = 'application/json'
+    // Alter defaults after instance has been created
+    instance.defaults.headers.common['Content-Type'] = 'application/json'
+
     const apiToken = store.getters['auth/apiToken']
     if (apiToken) {
-      instance.defaults.headers.common.Authorization = 'Bearer ' + apiToken
+      config.headers.Authorization = 'Bearer ' + apiToken
     }
+
     const locale = store.getters['auth/userLocale']
     if (locale) {
       instance.defaults.headers.common['Accept-Language'] = locale
