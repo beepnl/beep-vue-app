@@ -729,24 +729,24 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
-import { mapGetters } from 'vuex'
-import {
-  momentFromNow,
-  momentify,
-  momentifyDayMonth,
-} from '@mixins/momentMixin'
 import {
   checkAlerts,
   checkSettings,
   readApiaries,
   readApiariesAndGroups,
-  readGroups,
   readDevices,
   readGeneralInspections,
+  readGroups,
   readHiveTags,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
+import {
+  momentFromNow,
+  momentify,
+  momentifyDayMonth,
+} from '@mixins/momentMixin'
 import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -786,7 +786,7 @@ export default {
     deviceIdArray: [],
     assetsUrl:
       process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
-    alertTimer: 0,
+    alertsTimer: 0,
     alertInterval: 120000,
     deviceTimer: 0,
     deviceInterval: 600000,
@@ -1187,11 +1187,18 @@ export default {
     }
 
     this.readDevices().then(() => {
-      this.deviceTimer = setInterval(this.readDevices, this.deviceInterval)
+      setTimeout(
+        () =>
+          this.runAtInterval(this.readDevices, this.deviceInterval, 'device'),
+        this.deviceInterval
+      )
     })
 
     this.checkAlertRulesAndAlerts().then(() => {
-      this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
+      setTimeout(
+        () => this.runAtInterval(this.readAlerts, this.alertInterval, 'alerts'),
+        this.alertInterval
+      )
     })
   },
   beforeDestroy() {
@@ -1520,6 +1527,23 @@ export default {
         })
       }
     },
+    runAtInterval(fn, interval, timername) {
+      fn().finally(() => {
+        if (timername === 'device') {
+          this.deviceTimer = setTimeout(
+            () => this.runAtInterval(fn, interval, 'device'),
+            interval
+          )
+        } else if (timername === 'alerts') {
+          this.alertsTimer = setTimeout(
+            () => this.runAtInterval(fn, interval, 'alerts'),
+            interval
+          )
+        } else {
+          console.log('unknown timer')
+        }
+      })
+    },
     setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {
         filter: 'diaryFilterByGroup',
@@ -1576,10 +1600,8 @@ export default {
       }
     },
     stopTimers() {
-      clearInterval(this.alertTimer)
-      this.alertTimer = 0
-      clearInterval(this.deviceTimer)
-      this.deviceTimer = 0
+      clearTimeout(this.alertsTimer)
+      clearTimeout(this.deviceTimer)
     },
     toggleGrid(view) {
       if (view === 'xlView') {

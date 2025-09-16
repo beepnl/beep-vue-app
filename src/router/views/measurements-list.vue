@@ -522,31 +522,31 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/main.vue'
-import { mapGetters } from 'vuex'
-import MeasurementsCard from '@components/measurements/measurements-card.vue'
-import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
 import MeasurementsChartHeatmap from '@/src/components/measurements/measurements-chart-heatmap.vue'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
-import Treeselect from '@riophae/vue-treeselect'
+import Api from '@api/Api'
+import Confirm from '@components/confirm.vue'
+import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
+import MeasurementsCard from '@components/measurements/measurements-card.vue'
+import Layout from '@layouts/main.vue'
 import {
   checkAlerts,
+  readApiariesAndGroups,
   readDevicesIfNotChecked,
   readInspectionsForHiveId,
   readTaxonomy,
-  readApiariesAndGroups,
 } from '@mixins/methodsMixin'
 import {
-  momentifyDayMonth,
   momentFormat,
   momentFormatUtcToLocal,
   momentFromNow,
+  momentifyDayMonth,
   timeZone,
 } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
+import Treeselect from '@riophae/vue-treeselect'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -1642,6 +1642,14 @@ export default {
         this.selectedHiveId = hiveId
       }
     },
+    runAtInterval(fn, interval) {
+      fn().finally(() => {
+        this.timer = setTimeout(
+          () => this.runAtInterval(fn, interval),
+          interval
+        )
+      })
+    },
     selectDate(date) {
       var p = this.interval
       var d = p + 's'
@@ -1790,12 +1798,11 @@ export default {
     },
     startTimer() {
       this.stopTimer()
-      this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000)
+      this.runAtInterval(this.loadLastSensorValuesFunc, 60 * 1000)
     },
     stopTimer() {
       if (this.timer > 0) {
-        clearInterval(this.timer)
-        this.timer = 0
+        clearTimeout(this.statusTimer)
       }
     },
     toggleSensorInfo(abbr) {
