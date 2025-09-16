@@ -82,7 +82,7 @@
       </v-container>
     </div>
 
-    <v-container v-if="!ready || alertsLoading" class="alerts-content">
+    <v-container v-if="!ready" class="alerts-content">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
@@ -236,22 +236,22 @@
 </template>
 
 <script>
-import AlertCard from '@components/alert-card.vue'
 import Api from '@api/Api'
+import AlertCard from '@components/alert-card.vue'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
-import { mapGetters } from 'vuex'
-import {
-  momentFromNow,
-  momentHumanizeDuration,
-  momentify,
-} from '@mixins/momentMixin'
 import {
   checkAlerts,
   readApiariesAndGroupsIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
+import {
+  momentFromNow,
+  momentHumanizeDuration,
+  momentify,
+} from '@mixins/momentMixin'
 import { ScaleTransition } from 'vue2-transitions'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -418,7 +418,10 @@ export default {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         this.checkAlertRulesAndAlerts().then(() => {
           this.ready = true
-          this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
+          setTimeout(
+            () => this.runAtInterval(this.readAlerts, this.alertInterval),
+            this.alertInterval
+          )
         })
       })
     })
@@ -524,9 +527,16 @@ export default {
     isSelected(alertId) {
       return this.selectedAlerts.indexOf(alertId) > -1
     },
+    runAtInterval(fn, interval) {
+      fn().finally(() => {
+        this.alertTimer = setTimeout(
+          () => this.runAtInterval(fn, interval),
+          interval
+        )
+      })
+    },
     stopTimer() {
-      clearInterval(this.alertTimer)
-      this.alertTimer = 0
+      clearTimeout(this.alertTimer)
     },
     toggleAllFiltered() {
       if (!this.allFilteredChecked) {
