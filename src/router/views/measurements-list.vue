@@ -1616,6 +1616,14 @@ export default {
         this.selectedHiveId = hiveId
       }
     },
+    runAtInterval(fn, interval) {
+      fn().finally(() => {
+        this.timer = setTimeout(
+          () => this.runAtInterval(fn, interval),
+          interval
+        )
+      })
+    },
     selectDate(date) {
       const p = this.interval
       const d = p + 's'
@@ -1764,12 +1772,11 @@ export default {
     },
     startTimer() {
       this.stopTimer()
-      this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000)
+      this.runAtInterval(this.loadLastSensorValuesFunc, 60 * 1000)
     },
     stopTimer() {
       if (this.timer > 0) {
-        clearInterval(this.timer)
-        this.timer = 0
+        clearTimeout(this.statusTimer)
       }
     },
     toggleSensorInfo(abbr) {

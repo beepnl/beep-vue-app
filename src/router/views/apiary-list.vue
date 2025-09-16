@@ -671,7 +671,7 @@ export default {
     deviceIdArray: [],
     assetsUrl:
       process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
-    alertTimer: 0,
+    alertsTimer: 0,
     alertInterval: 120000,
     deviceTimer: 0,
     deviceInterval: 600000,
@@ -1085,11 +1085,18 @@ export default {
     }
 
     this.readDevices().then(() => {
-      this.deviceTimer = setInterval(this.readDevices, this.deviceInterval)
+      setTimeout(
+        () =>
+          this.runAtInterval(this.readDevices, this.deviceInterval, 'device'),
+        this.deviceInterval
+      )
     })
 
     this.checkAlertRulesAndAlerts().then(() => {
-      this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
+      setTimeout(
+        () => this.runAtInterval(this.readAlerts, this.alertInterval, 'alerts'),
+        this.alertInterval
+      )
     })
   },
   beforeUnmount() {
@@ -1515,6 +1522,23 @@ export default {
         },
       ]
     },
+    runAtInterval(fn, interval, timername) {
+      fn().finally(() => {
+        if (timername === 'device') {
+          this.deviceTimer = setTimeout(
+            () => this.runAtInterval(fn, interval, 'device'),
+            interval
+          )
+        } else if (timername === 'alerts') {
+          this.alertsTimer = setTimeout(
+            () => this.runAtInterval(fn, interval, 'alerts'),
+            interval
+          )
+        } else {
+          console.log('unknown timer')
+        }
+      })
+    },
     setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {
         filter: 'diaryFilterByGroup',
@@ -1571,10 +1595,8 @@ export default {
       }
     },
     stopTimers() {
-      clearInterval(this.alertTimer)
-      this.alertTimer = 0
-      clearInterval(this.deviceTimer)
-      this.deviceTimer = 0
+      clearTimeout(this.alertsTimer)
+      clearTimeout(this.deviceTimer)
     },
     toggleGrid(view) {
       if (view === 'xlView') {
