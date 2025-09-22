@@ -1917,7 +1917,16 @@ export default {
     },
     setActiveInspectionDate(setDate = null) {
       const date = setDate === null ? this.getNow() : setDate
+
+      if (
+        this.activeInspection &&
+        typeof this.activeInspection.created_at !== 'undefined'
+      ) {
+        this.activeInspection.created_at = date
+      }
+
       this.activeInspection.date = date
+
       this.$store.commit('inspections/setData', {
         prop: 'activeInspectionDate',
         value: date,
