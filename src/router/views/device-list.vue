@@ -47,7 +47,13 @@
       >
     </v-toolbar>
 
-    <v-container class="content-container">
+    <v-container v-if="!ready">
+      <div class="loading">
+        <v-progress-circular size="50" color="primary" indeterminate />
+      </div>
+    </v-container>
+
+    <v-container v-if="ready" class="content-container">
       <v-row v-if="errorMessage">
         <v-col cols="12">
           <v-alert text prominent type="error" color="red">
@@ -93,7 +99,7 @@
       </div>
 
       <v-row density="compact">
-        <v-col v-if="ready && ownedDevices.length === 0" cols="12">
+        <v-col v-if="ownedDevices.length === 0" cols="12">
           <p v-text="$t('sensors') + ' ' + $t('not_available_yet')"></p>
           <div class="text-center">
             <img
