@@ -243,7 +243,7 @@
   }
 
   textarea {
-    padding-top: 4px;
+    margin-top: -8px !important;
   }
 }
 
@@ -404,10 +404,12 @@
       }
     }
   }
-  .td--medium {
-    .v-input__control {
-      min-width: 130px !important;
-      max-width: 140px !important;
+  .td--medium,
+  .th--medium {
+    min-width: 130px !important;
+    max-width: 140px !important;
+    @include for-tablet-portrait-up {
+      min-width: 170px !important;
     }
   }
 

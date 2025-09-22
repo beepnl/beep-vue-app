@@ -412,10 +412,10 @@
                         <template v-slot>
                           <thead>
                             <tr>
-                              <th class="text-left">
+                              <th class="text-left th--medium">
                                 {{ $t('Name') }}
                               </th>
-                              <th class="text-left">
+                              <th class="text-left th--medium">
                                 {{ $t('Inside') }}
                               </th>
                               <th class="text-left">
@@ -424,13 +424,13 @@
                               <th class="text-left">
                                 {{ $t('Multiplier') }}
                               </th>
-                              <th class="text-left">
+                              <th class="text-left th--medium">
                                 {{ $t('Input') }}
                               </th>
-                              <th class="text-left">
+                              <th class="text-left th--medium">
                                 {{ $t('Output') }}
                               </th>
-                              <th class="text-left">
+                              <th class="text-left th--medium">
                                 {{ $t('Updated_at') }}
                               </th>
                               <th class="text-left">

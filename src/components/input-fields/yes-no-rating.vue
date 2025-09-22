@@ -3,7 +3,7 @@
     <div>
       <v-btn
         :class="
-          `yes-no-button mr-1 pl-0 ${yesRed ? 'yes-red' : ''} ${
+          `yes-no-button mr-1 ml-n1 pl-0 ${yesRed ? 'yes-red' : ''} ${
             small ? 'yes-no-button--small pr-0' : 'pr-2'
           }`
         "

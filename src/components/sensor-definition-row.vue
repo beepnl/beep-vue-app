@@ -1,6 +1,6 @@
 <template>
   <tr :class="sensorDef.delete === true ? 'sensordef-delete' : ''">
-    <td class="td--small">
+    <td class="td--medium">
       <v-text-field
         v-model="sensorDef.name"
         :disabled="sensorDef.delete"
@@ -10,7 +10,7 @@
         @input="setSensorDefEdited(true)"
       ></v-text-field>
     </td>
-    <td>
+    <td class="td--medium">
       <yesNoRating
         v-if="sensorDef"
         :object="sensorDef"
@@ -43,7 +43,7 @@
         @change=";(sensorDef.multiplier = $event), setSensorDefEdited(true)"
       ></ElInputNumber>
     </td>
-    <td class="td--small">
+    <td class="td--medium">
       <v-select
         v-model="sensorDef.input_measurement_id"
         :disabled="sensorDef.delete"
@@ -51,12 +51,12 @@
         item-title="abbreviation"
         item-value="id"
         :label="`${$t('Select')} ${$tc('measurement', 1)} ...`"
-        class="mt-2 mb-n5"
+        class="mt-2"
         solo
         @update:model-value="selectInputMeasurementId(sensorDef, $event)"
       ></v-select>
     </td>
-    <td class="td--small">
+    <td class="td--medium">
       <v-select
         v-model="sensorDef.output_measurement_id"
         :disabled="sensorDef.delete"
@@ -64,12 +64,12 @@
         item-title="abbreviation"
         item-value="id"
         :label="`${$t('Select')} ${$tc('measurement', 1)} ...`"
-        class="mt-2 mb-n5"
+        class="mt-2"
         solo
         @update:model-value="setSensorDefEdited(true)"
       ></v-select>
     </td>
-    <td>
+    <td class="td--medium">
       <div
         v-if="sensorDef.updated_at !== null"
         :class="'d-flex flex-column' + (showInfo ? ' my-1' : '')"
