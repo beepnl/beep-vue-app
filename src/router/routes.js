@@ -371,6 +371,8 @@ export default [
   {
     meta: {
       authRequired: true,
+      tabWithIDParamRequired: true,
+      tabFallback: 'measurements',
       depth: 0,
     },
     path: '/measurements/:id',

@@ -145,7 +145,12 @@ router.afterEach((to, from) => {
   localStorage.beepPreviousQueryHiveIndex = from.query.hive_index
   // if navigating away from home / one of the other home tabs, remember it in order to return when back button is hit in a page with depth 1
   if (from.meta.depth === 0) {
-    localStorage.beepPreviousTab = from.name
+    if (from.meta.tabWithIDParamRequired === true) {
+      // when the tab route has an id param (like measurements, where these meta props are specified), save the fallback as beepPreviousTab instead
+      localStorage.beepPreviousTab = from.meta.tabFallback
+    } else {
+      localStorage.beepPreviousTab = from.name
+    }
   }
 })
 
