@@ -317,7 +317,7 @@
                           : '-'
                       "
                       :label="
-                        'Firmware version' +
+                        $t('Firmware_version') +
                           (ownedDevice.type === 'beep' ? ' BEEP base*' : '')
                       "
                       :disabled="ownedDevice.type === 'beep'"

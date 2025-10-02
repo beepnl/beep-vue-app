@@ -125,6 +125,7 @@
                         class="mr-1 mb-1"
                         size="small"
                         color="accent"
+                        variant="flat"
                       >
                         {{ checklistName }}
                       </v-chip>

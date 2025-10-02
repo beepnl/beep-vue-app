@@ -152,7 +152,7 @@
           >
             <div class="d-flex flex-column">
               <div
-                class="beep-label"
+                class="beep-label mb-0"
                 v-text="$t('Select') + ' ' + $tc('checklist', 1)"
               ></div>
               <v-select
