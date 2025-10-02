@@ -147,21 +147,25 @@
             v-if="
               checklistsPage && checklists !== null && checklists.length > 1
             "
-            class="d-flex"
             cols="12"
             sm="4"
           >
-            <v-select
-              v-model="selectedChecklistId"
-              class="select-checklist"
-              :items="checklists"
-              :item-title="getText"
-              item-value="id"
-              hide-details
-              :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
-              @update:model-value="readChecklistAndTaxonomy($event)"
-            >
-            </v-select>
+            <div class="d-flex flex-column">
+              <div
+                class="beep-label"
+                v-text="$t('Select') + ' ' + $tc('checklist', 1)"
+              ></div>
+              <v-select
+                v-model="selectedChecklistId"
+                :items="checklists"
+                :item-title="getText"
+                item-value="id"
+                hide-details
+                single-line
+                @update:model-value="readChecklistAndTaxonomy($event)"
+              >
+              </v-select>
+            </div>
           </v-col>
           <v-col cols="12" sm="6" md="4">
             <v-text-field
@@ -214,11 +218,11 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
-import checklistTree from '@components/checklist-tree.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import checklistTree from '@components/checklist-tree.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
