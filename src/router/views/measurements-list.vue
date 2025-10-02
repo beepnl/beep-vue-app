@@ -341,7 +341,7 @@
                   v-if="hasInfo(sensor)"
                   :class="
                     'd-flex flex-column align-center' +
-                      (chartCols !== 12 ? ' mt-n3' : '')
+                      (chartCols !== 12 ? ' mt-n3 mb-6' : '')
                   "
                 >
                   <div class="d-flex justify-start align-center">
@@ -361,7 +361,10 @@
 
                   <p
                     v-if="hasInfo(sensor) && sensorInfo.indexOf(sensor) > -1"
-                    class="mt-0 mb-1 d-flex font-italic"
+                    :class="
+                      'mt-0 mb-1 d-flex font-italic ' +
+                        (chartCols !== 12 ? 'mb-n5' : '')
+                    "
                   >
                     <span class="ml-1 color-accent">
                       <a
@@ -408,7 +411,7 @@
                 class="text-overline mt-0 mt-sm-3 mb-3 text-center"
                 v-text="$t('Sound_measurements')"
               ></div>
-              <div>
+              <div class="pt-3">
                 <MeasurementsChartHeatmap
                   :data="measurementsForHeatmap"
                   :max-value="maxSoundSensorValue"
@@ -450,7 +453,10 @@
                 <div
                   v-else-if="chartCols !== 12"
                   :class="
-                    'header-filler ' + (someSensorsHaveInfo ? 'mt-6 mb-8' : '')
+                    'header-filler ' +
+                      (someSensorsHaveInfo && !hasInfo(sensor)
+                        ? 'mt-3 mb-8'
+                        : 'my-3')
                   "
                 ></div>
                 <div>
@@ -465,7 +471,12 @@
                     :high-value="debugChartBoundaries[sensor].high"
                     :low-value="debugChartBoundaries[sensor].low"
                     :min-value="debugChartBoundaries[sensor].min"
-                    :max-value="debugChartBoundaries[sensor].max"
+                    :max-value="
+                      maxMinSensorValue(
+                        sensor,
+                        debugChartBoundaries[sensor].max
+                      )
+                    "
                     @confirm-view-alert="confirmViewAlert($event)"
                     @confirm-view-inspection="
                       confirmViewInspection($event.id, $event.date)
@@ -1566,6 +1577,43 @@ export default {
       } else {
         this.stopTimer()
         this.loadLastSensorValuesFunc()
+      }
+    },
+    maxMinSensorValue(quantity, hardcodedMinMax, returnMax = true) {
+      const mT = this.getSensorMeasurement(quantity)
+
+      if (
+        mT !== null &&
+        mT !== undefined &&
+        this.measurementData &&
+        this.measurementData.measurements &&
+        this.measurementData.measurements.length > 0
+      ) {
+        const allSensorValues = this.measurementData.measurements
+          .filter(
+            (measurement) =>
+              measurement[mT.abbreviation] !== undefined &&
+              measurement[mT.abbreviation] !== null
+          )
+          .map((measurement) => measurement[mT.abbreviation])
+
+        var result = returnMax
+          ? Math.max(...allSensorValues)
+          : Math.min(...allSensorValues) // if returnMax is false, return the minimum value instead
+
+        const margin = Math.abs(result) * 0.1
+
+        const newMinMax = Math.ceil(
+          returnMax ? result + margin : result - margin
+        )
+
+        if (returnMax) {
+          return newMinMax > hardcodedMinMax ? newMinMax : hardcodedMinMax
+        } else {
+          return newMinMax < hardcodedMinMax ? newMinMax : hardcodedMinMax
+        }
+      } else {
+        return hardcodedMinMax
       }
     },
     momentFromISO8601(date) {

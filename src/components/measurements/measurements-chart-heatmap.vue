@@ -316,11 +316,20 @@ export default {
         logValue = this.logMax
       }
 
-      return value !== null && value !== 0
-        ? 'hsl(' +
+      if (value === 0) {
+        // because it's impossible to divide 0 by something, give a 0 value a 0.01 value instead, so it comes out as blue color
+        // and only null values come out as white color
+        logValue = 0.01
+      }
+
+      const result =
+        value !== null
+          ? 'hsl(' +
             (235 + (logValue / this.logMax) * -235).toFixed(0) +
             ', 100%, 50%)'
-        : 'hsl(360, 100%, 100%)'
+          : 'hsl(360, 100%, 100%)'
+
+      return result
     },
     displayValue(input) {
       return input !== undefined
