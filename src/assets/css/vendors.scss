@@ -413,6 +413,13 @@
     }
   }
 
+  .td--qr {
+    width: 60px !important;
+    @include for-tablet-portrait-up {
+      width: 100px !important;
+    }
+  }
+
   .v-table__wrapper > table > tbody > tr > td,
   .v-table__wrapper > table > thead > tr > th {
     font-size: 12px !important;

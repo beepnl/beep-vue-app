@@ -87,10 +87,10 @@
               <template v-slot>
                 <thead>
                   <tr>
-                    <th class="text-left">
+                    <th class="text-left td--qr">
                       {{ $tc('qrcode', 1) }}
                     </th>
-                    <th :class="mobile ? 'text-center' : 'text-left'">
+                    <th class="text-center">
                       {{ $tc('Hive', 1) }}
                     </th>
                     <th class="text-left">
@@ -104,23 +104,25 @@
                 </thead>
                 <tbody>
                   <tr v-for="(hiveTag, index) in sortedHiveTags" :key="index">
-                    <td>
+                    <td class="td--qr">
                       <qrCodeIcon :text="hiveTag.tag" />
                     </td>
                     <td>
                       <!-- <span v-text="hiveTag.hive_id"></span> -->
-                      <div
-                        v-if="hivesObject[hiveTag.hive_id]"
-                        class="hive-icon-wrapper d-flex flex-column justify-center align-center mt-3 mb-1"
-                      >
-                        <HiveIcon
-                          :hive="hivesObject[hiveTag.hive_id]"
-                          :diary-view="true"
-                        ></HiveIcon>
-                        <span
-                          class="name-label text-center"
-                          v-text="hivesObject[hiveTag.hive_id].name"
-                        ></span>
+                      <div class="d-flex justify-center">
+                        <div
+                          v-if="hivesObject[hiveTag.hive_id]"
+                          class="hive-icon-wrapper d-flex flex-column justify-center align-center mt-3 mb-1"
+                        >
+                          <HiveIcon
+                            :hive="hivesObject[hiveTag.hive_id]"
+                            :diary-view="true"
+                          ></HiveIcon>
+                          <span
+                            class="name-label text-center"
+                            v-text="hivesObject[hiveTag.hive_id].name"
+                          ></span>
+                        </div>
                       </div>
                     </td>
                     <td>
@@ -168,16 +170,16 @@
 
 <script>
 // import Api from '@api/Api'
-import qrCodeIcon from '@components/qrcode-icon.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import HiveIcon from '@components/hive-icon.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import HiveIcon from '@components/hive-icon.vue'
+import qrCodeIcon from '@components/qrcode-icon.vue'
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
   readHiveTags,
 } from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
