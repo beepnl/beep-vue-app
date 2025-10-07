@@ -83,6 +83,7 @@ const vuetify = createVuetify({
       variant: 'underlined',
       clearIcon: 'mdi-close',
       density: 'compact',
+      maxRows: '18',
     },
     VTextField: {
       variant: 'underlined',
@@ -187,6 +188,10 @@ app.component('DynamicScrollerItem', DynamicScrollerItem)
 if (process.env.VUE_APP_TEST === 'e2e') {
   // Ensure tests fail when Vue emits an error.
   app.config.errorHandler = window.Cypress.cy.onUncaughtException
+} else {
+  app.config.errorHandler = (err, instance, info) => {
+    console.error('Vue caught error:', err, info)
+  }
 }
 
 // fix chartjs bug for older devices + better resize reactivity
