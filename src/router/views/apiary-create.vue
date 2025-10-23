@@ -270,7 +270,7 @@
                         class="beep-label"
                         v-text="`${$t('latitude')}`"
                       ></div>
-                      <ElInputNumber
+                      <!-- <ElInputNumber
                         v-if="newHive"
                         :model-value="newHive.lat"
                         :min="-90"
@@ -283,27 +283,44 @@
                           convertComma($event, newHive, 'lat', 3),
                             setApiaryEdited(true)
                         "
-                      ></ElInputNumber>
+                      ></ElInputNumber> -->
+                      <NumericInput
+                        v-if="newHive"
+                        :object="newHive"
+                        :property="'lat'"
+                        :min="-90"
+                        :max="90"
+                        :step="0.001"
+                        @update-number="editApiary($event, 'lat')"
+                      ></NumericInput>
                     </v-col>
                     <v-col cols="6" sm="4">
                       <div
                         class="beep-label"
                         v-text="`${$t('Longitude')}`"
                       ></div>
-                      <ElInputNumber
+                      <!-- <ElInputNumber
                         v-if="newHive"
                         :model-value="newHive.lon"
                         :min="-180"
                         :max="180"
                         :step="0.001"
                         :precision="3"
-                        :step-strictly="true"
                         @change="editApiary($event, 'lon')"
                         @update:model-value="
                           convertComma($event, newHive, 'lon', 3),
                             setApiaryEdited(true)
                         "
-                      ></ElInputNumber>
+                      ></ElInputNumber> -->
+                      <NumericInput
+                        v-if="newHive"
+                        :object="newHive"
+                        :property="'lon'"
+                        :min="-180"
+                        :max="180"
+                        :step="0.001"
+                        @update-number="editApiary($event, 'lon')"
+                      ></NumericInput>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -430,7 +447,7 @@
                         class="beep-label"
                         v-text="`${$t('Hive_amount')}`"
                       ></div>
-                      <ElInputNumber
+                      <!-- <ElInputNumber
                         v-if="newHive"
                         v-model="newHive.hive_amount"
                         :min="0"
@@ -438,7 +455,16 @@
                         :precision="0"
                         :step-strictly="true"
                         @update:model-value="setApiaryEdited(true)"
-                      ></ElInputNumber>
+                      ></ElInputNumber> -->
+                      <NumericInput
+                        :use-v-model="true"
+                        :object="newHive"
+                        :property="'hive_amount'"
+                        :min="0"
+                        :max="50"
+                        :step-strictly="true"
+                        @set-edited="setApiaryEdited(true)"
+                      ></NumericInput>
                     </v-col>
 
                     <v-col cols="6" md="4">
@@ -464,12 +490,19 @@
                           class="beep-label"
                           v-text="`${$t('Hive_number_offset')}`"
                         ></div>
-                        <ElInputNumber
+                        <!-- <ElInputNumber
                           v-if="newHive"
                           v-model="newHive.offset"
                           :precision="0"
                           @update:model-value="setApiaryEdited(true)"
-                        ></ElInputNumber>
+                        ></ElInputNumber> -->
+                        <NumericInput
+                          :use-v-model="true"
+                          :object="newHive"
+                          :property="'offset'"
+                          :step-strictly="true"
+                          @set-edited="setApiaryEdited(true)"
+                        ></NumericInput>
                       </div>
                     </v-col>
 
@@ -511,12 +544,13 @@ import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
 import ApiaryPreview from '@components/apiary-preview.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
+import NumericInput from '@components/input-fields/numeric-input.vue'
 import {
   convertComma,
   readApiaries,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
-import { ElInputNumber } from 'element-plus'
+// import { ElInputNumber } from 'element-plus'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import { mapGetters } from 'vuex'
 
@@ -526,8 +560,9 @@ export default {
     Confirm,
     HiveEditDetails,
     Layout,
+    NumericInput,
     VueGoogleAutocomplete,
-    ElInputNumber,
+    // ElInputNumber,
   },
   mixins: [convertComma, readApiaries, readApiariesAndGroupsIfNotPresent],
   data: function() {

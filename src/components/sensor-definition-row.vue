@@ -7,7 +7,7 @@
         :placeholder="`${$t('Name')}`"
         class="mt-2"
         dense
-        @input="setSensorDefEdited(true)"
+        @update:model-value="setSensorDefEdited(true)"
       ></v-text-field>
     </td>
     <td class="td--medium">
@@ -21,7 +21,7 @@
       ></yesNoRating>
     </td>
     <td>
-      <ElInputNumber
+      <!-- <ElInputNumber
         :model-value="sensorDef.offset"
         :disabled="sensorDef.delete"
         size="small"
@@ -29,10 +29,17 @@
           convertComma($event, sensorDef, 'offset'), setSensorDefEdited(true)
         "
         @change=";(sensorDef.offset = $event), setSensorDefEdited(true)"
-      ></ElInputNumber>
+      ></ElInputNumber> -->
+      <NumericInput
+        :object="sensorDef"
+        :property="'offset'"
+        :size="'small'"
+        :disabled="sensorDef.delete"
+        @update-number=";(sensorDef.offset = $event), setSensorDefEdited(true)"
+      ></NumericInput>
     </td>
     <td>
-      <ElInputNumber
+      <!-- <ElInputNumber
         :model-value="sensorDef.multiplier"
         :disabled="sensorDef.delete"
         size="small"
@@ -41,7 +48,16 @@
             setSensorDefEdited(true)
         "
         @change=";(sensorDef.multiplier = $event), setSensorDefEdited(true)"
-      ></ElInputNumber>
+      ></ElInputNumber> -->
+      <NumericInput
+        :object="sensorDef"
+        :property="'multiplier'"
+        :size="'small'"
+        :disabled="sensorDef.delete"
+        @update-number="
+          ;(sensorDef.multiplier = $event), setSensorDefEdited(true)
+        "
+      ></NumericInput>
     </td>
     <td class="td--medium">
       <v-select
@@ -160,16 +176,18 @@
 <script>
 import Api from '@api/Api'
 import Confirm from '@components/confirm-dialog.vue'
+import NumericInput from '@components/input-fields/numeric-input.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
-import { convertComma } from '@mixins/methodsMixin'
+// import { convertComma } from '@mixins/methodsMixin'
 import { datePickerText, momentFormatUtcToLocal } from '@mixins/momentMixin'
-import { ElInputNumber } from 'element-plus'
+// import { ElInputNumber } from 'element-plus'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Confirm,
-    ElInputNumber,
+    // ElInputNumber,
+    NumericInput,
     yesNoRating,
   },
   props: {
@@ -179,7 +197,7 @@ export default {
       required: true,
     },
   },
-  mixins: [convertComma, datePickerText, momentFormatUtcToLocal],
+  mixins: [datePickerText, momentFormatUtcToLocal],
   data() {
     return {
       errorMessage: null, // TODO show here?

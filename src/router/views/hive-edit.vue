@@ -160,10 +160,16 @@
           >
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
-              <ElInputNumber
+              <!-- <ElInputNumber
                 :model-value="activeHive.order === null ? 0 : activeHive.order"
                 @update:model-value="updateOrder($event)"
-              ></ElInputNumber>
+              ></ElInputNumber> -->
+              <NumericInput
+                :object="activeHive"
+                :property="'order'"
+                :step-strictly="true"
+                @update-number="updateOrder($event)"
+              ></NumericInput>
             </div>
           </v-col>
         </v-row>
@@ -192,13 +198,13 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Confirm from '@/src/components/confirm-dialog.vue'
-import HiveEditDetails from '@components/hive-edit-details.vue'
-import { mapGetters } from 'vuex'
 import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import HiveEditDetails from '@components/hive-edit-details.vue'
+import NumericInput from '@components/input-fields/numeric-input.vue'
 import QueenEditDetails from '@components/queen-edit-details.vue'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   checkAlerts,
   getMaxFramecount,
@@ -208,16 +214,18 @@ import {
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
-import { ElInputNumber } from 'element-plus'
+import { mapGetters } from 'vuex'
+// import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     Confirm,
     HiveEditDetails,
     Layout,
+    NumericInput,
     QueenEditDetails,
     Treeselect,
-    ElInputNumber,
+    // ElInputNumber,
   },
   mixins: [
     checkAlerts,

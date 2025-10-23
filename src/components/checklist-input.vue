@@ -116,7 +116,7 @@
       :object="object"
     ></slider>
 
-    <ElInputNumber
+    <!-- <ElInputNumber
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
       :model-value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
@@ -125,9 +125,18 @@
       :disabled="disabled"
       @change="updateInput($event, item.id, item.name, item.input)"
       @update:model-value="convertComma($event, item.name, 0)"
-    ></ElInputNumber>
+    ></ElInputNumber> -->
 
-    <ElInputNumber
+    <NumericInput
+      v-if="item.input === 'number' || item.input === 'number_0_decimals'"
+      :object="object"
+      :property="item.id"
+      :step="1"
+      :disabled="disabled"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+    ></NumericInput>
+
+    <!-- <ElInputNumber
       v-if="
         item.input === 'number_1_decimals' ||
           item.input === 'number_2_decimals' ||
@@ -146,9 +155,21 @@
           item.input === 'number_2_decimals' ? 2 : 1
         )
       "
-    ></ElInputNumber>
+    ></ElInputNumber> -->
 
-    <ElInputNumber
+    <NumericInput
+      v-if="
+        item.input === 'number_1_decimals' ||
+          item.input === 'number_2_decimals' ||
+          item.input === 'square_25cm2'
+      "
+      :object="object"
+      :property="item.id"
+      :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+    ></NumericInput>
+
+    <!-- <ElInputNumber
       v-if="item.input === 'number_3_decimals'"
       :model-value="object[item.id] === null ? 0 : object[item.id]"
       :step="0.001"
@@ -156,9 +177,17 @@
       :disabled="disabled"
       @change="updateInput($event, item.id, item.name, item.input)"
       @update:model-value="convertComma($event, item.name, 3)"
-    ></ElInputNumber>
+    ></ElInputNumber> -->
 
-    <ElInputNumber
+    <NumericInput
+      v-if="item.input === 'number_3_decimals'"
+      :object="object"
+      :property="item.id"
+      :step="0.001"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+    ></NumericInput>
+
+    <!-- <ElInputNumber
       v-if="item.input === 'number_negative'"
       :model-value="object[item.id] === null ? 0 : object[item.id]"
       :max="0"
@@ -168,9 +197,19 @@
       :disabled="disabled"
       @change="updateInput($event, item.id, item.name, item.input)"
       @update:model-value="convertComma($event, item.name, 0)"
-    ></ElInputNumber>
+    ></ElInputNumber> -->
 
-    <ElInputNumber
+    <NumericInput
+      v-if="item.input === 'number_negative'"
+      :object="object"
+      :property="item.id"
+      :max="0"
+      :disabled="disabled"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+      @set-edited="setInspectionEdited(true)"
+    ></NumericInput>
+
+    <!-- <ElInputNumber
       v-if="item.input === 'number_positive'"
       :model-value="object[item.id] === null ? 0 : object[item.id]"
       :min="0"
@@ -180,7 +219,17 @@
       :disabled="item.name === 'colony_size' || disabled"
       @change="updateInput($event, item.id, item.name, item.input)"
       @update:model-value="convertComma($event, item.name, 0)"
-    ></ElInputNumber>
+    ></ElInputNumber> -->
+
+    <NumericInput
+      v-if="item.input === 'number_positive'"
+      :object="object"
+      :property="item.id"
+      :min="0"
+      :disabled="item.name === 'colony_size' || disabled"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+      @set-edited="setInspectionEdited(true)"
+    ></NumericInput>
 
     <starRating
       v-if="item.input === 'score'"
@@ -263,6 +312,7 @@
 <script>
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
+import NumericInput from '@components/input-fields/numeric-input.vue'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
 import slider from '@/src/components/input-fields/slider-input.vue'
 import treeselect from '@/src/components/input-fields/treeselect-input.vue'
@@ -274,7 +324,7 @@ import starRating from '@components/input-fields/star-rating.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import { getLabel, parseDate } from '@mixins/methodsMixin'
 import { svgData } from '@mixins/svgMixin'
-import { ElInputNumber } from 'element-plus'
+// import { ElInputNumber } from 'element-plus'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -283,6 +333,7 @@ export default {
     dateTimePicker,
     imageUploader,
     labelWithDescription,
+    NumericInput,
     sampleCode,
     selectHiveOrApiary,
     slider,
@@ -290,7 +341,7 @@ export default {
     starRating,
     treeselect,
     yesNoRating,
-    ElInputNumber,
+    // ElInputNumber,
   },
   mixins: [getLabel, parseDate, svgData],
   props: {

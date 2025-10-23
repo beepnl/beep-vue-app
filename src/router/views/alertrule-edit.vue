@@ -271,7 +271,7 @@
                   :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                   v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
                 ></div>
-                <ElInputNumber
+                <!-- <ElInputNumber
                   v-model="activeAlertRule.threshold_value"
                   :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
                   :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
@@ -281,7 +281,14 @@
                     convertComma($event, activeAlertRule, 'threshold_value', 1),
                       setAlertRuleEdited(true)
                   "
-                ></ElInputNumber>
+                ></ElInputNumber> -->
+                <NumericInput
+                  :use-v-model="true"
+                  :object="activeAlertRule"
+                  :property="'threshold_value'"
+                  :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
+                  @set-edited="setAlertRuleEdited(true)"
+                ></NumericInput>
                 <div
                   v-if="thresholdValueIsNaN"
                   class="v-text-field__details mt-1"
@@ -406,11 +413,11 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Confirm from '@/src/components/confirm-dialog.vue'
-import { mapGetters } from 'vuex'
 import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import NumericInput from '@components/input-fields/numeric-input.vue'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   convertComma,
   readAlertRules,
@@ -419,14 +426,16 @@ import {
   sortedDevices,
 } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
-import { ElInputNumber } from 'element-plus'
+// import { ElInputNumber } from 'element-plus'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Confirm,
     Layout,
+    NumericInput,
     Treeselect,
-    ElInputNumber,
+    // ElInputNumber,
   },
   mixins: [
     convertComma,

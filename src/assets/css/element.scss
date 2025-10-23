@@ -12,6 +12,30 @@
 :root {
   --el-border-color: #cccccc !important;
   --el-color-primary: #f8b133 !important;
-  --el-fill-color-light: #efefef !important; // #fffaf0 !important;
+  --el-fill-color-light: rgba(
+    255,
+    255,
+    255,
+    0.6
+  ) !important; // #efefef !important; // #fffaf0 !important;
   --el-component-size: 36px !important;
+}
+
+.beep-number-input {
+  .el-input__inner {
+    text-align: center !important;
+    font-size: 14px !important;
+  }
+
+  .el-input-group__append,
+  .el-input-group__prepend {
+    padding: 2px 0px !important;
+  }
+
+  &.--small {
+    .el-input-group__append,
+    .el-input-group__prepend {
+      padding: 0px 6px 3px !important;
+    }
+  }
 }

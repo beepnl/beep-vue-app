@@ -28,6 +28,7 @@
 
               <v-col cols="12" md="5">
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
+                <!-- this number element can't be replaced by numeric input as it has to use model-value which can't be adjusted as a prop in another component -->
                 <ElInputNumber
                   v-if="hive && hive.layers"
                   :model-value="
@@ -133,7 +134,7 @@
                           class="beep-label"
                           v-text="`${$t(bbDimension)}`"
                         ></div>
-                        <ElInputNumber
+                        <!-- <ElInputNumber
                           :model-value="
                             hive[bbDimension]
                               ? parseFloat(hive[bbDimension])
@@ -143,13 +144,23 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          @change="updateHive($event.toString(), bbDimension)"
+                          @change="updateHive($event, bbDimension)"
                           @update:model-value="
                             convertComma($event, hive, bbDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
-                        ></ElInputNumber>
+                        ></ElInputNumber> -->
+
+                        <NumericInput
+                          :object="hive"
+                          :property="bbDimension"
+                          :min="0"
+                          :max="100"
+                          :step="0.1"
+                          :disabled="hive.layers.length === 0"
+                          @update-number="updateHive($event, bbDimension)"
+                        ></NumericInput>
                       </div>
                     </v-col>
 
@@ -163,7 +174,7 @@
                           class="beep-label"
                           v-text="`${$t(frDimension)}`"
                         ></div>
-                        <ElInputNumber
+                        <!-- <ElInputNumber
                           :model-value="
                             hive[frDimension]
                               ? parseFloat(hive[frDimension])
@@ -173,13 +184,21 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          @change="updateHive($event.toString(), frDimension)"
+                          @change="updateHive($event, frDimension)"
                           @update:model-value="
                             convertComma($event, hive, frDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
-                        ></ElInputNumber>
+                        ></ElInputNumber> -->
+                        <NumericInput
+                          :object="hive"
+                          :property="frDimension"
+                          :min="0"
+                          :max="100"
+                          :step="0.1"
+                          @update-number="updateHive($event, frDimension)"
+                        ></NumericInput>
                       </div>
                     </v-col>
                   </v-row>
@@ -195,6 +214,7 @@
 
 <script>
 import HiveFactory from '@components/hive-factory.vue'
+import NumericInput from '@components/input-fields/numeric-input.vue'
 import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   convertComma,
@@ -207,6 +227,7 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     HiveFactory,
+    NumericInput,
     Treeselect,
     ElInputNumber,
   },
@@ -340,10 +361,9 @@ export default {
       this.$store.commit('hives/setHiveEdited', bool)
     },
     updateHive(event, property) {
-      // console.log(event)
       let value = null
       if (event === null) {
-        value = null
+        value = null // 0 ?
       } else if (event.target !== undefined) {
         value = event.target.value
       } else {

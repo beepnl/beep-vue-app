@@ -161,14 +161,21 @@
                   >mdi-calculator</v-icon
                 >
               </div>
-              <ElInputNumber
+              <!-- <ElInputNumber
                 v-model="formula.period_minutes"
                 :step="1"
                 :min="0"
                 size="small"
                 @change="setPeriodMinutesEdited(true)"
                 @update:model-value="setPeriodMinutesEdited(true)"
-              ></ElInputNumber>
+              ></ElInputNumber> -->
+              <NumericInput
+                :use-v-model="true"
+                :object="formula"
+                :property="'period_minutes'"
+                :min="0"
+                @set-edited="setPeriodMinutesEdited(true)"
+              ></NumericInput>
 
               <v-radio-group
                 v-if="hasFutureProp"
@@ -228,12 +235,19 @@
                       :key="'p-' + k"
                       class="d-flex align-center mb-1"
                     >
-                      <ElInputNumber
+                      <!-- <ElInputNumber
                         v-model="periodValues[period.term]"
                         :step="1"
                         :min="0"
                         size="small"
-                      ></ElInputNumber>
+                      ></ElInputNumber> -->
+
+                      <NumericInput
+                        :use-v-model="true"
+                        :object="periodValues"
+                        :property="period.term"
+                        :min="0"
+                      ></NumericInput>
                       <div
                         class="ml-2"
                         v-text="$tc(period.term, periodValues[period.term])"
@@ -280,7 +294,7 @@
                 :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                 v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
               ></div>
-              <ElInputNumber
+              <!-- <ElInputNumber
                 v-model="formula.threshold_value"
                 :step="formula.calculation === 'cnt' ? 1 : 0.1"
                 :precision="formula.calculation === 'cnt' ? 0 : 1"
@@ -291,7 +305,14 @@
                   convertComma($event, formula, 'threshold_value', 1),
                     setAlertRuleEdited(true)
                 "
-              ></ElInputNumber>
+              ></ElInputNumber> -->
+              <NumericInput
+                :use-v-model="true"
+                :object="formula"
+                :property="'threshold_value'"
+                :step="formula.calculation === 'cnt' ? 1 : 0.1"
+                @set-edited="setAlertRuleEdited(true)"
+              ></NumericInput>
               <div v-if="thresholdValueIsNaN" class="v-text-field__details mt-1"
                 ><div class="v-messages theme--light text-error" role="alert"
                   ><div class="v-messages__wrapper"
@@ -329,14 +350,16 @@
 </template>
 
 <script>
-import { momentHumanize } from '@mixins/momentMixin'
-import { mapGetters } from 'vuex'
+import NumericInput from '@components/input-fields/numeric-input.vue'
 import { alertRuleEditHelpers, convertComma } from '@mixins/methodsMixin'
-import { ElInputNumber } from 'element-plus'
+import { momentHumanize } from '@mixins/momentMixin'
+// import { ElInputNumber } from 'element-plus'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    ElInputNumber,
+    NumericInput,
+    // ElInputNumber,
   },
   mixins: [alertRuleEditHelpers, convertComma, momentHumanize],
   props: {

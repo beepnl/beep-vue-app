@@ -53,6 +53,7 @@
                   class="beep-label"
                   v-text="$tc('Hive_brood_layer', 2)"
                 ></div>
+                <!-- this number element can't be replaced by numeric input as it has to use model-value which can't be adjusted as a prop in another component -->
                 <ElInputNumber
                   v-if="activeHive && activeHive.layers"
                   v-model="broodLayersForCalculation"
@@ -66,6 +67,7 @@
               </v-col>
               <v-col cols="12">
                 <div class="beep-label" v-text="$t('Hive_frames')"></div>
+                <!-- this number element can't be replaced by numeric input as it has to use model-value which can't be adjusted as a prop in another component -->
                 <ElInputNumber
                   v-if="activeHive && activeHive.layers"
                   v-model="framesForCalculation"
@@ -181,12 +183,12 @@
 </template>
 
 <script>
-import ChecklistInput from '@components/checklist-input.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
+import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
-import { mapGetters } from 'vuex'
 import { getMaxFramecount } from '@mixins/methodsMixin'
 import { ElInputNumber } from 'element-plus'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {

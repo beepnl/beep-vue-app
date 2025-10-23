@@ -194,7 +194,7 @@
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('latitude')}`"></div>
-                  <ElInputNumber
+                  <!-- <ElInputNumber
                     v-if="activeApiary"
                     :model-value="
                       activeApiary.coordinate_lat === null
@@ -218,11 +218,20 @@
                       ),
                         setApiaryEdited(true)
                     "
-                  ></ElInputNumber>
+                  ></ElInputNumber> -->
+                  <NumericInput
+                    v-if="activeApiary"
+                    :object="activeApiary"
+                    :property="'coordinate_lat'"
+                    :min="-90"
+                    :max="90"
+                    :step="0.001"
+                    @update-number="editApiary($event, 'lat')"
+                  ></NumericInput>
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <ElInputNumber
+                  <!-- <ElInputNumber
                     v-if="activeApiary"
                     :model-value="
                       activeApiary.coordinate_lon === null
@@ -246,7 +255,16 @@
                       ),
                         setApiaryEdited(true)
                     "
-                  ></ElInputNumber>
+                  ></ElInputNumber> -->
+                  <NumericInput
+                    v-if="activeApiary"
+                    :object="activeApiary"
+                    :property="'coordinate_lon'"
+                    :min="-180"
+                    :max="180"
+                    :step="0.001"
+                    @update-number="editApiary($event, 'lon')"
+                  ></NumericInput>
                 </v-col>
               </v-row>
               <v-row>
@@ -320,8 +338,9 @@
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
+import NumericInput from '@components/input-fields/numeric-input.vue'
 import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
-import { ElInputNumber } from 'element-plus'
+// import { ElInputNumber } from 'element-plus'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import { mapGetters } from 'vuex'
 
@@ -329,8 +348,9 @@ export default {
   components: {
     Confirm,
     Layout,
+    NumericInput,
     VueGoogleAutocomplete,
-    ElInputNumber,
+    // ElInputNumber,
   },
   mixins: [convertComma, readApiariesAndGroups],
   data: function() {
