@@ -381,11 +381,12 @@ const translations = {
   /* user */
   Data_export: 'Daten Export',
   Export_your_data:
-    "Exportiere alle Daten aus Deinem Account per Email (Exceldatei) (OR download the Excel file via the 'Download CSV' button).",
+    "Exportiere alle Daten aus Deinem Account per Email (Exceldatei) (OR download the Excel file via the 'Download XLS' button).",
   Terms_of_use: 'Nutzungsbedingungen',
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 

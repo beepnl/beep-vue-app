@@ -64,7 +64,7 @@
                 />
                 <v-icon v-if="!showDownloadLoadingIcon" start color="accent"
                   >mdi-download</v-icon
-                >{{ $t('Download_csv') }}</v-btn
+                >{{ $t('Download_xls') }}</v-btn
               >
               <v-btn
                 v-if="csvLink && browserDoesNotSupportDownloadTrick"
@@ -74,7 +74,7 @@
                 target="_blank"
               >
                 <v-icon start color="accent">mdi-export</v-icon
-                >{{ $t('Open_csv') }}</v-btn
+                >{{ $t('Open_xls') }}</v-btn
               >
             </div>
           </v-col>
@@ -257,12 +257,12 @@
 </template>
 
 <script>
+import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
 import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
-import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
 import { readDevicesIfNotChecked, sortedDevices } from '@mixins/methodsMixin'
 import { momentFormat } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {

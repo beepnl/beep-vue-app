@@ -452,10 +452,11 @@ const translations = {
   Data_export: 'Exportation des données',
   /* Cyrille - 31/05 : Translation updated */
   Export_your_data:
-    "Exporter toutes les données qui se trouvent dans votre compte BEEP et envoyez un e-mail contenant les données en tant que fichier Excel 2007 (OR download the Excel file via the 'Download CSV' button)",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Exporter toutes les données qui se trouvent dans votre compte BEEP et envoyez un e-mail contenant les données en tant que fichier Excel 2007 (OR download the Excel file via the 'Download XLS' button)",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 

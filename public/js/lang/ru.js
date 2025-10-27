@@ -326,9 +326,10 @@ const translations = {
   Data_export: 'Экспорт данных',
   Export_your_data:
     'Экспортируйте все данные из вашего аккаунта BEEP и отправьте их на электронную почту в виде файла Excel ИЛИ скачайте файл Excel здесь. Файл содержит вкладки с личными данными, ульями, местоположением и осмотрами.',
-  Email_export: 'Отправить CSV по email',
-  Download_csv: 'Скачать CSV',
+  Email_export: 'Отправить XLS по email',
+  Download_xls: 'Скачать XLS',
   Open_csv: 'Открыть CSV',
+  Open_xls: 'Открыть XLS',
   Include_group_data: 'Добавить данные группы в экспорт',
   Include_sensor_data: 'Добавить ссылки на файлы измерений в экспорт',
   accept_policy:

@@ -404,10 +404,11 @@ const translations = {
   /* user */
   Data_export: 'Vie tiedot',
   Export_your_data:
-    "Vie kaikki BEEP-tililläsi olevat tiedot ja lähetä Excel-tiedostona sähköpostissa (OR download the Excel file via the 'Download CSV' button). Excel-tiedostossa on oma välilehti henkilökohtaisille, pesän, tarhapaikan ja tarkastusten tiedoille.",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Vie kaikki BEEP-tililläsi olevat tiedot ja lähetä Excel-tiedostona sähköpostissa (OR download the Excel file via the 'Download XLS' button). Excel-tiedostossa on oma välilehti henkilökohtaisille, pesän, tarhapaikan ja tarkastusten tiedoille.",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 

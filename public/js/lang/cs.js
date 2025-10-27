@@ -327,9 +327,10 @@ const translations = {
   Data_export: 'Export dat',
   Export_your_data:
     'Exportujte všechna data, která jsou na vašem BEEP účtu, a odešlete e-mail obsahující data ve formě Excel souboru NEBO si soubor Excel stáhněte zde. Soubor Excel má různé karty obsahující Vaše osobní data, údaje o úlech, umístění a kontrolách.',
-  Email_export: 'Poslat CSV e-mailem',
-  Download_csv: 'Stáhnout CSV',
+  Email_export: 'Poslat XLS e-mailem',
+  Download_xls: 'Stáhnout XLS',
   Open_csv: 'Otevřít CSV',
+  Open_xls: 'Otevřít XLS',
   Include_group_data: 'Přidat související data skupiny k exportu',
   Include_sensor_data: 'Přidat odkazy na soubory naměřených dat k exportu',
 

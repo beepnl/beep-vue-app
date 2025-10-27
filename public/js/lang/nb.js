@@ -326,10 +326,11 @@ const translations = {
   /* user */
   Data_export: 'Data eksport',
   Export_your_data:
-    "Eksporter alle data som er i BEEP-kontoen din og send en e-post som inneholder dataene som en Excel-fil (OR download the Excel file via the 'Download CSV' button). Excel-filen har forskjellige faner som inneholder dine personlige data, bikube, plassering og inspeksjons data.",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Eksporter alle data som er i BEEP-kontoen din og send en e-post som inneholder dataene som en Excel-fil (OR download the Excel file via the 'Download XLS' button). Excel-filen har forskjellige faner som inneholder dine personlige data, bikube, plassering og inspeksjons data.",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 

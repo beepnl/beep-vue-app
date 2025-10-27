@@ -347,9 +347,10 @@ const translations = {
   Data_export: 'Data exporteren',
   Export_your_data:
     'Exporteer alle data die is opgeslagen in je BEEP account en verstuur deze in een e-mail met als bijlage een Excel (.xslx) bestand OF download dit bestand hier. Het bestand heeft meerdere tabbladen met daarop je persoonlijke-, bijenstand-, kast- en inspectiegegevens.',
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Voeg samenwerkingsgroepsdata toe aan export',
   Include_sensor_data:
     'Voeg links naar bestanden met sensordata toe aan export',
