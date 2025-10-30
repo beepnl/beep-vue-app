@@ -32,7 +32,7 @@
                       : selectHives()
                   "
                 >
-                  <v-icon start>mdi-check</v-icon>
+                  <v-icon color="black" start>mdi-check</v-icon>
                   {{ researchMode ? $t('save') : $t('ok') }}</v-btn
                 >
                 <v-btn class="ml-3" color="red" @click="closeOverlay">{{

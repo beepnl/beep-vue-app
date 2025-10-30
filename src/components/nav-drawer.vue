@@ -416,9 +416,10 @@ export default {
 }
 
 .menu-header {
-  font-size: 14px !important;
-  font-weight: bold;
   color: $color-black;
+  font-size: 0.8125rem !important;
+  font-weight: 500;
+  line-height: 1rem;
 
   &.top {
     color: $color-black;

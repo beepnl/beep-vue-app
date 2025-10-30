@@ -74,6 +74,10 @@
   display: none !important;
 }
 
+.v-btn__content > .v-icon--start {
+  margin-left: 0px;
+}
+
 .theme--light.v-icon.v-icon--disabled.color-transparent {
   color: transparent !important;
 }
@@ -618,5 +622,5 @@
 
 .vue-recycle-scroller.direction-vertical.scroller.--single-page
   .vue-recycle-scroller__item-wrapper {
-  min-height: calc(100vh - 156px) !important;
+  min-height: calc(100vh - 170px) !important;
 }

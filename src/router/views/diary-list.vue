@@ -529,7 +529,7 @@ export default {
 .diary-inspections-content {
   margin-top: 158px;
   overflow: hidden;
-  max-height: calc(100vh - 158px); // to remove scroll bar
+  max-height: calc(100vh - 172px); // to remove scroll bar
   @include for-phone-only {
     margin-top: 152px;
   }
@@ -548,7 +548,7 @@ export default {
 }
 
 .scroller {
-  height: calc(100vh - 156px);
+  height: calc(100vh - 170px);
   width: 100%;
   @include for-tablet-landscape-up {
     padding-right: 32px !important;
