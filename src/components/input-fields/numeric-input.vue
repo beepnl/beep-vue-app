@@ -215,7 +215,7 @@ export default {
         this.object[this.property] = val
       }
       this.$emit('update-number', val)
-      this.$emit('set-edited')
+      this.setEdited()
     },
   },
 }

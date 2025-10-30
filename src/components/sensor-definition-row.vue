@@ -6,7 +6,7 @@
         :disabled="sensorDef.delete"
         :placeholder="`${$t('Name')}`"
         class="mt-2"
-        dense
+        density="compact"
         @update:model-value="setSensorDefEdited(true)"
       ></v-text-field>
     </td>
@@ -17,7 +17,7 @@
         property="inside"
         :disabled="sensorDef.delete"
         :small="true"
-        class="device-yes-no mt-n3 mb-n5"
+        class="device-yes-no"
       ></yesNoRating>
     </td>
     <td>
@@ -33,7 +33,7 @@
       <NumericInput
         :object="sensorDef"
         :property="'offset'"
-        :size="'small'"
+        :size="mobile ? 'small' : 'default'"
         :disabled="sensorDef.delete"
         @update-number=";(sensorDef.offset = $event), setSensorDefEdited(true)"
       ></NumericInput>
@@ -52,7 +52,7 @@
       <NumericInput
         :object="sensorDef"
         :property="'multiplier'"
-        :size="'small'"
+        :size="mobile ? 'small' : 'default'"
         :disabled="sensorDef.delete"
         @update-number="
           ;(sensorDef.multiplier = $event), setSensorDefEdited(true)
@@ -67,8 +67,10 @@
         item-title="abbreviation"
         item-value="id"
         :label="`${$t('Select')} ${$tc('measurement', 1)} ...`"
-        class="mt-2"
-        solo
+        single-line
+        variant="outlined"
+        density="compact"
+        hide-details
         @update:model-value="selectInputMeasurementId(sensorDef, $event)"
       ></v-select>
     </td>
@@ -80,8 +82,10 @@
         item-title="abbreviation"
         item-value="id"
         :label="`${$t('Select')} ${$tc('measurement', 1)} ...`"
-        class="mt-2"
-        solo
+        single-line
+        variant="outlined"
+        density="compact"
+        hide-details
         @update:model-value="setSensorDefEdited(true)"
       ></v-select>
     </td>
@@ -160,7 +164,7 @@
         v-else
         text
         prominent
-        dense
+        density="compact"
         type="error"
         color="red"
         class="my-1"
@@ -211,6 +215,9 @@ export default {
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     locale() {
       return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.display.xs
     },
     sortedSensorMeasurements() {
       var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {

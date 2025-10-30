@@ -16,7 +16,9 @@
           color="disabled"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" start>mdi-content-copy</v-icon>
+        <v-icon v-if="!showLoadingIcon" color="black" start
+          >mdi-content-copy</v-icon
+        >
         {{
           $t('copy') +
             ' ' +

@@ -414,7 +414,10 @@
                       v-if="ownedDevice.sensor_definitions.length > 0"
                       class="rounded-border"
                     >
-                      <v-table class="v-data-table--smallfont" dense>
+                      <v-table
+                        class="v-data-table--smallfont"
+                        density="compact"
+                      >
                         <template v-slot>
                           <thead>
                             <tr>

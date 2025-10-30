@@ -381,7 +381,7 @@
                   <v-icon
                     v-if="itemByDate.items === null"
                     :id="`toggle-icon-${itemByDate.name}`"
-                    left
+                    start
                     :class="
                       `toggle-icon mdi ${
                         hiddenCategories.includes(itemByDate.name)

@@ -66,10 +66,14 @@
   font-size: 0.75rem !important;
 }
 
-.v-list-item-title {
+.v-list-item:not(.inspection-list-item) .v-list-item-title {
   font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1rem;
+}
+
+.v-list-item.inspection-list-item .v-list-item-title {
+  margin-left: 6px;
 }
 
 .v-list-item__prepend > .v-icon ~ .v-list-item__spacer {
@@ -94,6 +98,11 @@
 .v-selection-control--density-default.hivetag-radio {
   max-width: 45px;
   margin-top: -2px;
+}
+
+.v-selection-control.v-selection-control--density-default.v-checkbox-btn
+  .v-label {
+  font-size: 1rem !important;
 }
 
 .v-slider.v-input--horizontal

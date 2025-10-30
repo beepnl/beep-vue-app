@@ -43,7 +43,7 @@
                   class="save-button-mobile-wide"
                   v-bind="props"
                 >
-                  <v-icon start>mdi-plus</v-icon>
+                  <v-icon color="black" start>mdi-plus</v-icon>
                   {{ $t('Add_alertrule') }}
                 </v-btn>
               </template>
@@ -270,12 +270,12 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import { readAlertRules } from '@mixins/methodsMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
+import { readAlertRules } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {

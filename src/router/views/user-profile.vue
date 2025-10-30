@@ -186,9 +186,9 @@
 </template>
 
 <script>
-import Confirm from '@/src/components/confirm-dialog.vue' // TODO-VUE3 of @components?
-import Layout from '@/src/router/layouts/back-layout.vue' // TODO-VUE3 of @layouts?
 import Api from '@api/Api'
+import Confirm from '@components/confirm-dialog.vue' // TODO-VUE3 of @components?
+import Layout from '@layouts/back-layout.vue' // TODO-VUE3 of @layouts?
 import { mapGetters } from 'vuex'
 
 export default {
