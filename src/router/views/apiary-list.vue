@@ -1335,10 +1335,12 @@ export default {
         : this.favGroups.includes(hiveSet.id)
     },
     favHiveSetText(hiveSet) {
-      return (
-        this.$i18n.t('Fav_' + (hiveSet.users ? 'group' : 'apiary') + '_exp') +
-        this.$i18n.t('Fav_exp')
-      )
+      const groupOrApiary = hiveSet.users
+        ? this.$i18n.tc('group_short', 1)
+        : this.$i18n.tc('location', 1)
+      return this.$i18n.t('Fav_exp', {
+        groupOrApiary,
+      })
     },
     findDeviceById(id) {
       return (

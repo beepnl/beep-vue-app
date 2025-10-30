@@ -1100,11 +1100,9 @@ const translations = {
   api_token: 'API токен',
   save_api: 'Зберегти API токен',
 
-  // TODO-VUE3 refactor into single term with prop
-  Fav_group_exp: 'Додати цю групу до вибраних',
-  Fav_apiary_exp: 'Додати цю пасіку до вибраних',
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
   Fav_exp:
-    ' - вона буде показана на початку списку та завантажиться першою (перед іншими)',
+    'Додати цю {groupOrApiary} до вибраних - вона буде показана на початку списку та завантажиться першою (перед іншими)',
 }
 
 export default translations

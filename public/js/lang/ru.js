@@ -1085,11 +1085,9 @@ const translations = {
   api_token: 'API-токен',
   save_api: 'Сохранить API-токен',
 
-  // TODO-VUE3 переработать в единый термин с пропсом
-  Fav_group_exp: 'Добавить эту группу в избранное',
-  Fav_apiary_exp: 'Добавить эту пасеку в избранное',
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
   Fav_exp:
-    ' - она будет отображаться в начале списка и загружаться первой (до остальных)',
+    'Добавить эту {groupOrApiary} в избранное - она будет отображаться в начале списка и загружаться первой (до остальных)',
 }
 
 export default translations

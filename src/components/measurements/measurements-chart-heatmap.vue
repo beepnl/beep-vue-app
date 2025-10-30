@@ -35,7 +35,7 @@
                     scaleMax - labelIndex > minLabelDistance &&
                       index === indexLabels[labelIndex]
                   "
-                  :key="'li-' + labelIndex"
+                  :key="'lie-' + labelIndex"
                   v-text="labelIndex"
                 >
                 </span>

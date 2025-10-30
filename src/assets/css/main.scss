@@ -11,6 +11,10 @@ html {
 
 .beep-list-icon {
   width: 36px;
+
+  &.--small {
+    width: 30px;
+  }
 }
 
 .beep-tooltip {

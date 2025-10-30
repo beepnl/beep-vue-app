@@ -16,14 +16,19 @@
     </template>
 
     <v-list>
-      <template v-for="language in languages" :key="language.title">
-        <v-list-item
-          :prepend-avatar="assetsUrl + `/img/flags/${language.lang}.svg`"
-          :title="language.title"
-          @click="switchLocale(language.lang)"
-        >
-        </v-list-item>
-      </template>
+      <v-list-item
+        v-for="language in languages"
+        :key="language.title"
+        :value="language"
+        @click="switchLanguage(language.lang)"
+        :title="language.title"
+      >
+        <template v-slot:prepend>
+          <div class="beep-list-icon --small mr-4 mt-1 mb-n1">
+            <img :src="assetsUrl + `/img/flags/${language.lang}.svg`" />
+          </div>
+        </template>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
