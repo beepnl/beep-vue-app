@@ -2,9 +2,7 @@
   <div>
     <ElInput
       v-if="!useVModel"
-      :class="'beep-number-input --' + size"
       ref="el"
-      :style="`width: ${size === 'small' ? '120' : '150'}px`"
       :model-value="
         object === null || object[property] === null
           ? undefined
@@ -12,6 +10,8 @@
           ? object[property]
           : parseFloat(object[property])
       "
+      :class="'beep-number-input --' + size"
+      :style="`width: ${size === 'small' ? '120' : '150'}px`"
       :min="min"
       :max="max"
       :step="step"
@@ -47,10 +47,10 @@
 
     <ElInput
       v-else-if="useVModel"
-      :class="'beep-number-input --' + size"
       ref="el"
-      :style="`width: ${size === 'small' ? '120' : '150'}px`"
       v-model="object[property]"
+      :class="'beep-number-input --' + size"
+      :style="`width: ${size === 'small' ? '120' : '150'}px`"
       :min="min"
       :max="max"
       :step="step"
@@ -145,6 +145,7 @@ export default {
       required: false,
     },
   },
+  emits: ['update-number', 'set-edited'],
   computed: {
     numberIsMin() {
       return (
@@ -192,7 +193,7 @@ export default {
       this.setEdited()
     },
     getPrecision(number) {
-      var n = number.toString().split('.')
+      const n = number.toString().split('.')
       return n.length > 1 ? n[1].length : 0
     },
     selectAll(refName) {

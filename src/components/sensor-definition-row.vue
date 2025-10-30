@@ -194,6 +194,7 @@ export default {
     NumericInput,
     yesNoRating,
   },
+  mixins: [datePickerText, momentFormatUtcToLocal],
   props: {
     sensorDef: {
       type: Object,
@@ -201,7 +202,7 @@ export default {
       required: true,
     },
   },
-  mixins: [datePickerText, momentFormatUtcToLocal],
+  emits: ['get-devices-for-list', 'remove-sensor-def', 'sensor-def-edited'],
   data() {
     return {
       errorMessage: null, // TODO show here?
@@ -220,15 +221,17 @@ export default {
       return this.$vuetify.display.xs
     },
     sortedSensorMeasurements() {
-      var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {
-        if (a.abbreviation > b.abbrevation) {
-          return 1
-        }
-        if (b.abbreviation > a.abbreviation) {
-          return -1
-        }
-        return 0
-      })
+      const sortedSMs = this.sensorMeasurementsList
+        .slice()
+        .sort(function(a, b) {
+          if (a.abbreviation > b.abbrevation) {
+            return 1
+          }
+          if (b.abbreviation > a.abbreviation) {
+            return -1
+          }
+          return 0
+        })
       return sortedSMs
     },
     updatedDate: {
@@ -253,10 +256,10 @@ export default {
     async updateSensorDef(sensorDef) {
       this.errorMessage = null
       this.showLoadingIcon = true
-      var sensorDefId =
+      const sensorDefId =
         typeof sensorDef.id !== 'undefined' ? sensorDef.id : null
       try {
-        var response = false
+        let response = false
         if (sensorDef.delete === true) {
           response = await Api.deleteRequest(
             '/sensordefinition/',

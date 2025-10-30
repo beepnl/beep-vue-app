@@ -264,6 +264,7 @@
                 <v-progress-circular size="50" color="primary" indeterminate />
               </div>
             </v-overlay>
+
             <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
               <div
                 v-if="selectedDevice"
@@ -1597,7 +1598,7 @@ export default {
           )
           .map((measurement) => measurement[mT.abbreviation])
 
-        var result = returnMax
+        const result = returnMax
           ? Math.max(...allSensorValues)
           : Math.min(...allSensorValues) // if returnMax is false, return the minimum value instead
 
