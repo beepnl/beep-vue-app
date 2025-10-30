@@ -194,31 +194,6 @@
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('latitude')}`"></div>
-                  <!-- <ElInputNumber
-                    v-if="activeApiary"
-                    :model-value="
-                      activeApiary.coordinate_lat === null
-                        ? 0
-                        : activeApiary.coordinate_lat
-                    "
-                    :min="-90"
-                    :max="90"
-                    :step="0.001"
-                    :precision="3"
-                    :step-strictly="true"
-                    @change="editApiary($event, 'lat')"
-                    @update:model-value="
-                      convertComma(
-                        $event,
-                        activeApiary,
-                        // eslint-disable-next-line vue/comma-dangle
-                        'lat',
-                        // eslint-disable-next-line vue/comma-dangle
-                        3
-                      ),
-                        setApiaryEdited(true)
-                    "
-                  ></ElInputNumber> -->
                   <NumericInput
                     v-if="activeApiary"
                     :object="activeApiary"
@@ -231,31 +206,6 @@
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <!-- <ElInputNumber
-                    v-if="activeApiary"
-                    :model-value="
-                      activeApiary.coordinate_lon === null
-                        ? 0
-                        : activeApiary.coordinate_lon
-                    "
-                    :min="-180"
-                    :max="180"
-                    :step="0.001"
-                    :precision="3"
-                    :step-strictly="true"
-                    @change="editApiary($event, 'lon')"
-                    @update:model-value="
-                      convertComma(
-                        $event,
-                        activeApiary,
-                        // eslint-disable-next-line vue/comma-dangle
-                        'lon',
-                        // eslint-disable-next-line vue/comma-dangle
-                        3
-                      ),
-                        setApiaryEdited(true)
-                    "
-                  ></ElInputNumber> -->
                   <NumericInput
                     v-if="activeApiary"
                     :object="activeApiary"
@@ -339,8 +289,7 @@ import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
 import NumericInput from '@components/input-fields/numeric-input.vue'
-import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
-// import { ElInputNumber } from 'element-plus'
+import { readApiariesAndGroups } from '@mixins/methodsMixin'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import { mapGetters } from 'vuex'
 
@@ -350,9 +299,8 @@ export default {
     Layout,
     NumericInput,
     VueGoogleAutocomplete,
-    // ElInputNumber,
   },
-  mixins: [convertComma, readApiariesAndGroups],
+  mixins: [readApiariesAndGroups],
   data: function() {
     return {
       snackbar: {

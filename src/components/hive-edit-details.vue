@@ -134,24 +134,6 @@
                           class="beep-label"
                           v-text="`${$t(bbDimension)}`"
                         ></div>
-                        <!-- <ElInputNumber
-                          :model-value="
-                            hive[bbDimension]
-                              ? parseFloat(hive[bbDimension])
-                              : 0
-                          "
-                          :min="0"
-                          :max="100"
-                          :step="0.1"
-                          :precision="1"
-                          @change="updateHive($event, bbDimension)"
-                          @update:model-value="
-                            convertComma($event, hive, bbDimension, 1),
-                              setHiveEdited(true),
-                              setApiaryEdited(true)
-                          "
-                        ></ElInputNumber> -->
-
                         <NumericInput
                           :object="hive"
                           :property="bbDimension"
@@ -174,29 +156,13 @@
                           class="beep-label"
                           v-text="`${$t(frDimension)}`"
                         ></div>
-                        <!-- <ElInputNumber
-                          :model-value="
-                            hive[frDimension]
-                              ? parseFloat(hive[frDimension])
-                              : 0
-                          "
-                          :min="0"
-                          :max="100"
-                          :step="0.1"
-                          :precision="1"
-                          @change="updateHive($event, frDimension)"
-                          @update:model-value="
-                            convertComma($event, hive, frDimension, 1),
-                              setHiveEdited(true),
-                              setApiaryEdited(true)
-                          "
-                        ></ElInputNumber> -->
                         <NumericInput
                           :object="hive"
                           :property="frDimension"
                           :min="0"
                           :max="100"
                           :step="0.1"
+                          :disabled="hive.layers.length === 0"
                           @update-number="updateHive($event, frDimension)"
                         ></NumericInput>
                       </div>
@@ -216,11 +182,7 @@
 import HiveFactory from '@components/hive-factory.vue'
 import NumericInput from '@components/input-fields/numeric-input.vue'
 import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
-import {
-  convertComma,
-  getMaxFramecount,
-  readTaxonomy,
-} from '@mixins/methodsMixin'
+import { getMaxFramecount, readTaxonomy } from '@mixins/methodsMixin'
 import { ElInputNumber } from 'element-plus'
 import { mapGetters } from 'vuex'
 
@@ -231,7 +193,7 @@ export default {
     Treeselect,
     ElInputNumber,
   },
-  mixins: [convertComma, getMaxFramecount, readTaxonomy],
+  mixins: [getMaxFramecount, readTaxonomy],
   props: {
     hive: {
       type: Object,

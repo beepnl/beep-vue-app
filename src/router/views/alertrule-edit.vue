@@ -271,17 +271,6 @@
                   :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                   v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
                 ></div>
-                <!-- <ElInputNumber
-                  v-model="activeAlertRule.threshold_value"
-                  :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
-                  :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
-                  :step-strictly="true"
-                  @change="setAlertRuleEdited(true)"
-                  @update:model-value="
-                    convertComma($event, activeAlertRule, 'threshold_value', 1),
-                      setAlertRuleEdited(true)
-                  "
-                ></ElInputNumber> -->
                 <NumericInput
                   :use-v-model="true"
                   :object="activeAlertRule"
@@ -419,14 +408,12 @@ import Api from '@api/Api'
 import NumericInput from '@components/input-fields/numeric-input.vue'
 import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
-  convertComma,
   readAlertRules,
   readDevicesIfNotChecked,
   readTaxonomy,
   sortedDevices,
 } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
-// import { ElInputNumber } from 'element-plus'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -435,10 +422,8 @@ export default {
     Layout,
     NumericInput,
     Treeselect,
-    // ElInputNumber,
   },
   mixins: [
-    convertComma,
     momentHumanizeHours,
     readAlertRules,
     readDevicesIfNotChecked,

@@ -1,11 +1,12 @@
 <template>
   <div>
+    <!-- <span v-text="input"></span> -->
     <ElInput
       v-if="!useVModel"
       ref="el"
       :model-value="
         object === null || object[property] === null
-          ? undefined
+          ? 0
           : !isFloat
           ? object[property]
           : parseFloat(object[property])
@@ -19,6 +20,7 @@
       :formatter="(value) => value.replace(/,/g, '.')"
       :disabled="disabled"
       @update:model-value="updateNumber($event)"
+      @blur="changeNumber"
       @focus="selectAll('el')"
     >
       <template v-slot:prepend>
@@ -59,6 +61,7 @@
       :disabled="disabled"
       @change="setEdited(true)"
       @update:model-value="updateNumber($event)"
+      @blur="changeNumber"
       @focus="selectAll('el')"
     >
       <template v-slot:prepend>
@@ -104,6 +107,11 @@ export default {
       type: [String, Number],
       required: true,
     },
+    input: {
+      type: String,
+      default: '',
+      required: false,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -117,6 +125,11 @@ export default {
     max: {
       type: Number,
       default: Infinity,
+      required: false,
+    },
+    saveAsNumber: {
+      type: Boolean,
+      default: false,
       required: false,
     },
     step: {
@@ -166,7 +179,7 @@ export default {
     },
   },
   methods: {
-    changeNumber(sign = 'plus') {
+    changeNumber(sign) {
       const val = this.object[this.property]
       const nr =
         val === null || val === ''

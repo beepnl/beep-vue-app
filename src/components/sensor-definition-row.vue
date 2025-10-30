@@ -21,15 +21,6 @@
       ></yesNoRating>
     </td>
     <td>
-      <!-- <ElInputNumber
-        :model-value="sensorDef.offset"
-        :disabled="sensorDef.delete"
-        size="small"
-        @update:model-value="
-          convertComma($event, sensorDef, 'offset'), setSensorDefEdited(true)
-        "
-        @change=";(sensorDef.offset = $event), setSensorDefEdited(true)"
-      ></ElInputNumber> -->
       <NumericInput
         :object="sensorDef"
         :property="'offset'"
@@ -39,16 +30,6 @@
       ></NumericInput>
     </td>
     <td>
-      <!-- <ElInputNumber
-        :model-value="sensorDef.multiplier"
-        :disabled="sensorDef.delete"
-        size="small"
-        @update:model-value="
-          convertComma($event, sensorDef, 'multiplier'),
-            setSensorDefEdited(true)
-        "
-        @change=";(sensorDef.multiplier = $event), setSensorDefEdited(true)"
-      ></ElInputNumber> -->
       <NumericInput
         :object="sensorDef"
         :property="'multiplier'"
@@ -182,15 +163,12 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm-dialog.vue'
 import NumericInput from '@components/input-fields/numeric-input.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
-// import { convertComma } from '@mixins/methodsMixin'
 import { datePickerText, momentFormatUtcToLocal } from '@mixins/momentMixin'
-// import { ElInputNumber } from 'element-plus'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Confirm,
-    // ElInputNumber,
     NumericInput,
     yesNoRating,
   },

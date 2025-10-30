@@ -116,17 +116,6 @@
       :object="object"
     ></slider>
 
-    <!-- <ElInputNumber
-      v-if="item.input === 'number' || item.input === 'number_0_decimals'"
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
-      :step="1"
-      :precision="0"
-      :step-strictly="true"
-      :disabled="disabled"
-      @change="updateInput($event, item.id, item.name, item.input)"
-      @update:model-value="convertComma($event, item.name, 0)"
-    ></ElInputNumber> -->
-
     <NumericInput
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
       :object="object"
@@ -135,27 +124,6 @@
       :disabled="disabled"
       @update-number="updateInput($event, item.id, item.name, item.input)"
     ></NumericInput>
-
-    <!-- <ElInputNumber
-      v-if="
-        item.input === 'number_1_decimals' ||
-          item.input === 'number_2_decimals' ||
-          item.input === 'square_25cm2'
-      "
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
-      :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
-      :precision="precision"
-      :disabled="disabled"
-      @change="updateInput($event, item.id, item.name, item.input)"
-      @update:model-value="
-        convertComma(
-          $event,
-          item.name,
-          // eslint-disable-next-line vue/comma-dangle
-          item.input === 'number_2_decimals' ? 2 : 1
-        )
-      "
-    ></ElInputNumber> -->
 
     <NumericInput
       v-if="
@@ -166,38 +134,18 @@
       :object="object"
       :property="item.id"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
+      :disabled="disabled"
       @update-number="updateInput($event, item.id, item.name, item.input)"
     ></NumericInput>
-
-    <!-- <ElInputNumber
-      v-if="item.input === 'number_3_decimals'"
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
-      :step="0.001"
-      :precision="3"
-      :disabled="disabled"
-      @change="updateInput($event, item.id, item.name, item.input)"
-      @update:model-value="convertComma($event, item.name, 3)"
-    ></ElInputNumber> -->
 
     <NumericInput
       v-if="item.input === 'number_3_decimals'"
       :object="object"
       :property="item.id"
       :step="0.001"
+      :disabled="disabled"
       @update-number="updateInput($event, item.id, item.name, item.input)"
     ></NumericInput>
-
-    <!-- <ElInputNumber
-      v-if="item.input === 'number_negative'"
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
-      :max="0"
-      :step="1"
-      :precision="0"
-      :step-strictly="true"
-      :disabled="disabled"
-      @change="updateInput($event, item.id, item.name, item.input)"
-      @update:model-value="convertComma($event, item.name, 0)"
-    ></ElInputNumber> -->
 
     <NumericInput
       v-if="item.input === 'number_negative'"
@@ -206,20 +154,7 @@
       :max="0"
       :disabled="disabled"
       @update-number="updateInput($event, item.id, item.name, item.input)"
-      @set-edited="setInspectionEdited(true)"
     ></NumericInput>
-
-    <!-- <ElInputNumber
-      v-if="item.input === 'number_positive'"
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
-      :min="0"
-      :step="1"
-      :precision="0"
-      :step-strictly="true"
-      :disabled="item.name === 'colony_size' || disabled"
-      @change="updateInput($event, item.id, item.name, item.input)"
-      @update:model-value="convertComma($event, item.name, 0)"
-    ></ElInputNumber> -->
 
     <NumericInput
       v-if="item.input === 'number_positive'"
@@ -228,7 +163,6 @@
       :min="0"
       :disabled="item.name === 'colony_size' || disabled"
       @update-number="updateInput($event, item.id, item.name, item.input)"
-      @set-edited="setInspectionEdited(true)"
     ></NumericInput>
 
     <starRating
@@ -324,7 +258,6 @@ import starRating from '@components/input-fields/star-rating.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import { getLabel, parseDate } from '@mixins/methodsMixin'
 import { svgData } from '@mixins/svgMixin'
-// import { ElInputNumber } from 'element-plus'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -341,7 +274,6 @@ export default {
     starRating,
     treeselect,
     yesNoRating,
-    // ElInputNumber,
   },
   mixins: [getLabel, parseDate, svgData],
   props: {
@@ -625,28 +557,6 @@ export default {
       if (name === 'bees_squares_25cm2') {
         this.$emit('calculate-liebefeld-colony-size')
       }
-    },
-    convertComma(event, name = null, precision = 1) {
-      let value = event
-      // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
-      if (value !== null && value.toString().indexOf(',') > -1) {
-        if (
-          precision <= 1 &&
-          value.length > value.toString().indexOf(',') + precision
-        ) {
-          value = parseFloat(value.toString().replace(',', '.'))
-          this.object[this.item.id] = value
-        } else if (precision > 1) {
-          // wait for user to stop typing if precision > 1
-          setTimeout(() => {
-            value = parseFloat(value.toString().replace(',', '.'))
-            this.object[this.item.id] = value
-          }, 1200)
-        }
-      }
-
-      this.checkNameForEmit(name)
-      this.setInspectionEdited(true)
     },
     findCategoryId(input) {
       if (typeof input === 'string') {

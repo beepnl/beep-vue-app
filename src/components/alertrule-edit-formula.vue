@@ -161,14 +161,6 @@
                   >mdi-calculator</v-icon
                 >
               </div>
-              <!-- <ElInputNumber
-                v-model="formula.period_minutes"
-                :step="1"
-                :min="0"
-                size="small"
-                @change="setPeriodMinutesEdited(true)"
-                @update:model-value="setPeriodMinutesEdited(true)"
-              ></ElInputNumber> -->
               <NumericInput
                 :use-v-model="true"
                 :object="formula"
@@ -235,13 +227,6 @@
                       :key="'p-' + k"
                       class="d-flex align-center mb-1"
                     >
-                      <!-- <ElInputNumber
-                        v-model="periodValues[period.term]"
-                        :step="1"
-                        :min="0"
-                        size="small"
-                      ></ElInputNumber> -->
-
                       <NumericInput
                         :use-v-model="true"
                         :object="periodValues"
@@ -294,18 +279,6 @@
                 :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                 v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
               ></div>
-              <!-- <ElInputNumber
-                v-model="formula.threshold_value"
-                :step="formula.calculation === 'cnt' ? 1 : 0.1"
-                :precision="formula.calculation === 'cnt' ? 0 : 1"
-                :step-strictly="true"
-                size="small"
-                @change="setAlertRuleEdited(true)"
-                @update:model-value="
-                  convertComma($event, formula, 'threshold_value', 1),
-                    setAlertRuleEdited(true)
-                "
-              ></ElInputNumber> -->
               <NumericInput
                 :use-v-model="true"
                 :object="formula"
@@ -351,17 +324,15 @@
 
 <script>
 import NumericInput from '@components/input-fields/numeric-input.vue'
-import { alertRuleEditHelpers, convertComma } from '@mixins/methodsMixin'
+import { alertRuleEditHelpers } from '@mixins/methodsMixin'
 import { momentHumanize } from '@mixins/momentMixin'
-// import { ElInputNumber } from 'element-plus'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     NumericInput,
-    // ElInputNumber,
   },
-  mixins: [alertRuleEditHelpers, convertComma, momentHumanize],
+  mixins: [alertRuleEditHelpers, momentHumanize],
   props: {
     formula: {
       type: Object,

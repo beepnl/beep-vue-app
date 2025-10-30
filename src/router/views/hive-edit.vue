@@ -160,10 +160,6 @@
           >
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
-              <!-- <ElInputNumber
-                :model-value="activeHive.order === null ? 0 : activeHive.order"
-                @update:model-value="updateOrder($event)"
-              ></ElInputNumber> -->
               <NumericInput
                 :object="activeHive"
                 :property="'order'"
@@ -215,7 +211,6 @@ import {
 } from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
-// import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
@@ -225,7 +220,6 @@ export default {
     NumericInput,
     QueenEditDetails,
     Treeselect,
-    // ElInputNumber,
   },
   mixins: [
     checkAlerts,
