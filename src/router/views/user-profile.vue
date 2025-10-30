@@ -187,8 +187,8 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm-dialog.vue' // TODO-VUE3 of @components?
-import Layout from '@layouts/back-layout.vue' // TODO-VUE3 of @layouts?
+import Confirm from '@components/confirm-dialog.vue'
+import Layout from '@layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -196,14 +196,13 @@ export default {
   props: {
     user: {
       type: Object,
+      default: () => null,
       required: true,
     },
   },
   data() {
     return {
       errors: [],
-      email: this.user.email,
-      name: this.user.name,
       policyAccepted: true,
       password: '',
       newPassword: null,
@@ -238,6 +237,14 @@ export default {
           : '',
       }
     },
+    email: {
+      get() {
+        return this.userCopy.email
+      },
+      set(value) {
+        this.userCopy.email = value
+      },
+    },
     emailRules: function() {
       return [
         (v) => !!v || this.$i18n.t('email_is_required'),
@@ -246,6 +253,14 @@ export default {
     },
     mobile() {
       return this.$vuetify.display.xs
+    },
+    name: {
+      get() {
+        return this.userCopy.name
+      },
+      set(value) {
+        this.userCopy.name = value
+      },
     },
     passwordRules: function() {
       return [(v) => !!v || this.$i18n.t('password_is_required')]
@@ -269,6 +284,17 @@ export default {
     },
     termsRules: function() {
       return [(v) => !!v || this.$i18n.t('policy_accepted_is_required')]
+    },
+    userCopy() {
+      // do not use user prop directly as it results in vuex warning 'do not mutate prop'
+      return this.user !== undefined && this.user !== null
+        ? JSON.parse(JSON.stringify(this.user))
+        : {
+            name: '',
+            email: '',
+            password: '',
+            policy_accepted: '',
+          }
     },
   },
   methods: {
