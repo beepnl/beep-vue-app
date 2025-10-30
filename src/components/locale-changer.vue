@@ -20,8 +20,8 @@
         v-for="language in languages"
         :key="language.title"
         :value="language"
-        @click="switchLanguage(language.lang)"
         :title="language.title"
+        @click="switchLanguage(language.lang)"
       >
         <template v-slot:prepend>
           <div class="beep-list-icon --small mr-4 mt-1 mb-n1">
