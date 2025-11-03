@@ -9,7 +9,10 @@
       <div class="nav-drawer-wrapper d-flex flex-column justify-space-between">
         <div>
           <v-list variant="flat" density="default" class="py-0">
-            <v-list-item class="text-black ml-2" @click="showDrawer = false">
+            <v-list-item
+              class="text-black ml-1 mt-1"
+              @click="showDrawer = false"
+            >
               <template v-slot:prepend>
                 <div class="beep-list-icon">
                   <v-icon color="black"> mdi-close</v-icon>
@@ -35,7 +38,7 @@
               <v-expansion-panel-title
                 v-if="item.children.length === 0 && item.route && item.show"
                 :hide-actions="true"
-                class="pa-0 pl-6"
+                class="pa-0 pl-5"
               >
                 <v-list density="compact" class="py-0">
                   <v-list-item
@@ -88,7 +91,7 @@
 
               <v-expansion-panel-title
                 v-else-if="item.title && item.show"
-                class="py-0"
+                class="py-0 pl-5"
               >
                 <div class="beep-list-icon">
                   <v-icon v-if="!item.icon.includes('icon')" color="accent">{{

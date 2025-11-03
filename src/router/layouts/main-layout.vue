@@ -113,7 +113,6 @@
 
 <script>
 import LocaleChanger from '@components/locale-changer.vue'
-import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
 import PlusMenu from '@components/plus-menu.vue'
 import {
@@ -122,6 +121,7 @@ import {
   readDevicesIfNotChecked,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 // import PWAPrompt from 'vue2-ios-pwa-prompt'
 
 export default {
@@ -229,7 +229,7 @@ export default {
 
 <style lang="scss">
 header.v-app-bar {
-  z-index: 2;
+  z-index: 1003 !important; // make sure v-overlay still works with nav drawer
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
