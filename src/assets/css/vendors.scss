@@ -74,6 +74,14 @@
   display: none !important;
 }
 
+.v-btn.v-btn--density-default.v-btn--variant-outlined.text-accent {
+  // oa generate unique sample code button
+  white-space: nowrap !important;
+  overflow: visible !important;
+  width: auto !important;
+  max-width: fit-content;
+}
+
 .theme--light.v-icon.v-icon--disabled.color-transparent {
   color: transparent !important;
 }
