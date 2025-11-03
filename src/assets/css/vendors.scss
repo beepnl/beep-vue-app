@@ -36,6 +36,10 @@
   border-color: $color-primary !important;
 }
 
+.el-input-number.is-center .el-input__inner {
+  color: black;
+}
+
 /* Vuetify */
 .v-application {
   .text-red {
@@ -179,29 +183,6 @@
       margin-top: 6px !important;
       @include for-phone-only {
         margin-top: 3px !important;
-      }
-    }
-  }
-  &.beep--large {
-    padding-top: 0 !important;
-    font-size: 1.8rem !important;
-
-    @include for-phone-only {
-      font-size: 1.6rem !important;
-    }
-
-    &.v-text-field {
-      .v-input__control .v-input__slot {
-        height: 45px !important;
-        min-height: 45px !important;
-      }
-      input {
-        padding: 0 !important;
-        margin-top: 8px !important;
-        margin-bottom: -10px;
-        @include for-phone-only {
-          margin-bottom: -14px;
-        }
       }
     }
   }

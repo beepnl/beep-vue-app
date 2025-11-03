@@ -147,11 +147,17 @@
   }
 }
 
-.v-text-field.large-font input {
-  padding: 12px 0 0 2px !important;
-  font-size: 1.6rem;
-  @include for-tablet-landscape-up {
-    font-size: 2rem;
+.v-text-field.large-font {
+  .v-input__control .v-field {
+    height: 52px !important;
+    min-height: 42px !important;
+    font-size: 1.8rem !important;
+    padding-top: 2px !important;
+  }
+
+  input {
+    padding: 0 0 0 4px !important;
+    line-height: 1.8 !important;
   }
 }
 

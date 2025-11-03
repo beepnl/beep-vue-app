@@ -38,7 +38,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
