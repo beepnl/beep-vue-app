@@ -9,6 +9,7 @@
       accept="image/png, image/jpeg, image/bmp"
       :label="!!image ? '' : $t('Select_image')"
       prepend-icon="mdi-camera"
+      clear-icon="mdi-close"
       color="accent"
       :error-messages="errorMessage"
       :disabled="inputDisabled"
@@ -20,7 +21,7 @@
       <v-icon
         v-if="object[item.id] !== null"
         class="mt-n1 clear-icon"
-        right
+        end
         color="accent"
         @click="confirmDeleteImage(item.id)"
         >mdi-close</v-icon
@@ -31,6 +32,7 @@
           :src="imageLink"
           class="bg-grey-lighten-2 image-thumb"
           aspect-ratio="1"
+          cover
           @click="activeImage = thumbUrl"
         >
         </v-img>
@@ -51,9 +53,9 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
 import Api from '@api/Api'
 import imageOverlay from '@components/image-overlay.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
 
 export default {
   components: {
@@ -143,7 +145,8 @@ export default {
             : ''
 
         const formData = new FormData()
-        formData.append('file', file[0])
+
+        formData.append('file', file)
         formData.append('user_id', userId)
         formData.append('hive_id', hiveId)
         formData.append('inspection', inspection)
