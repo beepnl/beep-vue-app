@@ -1,7 +1,10 @@
 <!-- eslint-disable vue/v-slot-style -->
 <template>
   <div class="d-flex justify-flex-start align-center">
-    <v-icon :color="dateInput !== null ? 'primary' : ''" class="mr-2 mt-4" large
+    <v-icon
+      :color="dateInput !== null ? 'primary' : ''"
+      class="mr-2 mt-4"
+      size="large"
       >mdi-calendar-edit</v-icon
     >
     <div>
@@ -29,7 +32,7 @@
         :cancel-text="$t('Cancel')"
         @update:model-value="datePickerUpdate"
       >
-        <template #clear-icon="{ clear }">
+        <template #clear-icon>
           <span class="description clear-icon mr-1" @click="clearDate(item.id)">
             <v-icon color="accent">mdi-close</v-icon></span
           >

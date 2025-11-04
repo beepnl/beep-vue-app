@@ -1,7 +1,5 @@
 <template>
   <v-app-bar
-    app
-    light
     background-color="#000"
     color="primary"
     density="compact"
@@ -43,10 +41,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import NavDrawer from '@components/nav-drawer.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import LocaleChanger from '@components/locale-changer.vue'
+import NavDrawer from '@components/nav-drawer.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -164,6 +162,7 @@ export default {
 
 <style lang="scss">
 header.v-app-bar {
+  z-index: 1003 !important; // make sure v-overlay still works with expanded nav drawer
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }

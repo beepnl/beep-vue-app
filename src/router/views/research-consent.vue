@@ -208,7 +208,7 @@
                         <v-icon
                           v-if="showCTLoadingIcon.indexOf(research.id) === -1"
                           start
-                          :size="mdAndDown ? 'small' : 'medium'"
+                          :size="mdAndDown ? 'small' : 'default'"
                           :class="research.consent ? 'text-red' : 'text-green'"
                           >{{
                             research.consent ? 'mdi-close' : 'mdi-check'

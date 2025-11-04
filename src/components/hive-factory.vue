@@ -57,7 +57,7 @@
 
           <div class="d-flex justify-center" style="width: 100%;">
             <v-sheet
-              class="hive-icon d-flex flex-column justify-center align-center white--text text--small my-3"
+              class="hive-icon d-flex flex-column justify-center align-center text-white text--small my-3"
               height="auto"
             >
               <div

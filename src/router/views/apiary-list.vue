@@ -218,7 +218,6 @@
             />
             <v-icon
               v-if="!showLoadingIcon(invitation.id, true) && mobile"
-              dark
               :disabled="invitationButtonsDisabled(invitation.id)"
               class="mb-1 mr-2"
               color="red"
@@ -259,7 +258,6 @@
             />
             <v-icon
               v-if="!showLoadingIcon(invitation.id, false) && mobile"
-              dark
               :disabled="invitationButtonsDisabled(invitation.id)"
               class="text-green mb-1"
               @click="
@@ -371,7 +369,7 @@
                 </div>
                 <div
                   v-if="xlView && hiveSet.users && hiveSet.users.length"
-                  class="caption hive-set-caption ml-2"
+                  class="text-caption hive-set-caption ml-2"
                 >
                   {{
                     ` (${hiveSet.users.length} ${$tc(
@@ -471,7 +469,10 @@
             </div>
 
             <span class="text-right ml-2">
-              <v-tooltip v-if="showFavoriteIcon && !favHiveSet(hiveSet)" bottom>
+              <v-tooltip
+                v-if="showFavoriteIcon && !favHiveSet(hiveSet)"
+                location="bottom"
+              >
                 <template v-slot:activator="{ props }">
                   <v-icon
                     v-bind="props"

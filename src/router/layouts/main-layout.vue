@@ -229,7 +229,7 @@ export default {
 
 <style lang="scss">
 header.v-app-bar {
-  z-index: 1003 !important; // make sure v-overlay still works with nav drawer
+  z-index: 1003 !important; // make sure v-overlay still works with expanded nav drawer
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }

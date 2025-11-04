@@ -3,7 +3,7 @@
   <v-dialog v-model="dialog" :max-width="options.width" @keydown.esc="cancel">
     <v-card variant="flat" :style="`z-index:` + options.zIndex + `;`">
       <v-toolbar :color="options.color" density="compact" flat>
-        <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
+        <v-toolbar-title class="text-white">{{ title }}</v-toolbar-title>
       </v-toolbar>
       <v-card-text v-show="!!warningMessage" class="pa-4 pb-0 text-red"
         ><span v-text="warningMessage"></span

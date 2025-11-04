@@ -107,6 +107,8 @@
     font-size: 13px;
     &::before {
       margin-left: 3px;
+      top: -1px;
+      position: relative;
       font-family: 'Material Design Icons';
       content: '\F060A';
     }
@@ -140,6 +142,8 @@
     font-size: 12px;
     &::before {
       margin-left: 3px;
+      position: relative;
+      top: -1px;
       font-family: 'Material Design Icons';
       content: '\F0262';
     }
@@ -277,6 +281,6 @@
 }
 
 .icon-info {
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   font-size: 14px;
 }

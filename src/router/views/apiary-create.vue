@@ -17,7 +17,7 @@
         >
           <v-icon
             v-if="tab.title && tab.icon"
-            :size="mobile ? 'large' : 'medium'"
+            :size="mobile ? 'large' : 'default'"
             :class="
               'mr-1 apiary-tab-icon' +
                 (tab.index === activeTab ? '' : ' --inactive')
@@ -51,8 +51,7 @@
                   }}<v-icon class="bounce">mdi-arrow-right</v-icon></span
                 >
                 <v-icon
-                  x-large
-                  dark
+                  size="x-large"
                   color="accent"
                   class="next"
                   @click="activeTab += 1"
@@ -85,16 +84,14 @@
               class="d-flex justify-space-between align-center chevron-wrapper"
             >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="prev"
                 @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="next"
                 @click="activeTab += 1"
@@ -131,7 +128,6 @@
                         <v-sheet
                           v-if="newHive"
                           class="apiary-color cursor-pointer"
-                          dark
                           :color="newHive.hex_color"
                           @click="overlay = !overlay"
                         ></v-sheet>
@@ -209,16 +205,14 @@
               class="d-flex justify-space-between align-center chevron-wrapper"
             >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="prev"
                 @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="next"
                 @click="activeTab += 1"
@@ -358,16 +352,14 @@
               class="d-flex justify-space-between align-center chevron-wrapper"
             >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="prev"
                 @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="next"
                 @click="activeTab += 1"
@@ -385,7 +377,7 @@
             <div
               class="d-flex align-center justify-space-between align-center chevron-wrapper"
             >
-              <v-icon x-large dark color="accent" @click="activeTab -= 1"
+              <v-icon size="x-large" color="accent" @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
               <v-btn
@@ -441,7 +433,6 @@
                       <v-text-field
                         v-if="newHive"
                         v-model="newHive.prefix"
-                        :height="36"
                         class="beep-text-field"
                         variant="outlined"
                         density="compact"

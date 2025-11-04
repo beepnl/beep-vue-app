@@ -92,8 +92,7 @@
           </VueDatePicker>
           <v-icon
             class="mdi mdi-information ml-4 icon-info cursor-pointer"
-            dark
-            small
+            size="small"
             color="accent"
             @click="showInfo = !showInfo"
           ></v-icon>
@@ -115,10 +114,9 @@
           color="green"
           indeterminate
         />
-        <v-tooltip v-if="!showLoadingIcon" open-delay="500" bottom>
+        <v-tooltip v-if="!showLoadingIcon" open-delay="500" location="bottom">
           <template v-slot:activator="{ props }">
             <v-icon
-              dark
               class="mr-3"
               color="green"
               v-bind="props"
@@ -128,10 +126,9 @@
           </template>
           <span>{{ $t('save') }}</span>
         </v-tooltip>
-        <v-tooltip open-delay="500" bottom>
+        <v-tooltip open-delay="500" location="bottom">
           <template v-slot:activator="{ props }">
             <v-icon
-              dark
               color="red"
               v-bind="props"
               @click="deleteSensorDef(sensorDef)"

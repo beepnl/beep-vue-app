@@ -38,13 +38,13 @@
                 {{ hive.name }}
                 <span
                   v-if="hiveSetIsGroup"
-                  class="caption hive-name-caption"
+                  class="text-caption hive-name-caption"
                   v-text="` (${hive.location})`"
                 >
                 </span>
               </h4>
 
-              <v-tooltip v-else bottom max-width="60%">
+              <v-tooltip v-else location="bottom" max-width="60%">
                 <template v-slot:activator="{ props }">
                   <h4
                     v-bind="props"
@@ -54,7 +54,7 @@
                     {{ hive.name }}
                     <span
                       v-if="hiveSetIsGroup"
-                      class="caption hive-name-caption"
+                      class="text-caption hive-name-caption"
                       v-text="` (${hive.location})`"
                     >
                     </span>
@@ -66,7 +66,7 @@
           </v-col>
           <v-col cols="1" class="pa-0">
             <div v-if="menuItemsPresent" class="d-flex justify-end">
-              <v-icon small class="color-black mr-n2 mt-0" v-bind="props"
+              <v-icon size="small" class="color-black mr-n2 mt-0" v-bind="props"
                 >mdi-dots-vertical</v-icon
               >
             </div>

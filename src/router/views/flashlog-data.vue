@@ -154,7 +154,7 @@
             :max="blockDataIndexMax"
             validate-on="blur"
             hide-details
-            @change="checkBlockDataWithDelay(true)"
+            @update:model-value="checkBlockDataWithDelay(true)"
           >
             <template v-slot:append>
               <span
@@ -269,14 +269,14 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
+import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
 import { readTaxonomy } from '@mixins/methodsMixin'
-import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import { sensorMixin } from '@mixins/sensorMixin'
-import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
-import { mapGetters } from 'vuex'
 import { momentFormatUtcToLocal } from '@mixins/momentMixin'
+import { sensorMixin } from '@mixins/sensorMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {

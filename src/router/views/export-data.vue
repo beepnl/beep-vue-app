@@ -145,7 +145,7 @@
             </v-col>
             <v-col cols="12" sm="6" md="4" lg="3">
               <div class="d-flex justify-flex-start align-center">
-                <v-icon class="mt-4 mr-2" large>mdi-calendar-clock</v-icon>
+                <v-icon class="mt-4 mr-2">mdi-calendar-clock</v-icon>
                 <div>
                   <div class="beep-label">
                     <span v-text="$t('period')"></span>

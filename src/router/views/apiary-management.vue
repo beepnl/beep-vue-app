@@ -22,7 +22,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
           {{
             $t('Move') +
               ' ' +
@@ -115,13 +115,13 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import { readApiaries, readGeneralInspections } from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {

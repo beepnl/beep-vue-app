@@ -88,7 +88,7 @@
               :headers="userIsAdmin ? logFileHeadersAdmin : logFileHeaders"
               :items="flashLogs"
               :items-per-page="itemsPerPage"
-              :item-class="rowClassLogFile"
+              :row-props="rowClassLogFile"
               :search="logSearch"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
@@ -414,6 +414,7 @@
           </div>
 
           <div class="rounded-border primary-border">
+            <!-- NB sort-desc is officially deprecated but it does not work without (or included in sort-by) and it does work as is + same for item-class (instead of the new row-props) -->
             <v-data-table
               :headers="logDataHeaders"
               :items="selectedFlashLog.log"
@@ -657,12 +658,12 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
+import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 import { momentDurationDays, momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {

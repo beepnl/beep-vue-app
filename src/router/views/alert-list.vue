@@ -140,7 +140,7 @@
         size="small"
         class="save-button-mobile-wide mb-3"
       >
-        <v-icon v-if="!tinyScreen" start>mdi-cog</v-icon>
+        <v-icon v-if="!tinyScreen" start color="black">mdi-cog</v-icon>
         {{ $tc('alertrule', 2) }}
       </v-btn>
 

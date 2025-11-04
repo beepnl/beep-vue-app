@@ -5,7 +5,6 @@
         <v-spacer></v-spacer>
         <v-icon
           v-if="dashboard && !createMode"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteDashboard(dashboard)"

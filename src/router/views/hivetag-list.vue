@@ -20,10 +20,10 @@
             <v-btn
               :to="{ name: 'hivetag-create' }"
               color="black"
-              :small="mobile"
+              :size="mobile ? 'small' : 'default'"
               class="save-button-mobile-wide"
             >
-              <v-icon start>mdi-plus</v-icon>
+              <v-icon color="black" start>mdi-plus</v-icon>
               {{ $t('Add_hivetag') }}
             </v-btn>
           </v-card-actions>
@@ -43,7 +43,7 @@
           <v-btn
             v-if="mobile"
             color="accent"
-            small
+            size="small"
             class="save-button-mobile-wide mb-3"
             :href="assetsUrl + pdfPath"
             target="_blank"
@@ -138,10 +138,9 @@
                           params: { id: hiveTag.tag },
                         }"
                       >
-                        <v-icon dark color="accent">mdi-pencil</v-icon>
+                        <v-icon color="accent">mdi-pencil</v-icon>
                       </router-link>
                       <v-icon
-                        dark
                         color="red"
                         @click="
                           confirmDeleteHiveTag(

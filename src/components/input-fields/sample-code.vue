@@ -44,7 +44,7 @@
           color="disabled"
           indeterminate
         />
-        <v-tooltip v-if="!showLoadingIcon" bottom>
+        <v-tooltip v-if="!showLoadingIcon" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn
               v-if="object[item.id] !== null"

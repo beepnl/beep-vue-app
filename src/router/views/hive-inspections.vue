@@ -29,9 +29,9 @@
                 persistent-clear
                 density="compact"
                 hide-details
-                :append-outer-icon="search ? 'mdi-magnify' : ''"
+                :append-icon="search ? 'mdi-magnify' : ''"
                 variant="outlined"
-                @click:append-outer="readInspectionsForHiveId(id, suffix)"
+                @click:append="readInspectionsForHiveId(id, suffix)"
                 @click:clear="clearSearch"
                 @keydown.enter.prevent="readInspectionsForHiveId(id, suffix)"
               ></v-text-field>
@@ -125,14 +125,14 @@
               :to="{ name: 'inspect', query: { hiveId: id } }"
               color="black"
             >
-              <v-icon start>mdi-plus</v-icon>
+              <v-icon start color="black">mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>
             <router-link
               v-if="smallScreen"
               :to="{ name: 'inspect', query: { hiveId: id } }"
             >
-              <v-icon dark color="accent">mdi-plus-circle</v-icon></router-link
+              <v-icon color="accent">mdi-plus-circle</v-icon></router-link
             >
           </v-card-actions>
         </v-row>
@@ -498,7 +498,7 @@
                       ><v-icon
                         v-for="star in [0, 1, 2, 3, 4]"
                         :key="star + 1"
-                        :x-small="smallScreen"
+                        :size="smallScreen ? 'x-small' : 'default'"
                         :class="
                           star < item.val
                             ? 'color-accent'

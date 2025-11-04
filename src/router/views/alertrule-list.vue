@@ -26,10 +26,10 @@
                 "
                 hide-details
                 class="pt-0"
-                @change="toggleAlerts"
+                @update:model-value="toggleAlerts"
               ></v-switch>
               <v-icon
-                class="icon-info cursor-pointer ml-2"
+                class="icon-info cursor-pointer ml-2 mb-0"
                 :size="mobile ? 'x-small' : 'small'"
                 :color="showExplanation ? 'accent' : 'grey'"
                 @click="showExplanation = !showExplanation"
@@ -183,7 +183,6 @@
                             alertRule.id
                           ) === -1
                         "
-                        dark
                         :color="alertRule.active ? 'green' : 'red'"
                         @click="toggleAlertRule(alertRule, 'active')"
                         >{{
@@ -210,7 +209,6 @@
                             alertRule.id
                           ) === -1
                         "
-                        dark
                         :color="alertRule.alert_via_email ? 'green' : 'red'"
                         @click="toggleAlertRule(alertRule, 'alert_via_email')"
                         >{{
@@ -245,12 +243,11 @@
                           params: { id: alertRule.id },
                         }"
                       >
-                        <v-icon dark color="accent">mdi-pencil</v-icon>
+                        <v-icon color="accent">mdi-pencil</v-icon>
                       </router-link>
                     </td>
                     <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <v-icon
-                        dark
                         color="red"
                         @click="confirmDeleteAlertRule(alertRule, index)"
                         >mdi-delete</v-icon

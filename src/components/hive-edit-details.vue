@@ -20,7 +20,6 @@
                 ></div>
                 <v-sheet
                   class="hive-color cursor-pointer"
-                  dark
                   :color="hive.color !== null ? hive.color : '#F8B133'"
                   @click="openColorPicker"
                 ></v-sheet>

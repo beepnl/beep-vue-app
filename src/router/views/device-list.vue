@@ -140,8 +140,7 @@
                   <div class="d-flex flex-column justify-center mr-3">
                     <v-icon
                       v-if="ownedDevice.type !== 'beep'"
-                      light
-                      large
+                      size="large"
                       color="accent"
                       class="text-center device-icon"
                     >
@@ -149,11 +148,12 @@
                     </v-icon>
                     <v-avatar
                       v-else
-                      height="auto"
+                      size="large"
                       :image="assetsUrl + '/img/beep-base-small.jpg'"
                       rounded="0"
                       color="accent"
                       class="mt-n1"
+                      style="height: auto;"
                     >
                     </v-avatar>
                   </div>

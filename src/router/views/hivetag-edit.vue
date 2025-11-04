@@ -6,7 +6,6 @@
         <v-spacer></v-spacer>
         <v-icon
           v-if="hiveTag && !createMode"
-          dark
           class="mr-4"
           color="red"
           @click="

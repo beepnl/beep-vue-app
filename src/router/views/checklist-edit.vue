@@ -34,7 +34,7 @@
           v-if="!mobile && activeChecklist"
           color="primary"
           class="mr-3"
-          :small="smAndDown"
+          :size="smAndDown ? 'small' : 'default'"
           @click="initNewChecklist"
         >
           <v-icon color="primary" :start="!smallScreen">mdi-plus</v-icon>
@@ -44,7 +44,7 @@
           v-if="!mobile && activeChecklist"
           color="primary"
           class="mr-3"
-          :small="smAndDown"
+          :size="smAndDown ? 'small' : 'default'"
           @click="createChecklist(true)"
         >
           <v-icon color="primary" :start="!smallScreen"
@@ -57,7 +57,7 @@
           class="mr-3"
           color="red"
           :disabled="showDeleteLoadingIcon"
-          :small="smAndDown"
+          :size="smAndDown ? 'small' : 'default'"
           @click="confirmDeleteChecklist"
         >
           <v-progress-circular
@@ -86,7 +86,7 @@
               (activeChecklist && !activeChecklist.owner) ||
               showLoadingIcon
           "
-          :small="smAndDown"
+          :size="smAndDown ? 'small' : 'default'"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -116,7 +116,7 @@
       >
         <v-btn
           v-if="mobile && activeChecklist"
-          small
+          size="small"
           color="primary"
           class="save-button-mobile-wide mt-n2 mb-3"
           @click="initNewChecklist"
@@ -126,7 +126,7 @@
         </v-btn>
         <v-btn
           v-if="mobile && activeChecklist"
-          small
+          size="small"
           color="primary"
           class="save-button-mobile-wide mb-5"
           @click="createChecklist(true)"

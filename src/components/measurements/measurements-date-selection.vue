@@ -30,10 +30,7 @@
           @update:model-value="selectDate($event)"
         >
           <template v-slot:trigger>
-            <v-icon
-              size="small"
-              class="cursor-pointer color-grey-light ml-1"
-            >
+            <v-icon size="small" class="cursor-pointer color-grey-light ml-1">
               mdi-pencil
             </v-icon>
           </template>
@@ -65,7 +62,7 @@
         "
       >
         <div class="d-flex justify-flex-start align-center">
-          <v-icon class="mr-2 mt-4" large>mdi-calendar-clock</v-icon>
+          <v-icon class="mr-2 mt-4">mdi-calendar-clock</v-icon>
           <div>
             <div class="beep-label">
               <span v-text="!sticky ? $t('period') : null"></span>

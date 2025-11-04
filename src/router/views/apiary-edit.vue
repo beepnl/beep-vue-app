@@ -29,7 +29,6 @@
         <v-spacer></v-spacer>
         <v-icon
           v-if="activeApiary.owner"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteApiary"
@@ -84,7 +83,6 @@
                     <v-sheet
                       v-if="activeApiary"
                       class="apiary-color cursor-pointer"
-                      dark
                       :color="
                         activeApiary.hex_color !== null
                           ? activeApiary.hex_color
@@ -102,7 +100,7 @@
                       class="hive-color-picker-toolbar"
                       density="compact"
                       light
-                      flat
+                      variant="flat"
                     >
                       <div
                         class="hive-color-picker-title ml-1"
@@ -124,7 +122,7 @@
                       hide-canvas
                       :modes="['rgb']"
                       :mode="'rgb'"
-                      flat
+                      variant="flat"
                     >
                     </v-color-picker>
 
@@ -132,7 +130,7 @@
                       class="hive-color-picker-footer"
                       density="compact"
                       light
-                      flat
+                      variant="flat"
                     >
                       <v-spacer></v-spacer>
                       <v-icon

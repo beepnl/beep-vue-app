@@ -13,7 +13,6 @@
                 :model-value="queen ? queen.name : null"
                 :label="`${$t('Queen')} ${$t('name')}`"
                 :placeholder="`${$t('Queen')} ${$t('name')}`"
-                height="36px"
                 class="queen-name"
                 counter="30"
                 clearable
@@ -60,7 +59,7 @@
                     class=" text-accent"
                     @update:model-value="datePickerUpdate"
                   >
-                    <template v-slot:clear-icon="{ clear }">
+                    <template v-slot:clear-icon>
                       <span
                         class="description clear-icon mr-1"
                         @click="cancelDatePicker"
@@ -90,7 +89,6 @@
               <v-text-field
                 :model-value="queen ? queen.description : null"
                 :label="`${$t('Queen')} ${$t('queen_description')}`"
-                height="36px"
                 counter="100"
                 clearable
                 @update:model-value="updateQueen($event, 'description')"

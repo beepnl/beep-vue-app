@@ -10,7 +10,7 @@
             <v-btn
               :to="{ name: 'dashboard-create' }"
               color="black"
-              :small="mobile"
+              :size="mobile ? 'small' : 'default'"
               class="save-button-mobile-wide"
             >
               <v-icon start>mdi-plus</v-icon>
@@ -132,10 +132,9 @@
                           params: { id: dashboardGroup.code },
                         }"
                       >
-                        <v-icon dark color="accent">mdi-pencil</v-icon>
+                        <v-icon color="accent">mdi-pencil</v-icon>
                       </router-link>
                       <v-icon
-                        dark
                         color="red"
                         @click="confirmDeleteDashboard(dashboardGroup)"
                         >mdi-delete</v-icon
@@ -158,14 +157,14 @@
 // import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 // import HiveIcon from '@components/hive-icon.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   readDashboardGroups,
 } from '@mixins/methodsMixin'
-import Confirm from '@/src/components/confirm-dialog.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {

@@ -153,7 +153,7 @@
       <v-container v-if="userIsAdmin">
         <v-row>
           <v-col>
-            <v-card outlined>
+            <v-card border>
               <v-card-text>
                 <v-text-field
                   v-model="apiToken"
@@ -171,7 +171,8 @@
                     type="submit"
                     @click="saveApiToken"
                   >
-                    <v-icon left>mdi-check</v-icon>{{ $t('save_api') }}</v-btn
+                    <v-icon start color="secondary">mdi-check</v-icon
+                    >{{ $t('save_api') }}</v-btn
                   >
                 </div>
               </v-card-text>

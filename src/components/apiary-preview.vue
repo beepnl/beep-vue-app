@@ -4,7 +4,7 @@
       v-for="(hive, j) in hives"
       :key="j"
       :class="
-        `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+        `hive-icon hive-icon-preview d-flex flex-column justify-center align-center text-white text--small mr-1 ${
           hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
         } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
       "

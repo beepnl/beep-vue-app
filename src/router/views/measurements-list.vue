@@ -30,7 +30,7 @@
               :disabled="interval === 'selection'"
               density="compact"
               hide-details
-              @change="loadData(false, false)"
+              @update:model-value="loadData(false, false)"
             ></v-switch>
           </v-row>
         </div>
@@ -79,7 +79,7 @@
                   :disabled="interval === 'selection'"
                   density="compact"
                   hide-details
-                  @change="loadData(false, false)"
+                  @update:model-value="loadData(false, false)"
                 ></v-switch>
               </div>
             </v-col>
@@ -111,7 +111,7 @@
       />
 
       <div v-if="mobile" class="float-right mr-n1">
-        <v-icon class="grey--text" @click="hideScrollBar = true">
+        <v-icon class="text-grey" @click="hideScrollBar = true">
           mdi-close
         </v-icon>
       </div>
@@ -346,12 +346,11 @@
                   "
                 >
                   <div class="d-flex justify-start align-center">
-                    <div class="overline text-center"
+                    <div class="text-overline text-center"
                       >{{ $t(getSensorMeasurement(sensor).abbreviation) }}
                     </div>
                     <v-icon
                       class="mdi mdi-information ml-1 cursor-pointer"
-                      dark
                       size="14"
                       :color="
                         sensorInfo.indexOf(sensor) > -1 ? 'accent' : 'grey'
@@ -1913,9 +1912,9 @@ export default {
   max-width: 300px;
 }
 
-.sticky-header {
+.sticky-header.v-app-bar {
   top: 148px !important;
-  z-index: 1 !important;
+  z-index: 1001 !important;
   background-color: $color-orange-light !important;
   border-bottom: 1px solid $color-orange-border;
   @include for-tablet-landscape-up {

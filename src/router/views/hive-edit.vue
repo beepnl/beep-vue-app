@@ -28,7 +28,6 @@
         <v-spacer></v-spacer>
         <v-icon
           v-if="activeHive.owner && !queenEditMode"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteHive"

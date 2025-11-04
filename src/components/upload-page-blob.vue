@@ -38,10 +38,10 @@
         variant="outlined"
         hide-details
         :error-messages="errorMessage"
-        :height="'100%'"
         :loading="showLoading ? 'primary' : false"
         @update:model-value="makeBlob"
         @click:clear="errorMessage = ''"
+        style="height: 100%;"
       >
         <template v-slot:prepend-inner>
           <v-icon size="x-large">mdi-camera</v-icon>

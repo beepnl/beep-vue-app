@@ -21,10 +21,9 @@
                 class="ml-n2 mr-sm-3 mx-md-1 cursor-default"
                 fab
                 size="small"
-                dark
                 color="accent"
               >
-                <v-icon class="ml-n1" dark>
+                <v-icon class="ml-n1" color="accent">
                   {{ getLetter(index) }}
                 </v-icon>
               </v-btn>

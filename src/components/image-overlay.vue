@@ -9,11 +9,7 @@
       >
         <v-spacer></v-spacer>
         <v-toolbar-items>
-          <v-icon
-            color="accent"
-            dark
-            class="close-icon mr-n2"
-            @click="closeOverlay"
+          <v-icon color="accent" class="close-icon mr-n2" @click="closeOverlay"
             >mdi-close</v-icon
           >
         </v-toolbar-items>

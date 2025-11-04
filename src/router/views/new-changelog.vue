@@ -819,7 +819,7 @@
           <a
             href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000696834-beep-app-v3/"
             target="_blank"
-            ><v-icon class="support-icon" small color="accent"
+            ><v-icon class="support-icon" size="small" color="accent"
               >mdi-arrow-right</v-icon
             >
             To view the BEEP support article on app v3 (including screenshots)
@@ -1214,7 +1214,7 @@
               >
             </ul>
             <a :href="$t('alerts_support_url')" target="_blank"
-              ><v-icon class="support-icon" small color="accent"
+              ><v-icon class="support-icon" size="small" color="accent"
                 >mdi-arrow-right</v-icon
               >
               BEEP support article on setting alerts</a
@@ -1298,7 +1298,7 @@
           <a
             href="https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000696834-beep-app-v3/"
             target="_blank"
-            ><v-icon class="support-icon" small color="accent"
+            ><v-icon class="support-icon" size="small" color="accent"
               >mdi-arrow-right</v-icon
             >
             Bekijk het BEEP support artikel over app v3 (inclusief screenshots)
@@ -1713,7 +1713,7 @@
               >
             </ul>
             <a :href="$t('alerts_support_url')" target="_blank"
-              ><v-icon class="support-icon" small color="accent"
+              ><v-icon class="support-icon" size="small" color="accent"
                 >mdi-arrow-right</v-icon
               >
               BEEP support artikel over het instellen van alerts</a

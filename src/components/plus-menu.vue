@@ -1,6 +1,6 @@
 <template>
   <span>
-    <v-menu location="bottom" right>
+    <v-menu location="bottom-right">
       <template v-slot:activator="{ props }">
         <v-btn variant="text" icon v-bind="props">
           <v-icon class="color-black">mdi-plus-circle-outline</v-icon>

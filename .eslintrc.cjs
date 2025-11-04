@@ -15,7 +15,7 @@ module.exports = {
   ],
   rules: {
     // Only allow debugger in development
-    // 'no-debugger': process.env.NODE_ENV !== 'production' ? 'error' : 'off', // TODO-VUE3 enable to fix all errors
+    // 'no-debugger': process.env.NODE_ENV !== 'production' ? 'error' : 'off',
     'no-debugger': 'off',
     // Only allow `console.log` in development
     // 'no-console': process.env.NODE_ENV !== 'production'
@@ -41,7 +41,7 @@ module.exports = {
     'vue/no-boolean-default': ['error', 'default-false'],
     'vue/no-deprecated-scope-attribute': 'error',
     'vue/no-empty-pattern': 'error',
-    'vue/no-unused-vars': 'off', // TODO-VUE3 enable
+    'vue/no-unused-vars': 'off',
     'vue/object-curly-spacing': ['error', 'always'],
     'vue/padding-line-between-blocks': 'error',
     'vue/space-infix-ops': 'error',

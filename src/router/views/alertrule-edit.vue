@@ -5,7 +5,6 @@
         <v-spacer></v-spacer>
         <v-icon
           v-if="!alertruleCreateMode"
-          dark
           class="mr-2"
           color="red"
           @click="confirmDeleteAlertRule"

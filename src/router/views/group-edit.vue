@@ -17,7 +17,6 @@
         </v-btn>
         <v-icon
           v-if="activeGroup && !createMode && !tabletLandscapeUp"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteOrDetachGroup"
@@ -138,7 +137,6 @@
                     <v-sheet
                       v-if="activeGroup"
                       class="group-color"
-                      dark
                       :color="activeGroup.hex_color"
                       @click="overlay = !overlay"
                     ></v-sheet>
@@ -312,7 +310,6 @@
                       <td class="text-center">
                         <v-icon
                           v-if="!user.creator"
-                          dark
                           color="red"
                           @click="deleteGroupUser(index)"
                           >mdi-delete</v-icon

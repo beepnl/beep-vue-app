@@ -6,12 +6,14 @@
       <div class="d-flex align-center">
         <span class="mr-1" v-text="$t('Number_of_processed_pages')"></span>
         <span
-          :class="(correctPageNrs.length > 0 ? 'green' : 'red') + '--text mr-1'"
+          :class="
+            'text-' + (correctPageNrs.length > 0 ? 'green' : 'red') + ' mr-1'
+          "
           v-text="correctPageNrs.length"
         ></span>
         <span
           v-if="selectedChecklistSvg"
-          :class="(allPagesParsed ? 'green' : 'red') + '--text'"
+          :class="'text-' + (allPagesParsed ? 'green' : 'red')"
           v-text="' / ' + selectedChecklistSvg.pages"
         ></span>
         <v-icon v-if="allPagesParsed" class="ml-1" size="18" color="green"

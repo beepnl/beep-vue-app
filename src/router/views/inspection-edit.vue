@@ -260,9 +260,7 @@
         <v-row class="mb-3 no-print">
           <v-col v-if="onlineMode" cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
-              <v-icon dark color="accent" class="mr-2"
-                >mdi-calendar-edit</v-icon
-              >
+              <v-icon color="accent" class="mr-2">mdi-calendar-edit</v-icon>
               <div class="inspection-date">
                 <div v-if="!parseMode" class="beep-label">
                   <span v-text="$t('Date_of_inspection')"></span>
@@ -585,7 +583,7 @@
                                 :cancel-text="$t('Cancel')"
                                 @update:model-value="datePickerRDUpdate"
                               >
-                                <template #clear-icon="{ clear }">
+                                <template #clear-icon>
                                   <span
                                     class="description clear-icon mr-1"
                                     @click="clearDate"

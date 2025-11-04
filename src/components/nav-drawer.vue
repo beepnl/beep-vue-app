@@ -45,7 +45,7 @@
                     v-if="item.route !== 'signOut'"
                     :key="'pir' + i"
                     :to="{ name: item.route }"
-                    :input-value="false"
+                    :action="false"
                     class="pa-0"
                     @click="checkRoute(item.route)"
                   >

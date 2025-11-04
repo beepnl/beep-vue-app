@@ -3,7 +3,7 @@
     <template v-slot:activator="{ props }">
       <v-btn
         class="locale-changer-button"
-        depressed
+        variant="flat"
         color="transparent"
         v-bind="props"
       >

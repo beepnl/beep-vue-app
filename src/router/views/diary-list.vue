@@ -116,12 +116,12 @@
             </v-card-actions>
           </div>
           <v-card-actions v-if="!mobile && !smallScreen" class="mr-1">
-            <v-btn :to="{ name: 'inspect' }" medium color="black">
-              <v-icon start>mdi-plus</v-icon>
+            <v-btn :to="{ name: 'inspect' }" size="default" color="black">
+              <v-icon color="black" start>mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>
             <!-- <router-link v-if="mobile" :to="{ name: 'inspect' }">
-              <v-icon dark color="primary">mdi-plus-circle</v-icon></router-link
+              <v-icon color="primary">mdi-plus-circle</v-icon></router-link
             > -->
           </v-card-actions>
         </v-row>
