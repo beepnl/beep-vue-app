@@ -21,7 +21,7 @@
         :key="language.title"
         :value="language"
         :title="language.title"
-        @click="switchLanguage(language.lang)"
+        @click="switchLocale(language.lang)"
       >
         <template v-slot:prepend>
           <div class="beep-list-icon --small mr-4 mt-1 mb-n1">

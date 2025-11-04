@@ -2,12 +2,19 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.1.5 (30-10-2025) - Current
+        ><span class="lowercase">v</span>4.1.6 (04-11-2025) - Current
         version</div
       >
       <div class="rounded-border mb-4">
         <ul>
-          <li>"Behind the scenes" upgrade to Vue 3 platform</li>
+          <li>Upgraded "behind the scenes" to Vue 3 platform</li>
+          <li>Improved navigation menu structure</li>
+          <li
+            ><router-link :to="{ name: 'measurements' }">Data</router-link>:
+            coloured zones in "Device info" charts to show whether battery
+            voltage, signal strength and signal noise values are OK (green zone)
+            or too low (red zone)</li
+          >
         </ul>
       </div>
 
@@ -130,43 +137,10 @@
       <div class="rounded-border mb-4">
         <ul>
           <li>
-            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            <router-link :to="{ name: 'measurements' }">Data:</router-link>
             sound heatmap colors on logarithmic scale + fixed maximum (switch to
             autoscale maximum via the
             <v-icon class="inline-icon">mdi-magnify</v-icon> icon)
-          </li>
-          <li>Small improvements</li>
-        </ul>
-      </div>
-
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.1.0 (13-11-2023)</div
-      >
-      <div class="rounded-border mb-4">
-        <ul>
-          <li>Upgraded behind the scenes to Vue 3</li>
-          <li>Small improvements</li>
-        </ul>
-      </div>
-
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.19 (03-06-2024)</div
-      >
-      <div class="rounded-border mb-4">
-        <ul>
-          <li>Small improvements</li>
-        </ul>
-      </div>
-
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.18 (21-05-2024)</div
-      >
-      <div class="rounded-border mb-4">
-        <ul>
-          <li>
-            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
-            sound heatmap colors on logarithmic scale + fixed maximum (switch to
-            autoscale maximum via magnify icon)
           </li>
           <li>Small improvements</li>
         </ul>
@@ -254,7 +228,7 @@
       <div class="rounded-border mb-4">
         <ul>
           <li>
-            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            <router-link :to="{ name: 'measurements' }">Data:</router-link>
             seamless charts loading due to resolved plugin issue
           </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
@@ -276,7 +250,7 @@
       <div class="rounded-border mb-4">
         <ul>
           <li>
-            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            <router-link :to="{ name: 'measurements' }">Data:</router-link>
             fix for issue where sound data was not shown for some devices
           </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
