@@ -885,10 +885,12 @@ export default {
       ]
     },
     periodEndString() {
-      return this.periodEnd.format(this.dateTimeFormat)
+      return this.periodEnd ? this.periodEnd.format(this.dateTimeFormat) : ''
     },
     periodStartString() {
-      return this.periodStart.format(this.dateTimeFormat)
+      return this.periodStart
+        ? this.periodStart.format(this.dateTimeFormat)
+        : ''
     },
     queriedChartCols() {
       const queriedValue = parseInt(this.$route.query.chartCols)
@@ -1031,53 +1033,60 @@ export default {
     }
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null
     this.stopTimer()
+
+    if (this.devices.length > 0) {
+      // improve app smoothness: if data tab has loaded before in the same session, only loadingData icon is needed instead of the overall loading icon
+      this.ready = true
+    }
+
     this.readTaxonomy().then(() => {
-      this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
+      this.readDevicesIfNotChecked()
         .then(() => {
-          this.readDevicesIfNotChecked()
-            .then(() => {
-              // if selected device id is saved in localStorage, and there is no preselected device id, use it
-              const storedDeviceId =
-                localStorage.beepSelectedDeviceId &&
-                !isNaN(parseInt(localStorage.beepSelectedDeviceId))
-                  ? parseInt(localStorage.beepSelectedDeviceId)
-                  : null
+          // improve app smoothness: not completely ready here, but the rest will be loading with the loadingData icon is shown instead of the overall loading icon
+          this.ready = true
 
-              if (
-                this.preselectedDeviceId === null &&
-                storedDeviceId &&
-                this.deviceExists(storedDeviceId)
-              ) {
-                this.selectedDeviceId = storedDeviceId
-              } else if (
-                this.preselectedDeviceId !== null &&
-                this.deviceExists(this.preselectedDeviceId)
-              ) {
-                this.selectedDeviceId = this.preselectedDeviceId
-              }
+          // if selected device id is saved in localStorage, and there is no preselected device id, use it
+          const storedDeviceId =
+            localStorage.beepSelectedDeviceId &&
+            !isNaN(parseInt(localStorage.beepSelectedDeviceId))
+              ? parseInt(localStorage.beepSelectedDeviceId)
+              : null
 
-              if (
-                this.queriedDate !== null &&
-                this.queriedDate.length === 10 &&
-                !isNaN(this.preselectedDeviceId)
-              ) {
-                this.selectDate(this.queriedDate)
-              } else if (this.devices.length > 0) {
-                if (this.queriedInterval !== undefined) {
-                  this.interval = this.queriedInterval
-                  this.timeIndex = this.queriedTimeIndex
-                  this.dates =
-                    this.queriedStart && this.queriedEnd
-                      ? [this.queriedStart, this.queriedEnd]
-                      : []
-                }
+          if (
+            this.preselectedDeviceId === null &&
+            storedDeviceId &&
+            this.deviceExists(storedDeviceId)
+          ) {
+            this.selectedDeviceId = storedDeviceId
+          } else if (
+            this.preselectedDeviceId !== null &&
+            this.deviceExists(this.preselectedDeviceId)
+          ) {
+            this.selectedDeviceId = this.preselectedDeviceId
+          }
 
-                this.setInitialDeviceIdAndLoadData()
-              }
-            })
-            .then(() => {
-              this.ready = true
-            })
+          if (
+            this.queriedDate !== null &&
+            this.queriedDate.length === 10 &&
+            !isNaN(this.preselectedDeviceId)
+          ) {
+            this.selectDate(this.queriedDate)
+          } else if (this.devices.length > 0) {
+            if (this.queriedInterval !== undefined) {
+              this.interval = this.queriedInterval
+              this.timeIndex = this.queriedTimeIndex
+              this.dates =
+                this.queriedStart && this.queriedEnd
+                  ? [this.queriedStart, this.queriedEnd]
+                  : []
+            }
+
+            this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
+            this.setInitialDeviceIdAndLoadData()
+          }
+        })
+        .then(() => {
+          this.ready = true
         })
     })
   },
@@ -1555,7 +1564,7 @@ export default {
         this.loadLastSensorValuesTimer()
       }
       this.sensorMeasurementRequest(this.interval)
-      if (this.showCardCompare) {
+      if (this.showCardCompare && this.$refs.cardCompare) {
         // trigger load compare data in child component whenever user is comparing data and a new data call is required
         // interval & timeIndex are passed on directly because the component props are passed on with a small delay so that does not work correctly
         this.$refs.cardCompare.loadCompareData(

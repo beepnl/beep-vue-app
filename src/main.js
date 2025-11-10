@@ -49,6 +49,7 @@ const vuetify = createVuetify({
     VBtn: {
       variant: 'outlined',
       rounded: 0,
+      slim: false,
     },
     VCard: {
       variant: 'outlined',
@@ -56,6 +57,7 @@ const vuetify = createVuetify({
     VCardActions: {
       VBtn: {
         variant: 'outlined',
+        slim: false,
       },
     },
     VCheckbox: {
@@ -91,6 +93,7 @@ const vuetify = createVuetify({
     VToolbar: {
       VBtn: {
         variant: 'outlined',
+        slim: false,
       },
     },
     VTooltip: {

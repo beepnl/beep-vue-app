@@ -1060,6 +1060,12 @@ export default {
     }
   },
   created() {
+    if (this.apiaries.length > 0 || this.groups.length > 0) {
+      // improve app smoothness: if hives tab has been loaded before in the same session, do not show loading icon but re-load rest in the background
+      this.ready = true
+      this.readyWithAll = true
+    }
+
     this.readSettingsIfNotPresent().then(() => {
       this.getHiveSets()
     })
@@ -1374,9 +1380,6 @@ export default {
             }
           })
         })
-      } else {
-        this.ready = true
-        this.readyWithAll = true
       }
     },
     getArrayFromSettings(propName) {

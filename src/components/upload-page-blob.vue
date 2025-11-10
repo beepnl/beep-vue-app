@@ -30,6 +30,7 @@
         v-if="pageImage === null"
         ref="fileInput"
         v-model="pageImageFile"
+        style="height: 100%;"
         class="pt-0 mt-n8 image-uploader-page-blob float-right cursor-pointer"
         accept="image/png, image/jpeg, image/bmp"
         :label="!!pageImageFile || showLoading ? '' : uploadText"
@@ -41,7 +42,6 @@
         :loading="showLoading ? 'primary' : false"
         @update:model-value="makeBlob"
         @click:clear="errorMessage = ''"
-        style="height: 100%;"
       >
         <template v-slot:prepend-inner>
           <v-icon size="x-large">mdi-camera</v-icon>

@@ -287,6 +287,7 @@ export default {
       alertTimer: 0,
       alertInterval: 120000,
       selectedAlerts: [],
+      alertsReallyChecked: false,
     }
   },
   computed: {
@@ -400,7 +401,7 @@ export default {
       return this.$vuetify.display.xs
     },
     showAlertPlaceholder() {
-      if (this.ready) {
+      if (this.alertsReallyChecked) {
         return this.alertRules.length === 0 && this.alerts.length === 0
       } else {
         return false
@@ -415,10 +416,17 @@ export default {
   },
   created() {
     this.search = this.$route.query.search || null
+
+    if (this.alerts.length > 0) {
+      // improve app smoothness: if alerts have been previously loaded, show everything and load the rest in background
+      this.ready = true
+    }
+
     this.readTaxonomy().then(() => {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         this.checkAlertRulesAndAlerts().then(() => {
           this.ready = true
+          this.alertsReallyChecked = true
           setTimeout(
             () => this.runAtInterval(this.readAlerts, this.alertInterval),
             this.alertInterval
