@@ -144,29 +144,30 @@
 
       <div v-if="category.children.length > 0">
         <v-row>
-          <v-col
-            v-for="(item, index) in category.children"
-            :key="index"
-            cols="12"
-            :sm="itemFullWidth(item) ? 12 : 6"
-            :md="itemFullWidth(item) ? 12 : 4"
-            :lg="itemFullWidth(item) ? 12 : 3"
-          >
-            <ChecklistInput
-              v-if="item.input !== 'label' && item.name !== 'colony_size'"
-              :object="object"
-              :item="item"
-              :disabled="bulkInspection"
-              :parse-mode="parseMode"
-              @calculate-tpa-colony-size="calculateTpaColonySize"
-            ></ChecklistInput>
-            <ChecklistFieldset
-              v-if="item.input === 'label'"
-              :object="object"
-              :category="item"
-              :parse-mode="parseMode"
-            ></ChecklistFieldset>
-          </v-col>
+          <template v-for="(item, index) in category.children" :key="index">
+            <v-col
+              v-if="item.name !== 'colony_size'"
+              cols="12"
+              :sm="itemFullWidth(item) ? 12 : 6"
+              :md="itemFullWidth(item) ? 12 : 4"
+              :lg="itemFullWidth(item) ? 12 : 3"
+            >
+              <ChecklistInput
+                v-if="item.input !== 'label'"
+                :object="object"
+                :item="item"
+                :disabled="bulkInspection"
+                :parse-mode="parseMode"
+                @calculate-tpa-colony-size="calculateTpaColonySize"
+              ></ChecklistInput>
+              <ChecklistFieldset
+                v-if="item.input === 'label'"
+                :object="object"
+                :category="item"
+                :parse-mode="parseMode"
+              ></ChecklistFieldset>
+            </v-col>
+          </template>
         </v-row>
       </div>
       <v-overlay
@@ -183,7 +184,7 @@
 </template>
 
 <script>
-import ChecklistFieldset from '@components/checklist-fieldset.vue'
+// import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { getMaxFramecount } from '@mixins/methodsMixin'
@@ -193,7 +194,8 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     ChecklistInput,
-    ChecklistFieldset,
+    // ChecklistFieldset,
+    ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     HiveIcon,
     ElInputNumber,
   },
@@ -315,12 +317,7 @@ export default {
         .length
     },
     itemFullWidth(item) {
-      return (
-        this.nested ||
-        item.input === 'label' ||
-        item.input === 'text' ||
-        item.name === 'colony_size'
-      )
+      return this.nested || item.input === 'label' || item.input === 'text'
     },
     setInputNumbers() {
       this.broodLayersForCalculation = this.countLayers('brood')

@@ -116,17 +116,17 @@
 </template>
 
 <script>
+import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import ChecklistInput from '@components/checklist-input.vue'
-// import ChecklistFieldset from '@components/checklist-fieldset.vue'
-import TopPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
 import LiebefelderMethod from '@components/input-fields/liebefelder-method.vue'
+import TopPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
 import { getLabel } from '@mixins/methodsMixin'
 
 export default {
   name: 'ChecklistFieldset',
   components: {
-    // ChecklistFieldset,
-    ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
+    ChecklistFieldset,
+    // ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     ChecklistInput,
     LiebefelderMethod,
     TopPhotoAnalysis,
