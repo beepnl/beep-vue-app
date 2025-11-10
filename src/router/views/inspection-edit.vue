@@ -1070,7 +1070,7 @@ export default {
 
         treeselectArray.push({
           treeselectId: -1,
-          name: 'DEBUG', // this.$i18n.tc('Location', 2),
+          name: this.$i18n.tc('Location', 2),
           children: sortedTreeselectApiaries,
         })
       }
@@ -1099,7 +1099,7 @@ export default {
 
         treeselectArray.push({
           treeselectId: -2,
-          name: 'DEBUG', // this.$i18n.tc('Group', 2),
+          name: this.$i18n.tc('Group', 2),
           children: sortedTreeselectGroups,
         })
       }

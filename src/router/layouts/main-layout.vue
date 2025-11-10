@@ -101,14 +101,16 @@
     <slot></slot>
   </v-main>
 
-  <!-- <PWAPrompt
+  <PWAPrompt
     :timesToShow="2"
+    :promptOnVisit="1"
     :copyTitle="$t('pwa_title')"
-    :copyBody="$t('pwa_body')"
-    :copyShareButtonLabel="$t('pwa_share_button_label')"
-    :copyAddHomeButtonLabel="$t('pwa_addhome_button_label')"
-    :copyClosePrompt="$t('Cancel')"
-  /> -->
+    :copyDescription="$t('pwa_body')"
+    :copyShareStep="$t('pwa_share_button_label')"
+    :copyAddToHomeScreenStep="$t('pwa_addhome_button_label')"
+    :appIconPath="assetsUrl + '/img/icons/icon_beep.png'"
+    :isShown="shouldShowPWAPrompt"
+  />
 </template>
 
 <script>
@@ -121,15 +123,15 @@ import {
   readDevicesIfNotChecked,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
+import { PWAPrompt } from 'vue-ios-pwa-prompt'
 import { mapGetters } from 'vuex'
-// import PWAPrompt from 'vue2-ios-pwa-prompt'
 
 export default {
   components: {
     LocaleChanger,
     NavDrawer,
     PlusMenu,
-    // PWAPrompt,
+    PWAPrompt,
   },
   mixins: [
     checkAlerts,
@@ -143,6 +145,7 @@ export default {
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
+      shouldShowPWAPrompt: true, // TODO make conditional - don't show in native app
     }
   },
   computed: {

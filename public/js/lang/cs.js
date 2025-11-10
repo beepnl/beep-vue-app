@@ -916,8 +916,8 @@ const translations = {
   pwa_title: 'Použít BEEP jako aplikaci?',
   pwa_body:
     'Přidejte BEEP na domovskou obrazovku, abyste ji mohli používat jako webovou aplikaci a v režimu celé obrazovky. Po jednom přihlášení zůstanete přihlášeni.',
-  pwa_share_button_label: '1. Klepněte na ikonu sdílení na liště nabídky níže.',
-  pwa_addhome_button_label: "2. Klikněte na 'Přidat na domovovskou stránku'.",
+  pwa_share_button_label: '1. Klepněte na ikonu sdílení na liště nabídky níže',
+  pwa_addhome_button_label: "2. Klikněte na 'Přidat na domovovskou stránku'",
 
   Colony: 'Kolonie | Kolonie',
   Dashboard: 'Dashboard | Dashboards',

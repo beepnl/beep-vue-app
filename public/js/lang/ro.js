@@ -1007,8 +1007,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
