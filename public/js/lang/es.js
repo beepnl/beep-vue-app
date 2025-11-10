@@ -755,6 +755,7 @@ const translations = {
   drag_layers_info_text:
     'Arrastre capas desde el lado izquierdo a la posición deseada dentro de la colmena en el lado derecho. Elimine una capa de la colmena haciendo clic en ella y luego en el icono de la papelera roja. Dentro de la colmena, las capas también se pueden arrastrar para editar la posición, el color de la capa se puede editar haciendo clic en la capa.',
   New_hive: 'Nueva colmena',
+  New_beep_base: 'Nueva base BEEP',
   New_alertrule: 'Nueva regla de alerta',
   Add_alertrule: 'Agregar regla de alerta',
   Add_apiary: 'Agregar apiario',

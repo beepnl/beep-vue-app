@@ -732,6 +732,7 @@ const translations = {
   drag_layers_info_text:
     'Dra lådor/lager från vänstra sidan till önskad position på den högra sidan. Radera en låda/lager från kupan genom att klicka på den och sen klicka på den röda ikonen. Även inom kupan kan lådor/lager dras till önskad position om man vill justera något. Färgen på era låda/lager kan redigeras genom att kicka på lådan.',
   New_hive: 'Ny kupa',
+  New_beep_base: 'Ny BEEP base',
   New_alertrule: 'Ny varningsregel',
   Add_alertrule: 'Lägg till varningsregel',
   Add_apiary: 'Lägg till bigård',

@@ -698,6 +698,7 @@ const translations = {
   drag_layers_info_text:
     'Versleep kamers van links naar de gewenste positie in de kast aan de rechterkant. Verwijder een kamer uit de kast door erop te klikken en dan op het prullenbakicoon te klikken. Binnen de kast kunnen kamers ook versleept worden om de positie te wijzigen, en de kleur kan aangepast worden door erop te klikken.',
   New_hive: 'Nieuwe kast',
+  New_beep_base: 'Nieuw BEEP base',
   New_alertrule: 'Nieuwe notificatie-instelling',
   Add_alertrule: 'Toevoegen notificatie-instelling',
   Add_apiary: 'Toevoegen bijenstand',
@@ -1111,6 +1112,8 @@ const translations = {
 
   Fav_exp:
     'Maak deze {groupOrApiary} favoriet - deze zal bovenaan de lijst getoond worden en eerder worden ingeladen dan de rest',
+
+  Connect: 'Verbind',
 }
 
 export default translations

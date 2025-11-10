@@ -14,7 +14,7 @@
     </v-alert>
     <v-btn
       v-if="object[item.id] === null || object[item.id] === undefined"
-      class="mt-1"
+      class="beep-input-button mt-1"
       color="accent"
       :disabled="showLoadingIcon || bulkInspection"
       @click.prevent="requestSampleCode"

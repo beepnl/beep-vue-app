@@ -663,6 +663,7 @@ const translations = {
   drag_layers_info_text:
     'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive, layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
   New_hive: 'New hive',
+  New_beep_base: 'New BEEP base',
   New_alertrule: 'New alert rule',
   Add_alertrule: 'Add alert rule',
   Add_apiary: 'Add apiary',

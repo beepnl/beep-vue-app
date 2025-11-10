@@ -859,6 +859,7 @@ const translations = {
   drag_layers_info_text:
     'Déplacer les cadres à gauche, vers leur position dans la ruche sur le côté droit. Supprimer un cadre de la ruche en cliquant dessus puis sur la poubelle rouge. Dans la ruche, les cadres peuvent être déplacés et leur couleur peut être modifiée en cliquant sur le cadre.',
   New_hive: 'Nouvelle ruche',
+  New_beep_base: 'Nouvelle base BEEP',
   New_alertrule: 'Nouvelle alerte',
   Add_alertrule: 'Ajouter alerte',
   Add_apiary: 'Ajouter rucher',

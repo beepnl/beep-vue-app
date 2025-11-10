@@ -749,6 +749,7 @@ const translations = {
   drag_layers_info_text:
     "Trascina le parti dal lato sinistro alla posizione desiderata sull'alveare posto sulla destra. Cancella un componente cliccandovi sopra e quindi sull'icona con il cestino rosso. Le componenti possono anche essere spostati all'interno dell'alveare stesso, i colori modificati facendo click sul componente",
   New_hive: 'Nuovo alveare',
+  New_beep_base: 'Nuovo dispositivo BEEP',
   New_alertrule: 'Nuova regola messaggio di avviso',
   Add_alertrule: 'Aggiungi regola messaggio di avviso',
   Add_apiary: 'Aggiungi apiario',

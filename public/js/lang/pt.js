@@ -775,6 +775,7 @@ const translations = {
   drag_layers_info_text:
     'Arraste as camadas do lado esquerdo para a posição desejada dentro da colmeia, no lado direito. Exclua uma camada da seção clicando nela e, em seguida, clicando no ícone de lixo vermelho. Dentro da colmeia, as camadas também podem ser arrastadas para editar a posição a cor da camada pode ser editada clicando na camada.',
   New_hive: 'Nova colmeia',
+  New_beep_base: 'Nova base BEEP',
   New_alertrule: 'Nova regra de alerta',
   Add_alertrule: 'Adicionar regra de alerta',
   Add_apiary: 'Adicionar apiário',

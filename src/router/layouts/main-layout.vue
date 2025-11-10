@@ -102,7 +102,7 @@
   </v-main>
 
   <PWAPrompt
-    v-if="appNotNative"
+    v-if="!appIsNative"
     :timesToShow="2"
     :promptOnVisit="1"
     :copyTitle="$t('pwa_title')"
@@ -119,6 +119,7 @@ import NavDrawer from '@components/nav-drawer.vue'
 import PlusMenu from '@components/plus-menu.vue'
 import {
   checkAlerts,
+  nativeAppMethods,
   readApiariesAndGroups,
   readDevicesIfNotChecked,
   readGeneralInspections,
@@ -135,6 +136,7 @@ export default {
   },
   mixins: [
     checkAlerts,
+    nativeAppMethods,
     readApiariesAndGroups,
     readDevicesIfNotChecked,
     readGeneralInspections,
@@ -150,9 +152,6 @@ export default {
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('devices', ['devices']),
-    appNotNative() {
-      return window.ReactNativeWebview === undefined
-    },
     currentRoute() {
       return this.$route.name
     },

@@ -784,6 +784,7 @@ const translations = {
   drag_layers_info_text:
     'Vedä kerrokset vasemmalta puolelta haluttuun kohtaan pesässä oikealla puolella. Poista taso pesästä napsauttamalla sitä ja sitten punaista roskakorikuvaketta. Pesässä voi myös vetää kerroksia sijainnin muokkaamiseksi, kerroksen väriä voi muokata napsauttamalla kerrosta.',
   New_hive: 'Uusi pesä',
+  New_beep_base: 'Uusi BEEP-alusta',
   New_alertrule: 'Uusi hälytyssääntö',
   Add_alertrule: 'Lisää hälytyssääntö',
   Add_apiary: 'Lisää mehiläistarha',

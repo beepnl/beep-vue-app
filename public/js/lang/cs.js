@@ -659,6 +659,7 @@ const translations = {
   drag_layers_info_text:
     'Přetáhněte vrstvy z levé strany do požadované pozice v úlu na pravé straně. Smažte vrstvu z úlu kliknutím na ni a poté kliknutím na ikonu červeného koše. V úlu lze vrstvy přetahovat a upravovat polohu, barvu vrstvy lze upravit kliknutím na vrstvu.',
   New_hive: 'Nový úl',
+  New_beep_base: 'Nová základna BEEP',
   New_alertrule: 'Nové pravidlo upozornění',
   Add_alertrule: 'Přidat pravidlo upozornění',
   Add_apiary: 'Přidat včelín',

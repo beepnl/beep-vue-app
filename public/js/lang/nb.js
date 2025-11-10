@@ -664,6 +664,7 @@ const translations = {
   drag_layers_info_text:
     'Dra lag fra venstre side til ønsket posisjon i bikuben på høyre side. Slett et lag fra bikuben ved å klikke på det og deretter klikke på det røde søppelikonet. Innenfor bikuben kan lag også dras for å redigere posisjonen, lagfarge kan redigeres ved å klikke på laget.',
   New_hive: 'Ny bikube',
+  New_beep_base: 'Ny BEEP-base',
   New_alertrule: 'Ny varslingsregel',
   Add_alertrule: 'Legg til varslingsregel',
   Add_apiary: 'Legg til bigård',

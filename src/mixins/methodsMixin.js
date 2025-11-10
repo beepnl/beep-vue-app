@@ -410,6 +410,29 @@ export const lightenColor = {
   },
 }
 
+export const nativeAppMethods = {
+  computed: {
+    appIsNative() {
+      return window.ReactNativeWebview !== undefined
+    },
+  },
+  methods: {
+    constructMessageParams(action, params) {
+      const message = {
+        action,
+        params,
+      }
+      return JSON.stringify(message)
+    },
+    postNativeAppMessage(action, params) {
+      if (this.appIsNative) {
+        const message = this.constructMessageParams(action, params)
+        window.ReactNativeWebView.postMessage(message)
+      }
+    },
+  },
+}
+
 export const orderedLayers = {
   methods: {
     orderedLayers: function(hive) {

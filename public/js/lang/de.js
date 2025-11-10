@@ -767,6 +767,7 @@ const translations = {
   drag_layers_info_text:
     'Ziehe die Elemente von der linken Seite an die gewünschte Position innerhalb der Beute auf der rechten Seite. Lösche eine Ebene aus der Beute, indem Du sie anklickst und dann auf das rote Mülltonnensymbol klickst. Innerhalb der Beute können Elemente auch gezogen werden, um die Position zu bearbeiten, die Farbe kann durch Klicken auf das Element bearbeitet werden.',
   New_hive: 'Neue Beute',
+  New_beep_base: 'Neue BEEP-Basis',
   New_alertrule: 'Neue Alarmregel',
   Add_alertrule: 'Füge eine Alarmregel hinzu',
   Add_apiary: 'Füge einen Bienenstand hinzu',

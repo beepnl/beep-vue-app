@@ -82,6 +82,9 @@
     background-image: url('~@assets/img/icons/icn_beep_base_small.png');
     background-size: contain;
     border: 0;
+    &.--grey {
+      background-image: url('~@assets/img/icons/icn_beep_base_small-grey.png');
+    }
   }
 
   &-filter {

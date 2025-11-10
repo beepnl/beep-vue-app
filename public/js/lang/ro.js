@@ -752,6 +752,7 @@ const translations = {
   drag_layers_info_text:
     'Trageți straturile din partea stângă în poziția dorită la stupul din partea dreaptă. Ștergeți un strat din stup făcând clic pe acesta și apoi făcând clic pe pictograma in forma unui coș roșu  . În interiorul stratului dintr-un stup se poate trage și pentru a edita pozițiaacestuia, de asemenea culoarea stratului poate fi editată făcând clic pe strat.',
   New_hive: 'Stup nou',
+  New_beep_base: 'Noua bază BEEP',
   New_alertrule: 'Regulă nouă pentru alertă',
   Add_alertrule: 'Adăugați o regulă de alertă',
   Add_apiary: 'Adăugați o stupină',

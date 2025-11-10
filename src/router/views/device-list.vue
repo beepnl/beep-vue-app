@@ -274,6 +274,24 @@
 
             <v-slide-y-transition v-if="deviceExpanded(index)">
               <v-card-text>
+                <v-row v-if="appIsNative">
+                  <v-col cols="12" class="d-flex">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="accent"
+                      class="save-button-mobile-wide"
+                      @click="
+                        postNativeAppMessage('EditBeepBase', {
+                          devEUI: ownedDevice.key,
+                        })
+                      "
+                    >
+                      <v-icon color="accent" start>{{ 'mdi-bluetooth' }}</v-icon
+                      >{{ $t('Connect') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+
                 <v-row>
                   <v-col cols="12" md="6" class="pt-1 pb-0 py-sm-3">
                     <v-text-field
@@ -514,6 +532,7 @@ import SensorDefinitionRow from '@components/sensor-definition-row.vue'
 import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Layout from '@layouts/back-layout.vue'
 import {
+  nativeAppMethods,
   readApiariesAndGroups,
   readGeneralInspections,
   readTaxonomy,
@@ -529,6 +548,7 @@ export default {
     Treeselect,
   },
   mixins: [
+    nativeAppMethods,
     momentify,
     readApiariesAndGroups,
     readGeneralInspections,
