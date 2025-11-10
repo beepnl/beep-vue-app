@@ -109,7 +109,6 @@
     :copyShareStep="$t('pwa_share_button_label')"
     :copyAddToHomeScreenStep="$t('pwa_addhome_button_label')"
     :appIconPath="assetsUrl + '/img/icons/icon_beep.png'"
-    :isShown="shouldShowPWAPrompt"
   />
 </template>
 
@@ -145,7 +144,6 @@ export default {
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
-      shouldShowPWAPrompt: true, // TODO make conditional - don't show in native app
     }
   },
   computed: {
