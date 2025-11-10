@@ -102,6 +102,7 @@
   </v-main>
 
   <PWAPrompt
+    v-if="appNotNative"
     :timesToShow="2"
     :promptOnVisit="1"
     :copyTitle="$t('pwa_title')"
@@ -149,6 +150,9 @@ export default {
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('devices', ['devices']),
+    appNotNative() {
+      return window.ReactNativeWebview === undefined
+    },
     currentRoute() {
       return this.$route.name
     },
