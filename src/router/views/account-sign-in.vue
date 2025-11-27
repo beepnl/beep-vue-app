@@ -10,7 +10,6 @@
         <v-alert
           v-if="msg || resentVerification"
           type="success"
-          text
           prominent
           density="compact"
           color="green"
@@ -25,7 +24,9 @@
           :key="error.name"
           type="error"
           prominent
+          density="compact"
           color="red"
+          class="mb-6"
         >
           <template v-slot:prepend>
             <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
@@ -79,9 +80,9 @@
 </template>
 
 <script>
+import Layout from '@/src/router/layouts/account-layout.vue'
 import Api from '@api/Api'
 import languages from '@assets/js/languages'
-import Layout from '@/src/router/layouts/account-layout.vue'
 
 export default {
   components: { Layout },

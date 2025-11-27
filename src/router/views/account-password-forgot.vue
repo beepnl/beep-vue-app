@@ -8,7 +8,10 @@
     >
       <div v-if="reminderSent">
         <v-card-text>
-          <v-alert text prominent density="compact" color="green">
+          <v-alert type="success" prominent density="compact" color="green">
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+            </template>
             {{ $t('password_recovery_reminder_success') }}
           </v-alert>
         </v-card-text>
@@ -27,9 +30,10 @@
             v-for="error in errors"
             :key="error.name"
             type="error"
-            text
             prominent
+            density="compact"
             color="red"
+            class="mb-6"
           >
             <template v-slot:prepend>
               <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
@@ -72,8 +76,8 @@
 </template>
 
 <script>
-import Api from '@api/Api'
 import Layout from '@/src/router/layouts/account-layout.vue'
+import Api from '@api/Api'
 
 export default {
   components: { Layout },
