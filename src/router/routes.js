@@ -396,7 +396,6 @@ export default [
     path: '/profile',
     name: 'profile',
     component: () => import('@views/user-profile.vue'),
-    props: () => ({ user: store.state.auth.currentUser || {} }),
   },
   {
     meta: {

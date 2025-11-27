@@ -194,13 +194,6 @@ import { mapGetters } from 'vuex'
 
 export default {
   components: { Confirm, Layout },
-  props: {
-    user: {
-      type: Object,
-      default: () => null,
-      required: true,
-    },
-  },
   data() {
     return {
       errors: [],
@@ -221,11 +214,11 @@ export default {
         email: false,
         password: false,
       },
-      apiToken: this.user.api_token,
+      apiToken: '',
     }
   },
   computed: {
-    ...mapGetters('auth', ['userIsAdmin']),
+    ...mapGetters('auth', ['currentUser', 'userIsAdmin']),
     edit() {
       return {
         name: this.name,
@@ -288,15 +281,26 @@ export default {
     },
     userCopy() {
       // do not use user prop directly as it results in vuex warning 'do not mutate prop'
-      return this.user !== undefined && this.user !== null
-        ? JSON.parse(JSON.stringify(this.user))
+      return this.currentUser !== undefined && this.currentUser !== null
+        ? JSON.parse(JSON.stringify(this.currentUser))
         : {
+            api_token: '',
             name: '',
             email: '',
             password: '',
             policy_accepted: '',
           }
     },
+  },
+  watch: {
+    currentUser() {
+      this.apiToken = JSON.parse(JSON.stringify(this.currentUser.api_token))
+    },
+  },
+  mounted() {
+    if (this.currentUser !== undefined && this.currentUser !== null) {
+      this.apiToken = JSON.parse(JSON.stringify(this.currentUser.api_token))
+    }
   },
   methods: {
     async deleteUser() {
