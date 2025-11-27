@@ -206,6 +206,7 @@
                       }`
                     "
                     :color="hive.queen.color"
+                    :style="`border-color: ${hive.queen.color};`"
                   >
                   </v-sheet>
                 </router-link>
@@ -217,6 +218,7 @@
                     }`
                   "
                   :color="hive.queen.color"
+                  :style="`border-color: ${hive.queen.color};`"
                 >
                 </v-sheet>
               </div>

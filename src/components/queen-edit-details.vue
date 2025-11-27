@@ -131,6 +131,7 @@
                         }`
                       "
                       :color="queenColor"
+                      :style="`border-color: ${queenColor};`"
                     >
                     </v-sheet>
                   </div>

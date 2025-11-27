@@ -204,10 +204,10 @@
                 >
                   <div class="alert-content-item">
                     <div
-                      class="d-flex flex-column justify-flex-start align-start mr-2"
+                      class="d-flex flex-column justify-start align-start mr-2"
                     >
-                      <div class="d-flex flex-no-wrap">
-                        <div class="mr-6 my-0">
+                      <div class="d-flex justify-start flex-no-wrap">
+                        <div class="mr-2 my-0">
                           <v-icon>
                             mdi-exclamation-thick
                           </v-icon>
@@ -244,9 +244,9 @@
                     class="alert-content-item"
                   >
                     <div
-                      class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
+                      class="d-flex flex-no-wrap justify-start align-start mr-2"
                     >
-                      <div class="mr-6 my-0">
+                      <div class="mr-2 my-0">
                         <v-icon>
                           mdi-calculator
                         </v-icon>
@@ -272,7 +272,7 @@
                     v-if="alert.hive_group_name || alert.location_name"
                     class="alert-content-item"
                   >
-                    <div class="d-flex flex-no-wrap">
+                    <div class="d-flex justify-start flex-no-wrap">
                       <div class="mr-4 my-0">
                         <v-icon
                           v-if="alert.hive_group_name"
@@ -397,9 +397,9 @@
 <script>
 import Api from '@api/Api'
 import HiveIcon from '@components/hive-icon.vue'
+import { readAlertRules } from '@mixins/methodsMixin'
 import { momentFormatUtcToLocal } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
-import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
   components: {
