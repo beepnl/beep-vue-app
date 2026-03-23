@@ -257,8 +257,8 @@
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
-import { mapGetters } from 'vuex'
 import { getLabel, getMaxFramecount } from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -312,15 +312,38 @@ export default {
     ...mapGetters('inspections', ['bulkInspection']),
     ...mapGetters('hives', ['activeHive']),
     sortedChildren() {
-      var sortedChildren = this.category.children.slice().sort(function(a, b) {
-        if (a.name.indexOf('super') > -1) {
-          return -1
-        }
-        if (a.name.indexOf('frame') > -1) {
-          return 1
-        }
-        return 0
-      })
+      const self = this
+      var sortedChildren = this.category.children
+        .slice()
+        .sort(function(a, b) {
+          if (a.name > b.name) {
+            return 1
+          }
+          if (b.name > a.name) {
+            return -1
+          }
+          return 0
+        })
+        .sort(function(a, b) {
+          const aNumber = self.getNumberFromName(a.name)
+          const bNumber = self.getNumberFromName(b.name)
+          if (aNumber > bNumber) {
+            return 1
+          }
+          if (bNumber > aNumber) {
+            return -1
+          }
+          return 0
+        })
+        .sort(function(a, b) {
+          if (a.name.indexOf('super') > -1) {
+            return -1
+          }
+          if (a.name.indexOf('frame') > -1) {
+            return 1
+          }
+          return 0
+        })
       return sortedChildren
     },
   },
@@ -384,6 +407,11 @@ export default {
     countLayers(type) {
       return this.activeHive.layers.filter((layer) => layer.type === type)
         .length
+    },
+    getNumberFromName(name) {
+      const numberString = name.split('_')[1]
+      const int = parseInt(numberString)
+      return !isNaN(int) ? int : 0
     },
     setInputNumbers() {
       this.broodLayersForCalculation =
