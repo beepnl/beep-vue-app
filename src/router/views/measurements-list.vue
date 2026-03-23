@@ -1802,8 +1802,8 @@ export default {
     },
     stopTimer() {
       if (this.timer > 0) {
-        clearTimeout(this.statusTimer)
-        this.statusTimer = 0
+        clearTimeout(this.timer)
+        this.timer = 0
       }
     },
     toggleSensorInfo(abbr) {
