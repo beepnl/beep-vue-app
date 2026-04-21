@@ -903,36 +903,36 @@ const translations = {
   Edit_checklist: 'Aanpassen kastkaart',
   Edit_devices: 'Aanpassen meetsystemen',
   Edit_consent: 'Aanpassen toestemming',
-  Edit_hivetag: 'Aanpassen hive tag',
+  Edit_hivetag: 'Aanpassen kastlabel',
 
-  Hivetag: 'Hive tag | Hive tags',
+  Hivetag: 'Kastlabel | Kastlabels',
   Hivetag_exp_1:
-    "'Hive tags' zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met 'actie' worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ",
+    "'Kastlabels' zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je het kastlabel scant. Met 'actie' worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra het kastlabel is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De kastlabels kan je zelf printen, door ",
   Hivetag_download_text: 'deze pdf te downloaden.',
   Hivetag_exp_2:
-    ' Scan een hive tag om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
+    ' Scan een kastlabel om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
   qrcode: 'QR Code | QR Codes',
-  Qrcode_exp1: "Plak de hive tag met nummer '",
+  Qrcode_exp1: "Plak het kastlabel met nummer '",
   Qrcode_exp2: "' op een bijenkast.",
   Qrcode_note:
-    'N.B. Bovenstaande QR code komt niet overeen met de daadwerkelijke hive tag, deze is slechts als voorbeeld bedoeld.',
-  Download_hivetags: 'Download hive tags pdf',
-  Delete_hivetag: 'Verwijder hive tag',
+    'N.B. Bovenstaande QR code komt niet overeen met het daadwerkelijke kastlabel, deze is slechts als voorbeeld bedoeld.',
+  Download_hivetags: 'Download kastlabels pdf',
+  Delete_hivetag: 'Verwijder kastlabel',
   for_hive: 'voor bijenkast "',
-  Select_hivetag_number: 'Selecteer een hive tag nummer',
-  Add_hivetag: 'Voeg hive tag toe',
+  Select_hivetag_number: 'Selecteer een kastlabel nummer',
+  Add_hivetag: 'Voeg kastlabel toe',
   Select_hive: 'Selecteer een bijenkast | Selecteer bijenkasten',
   Select_hive_for_hivetag_exp:
     'Voor welke bijenkast wil je de actie uitvoeren? Selecteer één bijenkast.',
   Select_hivetag_action: 'Selecteer een actie',
   Select_hivetag_action_exp:
-    'Welke actie wil je uitvoeren wanneer je de hive tag scant?',
+    'Welke actie wil je uitvoeren wanneer je het kastlabel scant?',
   Hivetag_hive_in_overview: 'Toon bijenkast in het kastenoverzicht',
   Hivetag_new_inspection: 'Maak een nieuwe inspectie aan',
   Hivetag_edit_hive: 'Pas kastconfiguratie aan',
   Hivetag_view_inspections: 'Bekijk inspecties',
   No_hivetags_left:
-    'Alle hive tags zijn momenteel in gebruik. Verwijder een bestaande hive tag om een nieuwe toe te kunnen voegen, of pas deze aan.',
+    'Alle kastlabels zijn momenteel in gebruik. Verwijder een bestaand kastlabel om een nieuwe toe te kunnen voegen, of pas deze aan.',
 
   Select_hives_for_consent: 'Selecteer bijenkasten voor toestemming',
   Select_hives_for_consent_exp:
