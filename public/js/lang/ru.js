@@ -912,6 +912,9 @@ const translations = {
   Hivetag_new_inspection: 'Создать новый осмотр',
   Hivetag_edit_hive: 'Редактировать конфигурацию улья',
   Hivetag_view_inspections: 'Просмотреть осмотры',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'Все теги ульев уже используются. Удалите существующий тег, чтобы добавить новый, или измените его.',
 

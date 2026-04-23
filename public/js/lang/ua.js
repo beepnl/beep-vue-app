@@ -924,6 +924,9 @@ const translations = {
   Hivetag_new_inspection: 'Створити новий огляд',
   Hivetag_edit_hive: 'Редагувати налаштування вулика',
   Hivetag_view_inspections: 'Переглянути огляди',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'Всі мітки вуликів наразі використовуються. Видаліть існуючу мітку вулика, щоб додати нову, або змініть її.',
 

@@ -78,10 +78,10 @@
                   $t('Hivetag_download_text')
                 }}</a
                 >{{ $t('Hivetag_exp_2') }}
-                <!-- <a :href="$t('Hivetag_support_url')" target="_blank"
-                    ><v-icon small color="accent">mdi-arrow-right</v-icon
-                    >{{ $t('Hivetags_url_text') }}</a
-                  > -->
+                <a :href="$t('Hivetag_support_url')" target="_blank"
+                  ><v-icon small color="accent">mdi-arrow-right</v-icon
+                  >{{ $t('Hivetags_url_text') }}</a
+                >
               </em>
             </p>
           </div>
@@ -176,14 +176,14 @@
 // import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import HiveIcon from '@components/hive-icon.vue'
+import qrCodeIcon from '@components/qrcode-icon.vue'
 import Layout from '@layouts/back.vue'
-import { mapGetters } from 'vuex'
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
   readHiveTags,
 } from '@mixins/methodsMixin'
-import qrCodeIcon from '@components/qrcode-icon.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
