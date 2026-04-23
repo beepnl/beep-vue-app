@@ -931,6 +931,9 @@ const translations = {
   Hivetag_new_inspection: 'Maak een nieuwe inspectie aan',
   Hivetag_edit_hive: 'Pas kastconfiguratie aan',
   Hivetag_view_inspections: 'Bekijk inspecties',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000803807-qr-kastlabels',
+  Hivetags_url_text: 'Lees hier het support artikel over kastlabels',
   No_hivetags_left:
     'Alle kastlabels zijn momenteel in gebruik. Verwijder een bestaand kastlabel om een nieuwe toe te kunnen voegen, of pas deze aan.',
 

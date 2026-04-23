@@ -903,6 +903,9 @@ const translations = {
   Hivetag_new_inspection: 'Vytvořte novou kontrolu',
   Hivetag_edit_hive: 'Upravit konfiguraci úlu',
   Hivetag_view_inspections: 'Zobrazit kontroly',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'Všechny identifikátory úlu se v současné době používají. Odeberte existující identifikátor úlu, abyste mohli přidat nový nebo jej upravit.',
 

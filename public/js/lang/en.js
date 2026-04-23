@@ -915,6 +915,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
