@@ -56,8 +56,14 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['userLocale', 'userEmail', 'loggedIn']),
+    languageCodes() {
+      return languages.languageArray.map((lang) => lang.lang)
+    },
     selectedLanguage() {
       return this.$i18n.locale
+    },
+    queriedLanguage() {
+      return this.$route.query.language || null
     },
   },
   watch: {
@@ -74,6 +80,16 @@ export default {
   mounted() {
     if (this.loggedIn) {
       this.mountedAndLoggedIn = true
+    }
+  },
+  created() {
+    if (
+      this.queriedLanguage &&
+      this.languageCodes.includes(this.queriedLanguage)
+    ) {
+      // if locale is queried and exists, use it
+      this.$i18n.locale = this.queriedLanguage
+      localStorage.beepLocale = this.queriedLanguage
     }
   },
   methods: {

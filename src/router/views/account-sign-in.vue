@@ -108,28 +108,15 @@ export default {
     }
   },
   computed: {
-    languageCodes() {
-      return languages.languageArray.map((lang) => lang.lang)
-    },
     signinRules: function() {
       return {
         email_required: this.$i18n.t('email_is_required'),
         password_required: this.$i18n.t('password_is_required'),
       }
     },
-    queriedLanguage() {
-      return this.$route.query.language || null
-    },
   },
   created() {
-    if (
-      this.queriedLanguage &&
-      this.languageCodes.includes(this.queriedLanguage)
-    ) {
-      // if locale is queried and exists, use it
-      this.$i18n.locale = this.queriedLanguage
-      localStorage.beepLocale = this.queriedLanguage
-    } else if (localStorage.beepLocale) {
+    if (localStorage.beepLocale) {
       // else if locale is saved in localStorage, use it
       this.$i18n.locale = localStorage.beepLocale
     } else {
