@@ -51,27 +51,30 @@ export default {
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
+      mountedAndLoggedIn: false,
     }
   },
   computed: {
-    ...mapGetters('auth', ['userLocale', 'userEmail']),
+    ...mapGetters('auth', ['userLocale', 'userEmail', 'loggedIn']),
     selectedLanguage() {
       return this.$i18n.locale
     },
   },
   watch: {
+    loggedIn() {
+      this.mountedAndLoggedIn = true
+    },
     userLocale() {
-      if (
-        this.userLocale !== this.$i18n.locale ||
-        this.userLocale !== localStorage.beepLocale
-      ) {
-        // only set locale again when it has changed
+      if (this.mountedAndLoggedIn) {
+        // only set locale again when it has changed and the 'logged in' locale changer has mounted
         this.setLocale()
       }
     },
   },
   mounted() {
-    this.setLocale()
+    if (this.loggedIn) {
+      this.mountedAndLoggedIn = true
+    }
   },
   methods: {
     async switchLocale(locale) {
@@ -96,6 +99,10 @@ export default {
             console.log('Error: ', error)
           }
         }
+      } else if (!this.loggedIn) {
+        // if user is logged out and route has account layout, do not set userlocale yet
+        this.$i18n.locale = locale
+        localStorage.beepLocale = locale
       }
     },
     setLocale() {
