@@ -1601,8 +1601,10 @@ export default {
     },
     stopTimers() {
       clearTimeout(this.alertsTimer)
+      clearInterval(this.alertsTimer)
       this.alertsTimer = null
       clearTimeout(this.deviceTimer)
+      clearInterval(this.deviceTimer)
       this.deviceTimer = null
     },
     toggleGrid(view) {
