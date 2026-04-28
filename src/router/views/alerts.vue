@@ -537,6 +537,7 @@ export default {
     },
     stopTimer() {
       clearTimeout(this.alertTimer)
+      clearInterval(this.alertTimer)
       this.alertTimer = null
     },
     toggleAllFiltered() {
