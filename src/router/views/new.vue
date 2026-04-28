@@ -7,7 +7,10 @@
       >
       <div class="rounded-border mb-4">
         <ul>
-          <li>Small improvements</li>
+          <li
+            >Add language switcher to sign in page (and other account management
+            pages)</li
+          >
         </ul>
       </div>
 
