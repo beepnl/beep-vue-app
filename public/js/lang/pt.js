@@ -110,7 +110,7 @@ const translations = {
 
   /* login */
   login_title: 'Login',
-  login: 'Login',
+  login: 'entrar',
   back_to_login: 'Regressar ao login',
   forgot_password: 'Esqueceu-se da sua senha?',
 

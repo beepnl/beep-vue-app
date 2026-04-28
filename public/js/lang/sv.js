@@ -102,9 +102,9 @@ const translations = {
   Cancel: 'Upphäv',
 
   /* login */
-  login_title: 'Login',
-  login: 'Login',
-  back_to_login: 'Tillbaka till login',
+  login_title: 'Inloggning',
+  login: 'Logga in',
+  back_to_login: 'Tillbaka till inloggning',
   forgot_password: 'Glömt lösenordet?',
 
   username: 'Användarnamn',
