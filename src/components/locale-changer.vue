@@ -61,7 +61,13 @@ export default {
   },
   watch: {
     userLocale() {
-      this.setLocale()
+      if (
+        this.userLocale !== this.$i18n.locale ||
+        this.userLocale !== localStorage.beepLocale
+      ) {
+        // only set locale again when it has changed
+        this.setLocale()
+      }
     },
   },
   mounted() {
@@ -70,30 +76,41 @@ export default {
   methods: {
     async switchLocale(locale) {
       const email = this.userEmail
-      try {
-        const response = await Api.updateRequest('/userlocale', '', {
-          email,
-          locale,
-        })
-        if (!response) {
-          console.log('error')
-        }
-        this.$store.commit('auth/SET_CURRENT_USER', response.data)
-        console.log('switch language to ', locale)
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
+      if (email !== null) {
+        // prevent extra call with email null when logging out
+        try {
+          const response = await Api.updateRequest('/userlocale', '', {
+            email,
+            locale,
+          })
+          if (!response) {
+            console.log('error')
+          }
+          this.$store.commit('auth/SET_CURRENT_USER', response.data)
+          localStorage.beepLocale = locale
+          console.log('switch language to ', locale)
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
         }
       }
     },
     setLocale() {
-      // if locale is saved in database, use it
-      if (this.userLocale !== null) {
+      if (
+        (this.userLocale === null && localStorage.beepLocale) ||
+        this.userLocale !== localStorage.beepLocale
+      ) {
+        // if beepLocale is set to something (different) via sign-in page
+        this.switchLocale(localStorage.beepLocale)
+      } else if (this.userLocale !== null) {
+        // else if locale is saved in database, use it
         this.$i18n.locale = this.userLocale
         localStorage.beepLocale = this.userLocale
       } else {
+        // else base it on browser language
         var newLocale = languages.checkBrowserLanguage()
         this.$i18n.locale = newLocale
         // this.switchLocale(newLocale)
