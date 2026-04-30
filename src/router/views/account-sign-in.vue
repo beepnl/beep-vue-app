@@ -121,8 +121,8 @@ export default {
     },
   },
   created() {
-    // if locale is saved in localStorage, use it
     if (localStorage.beepLocale) {
+      // else if locale is saved in localStorage, use it
       this.$i18n.locale = localStorage.beepLocale
     } else {
       this.$i18n.locale = languages.checkBrowserLanguage()

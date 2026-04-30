@@ -2,9 +2,7 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.1.7 (27-11-2025) - Current
-        version</div
-      >
+        ><span class="lowercase">v</span>4.1.7 (30-04-2026) - Current version</div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Upgraded "behind the scenes" to Vue 3 platform</li>
@@ -13,12 +11,48 @@
             ><router-link :to="{ name: 'measurements' }">Data</router-link>:
             coloured zones in "Device info" charts to show whether battery
             voltage, signal strength and signal noise values are OK (green zone)
-            or too low (red zone)</li
+            or too low (red zone)</li>
+
+        </ul>
+      </div>
+
+            <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.31 (28-04-2026)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+<li
+            >Add language switcher to sign in page (and other account management
+            pages)</li
           >
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.30 (21-04-2026)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'hivetags' }">Hive tags:</router-link>
+            change Dutch translation of "hive tag" to "kastlabel"</li
+          >
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.29 (23-03-2025)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'inspect' }">Inspect:</router-link>
+            Liebefeld method - show frames fieldsets in correct numerical order
+          </li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
         ><span class="lowercase">v</span>4.0.28 (15-09-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -1937,7 +1971,7 @@
 </template>
 
 <script>
-import Layout from '@/src/router/layouts/back-layout.vue'
+import Layout from '@/src/router/layouts/back-layout.vue';
 
 export default {
   components: {

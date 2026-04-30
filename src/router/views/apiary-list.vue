@@ -672,9 +672,9 @@ export default {
     deviceIdArray: [],
     assetsUrl:
       process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
-    alertsTimer: 0,
+    alertsTimer: null,
     alertInterval: 120000,
-    deviceTimer: 0,
+    deviceTimer: null,
     deviceInterval: 600000,
     favApiaries: [],
     favGroups: [],
@@ -1602,7 +1602,11 @@ export default {
     },
     stopTimers() {
       clearTimeout(this.alertsTimer)
+      clearInterval(this.alertsTimer)
+      this.alertsTimer = null
       clearTimeout(this.deviceTimer)
+      clearInterval(this.deviceTimer)
+      this.deviceTimer = null
     },
     toggleGrid(view) {
       if (view === 'xlView') {

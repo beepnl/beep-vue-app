@@ -72,10 +72,10 @@
                   $t('Hivetag_download_text')
                 }}</a
                 >{{ $t('Hivetag_exp_2') }}
-                <!-- <a :href="$t('Hivetag_support_url')" target="_blank"
-                    ><v-icon size="small" color="accent">mdi-arrow-right</v-icon
-                    >{{ $t('Hivetags_url_text') }}</a
-                  > -->
+                <a :href="$t('Hivetag_support_url')" target="_blank"
+                  ><v-icon size="small" color="accent">mdi-arrow-right</v-icon
+                  >{{ $t('Hivetags_url_text') }}</a
+                >
               </em>
             </p>
           </div>

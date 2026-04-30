@@ -284,7 +284,7 @@ export default {
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
-      alertTimer: 0,
+      alertTimer: null,
       alertInterval: 120000,
       selectedAlerts: [],
       alertsReallyChecked: false,
@@ -546,6 +546,8 @@ export default {
     },
     stopTimer() {
       clearTimeout(this.alertTimer)
+      clearInterval(this.alertTimer)
+      this.alertTimer = null
     },
     toggleAllFiltered() {
       if (!this.allFilteredChecked) {

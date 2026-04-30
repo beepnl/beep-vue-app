@@ -1833,7 +1833,9 @@ export default {
     },
     stopTimer() {
       if (this.timer > 0) {
-        clearTimeout(this.statusTimer)
+        clearTimeout(this.timer)
+        clearInterval(this.timer)
+        this.timer = 0
       }
     },
     toggleSensorInfo(abbr) {

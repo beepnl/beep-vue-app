@@ -7,6 +7,14 @@
       :class="(mobile ? 'bee--mobile' : '') + (darkMode ? ' bee--light' : '')"
     ></div>
   </div>
+  <div
+    class="d-flex justify-space-between align-center dashboard-controls ma-2"
+  >
+    <v-spacer />
+    <div class="d-flex justify-end align-center">
+      <LocaleChanger></LocaleChanger>
+    </div>
+  </div>
   <v-card
     class="account-card d-flex flex-column align-center rounded-border"
     variant="flat"
@@ -46,7 +54,12 @@
 </template>
 
 <script>
+import LocaleChanger from '@components/locale-changer.vue'
+
 export default {
+  components: {
+    LocaleChanger,
+  },
   props: {
     title: {
       type: String,

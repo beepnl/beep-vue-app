@@ -85,7 +85,11 @@ router.beforeEach((to, from, next) => {
 
   function redirectToLogin() {
     // Pass the original route to the login component
-    next({ path: 'sign-in', query: { redirectFrom: to.fullPath } })
+    const query = { redirectFrom: to.fullPath }
+    //  and add queries separately (if present) so they keep working (as is needed for the language query)
+    Object.assign(query, to.query)
+
+    next({ path: 'sign-in', query })
   }
 })
 
