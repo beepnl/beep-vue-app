@@ -1,13 +1,15 @@
-const fs = require('fs')
-const path = require('path')
-const bodyParser = require('body-parser')
+const fs = await import("fs");
+const path = await import("path");
+const bodyParser = await import("body-parser");
 
 module.exports = (app) => {
-  app.use(bodyParser.json())
-  // Register all routes inside tests/mock-api/routes.
-  fs.readdirSync(path.join(__dirname, 'routes')).forEach((routeFileName) => {
-    if (/\.js$/.test(routeFileName)) {
-      require(`./routes/${routeFileName}`)(app)
-    }
-  })
-}
+	app.use(bodyParser.json());
+	// Register all routes inside tests/mock-api/routes.
+	fs.readdirSync(path.join(__dirname, "routes")).forEach(
+		async (routeFileName) => {
+			if (/\.js$/.test(routeFileName)) {
+				await import(`./routes/${routeFileName}`)(app);
+			}
+		},
+	);
+};

@@ -130,7 +130,7 @@
           <v-row v-if="devices.length > 0">
             <v-col cols="12" md="8" lg="6">
               <div class="beep-label" v-text="`${$tc('device', 1)}`"></div>
-              <Treeselect
+              <TreeselectVue3
                 v-if="devices.length > 0"
                 v-model="selectedDeviceId"
                 :options="devicesOptions"
@@ -180,7 +180,7 @@
                 class="beep-label"
                 v-text="`${$t('Sensor_measurements')}`"
               ></div>
-              <Treeselect
+              <TreeselectVue3
                 v-model="selectedMeasurementTypes"
                 :options="measurementTypes"
                 :normalizer="normalizerMeasurementTypes"
@@ -200,7 +200,7 @@
                 class="beep-label"
                 v-text="`${$t('CSV_export_separator')}`"
               ></div>
-              <Treeselect
+              <TreeselectVue3
                 v-model="selectedSeparator"
                 :options="separators"
                 :placeholder="`${$t('Select')} ${$t('CSV_export_separator')}`"
@@ -259,7 +259,6 @@
 <script>
 import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import { readDevicesIfNotChecked, sortedDevices } from '@mixins/methodsMixin'
 import { momentFormat } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
@@ -267,7 +266,6 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     Layout,
-    Treeselect,
   },
   mixins: [momentFormat, readDevicesIfNotChecked, sortedDevices],
   data() {
@@ -312,8 +310,8 @@ export default {
       showDeviceDataLoadingIcon: false,
       ready: false,
       baseApiUrl:
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK,
+        import.meta.env.VITE_BASE_API_URL ||
+        import.meta.env.VITE_E_API_URL_FALLBACK,
       includeGroupData: false,
       includeSensorData: false,
       csvLink: null,

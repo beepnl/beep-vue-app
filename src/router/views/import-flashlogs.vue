@@ -696,8 +696,8 @@ export default {
       fromCache: true,
       matchesOverlay: null,
       baseApiUrl:
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK,
+        import.meta.env.VITE_BASE_API_URL ||
+        import.meta.env.VITE_E_API_URL_FALLBACK,
       importMessageCopy: null,
       itemsPerPage: 5, // was 1 for smAndDown for Vuetify 2 but in 3 there is only the normal row view (instead of 1 row per column for mobile view)
     }

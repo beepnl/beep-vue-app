@@ -313,8 +313,8 @@ export default {
   data: function() {
     return {
       dashboardUrl:
-        process.env.VUE_APP_DASHBOARD_URL ||
-        process.env.VUE_APP_DASHBOARD_URL_FALLBACK,
+        import.meta.env.VITE_DASHBOARD_URL ||
+        import.meta.env.VITE_HBOARD_URL_FALLBACK,
       snackbar: {
         show: false,
         timeout: 2000,

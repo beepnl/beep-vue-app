@@ -15,15 +15,15 @@ module.exports = {
   ],
   rules: {
     // Only allow debugger in development
-    // 'no-debugger': process.env.NODE_ENV !== 'production' ? 'error' : 'off',
+    // 'no-debugger': import.meta.env.NODE_ENV !== 'production' ? 'error' : 'off',
     'no-debugger': 'off',
     // Only allow `console.log` in development
-    // 'no-console': process.env.NODE_ENV !== 'production'
+    // 'no-console': import.meta.env.NODE_ENV !== 'production'
     //   ? ['error', { allow: ['warn', 'error'] }]
     //   : 'off',
       'no-console': 'off',
       // Only allow array-callback-return in development
-    'array-callback-return': process.env.NODE_ENV !== 'production' ? 'error' : 'off',
+    'array-callback-return': import.meta.env.NODE_ENV !== 'production' ? 'error' : 'off',
     'import/no-relative-parent-imports': 'error',
     'import/order': 'off', // 'error',
     'vue/array-bracket-spacing': 'error',

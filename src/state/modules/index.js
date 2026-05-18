@@ -2,80 +2,75 @@
 // will mirror [sub-]directory hierarchy and modules are namespaced
 // as the camelCase equivalent of their file name.
 
-import camelCase from 'lodash/camelCase'
+import camelCase from "lodash/camelCase";
 
-const modulesCache = {}
-const storeData = { modules: {} }
+const modulesCache = {};
+const storeData = { modules: {} };
 
-;(function updateModules() {
-  // Allow us to dynamically require all Vuex module files.
-  // https://webpack.js.org/guides/dependency-management/#require-context
-  const requireModule = require.context(
-    // Search for files in the current directory.
-    '.',
-    // Search for files in subdirectories.
-    true,
-    // Include any .js files that are not this file or a unit test.
-    /^((?!index|\.unit\.).)*\.js$/
-  )
+// ESM equivalent of require.context using import.meta.glob (Vite)
+// NOTE: Since you're using Vue CLI + webpack, see the note below.
+const moduleFiles = import.meta.glob("./**/*.js", { eager: true });
 
-  // For every Vuex module...
-  requireModule.keys().forEach((fileName) => {
-    const moduleDefinition =
-      requireModule(fileName).default || requireModule(fileName)
+function updateModules() {
+	for (const [fileName, moduleDefinition] of Object.entries(moduleFiles)) {
+		// Skip index files and unit test files
+		if (/index|\.unit\./.test(fileName)) continue;
 
-    // Skip the module during hot reload if it refers to the
-    // same module definition as the one we have cached.
-    if (modulesCache[fileName] === moduleDefinition) return
+		const resolvedModule = moduleDefinition.default || moduleDefinition;
 
-    // Update the module cache, for efficient hot reloading.
-    modulesCache[fileName] = moduleDefinition
+		// Skip the module during hot reload if it refers to the
+		// same module definition as the one we have cached.
+		if (modulesCache[fileName] === resolvedModule) return;
 
-    // Get the module path as an array.
-    const modulePath = fileName
-      // Remove the "./" from the beginning.
-      .replace(/^\.\//, '')
-      // Remove the file extension from the end.
-      .replace(/\.\w+$/, '')
-      // Split nested modules into an array path.
-      .split(/\//)
-      // camelCase all module namespaces and names.
-      .map(camelCase)
+		// Update the module cache, for efficient hot reloading.
+		modulesCache[fileName] = resolvedModule;
 
-    // Get the modules object for the current path.
-    const { modules } = getNamespace(storeData, modulePath)
+		// Get the module path as an array.
+		const modulePath = fileName
+			// Remove the "./" from the beginning.
+			.replace(/^\.\//, "")
+			// Remove the file extension from the end.
+			.replace(/\.\w+$/, "")
+			// Split nested modules into an array path.
+			.split(/\//)
+			// camelCase all module namespaces and names.
+			.map(camelCase);
 
-    // Add the module to our modules object.
-    modules[modulePath.pop()] = {
-      // Modules are namespaced by default.
-      namespaced: true,
-      ...moduleDefinition,
-    }
-  })
+		// Get the modules object for the current path.
+		const { modules } = getNamespace(storeData, modulePath);
 
-  // If the environment supports hot reloading...
-  if (module.hot) {
-    // Whenever any Vuex module is updated...
-    module.hot.accept(requireModule.id, () => {
-      // Update `storeData.modules` with the latest definitions.
-      updateModules()
-      // Trigger a hot update in the store.
-      require('../store').default.hotUpdate({ modules: storeData.modules })
-    })
-  }
-})()
+		// Add the module to our modules object.
+		modules[modulePath.pop()] = {
+			// Modules are namespaced by default.
+			namespaced: true,
+			...resolvedModule,
+		};
+	}
+
+	// Hot reloading via Vite's import.meta.hot
+	if (import.meta.hot) {
+		import.meta.hot.accept((newModuleFiles) => {
+			updateModules();
+			import("../store").then((store) => {
+				store.default.hotUpdate({ modules: storeData.modules });
+			});
+		});
+	}
+}
+
+updateModules();
 
 // Recursively get the namespace of a Vuex module, even if nested.
 function getNamespace(subtree, path) {
-  if (path.length === 1) return subtree
+	if (path.length === 1) return subtree;
 
-  const namespace = path.shift()
-  subtree.modules[namespace] = {
-    modules: {},
-    namespaced: true,
-    ...subtree.modules[namespace],
-  }
-  return getNamespace(subtree.modules[namespace], path)
+	const namespace = path.shift();
+	subtree.modules[namespace] = {
+		modules: {},
+		namespaced: true,
+		...subtree.modules[namespace],
+	};
+	return getNamespace(subtree.modules[namespace], path);
 }
 
-export default storeData.modules
+export default storeData.modules;

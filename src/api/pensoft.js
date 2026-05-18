@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const instance = axios.create({
   baseURL:
-    process.env.VUE_APP_PENSOFT_API_URL ||
-    process.env.VUE_APP_PENSOFT_API_URL_FALLBACK,
+    import.meta.env.VITE_PENSOFT_API_URL ||
+    import.meta.env.VITE_SOFT_API_URL_FALLBACK,
 })
 
 // On 401 error, reset user and redirect to login

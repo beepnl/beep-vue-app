@@ -282,8 +282,8 @@ export default {
         text: 'notification',
       },
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+        import.meta.env.VITE_ASSETS_URL ||
+        import.meta.env.VITE_ETS_URL_FALLBACK,
       alertTimer: null,
       alertInterval: 120000,
       selectedAlerts: [],

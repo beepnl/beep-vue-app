@@ -652,8 +652,8 @@ export default {
       ready: false,
       show500Response: false,
       baseApiUrl:
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK,
+        import.meta.env.VITE_BASE_API_URL ||
+        import.meta.env.VITE_E_API_URL_FALLBACK,
       pageIndex: 1,
       searchPageIndex: 1,
       loadingInspections: false,

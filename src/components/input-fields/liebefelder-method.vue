@@ -303,8 +303,8 @@ export default {
       framesForCalculation: null,
       showDescription: false,
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+        import.meta.env.VITE_ASSETS_URL ||
+        import.meta.env.VITE_ETS_URL_FALLBACK,
     }
   },
   computed: {

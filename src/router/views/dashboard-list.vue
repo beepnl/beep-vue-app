@@ -181,15 +181,14 @@ export default {
   data: function() {
     return {
       dashboardUrl:
-        process.env.VUE_APP_DASHBOARD_URL ||
-        process.env.VUE_APP_DASHBOARD_URL_FALLBACK,
+        import.meta.env.VITE_DASHBOARD_URL ||
+        import.meta.env.VITE_HBOARD_URL_FALLBACK,
       ready: false,
       errors: [],
       showLoadingIconById: [],
       showExplanation: false,
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+        import.meta.env.VITE_ETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK,
     }
   },
   computed: {

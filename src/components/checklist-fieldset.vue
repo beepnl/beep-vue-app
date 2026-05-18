@@ -1,186 +1,187 @@
 <template>
-  <div>
-    <div
-      v-if="
-        category.children.length > 0 &&
-          (category.input === 'label' ||
-            (category.input !== 'list' &&
-              category.input !== 'select' &&
-              category.input !== 'options'))
-      "
-    >
-      <div class="text-overline mb-2"
-        >{{ getLabel(category) }}
-        <a
-          v-if="category.description !== null || category.source !== null"
-          @click="showDescription = !showDescription"
-          ><v-icon
-            class="ml-1 icon-info"
-            :size="mobile ? 'x-small' : 'small'"
-            color="accent"
-            >mdi-information</v-icon
-          ></a
-        >
-      </div>
+	<div>
+		<div
+			v-if="
+				category.children.length > 0 &&
+					(category.input === 'label' ||
+						(category.input !== 'list' &&
+							category.input !== 'select' &&
+							category.input !== 'options'))
+			"
+		>
+			<div class="text-overline mb-2">
+				{{ getLabel(category) }}
+				<a
+					v-if="category.description !== null || category.source !== null"
+					@click="showDescription = !showDescription"
+					><v-icon
+						class="ml-1 icon-info"
+						:size="mobile ? 'x-small' : 'small'"
+						color="accent"
+						>mdi-information</v-icon
+					></a
+				>
+			</div>
 
-      <p v-if="showDescription" class="info-text">
-        <em v-if="category.description !== null && showDescription"
-          >{{ category.description }}<br
-        /></em>
-        <a
-          v-if="category.source !== null && showDescription"
-          :href="category.source"
-          target="_blank"
-          >{{ category.source }}</a
-        >
-      </p>
+			<p v-if="showDescription" class="info-text">
+				<em v-if="category.description !== null && showDescription"
+					>{{ category.description }}<br
+				/></em>
+				<a
+					v-if="category.source !== null && showDescription"
+					:href="category.source"
+					target="_blank"
+					>{{ category.source }}</a
+				>
+			</p>
 
-      <TopPhotoAnalysis
-        v-if="category.name === 'top_photo_analysis'"
-        :object="object"
-        :category="category"
-        :parse-mode="parseMode"
-        :nested="nested"
-      ></TopPhotoAnalysis>
+			<TopPhotoAnalysis
+				v-if="category.name === 'top_photo_analysis'"
+				:object="object"
+				:category="category"
+				:parse-mode="parseMode"
+				:nested="nested"
+			></TopPhotoAnalysis>
 
-      <LiebefelderMethod
-        v-if="category.name === 'liebefelder_method'"
-        :object="object"
-        :category="category"
-        :parse-mode="parseMode"
-        :nested="nested"
-      ></LiebefelderMethod>
+			<LiebefelderMethod
+				v-if="category.name === 'liebefelder_method'"
+				:object="object"
+				:category="category"
+				:parse-mode="parseMode"
+				:nested="nested"
+			></LiebefelderMethod>
 
-      <div
-        v-if="
-          category.children.length > 0 &&
-            category.name !== 'liebefelder_method' &&
-            category.name !== 'top_photo_analysis'
-        "
-        class="rounded-border"
-      >
-        <v-row>
-          <v-col
-            v-for="(item, index) in category.children"
-            :key="index"
-            cols="12"
-            :sm="itemFullWidth(item) ? 12 : 6"
-            :md="itemFullWidth(item) ? 12 : 4"
-            :lg="itemFullWidth(item) ? 12 : 3"
-          >
-            <ChecklistInput
-              v-if="item.input !== 'label'"
-              :object="object"
-              :item="item"
-              :parse-mode="parseMode"
-            ></ChecklistInput>
-            <ChecklistFieldset
-              v-if="item.input === 'label'"
-              :object="object"
-              :category="item"
-              :parse-mode="parseMode"
-            />
-            <ChecklistFieldset
-              v-else-if="item.children.length > 0 && showNestedFieldset(item)"
-              class="mt-6"
-              :category="item"
-              :object="object"
-              :nested="true"
-              :parse-mode="parseMode"
-            />
-          </v-col>
-        </v-row>
-      </div>
+			<div
+				v-if="
+					category.children.length > 0 &&
+						category.name !== 'liebefelder_method' &&
+						category.name !== 'top_photo_analysis'
+				"
+				class="rounded-border"
+			>
+				<v-row>
+					<v-col
+						v-for="(item, index) in category.children"
+						:key="index"
+						cols="12"
+						:sm="itemFullWidth(item) ? 12 : 6"
+						:md="itemFullWidth(item) ? 12 : 4"
+						:lg="itemFullWidth(item) ? 12 : 3"
+					>
+						<ChecklistInput
+							v-if="item.input !== 'label'"
+							:object="object"
+							:item="item"
+							:parse-mode="parseMode"
+						></ChecklistInput>
+						<ChecklistFieldset
+							v-if="item.input === 'label'"
+							:object="object"
+							:category="item"
+							:parse-mode="parseMode"
+						/>
+						<ChecklistFieldset
+							v-else-if="item.children.length > 0 && showNestedFieldset(item)"
+							class="mt-6"
+							:category="item"
+							:object="object"
+							:nested="true"
+							:parse-mode="parseMode"
+						/>
+					</v-col>
+				</v-row>
+			</div>
 
-      <ChecklistInput
-        v-if="category.children.length === 0"
-        :object="object"
-        :item="category"
-        :parse-mode="parseMode"
-      ></ChecklistInput>
-    </div>
+			<ChecklistInput
+				v-if="category.children.length === 0"
+				:object="object"
+				:item="category"
+				:parse-mode="parseMode"
+			></ChecklistInput>
+		</div>
 
-    <ChecklistInput
-      v-if="
-        category.input !== 'label' &&
-          (category.children.length === 0 ||
-            category.input === 'list' ||
-            category.input === 'select' ||
-            category.input === 'options')
-      "
-      :object="object"
-      :item="category"
-      :parse-mode="parseMode"
-    ></ChecklistInput>
-  </div>
+		<ChecklistInput
+			v-if="
+				category.input !== 'label' &&
+					(category.children.length === 0 ||
+						category.input === 'list' ||
+						category.input === 'select' ||
+						category.input === 'options')
+			"
+			:object="object"
+			:item="category"
+			:parse-mode="parseMode"
+		></ChecklistInput>
+	</div>
 </template>
 
 <script>
-import ChecklistFieldset from '@components/checklist-fieldset.vue'
-import ChecklistInput from '@components/checklist-input.vue'
-import LiebefelderMethod from '@components/input-fields/liebefelder-method.vue'
-import TopPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
-import { getLabel } from '@mixins/methodsMixin'
+	import ChecklistInput from "@components/checklist-input.vue";
+	import LiebefelderMethod from "@components/input-fields/liebefelder-method.vue";
+	import TopPhotoAnalysis from "@components/input-fields/top-photo-analysis.vue";
+	import { getLabel } from "@mixins/methodsMixin";
+	import { defineAsyncComponent } from "vue";
 
-export default {
-  name: 'ChecklistFieldset',
-  components: {
-    ChecklistFieldset,
-    // ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
-    ChecklistInput,
-    LiebefelderMethod,
-    TopPhotoAnalysis,
-  },
-  mixins: [getLabel],
-  props: {
-    category: {
-      type: Object,
-      default: null,
-      required: true,
-    },
-    object: {
-      type: Object,
-      default: null,
-      required: true,
-    },
-    nested: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    parseMode: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
-  data: function() {
-    return {
-      showDescription: false,
-    }
-  },
-  computed: {
-    locale() {
-      return this.$i18n.locale
-    },
-    mobile() {
-      return this.$vuetify.display.xs
-    },
-  },
-  methods: {
-    itemFullWidth(item) {
-      return this.nested || item.input === 'label' || item.input === 'text'
-    },
-    showNestedFieldset(item) {
-      return (
-        (item.input === 'boolean' ||
-          item.input === 'boolean_yes_red' ||
-          item.input === 'list_item') &&
-        (this.object[item.id] === 1 || this.parseMode)
-      )
-    },
-  },
-}
+	export default {
+		name: "ChecklistFieldset",
+		components: {
+			ChecklistFieldset: defineAsyncComponent(() =>
+				import("@components/checklist-fieldset.vue"),
+			), // needed to fix Vue recursive component error
+			ChecklistInput,
+			LiebefelderMethod,
+			TopPhotoAnalysis,
+		},
+		mixins: [getLabel],
+		props: {
+			category: {
+				type: Object,
+				default: null,
+				required: true,
+			},
+			object: {
+				type: Object,
+				default: null,
+				required: true,
+			},
+			nested: {
+				type: Boolean,
+				required: false,
+				default: false,
+			},
+			parseMode: {
+				type: Boolean,
+				required: false,
+				default: false,
+			},
+		},
+		data: function() {
+			return {
+				showDescription: false,
+			};
+		},
+		computed: {
+			locale() {
+				return this.$i18n.locale;
+			},
+			mobile() {
+				return this.$vuetify.display.xs;
+			},
+		},
+		methods: {
+			itemFullWidth(item) {
+				return this.nested || item.input === "label" || item.input === "text";
+			},
+			showNestedFieldset(item) {
+				return (
+					(item.input === "boolean" ||
+						item.input === "boolean_yes_red" ||
+						item.input === "list_item") &&
+					(this.object[item.id] === 1 || this.parseMode)
+				);
+			},
+		},
+	};
 </script>
 
 <style lang="scss"></style>

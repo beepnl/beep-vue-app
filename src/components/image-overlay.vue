@@ -54,8 +54,8 @@ export default {
   data() {
     return {
       baseApiUrl:
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK,
+        import.meta.env.VITE_BASE_API_URL ||
+        import.meta.env.VITE_E_API_URL_FALLBACK,
       overlay: true,
     }
   },
