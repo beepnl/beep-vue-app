@@ -179,7 +179,7 @@ export default {
       }
     },
     flattenItems(data, depth = 0) {
-      // eslint-disable-next-line camelcase
+       
       return data.reduce((r, { children, id, parent_id, trans, name }) => {
         const obj = {
           id,

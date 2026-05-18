@@ -98,7 +98,7 @@
 				</p>
 			</div>
 
-			<v-row density="compact">
+			<v-row class="density">
 				<v-col v-if="ownedDevices.length === 0" cols="12">
 					<p v-text="$t('sensors') + ' ' + $t('not_available_yet')"></p>
 					<div class="text-center">
@@ -113,8 +113,7 @@
 					v-for="(ownedDevice, index) in ownedDevices"
 					:key="ownedDevice.key"
 					sm="auto"
-					class="device-item"
-					density="compact"
+					class="device-item density"
 				>
 					<v-card
 						:class="

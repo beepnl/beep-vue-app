@@ -218,10 +218,9 @@
 
               <div v-if="item.children.length > 0" class="rounded-border">
                 <v-row class="ma-0">
-                  <v-col
+                  <v-col class="xs"
                     v-for="(item2, i) in item.children"
                     :key="i"
-                    xs="12"
                     sm="6"
                     md="4"
                     lg="3"

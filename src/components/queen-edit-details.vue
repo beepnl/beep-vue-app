@@ -330,7 +330,7 @@
 				return int === 1;
 			},
 			updateQueen(event, property) {
-				let value = null;
+				let value;
 				if (event === null || typeof event === "undefined") {
 					value = null;
 				} else if (event.target !== undefined) {

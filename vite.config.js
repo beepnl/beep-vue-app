@@ -7,7 +7,7 @@ import commonjs from "vite-plugin-commonjs";
 import vueDevTools from "vite-plugin-vue-devtools";
 import vuetify from "vite-plugin-vuetify";
 
-// import eslint from "vite-plugin-eslint"; TODO-VITE
+import eslint from "vite-plugin-eslint";
 
 const file = fileURLToPath(new URL("package.json", import.meta.url));
 const json = readFileSync(file, "utf8");
@@ -15,7 +15,7 @@ const pkg = JSON.parse(json);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [vue(), vueDevTools(), vuetify(), commonjs()], // eslint()],TODO-VITE
+	plugins: [vue(), vueDevTools(), vuetify(), commonjs(), eslint()],
 	// css: {
 	//   devSourcemap: false,
 	//   preprocessorOptions: {

@@ -31,7 +31,7 @@ instance.interceptors.response.use(
 // Dynamically add Accept-Language to requests
 instance.interceptors.request.use(function(config) {
   config.headers.common['Content-Type'] = 'application/json'
-  // eslint-disable-next-line dot-notation
+   
   config.headers.common['token'] = 'token_hash'
   return config
 })

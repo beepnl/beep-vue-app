@@ -152,6 +152,7 @@
 
 		<v-container>
 			<v-row
+				class="density"
 				v-for="invitation in invitations"
 				:key="'Invitation ' + invitation.id"
 				:class="
@@ -159,7 +160,6 @@
 						showApiaryPlaceholder ? 'mt-2' : ''
 					}`
 				"
-				density="compact"
 			>
 				<div
 					class="hive-set-title mt-0 d-flex flex-row justify-space-between align-end"
@@ -318,10 +318,10 @@
 			</v-row>
 
 			<v-row
+				class="density"
 				v-for="hiveSet in filteredHiveSets"
 				:key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
 				:class="`mx-n1 hive-set ${xsView ? 'xs-view' : ''}`"
-				density="compact"
 			>
 				<div
 					class="hive-set-title d-flex flex-row justify-flex-start align-center"
@@ -593,8 +593,7 @@
 			</div>
 			<v-row
 				v-else-if="sortedHiveSets.length && !filteredHiveSets.length"
-				density="compact"
-				class="mx-n1 hive-set"
+				class="mx-n1 hive-set density"
 			>
 				<v-col sm="auto" :cols="12">
 					{{ $t("no_results") }}
@@ -759,7 +758,7 @@
 				},
 			},
 			filteredHiveSets() {
-				let textFilteredHiveSets = [];
+				let textFilteredHiveSets;
 				if (this.hiveSearch === null) {
 					textFilteredHiveSets = this.sortedHiveSets;
 				} else {

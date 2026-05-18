@@ -1497,7 +1497,7 @@
 						this.prepParseMode();
 					}, 500);
 				} catch (error) {
-					let msg = "";
+					let msg;
 					this.errorMessage = this.$i18n.tc("Error", 1) + ": ";
 					if (error.response) {
 						console.log("Error: ", error.response);

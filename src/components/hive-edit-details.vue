@@ -322,7 +322,7 @@
 				this.$store.commit("hives/setHiveEdited", bool);
 			},
 			updateHive(event, property) {
-				let value = null;
+				let value;
 				if (event === null) {
 					value = null; // 0 ?
 				} else if (event.target !== undefined) {
@@ -358,7 +358,7 @@
 				);
 				const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name;
 
-				let hiveDimensions = null;
+				let hiveDimensions;
 				if (
 					this.hiveDimensionsList &&
 					this.hiveDimensionsList[hiveTypeName] !== undefined

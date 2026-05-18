@@ -60,7 +60,7 @@
 				return itemsArray;
 			},
 			updateNode(item) {
-				let newNode = {};
+				let newNode;
 				if (typeof item.children !== "undefined" && item.children.length > 0) {
 					newNode = {
 						id: item.id,
