@@ -18,25 +18,27 @@
 </template>
 
 <script>
-import svgDivider from '@/src/components/svg/svg-divider.vue'
-import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
-import svgHeader from '@components/svg/svg-header.vue'
-import { svgComputed, svgData } from '@mixins/svgMixin'
-import { getLabel } from '@mixins/methodsMixin'
+import svgDivider from "@/src/components/svg/svg-divider.vue";
+import svgHeader from "@components/svg/svg-header.vue";
+import { getLabel } from "@mixins/methodsMixin";
+import { svgComputed, svgData } from "@mixins/svgMixin";
+import { defineAsyncComponent } from "vue";
 
 export default {
   components: {
+    svgFieldset: defineAsyncComponent(() =>
+      import("@components/checklist-fieldset.vue")
+    ),
     svgDivider,
-    svgFieldset,
-    svgHeader,
+    svgHeader
   },
   mixins: [getLabel, svgComputed, svgData],
   props: {
     category: {
       type: Object,
       default: null,
-      required: true,
-    },
+      required: true
+    }
   },
   watch: {
     svgPageNr() {
@@ -47,55 +49,55 @@ export default {
         this.svgPageNr - 1
       ) {
         setTimeout(() => {
-          this.$store.commit('inspections/setData', {
-            prop: 'svgMaxPageNr',
-            value: this.svgPageNr - 1,
-          })
-        }, 50) // wait for svg to finish rendering
+          this.$store.commit("inspections/setData", {
+            prop: "svgMaxPageNr",
+            value: this.svgPageNr - 1
+          });
+        }, 50); // wait for svg to finish rendering
       }
-    },
+    }
   },
   methods: {
     calcRowXY(item) {
       if (this.svgPositionSet[item.id] === undefined) {
-        let itemCounter = this.svgItemCounter + 1
+        let itemCounter = this.svgItemCounter + 1;
 
         if (itemCounter === 1) {
           // init row height as first item height
-          this.$store.commit('inspections/setRowHeight', this.headerHeight)
+          this.$store.commit("inspections/setRowHeight", this.headerHeight);
         }
         // for new row, set Y (height so far) as previous Y + row height of previous row
-        this.$store.commit('inspections/setY', this.svgY + this.svgRowHeight)
+        this.$store.commit("inspections/setY", this.svgY + this.svgRowHeight);
         // set row height to category header item height
-        this.$store.commit('inspections/setRowHeight', this.headerHeight)
+        this.$store.commit("inspections/setRowHeight", this.headerHeight);
 
-        const x = this.xMargin
+        const x = this.xMargin;
         let y =
           (this.svgPageNr === 1 ? this.yStart : this.yMargin) +
           (this.svgPageNr - 1) * this.pageHeight +
-          this.svgY
+          this.svgY;
 
         if (y % this.pageHeight >= this.yMax) {
           // push category to next page if the next row does not fit on current page
-          this.$store.dispatch('inspections/nextPage')
-          y = this.yMargin + (this.svgPageNr - 1) * this.pageHeight
-          itemCounter = 1
-          this.$store.commit('inspections/setRowHeight', this.headerHeight)
+          this.$store.dispatch("inspections/nextPage");
+          y = this.yMargin + (this.svgPageNr - 1) * this.pageHeight;
+          itemCounter = 1;
+          this.$store.commit("inspections/setRowHeight", this.headerHeight);
         }
 
-        this.$store.commit('inspections/setItemCounter', itemCounter)
-        this.$store.commit('inspections/setColumnCounter', this.columnsPerRow)
-        this.$store.commit('inspections/setPosition', {
+        this.$store.commit("inspections/setItemCounter", itemCounter);
+        this.$store.commit("inspections/setColumnCounter", this.columnsPerRow);
+        this.$store.commit("inspections/setPosition", {
           id: item.id,
           x,
-          y,
-        })
+          y
+        });
 
-        return { x, y }
+        return { x, y };
       } else {
-        return this.svgPositionSet[item.id]
+        return this.svgPositionSet[item.id];
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
