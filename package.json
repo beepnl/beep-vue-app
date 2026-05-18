@@ -37,7 +37,7 @@
 		"kind-of": ">=6.0.3",
 		"lodash": "^4.17.21",
 		"luxon": "^1.28.1",
-		"moment-timezone": "^0.5.35",
+		"moment-timezone": "^0.6.1",
 		"nprogress": "^0.2.0",
 		"sortablejs": "^1.10.2",
 		"vue": "^3.5.12",

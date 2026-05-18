@@ -8,26 +8,40 @@ import fr from "@public/js/lang/fr";
 import it from "@public/js/lang/it";
 import nb from "@public/js/lang/nb";
 import nl from "@public/js/lang/nl";
-import router from "@router";
-import store from "@state/store";
-import { createApp } from "vue";
-import { createI18n } from "vue-i18n";
-// import pl from '@public/js/lang/pl'
 import pt from "@public/js/lang/pt";
 import ro from "@public/js/lang/ro";
 import ru from "@public/js/lang/ru";
 import sv from "@public/js/lang/sv";
-import ua from "@public/js/lang/ua";
+import uk from "@public/js/lang/uk"; // NB was ua TODO-VITE replace all ua locales in live db with uk and remove ua flag
+import "moment/dist/locale/cs";
+import "moment/dist/locale/de";
+import "moment/dist/locale/el";
+import "moment/dist/locale/es";
+import "moment/dist/locale/fi";
+import "moment/dist/locale/fr";
+import "moment/dist/locale/it";
+import "moment/dist/locale/nb";
+import "moment/dist/locale/nl";
+import "moment/dist/locale/pt";
+import "moment/dist/locale/ro";
+import "moment/dist/locale/ru";
+import "moment/dist/locale/sv";
+import "moment/dist/locale/uk";
+// import pl from '@public/js/lang/pl'
 // import enUS from '@public/js/lang/en-US'
 import "@assets/css/element.scss";
 import languages from "@assets/js/languages";
 import { ResizeObserver as Polyfill } from "@juggle/resize-observer";
 import { Treeselect } from "@komgrip/vue3-treeselect"; // original 'vue3-treeselect' does not support multiple values reactivity
+import router from "@router";
+import store from "@state/store";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import "element-plus/es/components/input-number/style/css";
 import moment from "moment-timezone";
+import { createApp } from "vue";
 import veProgress from "vue-ellipse-progress";
+import { createI18n } from "vue-i18n";
 import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
 import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 import vueCountryRegionSelect from "vue3-country-region-select";
@@ -169,8 +183,9 @@ const i18n = createI18n({
 		ro,
 		ru,
 		sv,
-		ua,
+		uk,
 		// add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
+		// also add import 'moment/dist/locale/[locale]'
 	},
 });
 
