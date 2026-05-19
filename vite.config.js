@@ -25,25 +25,6 @@ export default defineConfig({
       }
     }
   },
-  // css: {
-  // 	// Enable CSS source maps (disable for production)
-  // 	devSourcemap: false,
-  // 	preprocessorOptions: {
-  // 		scss: {
-  // 			// Equivalent to loaderOptions.scss.prependData
-  // 			additionalData: `
-  //           @import "@assets/css/mixins.scss";
-  //           @import "@assets/css/variables.scss";
-  //           @import "@assets/css/vuetify.scss";
-  //           @import "@assets/css/main.scss";
-  //           @import "@assets/css/icons.scss";
-  //           @import "@assets/css/typography.scss";
-  //           @import "@assets/css/vendors.scss";
-  //            @import "@assets/css/print.scss";
-  //         `,
-  // 		},
-  // 	},
-  // },
   define: {
     PKG: pkg
   },

@@ -2,11 +2,11 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="custom-text-overline mb-1">
-        <span class="lowercase">v</span>4.1.7 (30-04-2026) - Current version
+        <span class="lowercase">v</span>4.1.9 (19-05-2026) - Current version
       </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li>Upgraded "behind the scenes" to Vue 3 platform</li>
+          <li>Upgraded "behind the scenes" to Vue 3 + Vite</li>
           <li>Improved navigation menu structure</li>
           <li>
             <router-link :to="{ name: 'measurements' }">Data</router-link>:

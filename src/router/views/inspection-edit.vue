@@ -678,6 +678,7 @@ import OfflineInspection from "@components/offline-inspection.vue";
 import ParsedPages from "@components/parsed-pages.vue";
 import UploadInspection from "@components/upload-inspection.vue";
 import {
+  appVersion,
   getLabel,
   parseDate,
   readApiariesAndGroups,
@@ -705,6 +706,7 @@ export default {
     yesNoRating
   },
   mixins: [
+    appVersion,
     datePickerText,
     getLabel,
     parseDate,
@@ -779,7 +781,6 @@ export default {
       },
       forceParseMode: false,
       booleanDefault: [1, 0],
-      appVersion: import.meta.env.VITE_VERSION,
       checklistSvgId: null,
       newSvgName: null,
       errorMessage: null,

@@ -1,6 +1,14 @@
 import Api from "@api/Api";
 import { mapGetters } from "vuex";
 
+export const appVersion = {
+  data() {
+    return {
+      appVersion: PKG.version
+    };
+  }
+};
+
 export const checkAlerts = {
   computed: {
     ...mapGetters("alerts", [

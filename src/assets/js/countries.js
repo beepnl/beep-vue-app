@@ -628,7 +628,7 @@ export const treeselectCountries = {
           id: "NP"
         },
         {
-          label: "Netherlands (Kingdom of the)",
+          label: "Netherlands",
           id: "NL"
         },
         {
