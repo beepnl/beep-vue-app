@@ -51,7 +51,7 @@
 
         <v-row v-if="hiveTag">
           <v-col cols="12" sm="6" md="3">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{ "1. " + $tc("Hivetag", 1) }}
             </div>
 
@@ -87,7 +87,7 @@
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{ "2. " + $t("Select_hivetag_action") }}
             </div>
             <div
@@ -138,7 +138,7 @@
           </v-col>
 
           <v-col cols="12" md="6" class="my-3 mt-md-0">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{ "3. " + $tc("Select_hive", 1) }}
             </div>
             <div

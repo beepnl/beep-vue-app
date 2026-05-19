@@ -11,7 +11,7 @@
               "
             >
               <div
-                class="text-label-small d-flex mr-3 consent-custom-text-overline"
+                class="custom-text-overline d-flex mr-3 consent-custom-text-overline"
                 style="width: 100%;"
                 v-text="
                   compareMode

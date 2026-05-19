@@ -1,7 +1,10 @@
 <template>
   <Layout :title="`${$t('Data_export')}`">
     <v-container v-if="ready">
-      <div class="text-label-small mt-3 mb-2" v-text="$t('Data_export')"></div>
+      <div
+        class="custom-text-overline mt-3 mb-2"
+        v-text="$t('Data_export')"
+      ></div>
       <div class="rounded-border mb-6">
         <v-row>
           <v-col cols="12">
@@ -118,7 +121,7 @@
         </v-row>
 
         <div
-          class="text-label-small mb-2"
+          class="custom-text-overline mb-2"
           v-text="$tc('device', 1) + ' ' + $t('Data_export')"
         ></div>
         <div class="rounded-border">

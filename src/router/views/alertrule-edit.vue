@@ -33,7 +33,7 @@
 
       <v-container class="content-container">
         <div
-          class="text-label-small mb-2"
+          class="custom-text-overline mb-2"
           v-text="$t('Alertrule_summary_title')"
         ></div>
         <em
@@ -53,7 +53,7 @@
         </v-alert>
 
         <div
-          class="text-label-small mb-2"
+          class="custom-text-overline mb-2"
           v-text="$t('Alertrule_settings_title')"
         ></div>
         <div v-if="activeAlertRule" class="alertrule-card rounded-border mb-8">
@@ -296,7 +296,7 @@
         </div>
 
         <div
-          class="text-label-small mb-2"
+          class="custom-text-overline mb-2"
           v-text="$t('Alertrule_exclude_title')"
         ></div>
         <div v-if="activeAlertRule" class="alertrule-card rounded-border">

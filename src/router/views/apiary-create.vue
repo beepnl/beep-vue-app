@@ -46,7 +46,7 @@
             >
               <v-spacer></v-spacer>
               <div class="d-flex align-center">
-                <span class="text-label-small mr-3 d-flex align-center"
+                <span class="custom-text-overline mr-3 d-flex align-center"
                   >{{ $t("start_here") + " "
                   }}<v-icon class="bounce">mdi-arrow-right</v-icon></span
                 >
@@ -63,7 +63,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-label-small mb-4">
+                <div class="custom-text-overline mb-4">
                   {{ $t("new_apiary_explanation") }}
                 </div>
                 <v-img
@@ -102,7 +102,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-label-small mb-4">
+                <div class="custom-text-overline mb-4">
                   {{ $tc("Location", 1) + " " + $t("settings") }}
                 </div>
                 <div class="rounded-border">
@@ -223,7 +223,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-label-small mb-4">
+                <div class="custom-text-overline mb-4">
                   {{
                     $t("Place") +
                       " " +
@@ -250,14 +250,12 @@
                   <v-row>
                     <v-col cols="12" sm="4">
                       <div class="beep-label" v-text="`${$t('Country')}`"></div>
-                      <!-- <country-select
+                      <TreeselectVue3
                         v-if="newHive"
-                        v-model="newHive.country_code"
-                        :country="newHive.country_code.toUpperCase()"
-                        :usei18n="false"
-                        class="country-select"
+                        v-model="countryCode"
+                        :options="treeselectCountries"
                         @update:model-value="setApiaryEdited(true)"
-                      /> -->
+                      />
                     </v-col>
                     <v-col cols="6" sm="4">
                       <div
@@ -404,7 +402,7 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-label-small mb-4">
+                <div class="custom-text-overline mb-4">
                   {{ $tc("Location", 1) + " " + $tc("hive", 2) }}
                 </div>
                 <div class="rounded-border">
@@ -493,6 +491,7 @@
 import Confirm from "@/src/components/confirm-dialog.vue";
 import Layout from "@/src/router/layouts/back-layout.vue";
 import Api from "@api/Api";
+import { treeselectCountries } from "@assets/js/countries.js";
 import ApiaryPreview from "@components/apiary-preview.vue";
 import HiveEditDetails from "@components/hive-edit-details.vue";
 import NumericInput from "@components/input-fields/numeric-input.vue";
@@ -512,7 +511,11 @@ export default {
     NumericInput,
     VueGoogleAutocomplete
   },
-  mixins: [readApiaries, readApiariesAndGroupsIfNotPresent],
+  mixins: [
+    readApiaries,
+    readApiariesAndGroupsIfNotPresent,
+    treeselectCountries
+  ],
   data: function() {
     return {
       snackbar: {
@@ -550,6 +553,18 @@ export default {
       },
       set(value) {
         this.colorPickerValue = value;
+      }
+    },
+    countryCode: {
+      get() {
+        return this.newHive.country_code
+          ? this.newHive.country_code.toUpperCase()
+          : null;
+      },
+      set(value) {
+        if (this.newHive) {
+          this.newHive.country_code = value;
+        }
       }
     },
     locale() {
@@ -624,13 +639,13 @@ export default {
         frames: 10,
         offset: 1,
         prefix: this.$i18n.tc("Hive_short", 1),
-        country_code: this.locale,
+        country_code: null,
         city: "",
         postal_code: "",
         street: "",
         street_no: "",
-        lat: 52,
-        lon: 5,
+        lat: null,
+        lon: null,
         bb_width_cm: null,
         bb_depth_cm: null,
         bb_height_cm: null,
@@ -805,7 +820,6 @@ export default {
     border: 1px solid rgba(0, 0, 0, 0.3) !important;
   }
 
-  .country-select,
   .autocomplete-field {
     width: 100%;
     max-width: 100%;

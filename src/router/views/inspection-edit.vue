@@ -475,7 +475,7 @@
                 <v-row class="sub-inspection-wrapper my-0">
                   <v-col cols="12">
                     <div
-                      class="text-label-small mb-2"
+                      class="custom-text-overline mb-2"
                       v-text="`${$t('positive_impression')}`"
                     ></div>
                     <div class="sub-inspection-details rounded-border">
@@ -548,7 +548,7 @@
                 <v-row class="sub-inspection-wrapper my-0">
                   <v-col cols="12">
                     <div
-                      class="text-label-small mb-2"
+                      class="custom-text-overline mb-2"
                       v-text="`${$t('reminder')}`"
                     ></div>
                     <div class="sub-inspection-details rounded-border">

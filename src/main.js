@@ -44,7 +44,6 @@ import veProgress from "vue-ellipse-progress";
 import { createI18n } from "vue-i18n";
 import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
 import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
-// import vueCountryRegionSelect from "vue3-country-region-select"; TODO-VITE replace
 import "vue3-treeselect/dist/vue3-treeselect.css";
 // * Vuetify
 import { createVuetify } from "vuetify";
@@ -148,6 +147,12 @@ const vuetify = createVuetify({
           // info: "#000000",
           // success: "#000000",
           // warning: "#000000",
+        },
+        variables: {
+          "border-color": "#bbbbbb",
+          "border-opacity": 0.8,
+          "medium-emphasis-opacity": 1,
+          "hover-opacity": 0
         }
       },
       beepDarkTheme: {
@@ -195,7 +200,6 @@ app.use(router);
 app.use(store);
 app.use(i18n);
 app.use(vuetify);
-// app.use(vueCountryRegionSelect);
 app.use(veProgress);
 app.config.globalProperties.$moment = moment;
 

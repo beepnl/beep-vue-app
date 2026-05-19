@@ -44,7 +44,7 @@
 
         <v-row v-if="dashboard">
           <v-col cols="12" md="6" xl="5">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{ "1. " + $tc("Select_hive", 2) }}
             </div>
             <div v-if="!showApiaryPlaceholder" class="beep-label mt-n3 mb-3">
@@ -131,7 +131,7 @@
           </v-col>
 
           <v-col cols="12" md="6">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{ "2. " + $t("Settings") }}
             </div>
 
@@ -244,7 +244,7 @@
                 xl="3"
                 :class="xlScreen ? 'mt-n11' : 'mt-6'"
               >
-                <div class="text-label-small mb-3">
+                <div class="custom-text-overline mb-3">
                   {{ "3. " + $t("Preview_share") }}
                 </div>
 
@@ -254,7 +254,7 @@
                     <a :href="dashboardUrl + dashboard.code" target="_blank">
                       <v-icon class="mr-2" color="accent">mdi-link</v-icon>
                       <span
-                        class="text-label-small"
+                        class="custom-text-overline"
                         v-text="dashboard.code"
                       ></span>
                     </a>

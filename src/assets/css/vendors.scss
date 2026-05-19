@@ -493,8 +493,8 @@
   /* Treeselect */
   .vue-treeselect .vue-treeselect__control {
     background: transparent;
-    border-color: $color-grey-light;
-    border-radius: 4px;
+    border-color: $color-grey-light !important;
+    border-radius: 4px !important;
   }
 
   .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {

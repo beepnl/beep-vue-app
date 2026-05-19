@@ -77,7 +77,7 @@
         </v-col>
       </v-row>
       <div class="mb-2">
-        <div v-if="ownedDevices.length > 0" class="text-label-small">
+        <div v-if="ownedDevices.length > 0" class="custom-text-overline">
           {{ $tc("device", ownedDevices.length) }}
           <v-icon
             class="ml-1 icon-info cursor-pointer"
@@ -382,7 +382,7 @@
                             class="d-flex flex-row align-center mb-3 mr-3"
                           >
                             <div
-                              class="text-label-small"
+                              class="custom-text-overline"
                               v-text="
                                 `${$tc(
                                   'sensor_definition',

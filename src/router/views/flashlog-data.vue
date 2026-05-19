@@ -196,7 +196,7 @@
             >
               <div class="chart-wrapper pt-0 pb-5 pb-md-10">
                 <div
-                  class="text-label-small mt-0 mb-2 text-center"
+                  class="custom-text-overline mt-0 mb-2 text-center"
                   v-text="dataSet + nrOfMeasurementsText(dataSet)"
                 ></div>
                 <MeasurementsChartLine

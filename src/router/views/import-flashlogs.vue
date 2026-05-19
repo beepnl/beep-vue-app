@@ -61,7 +61,7 @@
         <v-col v-if="flashLogs.length > 0" cols="12">
           <div class="d-flex justify-space-between align-end">
             <div class="mb-2">
-              <div class="text-label-small mt-0 mt-sm-3">
+              <div class="custom-text-overline mt-0 mt-sm-3">
                 {{ $t("Log_files") }}
                 <v-icon
                   class="ml-1 icon-info cursor-pointer"
@@ -268,7 +268,7 @@
           cols="12"
         >
           <div
-            class="text-label-small mt-0 mt-sm-3 mb-3 d-flex justify-space-between align-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 d-flex justify-space-between align-center"
           >
             <span v-text="selectedFlashLogHeader"></span>
             <v-spacer />

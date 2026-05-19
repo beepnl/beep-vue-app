@@ -15,7 +15,7 @@
               target="_blank"
             >
               <v-icon color="accent" start>mdi-download</v-icon>
-              {{ $t('Download_hivetags') }}
+              {{ $t("Download_hivetags") }}
             </v-btn>
             <v-btn
               :to="{ name: 'hivetag-create' }"
@@ -24,7 +24,7 @@
               class="save-button-mobile-wide"
             >
               <v-icon color="black" start>mdi-plus</v-icon>
-              {{ $t('Add_hivetag') }}
+              {{ $t("Add_hivetag") }}
             </v-btn>
           </v-card-actions>
         </v-row>
@@ -49,13 +49,13 @@
             target="_blank"
           >
             <v-icon color="accent" start>mdi-download</v-icon>
-            {{ $t('Download_hivetags') }}
+            {{ $t("Download_hivetags") }}
           </v-btn>
           <div
             v-if="!showHiveTagPlaceholder"
             class="d-flex justify-start align-center"
           >
-            <div class="text-label-small ">{{ $tc('Hivetag', 2) }}</div>
+            <div class="custom-text-overline ">{{ $tc("Hivetag", 2) }}</div>
             <v-icon
               class="icon-info cursor-pointer ml-2"
               :size="mobile ? 'x-small' : 'small'"
@@ -67,14 +67,14 @@
           <div v-if="showExplanation" class="d-flex justify-start align-start">
             <p class="beep-label">
               <em
-                >{{ $t('Hivetag_exp_1') }}
+                >{{ $t("Hivetag_exp_1") }}
                 <a :href="assetsUrl + pdfPath" target="_blank">{{
-                  $t('Hivetag_download_text')
+                  $t("Hivetag_download_text")
                 }}</a
-                >{{ $t('Hivetag_exp_2') }}
+                >{{ $t("Hivetag_exp_2") }}
                 <a :href="$t('Hivetag_support_url')" target="_blank"
                   ><v-icon size="small" color="accent">mdi-arrow-right</v-icon
-                  >{{ $t('Hivetags_url_text') }}</a
+                  >{{ $t("Hivetags_url_text") }}</a
                 >
               </em>
             </p>
@@ -88,16 +88,16 @@
                 <thead>
                   <tr>
                     <th class="text-left td--qr">
-                      {{ $tc('qrcode', 1) }}
+                      {{ $tc("qrcode", 1) }}
                     </th>
                     <th class="text-center">
-                      {{ $tc('Hive', 1) }}
+                      {{ $tc("Hive", 1) }}
                     </th>
                     <th class="text-left">
-                      {{ $tc('Action', 1) }}
+                      {{ $tc("Action", 1) }}
                     </th>
                     <th class="text-left">
-                      {{ $t('edit') }}
+                      {{ $t("edit") }}
                     </th>
                     <th></th>
                   </tr>
@@ -135,7 +135,7 @@
                         class="mr-1 mr-sm-2 mr-md-3"
                         :to="{
                           name: 'hivetag-edit',
-                          params: { id: hiveTag.tag },
+                          params: { id: hiveTag.tag }
                         }"
                       >
                         <v-icon color="accent">mdi-pencil</v-icon>
@@ -169,23 +169,23 @@
 
 <script>
 // import Api from '@api/Api'
-import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import HiveIcon from '@components/hive-icon.vue'
-import qrCodeIcon from '@components/qrcode-icon.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import HiveIcon from "@components/hive-icon.vue";
+import qrCodeIcon from "@components/qrcode-icon.vue";
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
-  readHiveTags,
-} from '@mixins/methodsMixin'
-import { mapGetters } from 'vuex'
+  readHiveTags
+} from "@mixins/methodsMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Confirm,
     HiveIcon,
     Layout,
-    qrCodeIcon,
+    qrCodeIcon
   },
   mixins: [deleteHiveTag, readApiariesAndGroupsIfNotPresent, readHiveTags],
   data: function() {
@@ -197,47 +197,47 @@ export default {
       assetsUrl:
         import.meta.env.VITE_ASSETS_URL ||
         import.meta.env.VITE_ETS_URL_FALLBACK,
-      pdfPath: '/img/beep-hivetags-A6.pdf',
-    }
+      pdfPath: "/img/beep-hivetags-A6.pdf"
+    };
   },
   computed: {
-    ...mapGetters('hives', ['hiveTagActionDescriptions', 'hiveTags']),
-    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
+    ...mapGetters("hives", ["hiveTagActionDescriptions", "hiveTags"]),
+    ...mapGetters("locations", ["apiaries", "groups", "hivesObject"]),
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     showHiveTagPlaceholder() {
-      return this.hiveTags.length === 0
+      return this.hiveTags.length === 0;
     },
     sortedHiveTags() {
       const sortedHiveTags = this.hiveTags.slice().sort(function(a, b) {
         if (a.tag.toLowerCase() > b.tag.toLowerCase()) {
-          return 1
+          return 1;
         }
         if (b.tag.toLowerCase() > a.tag.toLowerCase()) {
-          return -1
+          return -1;
         }
-        return 0
-      })
-      return sortedHiveTags
-    },
+        return 0;
+      });
+      return sortedHiveTags;
+    }
   },
   created() {
     this.readHiveTagsIfNotChecked().then(() => {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (this.hiveTags.length === 0) {
-          this.showExplanation = true
+          this.showExplanation = true;
         }
-        this.ready = true
-      })
-    })
+        this.ready = true;
+      });
+    });
   },
   methods: {
     getDescription(actionId) {
-      return this.$i18n.t(this.hiveTagActionDescriptions[actionId])
-    },
-  },
-}
+      return this.$i18n.t(this.hiveTagActionDescriptions[actionId]);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

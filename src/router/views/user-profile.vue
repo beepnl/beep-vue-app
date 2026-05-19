@@ -85,7 +85,7 @@
             </v-alert>
           </v-col>
         </v-row>
-        <div class="text-label-small mb-3" v-text="$t('User_data')"></div>
+        <div class="custom-text-overline mb-3" v-text="$t('User_data')"></div>
         <v-card>
           <v-card-text>
             <v-text-field

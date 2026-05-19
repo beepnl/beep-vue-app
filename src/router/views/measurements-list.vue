@@ -346,7 +346,7 @@
                   "
                 >
                   <div class="d-flex justify-start align-center">
-                    <div class="text-label-small text-center">
+                    <div class="custom-text-overline text-center">
                       {{ $t(getSensorMeasurement(sensor).abbreviation) }}
                     </div>
                     <v-icon
@@ -408,7 +408,7 @@
               ></div>
 
               <div
-                class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+                class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
                 v-text="$t('Sound_measurements')"
               ></div>
               <div class="pt-3">
@@ -445,7 +445,7 @@
 
                 <div
                   v-if="index === 0"
-                  class="text-label-small mt-n4 mt-sm-3 mb-3 text-center"
+                  class="custom-text-overline mt-n4 mt-sm-3 mb-3 text-center"
                   v-text="
                     $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
                   "

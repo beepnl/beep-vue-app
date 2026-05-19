@@ -1,416 +1,414 @@
 <!-- eslint-disable vue/comma-dangle -->
 <template>
-	<v-row v-if="ready" class="hive-edit-details-wrapper">
-		<v-col cols="12">
-			<div
-				class="text-label-small mb-3"
-				v-text="`${$tc('Hive', 1) + ' ' + $t('configuration')}`"
-			></div>
+  <v-row v-if="ready" class="hive-edit-details-wrapper">
+    <v-col cols="12">
+      <div
+        class="custom-text-overline mb-3"
+        v-text="`${$tc('Hive', 1) + ' ' + $t('configuration')}`"
+      ></div>
 
-			<div class="hive-edit-details rounded-border">
-				<v-row class="my-0">
-					<v-col cols="12" md="6" lg="4">
-						<v-row class="my-0">
-							<v-col cols="12" md="7">
-								<div
-									class="beep-label"
-									v-text="
-										`${$t('Hive_color')} (${$t('overrides_layer_colors')})`
-									"
-								></div>
-								<v-sheet
-									class="hive-color cursor-pointer"
-									:color="hive.color !== null ? hive.color : '#F8B133'"
-									@click="openColorPicker"
-								></v-sheet>
-							</v-col>
+      <div class="hive-edit-details rounded-border">
+        <v-row class="my-0">
+          <v-col cols="12" md="6" lg="4">
+            <v-row class="my-0">
+              <v-col cols="12" md="7">
+                <div
+                  class="beep-label"
+                  v-text="
+                    `${$t('Hive_color')} (${$t('overrides_layer_colors')})`
+                  "
+                ></div>
+                <v-sheet
+                  class="hive-color cursor-pointer"
+                  :color="hive.color !== null ? hive.color : '#F8B133'"
+                  @click="openColorPicker"
+                ></v-sheet>
+              </v-col>
 
-							<v-col cols="12" md="5">
-								<div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
-								<!-- this number element can't be replaced by numeric input as it has to use model-value which can't be adjusted as a prop in another component -->
-								<ElInputNumber
-									v-if="hive && hive.layers"
-									:model-value="
-										hive.layers.length > 0
-											? getMaxFramecount(hive.layers)
-											: defaultFrameCount
-									"
-									:min="1"
-									:max="24"
-									:step="1"
-									:precision="0"
-									:disabled="hive.layers.length === 0"
-									@change="updateHiveLayers(parseInt($event), 'framecount')"
-								></ElInputNumber>
-							</v-col>
-						</v-row>
+              <v-col cols="12" md="5">
+                <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
+                <!-- this number element can't be replaced by numeric input as it has to use model-value which can't be adjusted as a prop in another component -->
+                <ElInputNumber
+                  v-if="hive && hive.layers"
+                  :model-value="
+                    hive.layers.length > 0
+                      ? getMaxFramecount(hive.layers)
+                      : defaultFrameCount
+                  "
+                  :min="1"
+                  :max="24"
+                  :step="1"
+                  :precision="0"
+                  :disabled="hive.layers.length === 0"
+                  @change="updateHiveLayers(parseInt($event), 'framecount')"
+                ></ElInputNumber>
+              </v-col>
+            </v-row>
 
-						<v-overlay v-model="overlay" class="align-center justify-center">
-							<v-toolbar
-								class="hive-color-picker-toolbar"
-								density="compact"
-								theme="light"
-								:title="$t('Hive_color')"
-								flat
-							>
-								<v-spacer></v-spacer>
-								<v-icon class="mr-1" @click="cancelColorPicker"
-									>mdi-close</v-icon
-								>
-							</v-toolbar>
+            <v-overlay v-model="overlay" class="align-center justify-center">
+              <v-toolbar
+                class="hive-color-picker-toolbar"
+                density="compact"
+                theme="light"
+                :title="$t('Hive_color')"
+                flat
+              >
+                <v-spacer></v-spacer>
+                <v-icon class="mr-1" @click="cancelColorPicker"
+                  >mdi-close</v-icon
+                >
+              </v-toolbar>
 
-							<v-color-picker
-								v-model="colorPicker"
-								class="hive-color-picker flex-color-picker"
-								position="relative"
-								:swatches="swatchesHive"
-								:modes="['rgb']"
-								:mode="'rgb'"
-								show-swatches
-								hide-canvas
-							>
-							</v-color-picker>
+              <v-color-picker
+                v-model="colorPicker"
+                class="hive-color-picker flex-color-picker"
+                position="relative"
+                :swatches="swatchesHive"
+                :modes="['rgb']"
+                :mode="'rgb'"
+                show-swatches
+                hide-canvas
+              >
+              </v-color-picker>
 
-							<v-toolbar
-								class="hive-color-picker-footer"
-								density="compact"
-								theme="light"
-								flat
-							>
-								<v-spacer></v-spacer>
-								<v-icon
-									class="mr-1"
-									color="accent"
-									@click="updateHiveLayers(colorPickerValue, 'color')"
-									>mdi-check</v-icon
-								>
-							</v-toolbar>
-						</v-overlay>
+              <v-toolbar
+                class="hive-color-picker-footer"
+                density="compact"
+                theme="light"
+                flat
+              >
+                <v-spacer></v-spacer>
+                <v-icon
+                  class="mr-1"
+                  color="accent"
+                  @click="updateHiveLayers(colorPickerValue, 'color')"
+                  >mdi-check</v-icon
+                >
+              </v-toolbar>
+            </v-overlay>
 
-						<HiveFactory
-							v-if="hive && hive.layers"
-							:hive="hive"
-							:color-preview="colorPreview"
-							:color-picker-value="colorPickerValue"
-							@update-defaultframecount="defaultFrameCount = $event"
-						></HiveFactory>
-					</v-col>
+            <HiveFactory
+              v-if="hive && hive.layers"
+              :hive="hive"
+              :color-preview="colorPreview"
+              :color-picker-value="colorPickerValue"
+              @update-defaultframecount="defaultFrameCount = $event"
+            ></HiveFactory>
+          </v-col>
 
-					<v-col cols="12" md="6" lg="4">
-						<v-row class="my-0">
-							<v-col cols="12" sm="7" md="12">
-								<div class="beep-label" v-text="`${$t('Hive_type')}*`"></div>
-								<TreeselectVue3
-									:model-value="hive.hive_type_id"
-									:options="treeselectHiveTypes"
-									:disable-branch-nodes="true"
-									:no-results-text="`${$t('no_results')}`"
-									:default-expand-level="1"
-									:label="`${$t('Select')} ${$t('Hive_type')}`"
-									:placeholder="`${$t('Select')} ${$t('Hive_type')}`"
-									search-nested
-									required
-									@update:model-value="updateHiveType($event)"
-								/>
-							</v-col>
-						</v-row>
+          <v-col cols="12" md="6" lg="4">
+            <v-row class="my-0">
+              <v-col cols="12" sm="7" md="12">
+                <div class="beep-label" v-text="`${$t('Hive_type')}*`"></div>
+                <TreeselectVue3
+                  :model-value="hive.hive_type_id"
+                  :options="treeselectHiveTypes"
+                  :disable-branch-nodes="true"
+                  :no-results-text="`${$t('no_results')}`"
+                  :default-expand-level="1"
+                  :label="`${$t('Select')} ${$t('Hive_type')}`"
+                  :placeholder="`${$t('Select')} ${$t('Hive_type')}`"
+                  search-nested
+                  required
+                  @update:model-value="updateHiveType($event)"
+                />
+              </v-col>
+            </v-row>
 
-						<v-row class="hive-dimensions-wrapper my-0">
-							<v-col cols="12" sm="7" md="12">
-								<div
-									class="beep-label"
-									v-text="`${$t('Brood_box_and_frame')} ${$t('dimensions')}`"
-								></div>
-								<div class="hive-dimensions-details rounded-border">
-									<v-row class="my-0">
-										<v-col cols="12" md="6">
-											<div
-												v-for="(bbDimension, b) in bbDimensions"
-												:key="b"
-												class="mt-1 mb-2"
-											>
-												<div
-													class="beep-label"
-													v-text="`${$t(bbDimension)}`"
-												></div>
-												<NumericInput
-													:object="hive"
-													:property="bbDimension"
-													:min="0"
-													:max="100"
-													:step="0.1"
-													:disabled="hive.layers.length === 0"
-													@update-number="updateHive($event, bbDimension)"
-												></NumericInput>
-											</div>
-										</v-col>
+            <v-row class="hive-dimensions-wrapper my-0">
+              <v-col cols="12" sm="7" md="12">
+                <div
+                  class="beep-label"
+                  v-text="`${$t('Brood_box_and_frame')} ${$t('dimensions')}`"
+                ></div>
+                <div class="hive-dimensions-details rounded-border">
+                  <v-row class="my-0">
+                    <v-col cols="12" md="6">
+                      <div
+                        v-for="(bbDimension, b) in bbDimensions"
+                        :key="b"
+                        class="mt-1 mb-2"
+                      >
+                        <div
+                          class="beep-label"
+                          v-text="`${$t(bbDimension)}`"
+                        ></div>
+                        <NumericInput
+                          :object="hive"
+                          :property="bbDimension"
+                          :min="0"
+                          :max="100"
+                          :step="0.1"
+                          :disabled="hive.layers.length === 0"
+                          @update-number="updateHive($event, bbDimension)"
+                        ></NumericInput>
+                      </div>
+                    </v-col>
 
-										<v-col cols="12" md="6">
-											<div
-												v-for="(frDimension, f) in frDimensions"
-												:key="f"
-												class="mt-1 mb-2"
-											>
-												<div
-													class="beep-label"
-													v-text="`${$t(frDimension)}`"
-												></div>
-												<NumericInput
-													:object="hive"
-													:property="frDimension"
-													:min="0"
-													:max="100"
-													:step="0.1"
-													:disabled="hive.layers.length === 0"
-													@update-number="updateHive($event, frDimension)"
-												></NumericInput>
-											</div>
-										</v-col>
-									</v-row>
-								</div>
-							</v-col>
-						</v-row>
-					</v-col>
-				</v-row>
-			</div>
-		</v-col>
-	</v-row>
+                    <v-col cols="12" md="6">
+                      <div
+                        v-for="(frDimension, f) in frDimensions"
+                        :key="f"
+                        class="mt-1 mb-2"
+                      >
+                        <div
+                          class="beep-label"
+                          v-text="`${$t(frDimension)}`"
+                        ></div>
+                        <NumericInput
+                          :object="hive"
+                          :property="frDimension"
+                          :min="0"
+                          :max="100"
+                          :step="0.1"
+                          :disabled="hive.layers.length === 0"
+                          @update-number="updateHive($event, frDimension)"
+                        ></NumericInput>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-	import HiveFactory from "@components/hive-factory.vue";
-	import NumericInput from "@components/input-fields/numeric-input.vue";
-	import { getMaxFramecount, readTaxonomy } from "@mixins/methodsMixin";
-	import { ElInputNumber } from "element-plus";
-	import { mapGetters } from "vuex";
+import HiveFactory from "@components/hive-factory.vue";
+import NumericInput from "@components/input-fields/numeric-input.vue";
+import { getMaxFramecount, readTaxonomy } from "@mixins/methodsMixin";
+import { ElInputNumber } from "element-plus";
+import { mapGetters } from "vuex";
 
-	export default {
-		components: {
-			HiveFactory,
-			NumericInput,
-			ElInputNumber,
-		},
-		mixins: [getMaxFramecount, readTaxonomy],
-		props: {
-			hive: {
-				type: Object,
-				default: null,
-				required: true,
-			},
-		},
-		data: function() {
-			return {
-				swatchesHive: [
-					["#e9eae1", "#EAD49E", "#F8B133"],
-					["#2dbde5", "#094da0", "#27820e"],
-					["#ffe900", "#d80d0d", "#754B1F"],
-				],
-				bbDimensions: ["bb_width_cm", "bb_height_cm", "bb_depth_cm"],
-				frDimensions: ["fr_width_cm", "fr_height_cm"],
-				overlay: false,
-				colorPreview: false,
-				colorPickerValue: "",
-				ready: false,
-				defaultFrameCount: 10,
-			};
-		},
-		computed: {
-			...mapGetters("taxonomy", ["hiveDimensionsList", "hiveTypesList"]),
-			locale() {
-				return this.$i18n.locale;
-			},
-			colorPicker: {
-				get() {
-					if (this.colorPickerValue !== "") {
-						return this.colorPickerValue;
-					} else if (this.hive) {
-						return this.hive.color !== null ? this.hive.color : "#F8B133";
-					} else {
-						return "";
-					}
-				},
-				set(value) {
-					this.colorPreview = true;
-					this.colorPickerValue = value;
-				},
-			},
-			treeselectHiveTypes() {
-				if (this.hiveTypesList.length) {
-					const locale = this.selectLocale(this.hiveTypesList);
-					const hiveTypePerGroup = JSON.parse(
-						JSON.stringify(this.hiveTypesList),
-					) // clone without v-bind to avoid vuex warning when mutating
-						.reduce(function(r, a) {
-							r[a.group[locale]] = r[a.group[locale]] || [];
-							r[a.group[locale]].push(a);
-							return r;
-						}, {});
-					const sortedGroups = Object.keys(hiveTypePerGroup)
-						.slice()
-						.sort(function(a, b) {
-							if (a < b) {
-								return -1;
-							}
-							if (a > b) {
-								return 1;
-							}
-							return 0;
-						});
-					const treeselectArray = [];
-					sortedGroups.forEach((sortedGroup, index) => {
-						const sortedGroupObject = {
-							id: -(index + 1),
-							label: sortedGroup,
-							children: hiveTypePerGroup[sortedGroup],
-						};
-						treeselectArray.push(sortedGroupObject);
-					});
-					treeselectArray.map((groupObject) => {
-						groupObject.children.map((child) => {
-							child.label = child.trans[locale];
-							return child;
-						});
-						const sortedTreeselectArray = groupObject.children
-							.slice()
-							.sort(function(a, b) {
-								if (a.label < b.label) {
-									return -1;
-								}
-								if (a.label > b.label) {
-									return 1;
-								}
-								return 0;
-							});
-						groupObject.children = sortedTreeselectArray;
-						return groupObject;
-					});
-					return treeselectArray;
-				} else {
-					return [];
-				}
-			},
-		},
-		created() {
-			this.readTaxonomy().then(() => {
-				this.ready = true;
-			});
-		},
-		methods: {
-			cancelColorPicker() {
-				this.colorPreview = false;
-				this.overlay = false;
-			},
-			openColorPicker() {
-				this.overlay = true;
-			},
-			selectLocale(array) {
-				if (array.length) {
-					const locale = this.$i18n.locale;
-					if (array[0].trans[locale] === undefined) {
-						return "en";
-					} else {
-						return locale;
-					}
-				} else {
-					return "en";
-				}
-			},
-			setApiaryEdited(bool) {
-				this.$store.commit("locations/setApiaryEdited", bool);
-			},
-			setHiveEdited(bool) {
-				this.$store.commit("hives/setHiveEdited", bool);
-			},
-			updateHive(event, property) {
-				let value;
-				if (event === null) {
-					value = null; // 0 ?
-				} else if (event.target !== undefined) {
-					value = event.target.value;
-				} else {
-					value = event;
-				}
-				this.hive[property] = value;
-				this.hive.frames = this.getMaxFramecount(this.hive.layers);
-				this.setHiveEdited(true);
-				this.setApiaryEdited(true);
-			},
-			updateHiveLayers(value, property) {
-				this.hive.layers.forEach((layer) => {
-					layer[property] = value;
-				});
-				this.hive.frames = this.getMaxFramecount(this.hive.layers);
-				this.setHiveEdited(true);
-				this.setApiaryEdited(true);
-				if (property === "color") {
-					this.hive[property] = value;
-					this.cancelColorPicker();
-				}
-			},
-			updateHiveType(event) {
-				if (event === undefined) {
-					event = 63; // Default to custom hive
-				}
-				this.updateHive(event, "hive_type_id");
+export default {
+  components: {
+    HiveFactory,
+    NumericInput,
+    ElInputNumber
+  },
+  mixins: [getMaxFramecount, readTaxonomy],
+  props: {
+    hive: {
+      type: Object,
+      default: null,
+      required: true
+    }
+  },
+  data: function() {
+    return {
+      swatchesHive: [
+        ["#e9eae1", "#EAD49E", "#F8B133"],
+        ["#2dbde5", "#094da0", "#27820e"],
+        ["#ffe900", "#d80d0d", "#754B1F"]
+      ],
+      bbDimensions: ["bb_width_cm", "bb_height_cm", "bb_depth_cm"],
+      frDimensions: ["fr_width_cm", "fr_height_cm"],
+      overlay: false,
+      colorPreview: false,
+      colorPickerValue: "",
+      ready: false,
+      defaultFrameCount: 10
+    };
+  },
+  computed: {
+    ...mapGetters("taxonomy", ["hiveDimensionsList", "hiveTypesList"]),
+    locale() {
+      return this.$i18n.locale;
+    },
+    colorPicker: {
+      get() {
+        if (this.colorPickerValue !== "") {
+          return this.colorPickerValue;
+        } else if (this.hive) {
+          return this.hive.color !== null ? this.hive.color : "#F8B133";
+        } else {
+          return "";
+        }
+      },
+      set(value) {
+        this.colorPreview = true;
+        this.colorPickerValue = value;
+      }
+    },
+    treeselectHiveTypes() {
+      if (this.hiveTypesList.length) {
+        const locale = this.selectLocale(this.hiveTypesList);
+        const hiveTypePerGroup = JSON.parse(JSON.stringify(this.hiveTypesList)) // clone without v-bind to avoid vuex warning when mutating
+          .reduce(function(r, a) {
+            r[a.group[locale]] = r[a.group[locale]] || [];
+            r[a.group[locale]].push(a);
+            return r;
+          }, {});
+        const sortedGroups = Object.keys(hiveTypePerGroup)
+          .slice()
+          .sort(function(a, b) {
+            if (a < b) {
+              return -1;
+            }
+            if (a > b) {
+              return 1;
+            }
+            return 0;
+          });
+        const treeselectArray = [];
+        sortedGroups.forEach((sortedGroup, index) => {
+          const sortedGroupObject = {
+            id: -(index + 1),
+            label: sortedGroup,
+            children: hiveTypePerGroup[sortedGroup]
+          };
+          treeselectArray.push(sortedGroupObject);
+        });
+        treeselectArray.map(groupObject => {
+          groupObject.children.map(child => {
+            child.label = child.trans[locale];
+            return child;
+          });
+          const sortedTreeselectArray = groupObject.children
+            .slice()
+            .sort(function(a, b) {
+              if (a.label < b.label) {
+                return -1;
+              }
+              if (a.label > b.label) {
+                return 1;
+              }
+              return 0;
+            });
+          groupObject.children = sortedTreeselectArray;
+          return groupObject;
+        });
+        return treeselectArray;
+      } else {
+        return [];
+      }
+    }
+  },
+  created() {
+    this.readTaxonomy().then(() => {
+      this.ready = true;
+    });
+  },
+  methods: {
+    cancelColorPicker() {
+      this.colorPreview = false;
+      this.overlay = false;
+    },
+    openColorPicker() {
+      this.overlay = true;
+    },
+    selectLocale(array) {
+      if (array.length) {
+        const locale = this.$i18n.locale;
+        if (array[0].trans[locale] === undefined) {
+          return "en";
+        } else {
+          return locale;
+        }
+      } else {
+        return "en";
+      }
+    },
+    setApiaryEdited(bool) {
+      this.$store.commit("locations/setApiaryEdited", bool);
+    },
+    setHiveEdited(bool) {
+      this.$store.commit("hives/setHiveEdited", bool);
+    },
+    updateHive(event, property) {
+      let value;
+      if (event === null) {
+        value = null; // 0 ?
+      } else if (event.target !== undefined) {
+        value = event.target.value;
+      } else {
+        value = event;
+      }
+      this.hive[property] = value;
+      this.hive.frames = this.getMaxFramecount(this.hive.layers);
+      this.setHiveEdited(true);
+      this.setApiaryEdited(true);
+    },
+    updateHiveLayers(value, property) {
+      this.hive.layers.forEach(layer => {
+        layer[property] = value;
+      });
+      this.hive.frames = this.getMaxFramecount(this.hive.layers);
+      this.setHiveEdited(true);
+      this.setApiaryEdited(true);
+      if (property === "color") {
+        this.hive[property] = value;
+        this.cancelColorPicker();
+      }
+    },
+    updateHiveType(event) {
+      if (event === undefined) {
+        event = 63; // Default to custom hive
+      }
+      this.updateHive(event, "hive_type_id");
 
-				const hiveTypeIndex = this.hiveTypesList.findIndex(
-					(hiveType) => hiveType.id === event,
-				);
-				const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name;
+      const hiveTypeIndex = this.hiveTypesList.findIndex(
+        hiveType => hiveType.id === event
+      );
+      const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name;
 
-				let hiveDimensions;
-				if (
-					this.hiveDimensionsList &&
-					this.hiveDimensionsList[hiveTypeName] !== undefined
-				) {
-					hiveDimensions = {
-						bb_width_cm: parseFloat(
-							this.hiveDimensionsList[hiveTypeName].bb_width_cm,
-						),
-						bb_depth_cm: parseFloat(
-							this.hiveDimensionsList[hiveTypeName].bb_depth_cm,
-						),
-						bb_height_cm: parseFloat(
-							this.hiveDimensionsList[hiveTypeName].bb_height_cm,
-						),
-						fr_width_cm: parseFloat(
-							this.hiveDimensionsList[hiveTypeName].fr_width_cm,
-						),
-						fr_height_cm: parseFloat(
-							this.hiveDimensionsList[hiveTypeName].fr_height_cm,
-						),
-					};
-				} else {
-					hiveDimensions = {
-						bb_width_cm: 0,
-						bb_depth_cm: 0,
-						bb_height_cm: 0,
-						fr_width_cm: 0,
-						fr_height_cm: 0,
-					};
-				}
-				let i = 0;
-				for (i in hiveDimensions) {
-					this.updateHive(hiveDimensions[i], i);
-					i++;
-				}
-			},
-		},
-	};
+      let hiveDimensions;
+      if (
+        this.hiveDimensionsList &&
+        this.hiveDimensionsList[hiveTypeName] !== undefined
+      ) {
+        hiveDimensions = {
+          bb_width_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].bb_width_cm
+          ),
+          bb_depth_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].bb_depth_cm
+          ),
+          bb_height_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].bb_height_cm
+          ),
+          fr_width_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].fr_width_cm
+          ),
+          fr_height_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].fr_height_cm
+          )
+        };
+      } else {
+        hiveDimensions = {
+          bb_width_cm: 0,
+          bb_depth_cm: 0,
+          bb_height_cm: 0,
+          fr_width_cm: 0,
+          fr_height_cm: 0
+        };
+      }
+      let i = 0;
+      for (i in hiveDimensions) {
+        this.updateHive(hiveDimensions[i], i);
+        i++;
+      }
+    }
+  }
+};
 </script>
 
 <style lang="scss">
-	.hive-color {
-		width: 35px;
-		height: 35px;
-		border: 1px solid rgba(0, 0, 0, 0.3) !important;
-	}
+.hive-color {
+  width: 35px;
+  height: 35px;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+}
 
-	.hive-dimensions-wrapper {
-		margin-top: 6px;
-	}
-	.hive-edit-details,
-	.hive-dimensions-details {
-		padding: 0 12px !important;
-	}
+.hive-dimensions-wrapper {
+  margin-top: 6px;
+}
+.hive-edit-details,
+.hive-dimensions-details {
+  padding: 0 12px !important;
+}
 </style>

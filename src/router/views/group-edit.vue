@@ -89,7 +89,7 @@
           "
         >
           <v-col cols="12">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{ $tc("Group", 1) + " " + $t("settings") }}
             </div>
             <div class="rounded-border">
@@ -207,7 +207,7 @@
         >
           <v-col cols="12">
             <div class="d-flex justify-space-between">
-              <div class="text-label-small mb-3">
+              <div class="custom-text-overline mb-3">
                 {{
                   $tc("Member", activeGroup.users.length) +
                     " (" +
@@ -327,7 +327,7 @@
 
         <v-row v-if="showGroupDetails && activeGroup">
           <v-col cols="12">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{ $t("My_shared") + " " + $tc("hive", 2) }}
             </div>
             <div class="rounded-border">

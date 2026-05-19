@@ -56,7 +56,7 @@
       <v-container class="apiary-edit content-container">
         <v-row>
           <v-col cols="12">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{ $tc("Location", 1) + " " + $t("settings") }}
             </div>
             <div class="rounded-border">
@@ -159,7 +159,7 @@
 
         <v-row>
           <v-col cols="12">
-            <div class="text-label-small mb-3">
+            <div class="custom-text-overline mb-3">
               {{
                 $t("Place") + " " + $t("details") + " (" + $t("optional") + ")"
               }}
@@ -181,13 +181,11 @@
               <v-row>
                 <v-col cols="12" sm="4">
                   <div class="beep-label" v-text="`${$t('Country')}`"></div>
-                  <country-select
+                  <TreeselectVue3
                     v-if="activeApiary"
-                    v-model="activeApiary.country_code"
-                    :country="activeApiary.country_code.toUpperCase()"
-                    :usei18n="false"
-                    class="country-select"
-                    @input="setApiaryEdited(true)"
+                    v-model="countryCode"
+                    :options="treeselectCountries"
+                    @update:model-value="setApiaryEdited(true)"
                   />
                 </v-col>
                 <v-col cols="6" sm="4">
@@ -286,6 +284,7 @@
 import Confirm from "@/src/components/confirm-dialog.vue";
 import Layout from "@/src/router/layouts/back-layout.vue";
 import Api from "@api/Api";
+import { treeselectCountries } from "@assets/js/countries.js";
 import NumericInput from "@components/input-fields/numeric-input.vue";
 import { readApiariesAndGroups } from "@mixins/methodsMixin";
 import VueGoogleAutocomplete from "vue-google-autocomplete";
@@ -298,7 +297,7 @@ export default {
     NumericInput,
     VueGoogleAutocomplete
   },
-  mixins: [readApiariesAndGroups],
+  mixins: [readApiariesAndGroups, treeselectCountries],
   data: function() {
     return {
       snackbar: {
@@ -335,6 +334,18 @@ export default {
       },
       set(value) {
         this.colorPickerValue = value;
+      }
+    },
+    countryCode: {
+      get() {
+        return this.activeApiary.country_code
+          ? this.activeApiary.country_code.toUpperCase()
+          : null;
+      },
+      set(value) {
+        if (this.activeApiary) {
+          this.activeApiary.country_code = value;
+        }
       }
     },
     locale() {
@@ -529,7 +540,6 @@ export default {
     padding-top: 12px;
   }
 
-  .country-select,
   .autocomplete-field {
     width: 100%;
     max-width: 100%;

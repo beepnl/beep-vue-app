@@ -18,7 +18,7 @@
 
         <v-row class="mb-4 mb-sm-6">
           <v-col cols="12">
-            <div class="text-label-small mb-2 mb-sm-3">
+            <div class="custom-text-overline mb-2 mb-sm-3">
               {{ $t("my_beep_data") }}
             </div>
             <div class="rounded-border">

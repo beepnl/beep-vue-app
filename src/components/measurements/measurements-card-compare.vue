@@ -162,7 +162,7 @@
       >
         <v-spacer />
         <div
-          class="text-label-small ml-7"
+          class="custom-text-overline ml-7"
           v-text="$t('Compare_with_mean')"
         ></div>
         <v-spacer />
@@ -183,12 +183,12 @@
         >
           <div
             v-if="!multipleSections && index === 0"
-            class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t('Compare_with_mean')"
           ></div>
           <div
             v-if="index === 0"
-            class="text-label-small mb-3 text-center"
+            class="custom-text-overline mb-3 text-center"
             v-text="
               compareMeasurementData.resolution
                 ? $tc('measurement', 2) +
@@ -203,7 +203,7 @@
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div class="d-flex justify-center align-center">
             <div
-              class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+              class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
               v-text="$t(COMPARE_SENSOR[sensor])"
             ></div>
             <v-icon
@@ -255,13 +255,13 @@
         >
           <div
             v-if="j === 0"
-            class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$tc('overall_intake_loss')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div class="d-flex justify-center align-center">
             <div
-              class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+              class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
               v-text="$t(COMPARE_SENSOR[sensor])"
             ></div>
             <v-icon
@@ -340,7 +340,7 @@
       >
         <v-spacer />
         <div
-          class="text-label-small ml-7"
+          class="custom-text-overline ml-7"
           v-text="$t('Multiple_hives_charts')"
         ></div>
         <v-spacer />
@@ -361,12 +361,12 @@
         >
           <div
             v-if="!multipleSections && index === 0"
-            class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t('Multiple_hives_charts')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div
-            class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t(SENSOR_NAMES[sensor])"
           ></div>
           <div>
@@ -397,12 +397,12 @@
         >
           <div
             v-if="index === 0"
-            class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div
-            class="text-label-small mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t(SENSOR_NAMES[sensor])"
           ></div>
           <div>

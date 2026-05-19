@@ -15,10 +15,10 @@ export default [
         // If the user is already logged in
         if (store.getters["auth/loggedIn"]) {
           // Redirect to the home page instead
-          return { path: "/" };
+          next({ path: "/" });
         } else {
           // Continue to the login page
-          return true;
+          next();
         }
       }
     }

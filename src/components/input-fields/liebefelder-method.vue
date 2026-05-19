@@ -189,7 +189,7 @@
 
             <!-- div below is same as checklist-fieldset component but needed to keep the nested checklist-input within this template to catch the @calculate-liebefeld-colony-size emit event -->
             <div v-if="superAndFrameFilter(item)" class="checklist-fieldset">
-              <div class="text-label-small mb-2">
+              <div class="custom-text-overline mb-2">
                 {{ getLabel(item) }}
                 <a
                   v-if="item.description !== null || item.source !== null"
