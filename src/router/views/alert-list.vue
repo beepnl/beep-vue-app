@@ -527,9 +527,10 @@ export default {
         });
     },
     getUnit(measurementId) {
-      return this.sensorMeasurementsList.filter(
+      const res = this.sensorMeasurementsList.filter(
         measurementType => measurementType.id === measurementId
-      )[0].unit;
+      );
+      return res.length > 0 ? res[0].unit : "";
     },
     isFiltered(alertId) {
       return this.filteredAlertsIds.indexOf(alertId) > -1;
