@@ -70,7 +70,7 @@
 
             <VueDatePicker
               :format="dateRangeText"
-              :model-value="datesCopy"
+              :model-value="dates"
               :model-type="datePickerFormat"
               hide-input-icon
               range
@@ -78,7 +78,7 @@
               :clearable="false"
               :enable-time-picker="false"
               :placeholder="
-                datesCopy.length === 0 ? $t('selection_placeholder') : null
+                dates.length === 0 ? $t('selection_placeholder') : null
               "
               :locale="locale"
               :select-text="$t('ok')"
@@ -162,7 +162,7 @@ export default {
       modal: false,
       menu: false,
       selectedDateCopy: "",
-      datesCopy: [],
+      // datesCopy: [],
       datePickerFormat: "yyyy-MM-dd" // TODO add option to include time 'yyyy-MM-dd HH:mm',
     };
   },
@@ -193,7 +193,7 @@ export default {
   created() {
     // use own component data props instead of prop to avoid mutating a prop directly (vuex warning)
     this.selectedDateCopy = this.selectedDate;
-    this.datesCopy = this.dates;
+    // this.datesCopy = this.dates;
   },
   methods: {
     dateRangeText(dates) {
@@ -213,7 +213,7 @@ export default {
       if (dates[1] === null) {
         dates[1] = "";
       }
-      console.log(dates);
+      // console.log(dates);
       this.$emit("save-dates", dates);
       this.$emit("load-data");
     },
