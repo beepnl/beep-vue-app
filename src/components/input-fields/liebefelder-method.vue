@@ -10,7 +10,7 @@
       <template v-slot:prepend>
         <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
       </template>
-      {{ $t('input_not_possible_for_bulkinspection') }}
+      {{ $t("input_not_possible_for_bulkinspection") }}
     </v-alert>
     <v-card class="position-relative pa-3">
       <!-- <div class="rounded-border"> -->
@@ -21,56 +21,55 @@
             :src="assetsUrl + '/img/inspection-lieberfelder-frame-overlay.png'"
             style="width:100%;"
           />
-          <p style="font-style: italic; text-align: center;"
-            >Figure 1. Scheme of grid for Liebefeld method. Squares should be
-            5x5 cm2.</p
-          >
+          <p style="font-style: italic; text-align: center;">
+            Figure 1. Scheme of grid for Liebefeld method. Squares should be 5x5
+            cm2.
+          </p>
         </div>
         <ul class="ml-4">
-          <li
-            >Colony traits that need to be measured are: colony size (bees),
+          <li>
+            Colony traits that need to be measured are: colony size (bees),
             capped brood (pupae), open brood (larvae), eggs, drone brood, pollen
-            stores, and honey (sealed only). If not present score them as 0.</li
-          >
+            stores, and honey (sealed only). If not present score them as 0.
+          </li>
           <li>Open a colony and sequentially remove combs of bees (frames).</li>
-          <li
-            >Overlay each side of every comb in a hive with a grid pre-marked in
-            5x5 cm2 (Figure 1.).</li
-          >
+          <li>
+            Overlay each side of every comb in a hive with a grid pre-marked in
+            5x5 cm2 (Figure 1.).
+          </li>
           <li>First measure the area covered with bees.</li>
-          <li
-            >Per frame side, count the total number of squares covered with
-            bees. This includes the number of squares fully covered and the ones
+          <li>
+            Per frame side, count the total number of squares covered with bees.
+            This includes the number of squares fully covered and the ones
             partially covered. The partially covered squares should be estimated
-            as fraction covered, up to one decimal.</li
-          >
-          <li
-            >Record the number of squares in the BEEP app for each side of all
+            as fraction covered, up to one decimal.
+          </li>
+          <li>
+            Record the number of squares in the BEEP app for each side of all
             frames in the hive. The BEEP app will automatically calculate the
-            sum of bees.</li
-          >
-          <li
-            >Then remove the bees from the frame before counting the other
+            sum of bees.
+          </li>
+          <li>
+            Then remove the bees from the frame before counting the other
             targets one by one. Frames do not need to be free of bees
             completely. It is fine if bees stay on the frame as long as the
-            brood and/or food reserves are visible and can be estimated.</li
-          >
-          <li
-            >For removing the bees hold a frame above (or half in) the brood
-            box, and remove the bees by 1) moving the frame downwards with a
-            sudden stop, 2) holding the frame by one ‘ear’ and tapping with your
-            free hand on the hand holding the ear (a little rough on the eggs),
-            or use a feather or soft brush (not very hygienic).</li
-          >
-          <li
-            >Repeat the counting of squares for the other parameters and record
-            the information in the BEEP app.</li
-          >
-          <li
-            >In the BEEP app, please keep the same sequence for all targets, as
-            such that in theory we could ‘rebuild’ the colony frame by
-            frame.</li
-          >
+            brood and/or food reserves are visible and can be estimated.
+          </li>
+          <li>
+            For removing the bees hold a frame above (or half in) the brood box,
+            and remove the bees by 1) moving the frame downwards with a sudden
+            stop, 2) holding the frame by one ‘ear’ and tapping with your free
+            hand on the hand holding the ear (a little rough on the eggs), or
+            use a feather or soft brush (not very hygienic).
+          </li>
+          <li>
+            Repeat the counting of squares for the other parameters and record
+            the information in the BEEP app.
+          </li>
+          <li>
+            In the BEEP app, please keep the same sequence for all targets, as
+            such that in theory we could ‘rebuild’ the colony frame by frame.
+          </li>
         </ul>
       </div>
 
@@ -147,7 +146,7 @@
                     ></div>
                     <h1 class="mt-2">
                       <span v-if="colonySize"
-                        >{{ colonySize }} {{ $tc('bee', 2) }}</span
+                        >{{ colonySize }} {{ $tc("bee", 2) }}</span
                       >
                       <span v-if="!colonySize">N/A</span>
                     </h1>
@@ -190,8 +189,8 @@
 
             <!-- div below is same as checklist-fieldset component but needed to keep the nested checklist-input within this template to catch the @calculate-liebefeld-colony-size emit event -->
             <div v-if="superAndFrameFilter(item)" class="checklist-fieldset">
-              <div class="text-overline mb-2"
-                >{{ getLabel(item) }}
+              <div class="text-label-small mb-2">
+                {{ getLabel(item) }}
                 <a
                   v-if="item.description !== null || item.source !== null"
                   @click="showDescription = !showDescription"
@@ -218,7 +217,8 @@
 
               <div v-if="item.children.length > 0" class="rounded-border">
                 <v-row class="ma-0">
-                  <v-col class="xs"
+                  <v-col
+                    class="xs"
                     v-for="(item2, i) in item.children"
                     :key="i"
                     sm="6"
@@ -256,40 +256,40 @@
 </template>
 
 <script>
-import ChecklistInput from '@components/checklist-input.vue'
-import HiveIcon from '@components/hive-icon.vue'
-import { getLabel, getMaxFramecount } from '@mixins/methodsMixin'
-import { ElInputNumber } from 'element-plus'
-import { mapGetters } from 'vuex'
+import ChecklistInput from "@components/checklist-input.vue";
+import HiveIcon from "@components/hive-icon.vue";
+import { getLabel, getMaxFramecount } from "@mixins/methodsMixin";
+import { ElInputNumber } from "element-plus";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     ChecklistInput,
     HiveIcon,
-    ElInputNumber,
+    ElInputNumber
   },
   mixins: [getLabel, getMaxFramecount],
   props: {
     category: {
       type: Object,
       default: null,
-      required: true,
+      required: true
     },
     object: {
       type: Object,
       default: null,
-      required: true,
+      required: true
     },
     nested: {
       type: Boolean,
       required: false,
-      default: false,
+      default: false
     },
     parseMode: {
       type: Boolean,
       required: false,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
@@ -302,150 +302,148 @@ export default {
       framesForCalculation: null,
       showDescription: false,
       assetsUrl:
-        import.meta.env.VITE_ASSETS_URL ||
-        import.meta.env.VITE_ETS_URL_FALLBACK,
-    }
+        import.meta.env.VITE_ASSETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK
+    };
   },
   computed: {
-    ...mapGetters('inspections', ['bulkInspection']),
-    ...mapGetters('hives', ['activeHive']),
+    ...mapGetters("inspections", ["bulkInspection"]),
+    ...mapGetters("hives", ["activeHive"]),
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     sortedChildren() {
       const sortedChildren = this.category.children
         .slice()
         .sort(function(a, b) {
           if (a.name > b.name) {
-            return 1
+            return 1;
           }
           if (b.name > a.name) {
-            return -1
+            return -1;
           }
-          return 0
+          return 0;
         })
         .sort(function(a, b) {
-          const aNumber = self.getNumberFromName(a.name)
-          const bNumber = self.getNumberFromName(b.name)
+          const aNumber = self.getNumberFromName(a.name);
+          const bNumber = self.getNumberFromName(b.name);
           if (aNumber > bNumber) {
-            return 1
+            return 1;
           }
           if (bNumber > aNumber) {
-            return -1
+            return -1;
           }
-          return 0
+          return 0;
         })
-        .sort(function(a, b) {
-          if (a.name.indexOf('super') > -1) {
-            return -1
+        .sort(function(a) {
+          if (a.name.indexOf("super") > -1) {
+            return -1;
           }
-          if (a.name.indexOf('frame') > -1) {
-            return 1
+          if (a.name.indexOf("frame") > -1) {
+            return 1;
           }
-          return 0
-        })
-      return sortedChildren
-    },
+          return 0;
+        });
+      return sortedChildren;
+    }
   },
   watch: {
     activeHive() {
       if (this.activeHive !== null) {
-        this.setInputNumbers()
+        this.setInputNumbers();
       }
-    },
+    }
   },
   created() {
     if (this.activeHive !== null) {
-      this.setInputNumbers()
+      this.setInputNumbers();
     }
   },
   methods: {
     calculateLiebefeldColonySize() {
-      const beesPerCm2 = 1.25
-      let beesSquares25cm2 = 0
-      let colonySize = null
+      const beesPerCm2 = 1.25;
+      let beesSquares25cm2 = 0;
+      let colonySize = null;
 
       setTimeout(() => {
-        this.category.children.map((child) => {
+        this.category.children.map(child => {
           if (this.superAndFrameFilter(child) && child.children.length > 0) {
-            child.children.map((child2) => {
+            child.children.map(child2 => {
               if (
-                typeof child2 !== 'undefined' &&
+                typeof child2 !== "undefined" &&
                 child2 !== null &&
-                typeof child2.name !== 'undefined' &&
-                child2.name === 'bees_squares_25cm2' &&
+                typeof child2.name !== "undefined" &&
+                child2.name === "bees_squares_25cm2" &&
                 parseFloat(this.object[child2.id]) > 0
               ) {
-                beesSquares25cm2 += parseFloat(this.object[child2.id])
+                beesSquares25cm2 += parseFloat(this.object[child2.id]);
               }
-              return child2
-            })
+              return child2;
+            });
           }
-          return child
-        })
+          return child;
+        });
 
-        const hive = this.activeHive
+        const hive = this.activeHive;
 
         if (
-          typeof hive === 'undefined' ||
+          typeof hive === "undefined" ||
           hive === null ||
           isNaN(beesSquares25cm2) ||
           beesSquares25cm2 === 0
         ) {
-          colonySize = null
+          colonySize = null;
         } else {
-          colonySize = Math.round(beesSquares25cm2 * 25 * beesPerCm2)
+          colonySize = Math.round(beesSquares25cm2 * 25 * beesPerCm2);
         }
 
         // put value into input element 'colony_size'
-        this.category.children.map((child) => {
-          if (child.name === 'colony_size') {
-            this.object[child.id] = colonySize
+        this.category.children.map(child => {
+          if (child.name === "colony_size") {
+            this.object[child.id] = colonySize;
           }
-          return true
-        })
-        this.colonySize = colonySize
-      }, 100) // wait for vue to update input bees_squares_25cm2 values
+          return true;
+        });
+        this.colonySize = colonySize;
+      }, 100); // wait for vue to update input bees_squares_25cm2 values
     },
     countLayers(type) {
-      return this.activeHive.layers.filter((layer) => layer.type === type)
-        .length
+      return this.activeHive.layers.filter(layer => layer.type === type).length;
     },
     getNumberFromName(name) {
-      const numberString = name.split('_')[1]
-      const int = parseInt(numberString)
-      return !isNaN(int) ? int : 0
+      const numberString = name.split("_")[1];
+      const int = parseInt(numberString);
+      return !isNaN(int) ? int : 0;
     },
     setInputNumbers() {
       this.broodLayersForCalculation =
-        this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
+        this.countLayers("brood") < 2 ? this.countLayers("brood") : 2;
       this.honeyLayersForCalculation =
-        this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
-      const maxFramecount = this.getMaxFramecount(this.activeHive.layers)
-      this.framesForCalculation = maxFramecount < 12 ? maxFramecount : 12
+        this.countLayers("honey") < 2 ? this.countLayers("honey") : 2;
+      const maxFramecount = this.getMaxFramecount(this.activeHive.layers);
+      this.framesForCalculation = maxFramecount < 12 ? maxFramecount : 12;
     },
     superAndFrameFilter(item) {
       if (
-        item.input === 'label' &&
-        item.name.indexOf('frame') > -1 &&
-        parseInt(item.name.split('_')[1]) <=
+        item.input === "label" &&
+        item.name.indexOf("frame") > -1 &&
+        parseInt(item.name.split("_")[1]) <=
           this.broodLayersForCalculation * this.framesForCalculation
       ) {
-        return true
+        return true;
       } else if (
-        item.input === 'label' &&
-        item.name.indexOf('super') > -1 &&
-        parseInt(item.name.split('_')[1]) <= this.honeyLayersForCalculation
+        item.input === "label" &&
+        item.name.indexOf("super") > -1 &&
+        parseInt(item.name.split("_")[1]) <= this.honeyLayersForCalculation
       ) {
-        return true
+        return true;
       }
-      return false
-    },
-  },
-}
+      return false;
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

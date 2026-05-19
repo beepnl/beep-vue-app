@@ -1,7 +1,7 @@
 <template>
   <Layout :title="$t('Whats_new')">
     <v-container>
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.1.7 (30-04-2026) - Current
         version</div
       >
@@ -18,7 +18,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.31 (28-04-2026)</div
       >
       <div class="rounded-border mb-4">
@@ -30,7 +30,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.30 (21-04-2026)</div
       >
       <div class="rounded-border mb-4">
@@ -42,7 +42,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.29 (23-03-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -54,7 +54,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.28 (15-09-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -63,7 +63,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.27 (31-03-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -75,7 +75,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.26 (24-03-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -84,7 +84,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.25 (17-03-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -93,7 +93,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.24 (10-03-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -102,7 +102,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.23 (17-02-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -112,7 +112,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.22 (14-01-2025)</div
       >
       <div class="rounded-border mb-4">
@@ -140,7 +140,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.21 (30-09-2024)</div
       >
       <div class="rounded-border mb-4">
@@ -149,7 +149,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.20 (12-08-2024)</div
       >
       <div class="rounded-border mb-4">
@@ -158,7 +158,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.19 (03-06-2024)</div
       >
       <div class="rounded-border mb-4">
@@ -167,7 +167,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.18 (21-05-2024)</div
       >
       <div class="rounded-border mb-4">
@@ -182,7 +182,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.17 (08-02-2024)</div
       >
       <div class="rounded-border mb-4">
@@ -191,7 +191,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.16 (21-11-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -200,7 +200,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.15 (14-11-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -209,7 +209,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.14 (31-08-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -218,7 +218,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.13 (21-08-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -230,7 +230,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.12 (15-08-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -240,7 +240,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.11 (13-07-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -249,7 +249,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.10 (06-07-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -258,7 +258,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.9 (29-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -271,7 +271,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.8 (15-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -280,7 +280,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.7 (08-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -293,7 +293,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.6 (06-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -302,7 +302,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.5 (01-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -311,7 +311,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.4 (30-05-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -320,7 +320,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.3 (25-05-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -329,7 +329,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.2 (11-04-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -338,7 +338,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>4.0.1 (06-04-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -347,7 +347,7 @@
         </ul>
       </div>
 
-      <div class="text-overline text-primary mb-1"
+      <div class="text-label-small text-primary mb-1"
         ><span class="lowercase">v</span>4.0.0 (31-03-2023) - Release v4</div
       >
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
@@ -398,7 +398,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.2.0 (09-03-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -422,7 +422,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.1.1 (20-02-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -435,7 +435,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.1 (07-11-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -479,7 +479,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.106 (04-10-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -488,7 +488,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.104 (26-09-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -511,7 +511,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.101 (01-08-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -527,7 +527,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.100 (24-06-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -542,7 +542,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.99 (23-06-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -569,7 +569,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.98 (12-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -578,7 +578,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.97 (10-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -587,7 +587,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.96 (10-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -596,7 +596,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.95 (09-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -629,7 +629,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.94 (02-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -645,7 +645,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.92 (28-04-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -655,7 +655,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.90 (24-03-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -677,7 +677,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.88 (07-03-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -688,7 +688,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.87 (22-02-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -721,7 +721,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.86 (22-02-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -731,7 +731,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.82 (08-02-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -748,7 +748,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.80 (27-01-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -764,7 +764,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>3.0.79 (27-01-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -819,7 +819,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1 text-primary"
+      <div class="text-label-small mb-1 text-primary"
         ><span class="lowercase">v</span>
         <span v-if="dutch">3.0.73 (13-12-2021) - Release v3</span>
         <span v-if="!dutch">3.0.73 (13-12-2021) - Release v3</span>
@@ -1805,7 +1805,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>2.2.1 (15-07-2020)</div
       >
       <div class="rounded-border mb-4">
@@ -1846,7 +1846,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>2.2.0 (25-02-2020)</div
       >
       <div class="rounded-border mb-4">
@@ -1893,7 +1893,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>2.1.0 (29-05-2019)</div
       >
       <div class="rounded-border mb-4">
@@ -1909,7 +1909,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>2.0.3 (30-04-2019)</div
       >
       <div class="rounded-border mb-4">
@@ -1925,7 +1925,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>2.0.2 (13-12-2018)</div
       >
       <div class="rounded-border mb-4">
@@ -1943,7 +1943,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>2.0.1 (10-07-2018)</div
       >
       <div class="rounded-border mb-4">
@@ -1960,7 +1960,7 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
+      <div class="text-label-small mb-1"
         ><span class="lowercase">v</span>1.1.1 (05-09-2017)</div
       >
       <div class="rounded-border mb-4">

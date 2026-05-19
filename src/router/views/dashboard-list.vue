@@ -34,7 +34,7 @@
             v-if="!showDashboardPlaceholder"
             class="d-flex justify-start align-center"
           >
-            <div class="text-overline ">{{ $tc('Dashboard', 2) }}</div>
+            <div class="text-label-small ">{{ $tc('Dashboard', 2) }}</div>
             <v-icon
               class="icon-info cursor-pointer  ml-2"
               :size="mobile ? 'x-small' : 'small'"
@@ -86,7 +86,7 @@
                       >
                         <v-icon class="mr-2" color="accent">mdi-link</v-icon>
                         <span
-                          class="text-overline"
+                          class="text-label-small"
                           v-text="dashboardGroup.code"
                         ></span>
                       </a>
@@ -117,7 +117,7 @@
                     </td>
                     <td>
                       <span
-                        class="text-overline"
+                        class="text-label-small"
                         v-text="dashboardGroup.name"
                       ></span>
                     </td>

@@ -46,8 +46,8 @@
             >
               <v-spacer></v-spacer>
               <div class="d-flex align-center">
-                <span class="text-overline mr-3 d-flex align-center"
-                  >{{ $t('start_here') + ' '
+                <span class="text-label-small mr-3 d-flex align-center"
+                  >{{ $t("start_here") + " "
                   }}<v-icon class="bounce">mdi-arrow-right</v-icon></span
                 >
                 <v-icon
@@ -63,9 +63,9 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-overline mb-4">{{
-                  $t('new_apiary_explanation')
-                }}</div>
+                <div class="text-label-small mb-4">
+                  {{ $t("new_apiary_explanation") }}
+                </div>
                 <v-img
                   class="align-center"
                   max-height="70vh"
@@ -102,9 +102,9 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-overline mb-4">{{
-                  $tc('Location', 1) + ' ' + $t('settings')
-                }}</div>
+                <div class="text-label-small mb-4">
+                  {{ $tc("Location", 1) + " " + $t("settings") }}
+                </div>
                 <div class="rounded-border">
                   <v-row class="my-0">
                     <v-col cols="12" sm="6" md="4">
@@ -223,16 +223,16 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-overline mb-4">
+                <div class="text-label-small mb-4">
                   {{
-                    $t('Place') +
-                      ' ' +
-                      $t('details') +
-                      ' (' +
-                      $t('optional') +
-                      ')'
-                  }}</div
-                >
+                    $t("Place") +
+                      " " +
+                      $t("details") +
+                      " (" +
+                      $t("optional") +
+                      ")"
+                  }}
+                </div>
                 <div class="rounded-border">
                   <v-row class="my-0">
                     <v-col cols="12">
@@ -250,14 +250,14 @@
                   <v-row>
                     <v-col cols="12" sm="4">
                       <div class="beep-label" v-text="`${$t('Country')}`"></div>
-                      <country-select
+                      <!-- <country-select
                         v-if="newHive"
                         v-model="newHive.country_code"
                         :country="newHive.country_code.toUpperCase()"
                         :usei18n="false"
                         class="country-select"
                         @update:model-value="setApiaryEdited(true)"
-                      />
+                      /> -->
                     </v-col>
                     <v-col cols="6" sm="4">
                       <div
@@ -397,16 +397,16 @@
                 <v-icon v-if="!showLoadingIcon" start color="black"
                   >mdi-check</v-icon
                 >
-                {{ $t('save') }}
+                {{ $t("save") }}
               </v-btn>
             </div>
           </div>
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-overline mb-4">{{
-                  $tc('Location', 1) + ' ' + $tc('hive', 2)
-                }}</div>
+                <div class="text-label-small mb-4">
+                  {{ $tc("Location", 1) + " " + $tc("hive", 2) }}
+                </div>
                 <div class="rounded-border">
                   <v-row class="my-0">
                     <v-col cols="12" md="3">
@@ -481,7 +481,7 @@
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="accent " variant="text" @click="snackbar.show = false">
-        {{ $t('Close') }}
+        {{ $t("Close") }}
       </v-btn>
     </v-snackbar>
 
@@ -490,18 +490,18 @@
 </template>
 
 <script>
-import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import Api from '@api/Api'
-import ApiaryPreview from '@components/apiary-preview.vue'
-import HiveEditDetails from '@components/hive-edit-details.vue'
-import NumericInput from '@components/input-fields/numeric-input.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import Api from "@api/Api";
+import ApiaryPreview from "@components/apiary-preview.vue";
+import HiveEditDetails from "@components/hive-edit-details.vue";
+import NumericInput from "@components/input-fields/numeric-input.vue";
 import {
   readApiaries,
-  readApiariesAndGroupsIfNotPresent,
-} from '@mixins/methodsMixin'
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import { mapGetters } from 'vuex'
+  readApiariesAndGroupsIfNotPresent
+} from "@mixins/methodsMixin";
+import VueGoogleAutocomplete from "vue-google-autocomplete";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -510,7 +510,7 @@ export default {
     HiveEditDetails,
     Layout,
     NumericInput,
-    VueGoogleAutocomplete,
+    VueGoogleAutocomplete
   },
   mixins: [readApiaries, readApiariesAndGroupsIfNotPresent],
   data: function() {
@@ -518,118 +518,117 @@ export default {
       snackbar: {
         show: false,
         timeout: 2000,
-        text: 'notification',
+        text: "notification"
       },
       swatchesApiary: [
-        ['#606060', '#b7701f', '#F8B133'],
-        ['#2dbde5', '#094da0', '#27820e'],
-        ['#ffe900', '#d80d0d', '#754B1F'],
+        ["#606060", "#b7701f", "#F8B133"],
+        ["#2dbde5", "#094da0", "#27820e"],
+        ["#ffe900", "#d80d0d", "#754B1F"]
       ],
       activeTab: 0,
       overlay: false,
-      colorPickerValue: '',
+      colorPickerValue: "",
       newHive: null,
       newApiaryNumber: 0,
       valid: false,
       showLoadingIcon: false,
       assetsUrl:
-        import.meta.env.VITE_ASSETS_URL ||
-        import.meta.env.VITE_ETS_URL_FALLBACK,
-    }
+        import.meta.env.VITE_ASSETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK
+    };
   },
   computed: {
-    ...mapGetters('locations', ['apiaries', 'apiaryEdited', 'groups']),
+    ...mapGetters("locations", ["apiaries", "apiaryEdited", "groups"]),
     colorPicker: {
       get() {
-        if (this.colorPickerValue !== '') {
-          return this.colorPickerValue
+        if (this.colorPickerValue !== "") {
+          return this.colorPickerValue;
         } else if (this.newHive) {
-          return this.newHive.hex_color
+          return this.newHive.hex_color;
         } else {
-          return '#F8B133'
+          return "#F8B133";
         }
       },
       set(value) {
-        this.colorPickerValue = value
-      },
+        this.colorPickerValue = value;
+      }
     },
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     smallScreen() {
-      return this.$vuetify.display.width < 751
+      return this.$vuetify.display.width < 751;
     },
     requiredRule: function() {
       return [
-        (v) =>
+        v =>
           !!v ||
-          this.$i18n.t('the_field') +
+          this.$i18n.t("the_field") +
             ' "' +
-            this.$i18n.t('Name') +
+            this.$i18n.t("Name") +
             '" ' +
-            this.$i18n.t('is_required'),
-      ]
+            this.$i18n.t("is_required")
+      ];
     },
     tabs: function() {
       return [
         {
           index: 0,
-          title: ' ' + this.$i18n.t('new_apiary'),
-          title_mobile: '',
-          icon: 'mdi-star',
+          title: " " + this.$i18n.t("new_apiary"),
+          title_mobile: "",
+          icon: "mdi-star"
         },
         {
           index: 1,
-          title: ' 1. ' + this.$i18n.tc('Location', 1),
-          title_mobile: ' 1',
-          icon: 'mdi-home-analytics',
+          title: " 1. " + this.$i18n.tc("Location", 1),
+          title_mobile: " 1",
+          icon: "mdi-home-analytics"
         },
         {
           index: 2,
-          title: ' 2. ' + this.$i18n.t('Place'),
-          title_mobile: ' 2',
-          icon: 'mdi-map-marker',
+          title: " 2. " + this.$i18n.t("Place"),
+          title_mobile: " 2",
+          icon: "mdi-map-marker"
         },
         {
           index: 3,
           title:
-            ' 3. ' +
-            this.$i18n.tc('Hive', 1) +
-            ' ' +
-            this.$i18n.t('configuration'),
-          title_mobile: ' 3',
-          icon: 'mdi-archive',
+            " 3. " +
+            this.$i18n.tc("Hive", 1) +
+            " " +
+            this.$i18n.t("configuration"),
+          title_mobile: " 3",
+          icon: "mdi-archive"
         },
         {
           index: 4,
-          title: ' 4. ' + this.$i18n.t('Hive_amount'),
-          title_mobile: ' 4',
-          icon: 'mdi-file-chart',
-        },
-      ]
-    },
+          title: " 4. " + this.$i18n.t("Hive_amount"),
+          title_mobile: " 4",
+          icon: "mdi-file-chart"
+        }
+      ];
+    }
   },
   created() {
     this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.setApiaryEdited(false)
-      this.newApiaryNumber = this.apiaries.length + 1
+      this.setApiaryEdited(false);
+      this.newApiaryNumber = this.apiaries.length + 1;
       this.newHive = {
-        name: this.$i18n.tc('Location', 1) + ' ' + this.newApiaryNumber,
-        color: '#F8B133',
-        hex_color: '#F8B133',
+        name: this.$i18n.tc("Location", 1) + " " + this.newApiaryNumber,
+        color: "#F8B133",
+        hex_color: "#F8B133",
         hive_type_id: null,
         hive_amount: 1,
         frames: 10,
         offset: 1,
-        prefix: this.$i18n.tc('Hive_short', 1),
+        prefix: this.$i18n.tc("Hive_short", 1),
         country_code: this.locale,
-        city: '',
-        postal_code: '',
-        street: '',
-        street_no: '',
+        city: "",
+        postal_code: "",
+        street: "",
+        street_no: "",
         lat: 52,
         lon: 5,
         bb_width_cm: null,
@@ -640,68 +639,68 @@ export default {
         roofed: 0,
         layers: [
           {
-            color: '#F8B133',
-            type: 'honey',
+            color: "#F8B133",
+            type: "honey",
             order: 3,
             framecount: 10,
-            key: 3,
+            key: 3
           },
           {
-            color: '#F8B133',
-            type: 'brood',
+            color: "#F8B133",
+            type: "brood",
             order: 2,
             framecount: 10,
-            key: 2,
+            key: 2
           },
           {
-            color: '#F8B133',
-            type: 'brood',
+            color: "#F8B133",
+            type: "brood",
             order: 1,
             framecount: 10,
-            key: 1,
-          },
-        ],
-      }
-    })
+            key: 1
+          }
+        ]
+      };
+    });
   },
   methods: {
     async createApiary() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
+        this.showLoadingIcon = true;
         try {
-          const response = await Api.postRequest('/locations', this.newHive)
+          const response = await Api.postRequest("/locations", this.newHive);
           if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
-            this.showLoadingIcon = false
+            this.snackbar.text = this.$i18n.t("not_saved_error");
+            this.snackbar.show = true;
+            this.showLoadingIcon = false;
           }
-          this.clearHiveFilters()
+          this.clearHiveFilters();
           setTimeout(() => {
             return this.readApiaries().then(() => {
               if (this.newHive.hive_amount !== 0) {
-                this.$store.commit('locations/setData', {
-                  prop: 'hiveSearch',
-                  value: this.newHive.name, // set search term via store instead of query to overrule possible stored search terms
-                })
+                this.$store.commit("locations/setData", {
+                  prop: "hiveSearch",
+                  value: this.newHive.name // set search term via store instead of query to overrule possible stored search terms
+                });
               }
               this.$router.push({
-                name: 'home',
-              })
-            })
-          }, 50) // wait for API to update locations/hives
+                name: "home"
+              });
+            });
+          }, 50); // wait for API to update locations/hives
         } catch (error) {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('not_saved_error')
-          this.snackbar.show = true
-          this.showLoadingIcon = false
+          console.log("Error: ", error);
+          this.snackbar.text = this.$i18n.t("not_saved_error");
+          this.snackbar.show = true;
+          this.showLoadingIcon = false;
         }
       }
     },
     cancelColorPicker() {
-      this.overlay = false
+      this.overlay = false;
     },
     clearHiveFilters() {
-      this.$store.commit('locations/clearFilters')
+      this.$store.commit("locations/clearFilters");
     },
     /**
      * When the location found
@@ -709,39 +708,39 @@ export default {
      * @param {Object} placeResultData PlaceResult object
      * @param {String} id Input container ID
      */
-    getAddressData: function(addressData, placeResultData, id) {
+    getAddressData: function(addressData, placeResultData) {
       const countryCode = placeResultData.address_components.filter(
-        (addressComponent) => {
-          return addressComponent.types.includes('country')
+        addressComponent => {
+          return addressComponent.types.includes("country");
         }
-      )[0].short_name
-      this.newHive.country_code = countryCode
-      this.newHive.lat = addressData.latitude
-      this.newHive.lon = addressData.longitude
-      this.newHive.city = addressData.locality
-      this.newHive.postal_code = addressData.postal_code
-      this.newHive.street = addressData.route
-      this.newHive.street_no = addressData.street_number
+      )[0].short_name;
+      this.newHive.country_code = countryCode;
+      this.newHive.lat = addressData.latitude;
+      this.newHive.lon = addressData.longitude;
+      this.newHive.city = addressData.locality;
+      this.newHive.postal_code = addressData.postal_code;
+      this.newHive.street = addressData.route;
+      this.newHive.street_no = addressData.street_number;
     },
     setApiaryEdited(bool) {
-      this.$store.commit('locations/setApiaryEdited', bool)
+      this.$store.commit("locations/setApiaryEdited", bool);
     },
     editApiary(value, property) {
-      this.newHive[property] = value
-      if (property === 'hex_color') {
-        this.cancelColorPicker()
+      this.newHive[property] = value;
+      if (property === "hex_color") {
+        this.cancelColorPicker();
       }
-      this.setApiaryEdited(true)
+      this.setApiaryEdited(true);
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
-        value = value.substring(0, maxLength)
-        this.newHive[property] = value
+        value = value.substring(0, maxLength);
+        this.newHive[property] = value;
       }
-      this.setApiaryEdited(true)
-    },
-  },
-}
+      this.setApiaryEdited(true);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,0 +1,13 @@
+// =============================================================================
+// base.scss — HTML & body resets, document-level defaults
+//
+// Sits in @layer base — the very first layer in our stack.
+// =============================================================================
+@use 'tokens' as *;
+
+@layer base {
+  html {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}

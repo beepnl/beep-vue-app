@@ -1,14 +1,14 @@
-import Api from '@api/Api'
-import { mapGetters } from 'vuex'
+import Api from "@api/Api";
+import { mapGetters } from "vuex";
 
 export const checkAlerts = {
   computed: {
-    ...mapGetters('alerts', [
-      'alertRules',
-      'alertRulesChecked',
-      'alerts',
-      'alertsChecked',
-    ]),
+    ...mapGetters("alerts", [
+      "alertRules",
+      "alertRulesChecked",
+      "alerts",
+      "alertsChecked"
+    ])
   },
   methods: {
     // only read alert rules when they are either not checked yet, or checked AND present (used for updating alertrules after deleting a hive)
@@ -17,54 +17,54 @@ export const checkAlerts = {
         !this.alertRulesChecked ||
         (this.alertRulesChecked && this.alertRules.length > 0)
       ) {
-        this.readAlertRules()
+        this.readAlertRules();
       }
     },
     // check whether alertrules & alerts have been read, if not do so, then only read alerts if alert rules OR alerts are present
     async checkAlertRulesAndAlerts() {
-      this.$store.commit('alerts/setData', {
-        prop: 'alertsLoading',
-        value: true,
-      })
+      this.$store.commit("alerts/setData", {
+        prop: "alertsLoading",
+        value: true
+      });
       if (!this.alertRulesChecked) {
         this.readAlertRules().then(() => {
           this.readAlerts().then(() => {
-            return true
-          })
-        })
+            return true;
+          });
+        });
       } else {
         this.readAlerts().then(() => {
-          return true
-        })
+          return true;
+        });
       }
     },
     async readAlertRules() {
       try {
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRulesChecked',
-          value: true,
-        })
-        const response = await Api.readRequest('/alert-rules')
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRules',
-          value: response.data.alert_rules,
-        })
-        return true
+        this.$store.commit("alerts/setData", {
+          prop: "alertRulesChecked",
+          value: true
+        });
+        const response = await Api.readRequest("/alert-rules");
+        this.$store.commit("alerts/setData", {
+          prop: "alertRules",
+          value: response.data.alert_rules
+        });
+        return true;
       } catch (error) {
-        this.$store.commit('alerts/setData', {
-          prop: 'alertsLoading',
-          value: false,
-        })
+        this.$store.commit("alerts/setData", {
+          prop: "alertsLoading",
+          value: false
+        });
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
           if (error.response.status === 404) {
-            this.$store.commit('alerts/setData', {
-              prop: 'alertRules',
-              value: [],
-            })
+            this.$store.commit("alerts/setData", {
+              prop: "alertRules",
+              value: []
+            });
           }
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
@@ -76,154 +76,154 @@ export const checkAlerts = {
         !this.alertsChecked
       ) {
         try {
-          this.$store.commit('alerts/setData', {
-            prop: 'alertsChecked',
-            value: true,
-          })
-          const response = await Api.readRequest('/alerts')
-          this.$store.commit('alerts/setData', {
-            prop: 'alerts',
-            value: response.data.alerts,
-          })
-          this.$store.commit('alerts/setData', {
-            prop: 'alertsLoading',
-            value: false,
-          })
-          return true
+          this.$store.commit("alerts/setData", {
+            prop: "alertsChecked",
+            value: true
+          });
+          const response = await Api.readRequest("/alerts");
+          this.$store.commit("alerts/setData", {
+            prop: "alerts",
+            value: response.data.alerts
+          });
+          this.$store.commit("alerts/setData", {
+            prop: "alertsLoading",
+            value: false
+          });
+          return true;
         } catch (error) {
-          this.$store.commit('alerts/setData', {
-            prop: 'alertsLoading',
-            value: false,
-          })
+          this.$store.commit("alerts/setData", {
+            prop: "alertsLoading",
+            value: false
+          });
           if (error.response) {
-            console.log('Error: ', error.response)
+            console.log("Error: ", error.response);
             if (error.response.status === 404) {
-              this.$store.commit('alerts/setData', {
-                prop: 'alerts',
-                value: [],
-              })
+              this.$store.commit("alerts/setData", {
+                prop: "alerts",
+                value: []
+              });
             }
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        this.$store.commit('alerts/setData', {
-          prop: 'alertsLoading',
-          value: false,
-        })
-        return true
+        this.$store.commit("alerts/setData", {
+          prop: "alertsLoading",
+          value: false
+        });
+        return true;
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const checkSettings = {
   methods: {
     async postSettings(payload) {
       try {
-        const response = await Api.postRequest('/settings', payload)
-        this.$store.commit('taxonomy/setData', {
-          prop: 'settings',
-          value: response.data,
-        })
-        return true
+        const response = await Api.postRequest("/settings", payload);
+        this.$store.commit("taxonomy/setData", {
+          prop: "settings",
+          value: response.data
+        });
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
     async readSettings() {
       try {
-        const response = await Api.readRequest('/settings')
-        this.$store.commit('taxonomy/setData', {
-          prop: 'settings',
-          value: response.data,
-        })
-        return true
+        const response = await Api.readRequest("/settings");
+        this.$store.commit("taxonomy/setData", {
+          prop: "settings",
+          value: response.data
+        });
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
     async readSettingsIfNotPresent() {
       if (this.settings.length === 0) {
         try {
-          const response = await Api.readRequest('/settings')
-          this.$store.commit('taxonomy/setData', {
-            prop: 'settings',
-            value: response.data,
-          })
-          return true
+          const response = await Api.readRequest("/settings");
+          this.$store.commit("taxonomy/setData", {
+            prop: "settings",
+            value: response.data
+          });
+          return true;
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
+            console.log("Error: ", error.response);
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        return true
+        return true;
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const getMaxFramecount = {
   data() {
     return {
-      default: 10,
-    }
+      default: 10
+    };
   },
   methods: {
     getMaxFramecount(layers) {
       const framecount =
         layers.length > 0
           ? Math.max(
-              ...layers.map((layer) => {
-                return layer.framecount
+              ...layers.map(layer => {
+                return layer.framecount;
               })
             )
-          : this.default
-      return framecount
-    },
-  },
-}
+          : this.default;
+      return framecount;
+    }
+  }
+};
 
 export const readHiveTags = {
   computed: {
-    ...mapGetters('hives', ['hiveTags', 'hiveTagsChecked']),
+    ...mapGetters("hives", ["hiveTags", "hiveTagsChecked"])
   },
   methods: {
     async readHiveTags() {
       try {
-        this.$store.commit('hives/setData', {
-          prop: 'hiveTagsChecked',
-          value: true,
-        })
-        const response = await Api.readRequest('/hive-tags')
-        this.$store.commit('hives/setData', {
-          prop: 'hiveTags',
-          value: response.data,
-        })
-        return response.data
+        this.$store.commit("hives/setData", {
+          prop: "hiveTagsChecked",
+          value: true
+        });
+        const response = await Api.readRequest("/hive-tags");
+        this.$store.commit("hives/setData", {
+          prop: "hiveTags",
+          value: response.data
+        });
+        return response.data;
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
           if (error.response.status === 404) {
-            this.$store.commit('hives/setData', {
-              prop: 'hiveTags',
-              value: [],
-            })
+            this.$store.commit("hives/setData", {
+              prop: "hiveTags",
+              value: []
+            });
           }
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
@@ -231,303 +231,303 @@ export const readHiveTags = {
     async readHiveTagsIfNotChecked() {
       if (!this.hiveTagsChecked) {
         try {
-          this.$store.commit('hives/setData', {
-            prop: 'hiveTagsChecked',
-            value: true,
-          })
-          const response = await Api.readRequest('/hive-tags')
-          this.$store.commit('hives/setData', {
-            prop: 'hiveTags',
-            value: response.data,
-          })
-          return response.data
+          this.$store.commit("hives/setData", {
+            prop: "hiveTagsChecked",
+            value: true
+          });
+          const response = await Api.readRequest("/hive-tags");
+          this.$store.commit("hives/setData", {
+            prop: "hiveTags",
+            value: response.data
+          });
+          return response.data;
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
+            console.log("Error: ", error.response);
             if (error.response.status === 404) {
-              this.$store.commit('hives/setData', {
-                prop: 'hiveTags',
-                value: [],
-              })
+              this.$store.commit("hives/setData", {
+                prop: "hiveTags",
+                value: []
+              });
             }
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        return true
+        return true;
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const deleteDashboard = {
   methods: {
     async deleteDashboard(dashboardGroup) {
       try {
         const response = await Api.deleteRequest(
-          '/dashboardgroups/',
+          "/dashboardgroups/",
           dashboardGroup.id
-        )
+        );
         if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
+          this.snackbar.text = this.$i18n.t("something_wrong");
+          this.snackbar.show = true;
         }
         setTimeout(() => {
-          return this.readDashboardGroups()
-        }, 50) // wait for API to update dashboards
+          return this.readDashboardGroups();
+        }, 50); // wait for API to update dashboards
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
-          const msg = error.response.data.message
-          this.snackbar.text = msg
+          console.log("Error: ", error.response);
+          const msg = error.response.data.message;
+          this.snackbar.text = msg;
         } else {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('something_wrong')
+          console.log("Error: ", error);
+          this.snackbar.text = this.$i18n.t("something_wrong");
         }
-        this.snackbar.show = true
+        this.snackbar.show = true;
       }
     },
     confirmDeleteDashboard(dashboardGroup) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('Delete_dashboard'),
-          this.$i18n.t('Delete_dashboard') +
-            ' (' +
+          this.$i18n.t("Delete_dashboard"),
+          this.$i18n.t("Delete_dashboard") +
+            " (" +
             dashboardGroup.code +
-            (dashboardGroup.name ? ' - ' + dashboardGroup.name : '') +
+            (dashboardGroup.name ? " - " + dashboardGroup.name : "") +
             (dashboardGroup.description
-              ? ' - ' + dashboardGroup.description
-              : '') +
-            ')?',
+              ? " - " + dashboardGroup.description
+              : "") +
+            ")?",
           {
-            color: 'red',
+            color: "red"
           }
         )
-        .then((confirm) => {
-          this.deleteDashboard(dashboardGroup)
+        .then(() => {
+          this.deleteDashboard(dashboardGroup);
         })
-        .catch((reject) => {
-          return true
-        })
-    },
-  },
-}
+        .catch(() => {
+          return true;
+        });
+    }
+  }
+};
 
 export const deleteHiveTag = {
-  ...mapGetters('hives', ['hiveTagActionDescriptions']),
+  ...mapGetters("hives", ["hiveTagActionDescriptions"]),
   methods: {
     async deleteHiveTag(hiveTag) {
       try {
-        const response = await Api.deleteRequest('/hive-tags/', hiveTag.tag)
+        const response = await Api.deleteRequest("/hive-tags/", hiveTag.tag);
         if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
+          this.snackbar.text = this.$i18n.t("something_wrong");
+          this.snackbar.show = true;
         }
         setTimeout(() => {
           return this.readHiveTags().then(() => {
-            if (this.$route.name !== 'hivetags') {
+            if (this.$route.name !== "hivetags") {
               this.$router.push({
-                name: 'hivetags',
-              })
+                name: "hivetags"
+              });
             } else {
               if (this.hiveTags.length === 0) {
-                this.showExplanation = true
+                this.showExplanation = true;
               }
             }
-          })
-        }, 50) // wait for API to update hive tags
+          });
+        }, 50); // wait for API to update hive tags
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
-          const msg = error.response.data.message
-          this.snackbar.text = msg
+          console.log("Error: ", error.response);
+          const msg = error.response.data.message;
+          this.snackbar.text = msg;
         } else {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('something_wrong')
+          console.log("Error: ", error);
+          this.snackbar.text = this.$i18n.t("something_wrong");
         }
-        this.snackbar.show = true
+        this.snackbar.show = true;
       }
     },
     confirmDeleteHiveTag(hiveTag, hiveName) {
-      const description = this.hiveTagActionDescriptions[hiveTag.action_id]
+      const description = this.hiveTagActionDescriptions[hiveTag.action_id];
       this.$refs.confirm
         .open(
-          this.$i18n.t('Delete_hivetag'),
-          this.$i18n.t('Delete_hivetag') +
-            ' (' +
+          this.$i18n.t("Delete_hivetag"),
+          this.$i18n.t("Delete_hivetag") +
+            " (" +
             hiveTag.tag +
-            (description ? ' - ' + this.$i18n.t(description) : '') +
+            (description ? " - " + this.$i18n.t(description) : "") +
             (hiveName
-              ? ' - ' + this.$i18n.t('for_hive') + hiveName + '"'
-              : '') +
-            ')?',
+              ? " - " + this.$i18n.t("for_hive") + hiveName + '"'
+              : "") +
+            ")?",
           {
-            color: 'red',
+            color: "red"
           }
         )
-        .then((confirm) => {
-          this.deleteHiveTag(hiveTag)
+        .then(() => {
+          this.deleteHiveTag(hiveTag);
         })
-        .catch((reject) => {
-          return true
-        })
-    },
-  },
-}
+        .catch(() => {
+          return true;
+        });
+    }
+  }
+};
 
 export const getLabel = {
   methods: {
     getLabel(item) {
       return item === undefined
-        ? 'unknown'
+        ? "unknown"
         : item.trans !== undefined &&
           item.trans !== null &&
           (item.trans[this.$i18n.locale] !== undefined ||
             item.trans.en !== undefined)
         ? item.trans[this.$i18n.locale] || item.trans.en
-        : item.name
-    },
-  },
-}
+        : item.name;
+    }
+  }
+};
 
 export const lightenColor = {
   methods: {
     lightenColor(color, amount, opacity = 1) {
-      color = color.replace('#', '')
-      const clamp = (val) => Math.min(Math.max(val, 0), 0xff)
+      color = color.replace("#", "");
+      const clamp = val => Math.min(Math.max(val, 0), 0xff);
 
-      const num = parseInt(color, 16)
-      const red = clamp((num >> 16) + amount)
-      const green = clamp(((num >> 8) & 0x00ff) + amount)
-      const blue = clamp((num & 0x0000ff) + amount)
+      const num = parseInt(color, 16);
+      const red = clamp((num >> 16) + amount);
+      const green = clamp(((num >> 8) & 0x00ff) + amount);
+      const blue = clamp((num & 0x0000ff) + amount);
 
       const newColor =
-        'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
+        "rgba(" + red + "," + green + "," + blue + "," + opacity + ")";
 
-      return newColor
-    },
-  },
-}
+      return newColor;
+    }
+  }
+};
 
 export const nativeAppMethods = {
   computed: {
     appIsNative() {
-      return window.ReactNativeWebview !== undefined
-    },
+      return window.ReactNativeWebview !== undefined;
+    }
   },
   methods: {
     constructMessageParams(action, params) {
       const message = {
         action,
-        params,
-      }
-      return JSON.stringify(message)
+        params
+      };
+      return JSON.stringify(message);
     },
     postNativeAppMessage(action, params) {
       if (this.appIsNative) {
-        const message = this.constructMessageParams(action, params)
-        window.ReactNativeWebView.postMessage(message)
+        const message = this.constructMessageParams(action, params);
+        window.ReactNativeWebView.postMessage(message);
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const orderedLayers = {
   methods: {
     orderedLayers: function(hive) {
       // change sorting if hive was created in app v2 to make sure it is being displayed correctly in v3 (honey layers on top of brood layers)
-      const v2hive = hive.layers.filter((layer) => layer.order === 0).length > 0 // only v2 hives have at least one layer with order number 0
+      const v2hive = hive.layers.filter(layer => layer.order === 0).length > 0; // only v2 hives have at least one layer with order number 0
       if (v2hive) {
         return hive.layers.slice().sort(function(a, b) {
-          if (a.type === 'honey' && b.type === 'brood') {
-            return -1
+          if (a.type === "honey" && b.type === "brood") {
+            return -1;
           }
-          if (b.type === 'honey' && a.type === 'brood') {
-            return 1
+          if (b.type === "honey" && a.type === "brood") {
+            return 1;
           }
           if (a.order > b.order) {
-            return -1
+            return -1;
           }
           if (b.order > a.order) {
-            return 1
+            return 1;
           }
-          return 0
-        })
+          return 0;
+        });
       } else {
         return hive.layers.slice().sort(function(a, b) {
-          if (a.type === 'feeding_box') {
-            return -1
+          if (a.type === "feeding_box") {
+            return -1;
           }
-          if (b.type === 'feeding_box') {
-            return 1
+          if (b.type === "feeding_box") {
+            return 1;
           }
           if (a.order > b.order) {
-            return -1
+            return -1;
           }
           if (b.order > a.order) {
-            return 1
+            return 1;
           }
-          return 0
-        })
+          return 0;
+        });
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const parseDate = {
   data() {
     return {
       possibleFormats: [
-        'YYYY-MM-DD HH:mm',
-        'YYYY-MM-DD',
-        'DD-MM-YYYY HH:mm',
-        'DD-MM-YYYY',
-        'MM-DD-YYYY HH:mm',
-        'MM-DD-YYYY',
+        "YYYY-MM-DD HH:mm",
+        "YYYY-MM-DD",
+        "DD-MM-YYYY HH:mm",
+        "DD-MM-YYYY",
+        "MM-DD-YYYY HH:mm",
+        "MM-DD-YYYY"
       ],
-      parseDateFormat: 'YYYY-MM-DD HH:mm:ss',
-    }
+      parseDateFormat: "YYYY-MM-DD HH:mm:ss"
+    };
   },
   computed: {
     currentYear() {
-      return parseInt(this.$moment().format('YYYY'))
-    },
+      return parseInt(this.$moment().format("YYYY"));
+    }
   },
   methods: {
     checkInputValid(input) {
-      let output = null
-      this.possibleFormats.map((format) => {
+      let output = null;
+      this.possibleFormats.map(format => {
         if (this.$moment(input, format, true).isValid()) {
-          output = this.$moment(input, format).format(this.parseDateFormat)
+          output = this.$moment(input, format).format(this.parseDateFormat);
         }
-        return true
-      })
+        return true;
+      });
       if (output === null) {
-        output = this.$moment(input).format(this.parseDateFormat)
+        output = this.$moment(input).format(this.parseDateFormat);
       }
-      return output
+      return output;
     },
     parseDate(input) {
-      const dateStr = this.checkInputValid(input)
-      let makesSense = false
-      if (dateStr && dateStr !== 'Invalid date') {
-        const year = dateStr.substring(0, 4)
-        const month = dateStr.substring(5, 7)
-        const day = dateStr.substring(8, 10)
-        const hour = dateStr.substring(11, 13)
-        const minutes = dateStr.substring(14, 16)
+      const dateStr = this.checkInputValid(input);
+      let makesSense = false;
+      if (dateStr && dateStr !== "Invalid date") {
+        const year = dateStr.substring(0, 4);
+        const month = dateStr.substring(5, 7);
+        const day = dateStr.substring(8, 10);
+        const hour = dateStr.substring(11, 13);
+        const minutes = dateStr.substring(14, 16);
         makesSense =
           parseInt(year) >= this.currentYear &&
           parseInt(year) <= this.currentYear + 2 &&
           parseInt(month) <= 12 &&
           parseInt(day) <= 31 &&
           parseInt(hour) <= 24 &&
-          parseInt(minutes) <= 59
+          parseInt(minutes) <= 59;
       }
-      const output = makesSense ? dateStr : null
-      return output
-    },
+      const output = makesSense ? dateStr : null;
+      return output;
+    }
     // parseDate(input) { // TODO remove if single-digits won't be used for sure
     //   const nothingMissing = input.length === 12
     //   if (nothingMissing) {
@@ -550,106 +550,106 @@ export const parseDate = {
 
     //   return makesSense ? date : input.length > 0 ? '' : null
     // },
-  },
-}
+  }
+};
 
 export const readAlertRules = {
   methods: {
     async readAlertRules() {
       try {
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRulesChecked',
-          value: true,
-        })
-        const response = await Api.readRequest('/alert-rules')
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRules',
-          value: response.data.alert_rules,
-        })
-        return true
+        this.$store.commit("alerts/setData", {
+          prop: "alertRulesChecked",
+          value: true
+        });
+        const response = await Api.readRequest("/alert-rules");
+        this.$store.commit("alerts/setData", {
+          prop: "alertRules",
+          value: response.data.alert_rules
+        });
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
           if (error.response.status === 404) {
-            this.$store.commit('alerts/setData', {
-              prop: 'alertRules',
-              value: [],
-            })
+            this.$store.commit("alerts/setData", {
+              prop: "alertRules",
+              value: []
+            });
           }
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readApiaries = {
   methods: {
-    async readApiaries(suffix = '') {
+    async readApiaries(suffix = "") {
       try {
-        const response = await Api.readRequest('/locations' + suffix)
+        const response = await Api.readRequest("/locations" + suffix);
 
-        this.$store.commit('locations/setApiaries', response.data.locations)
+        this.$store.commit("locations/setApiaries", response.data.locations);
 
-        return true
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
+          console.log(error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readGroups = {
   methods: {
-    async readGroups(suffix = '') {
+    async readGroups(suffix = "") {
       try {
-        const response = await Api.readRequest('/groups' + suffix)
+        const response = await Api.readRequest("/groups" + suffix);
 
-        this.$store.commit('locations/setGroups', response.data.groups)
-        this.$store.commit('groups/setInvitations', response.data.invitations)
-        return true
+        this.$store.commit("locations/setGroups", response.data.groups);
+        this.$store.commit("groups/setInvitations", response.data.invitations);
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
+          console.log(error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readApiariesAndGroups = {
   methods: {
     async readApiariesAndGroups() {
       try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
+        const responseApiaries = await Api.readRequest("/locations");
+        const responseGroups = await Api.readRequest("/groups");
         this.$store.commit(
-          'locations/setApiaries',
+          "locations/setApiaries",
           responseApiaries.data.locations
-        )
-        this.$store.commit('locations/setGroups', responseGroups.data.groups)
+        );
+        this.$store.commit("locations/setGroups", responseGroups.data.groups);
         this.$store.commit(
-          'groups/setInvitations',
+          "groups/setInvitations",
           responseGroups.data.invitations
-        )
-        return true
+        );
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
+          console.log(error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readApiariesAndGroupsIfNotPresent = {
   methods: {
@@ -657,370 +657,373 @@ export const readApiariesAndGroupsIfNotPresent = {
       if (this.apiaries.length === 0 && this.groups.length === 0) {
         // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
         try {
-          const responseApiaries = await Api.readRequest('/locations')
-          const responseGroups = await Api.readRequest('/groups')
+          const responseApiaries = await Api.readRequest("/locations");
+          const responseGroups = await Api.readRequest("/groups");
           this.$store.commit(
-            'locations/setApiaries',
+            "locations/setApiaries",
             responseApiaries.data.locations
-          )
-          this.$store.commit('locations/setGroups', responseGroups.data.groups)
+          );
+          this.$store.commit("locations/setGroups", responseGroups.data.groups);
           this.$store.commit(
-            'groups/setInvitations',
+            "groups/setInvitations",
             responseGroups.data.invitations
-          )
-          return true
+          );
+          return true;
         } catch (error) {
           if (error.response) {
-            console.log(error.response)
+            console.log(error.response);
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        return true
+        return true;
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readDashboardGroups = {
   computed: {
-    ...mapGetters('groups', ['dashboardGroupsChecked']),
+    ...mapGetters("groups", ["dashboardGroupsChecked"])
   },
   methods: {
     async readDashboardGroups() {
       try {
-        this.$store.commit('groups/setData', {
-          prop: 'dashboardGroupsChecked',
-          value: true,
-        })
-        const response = await Api.readRequest('/dashboardgroups')
-        this.$store.commit('groups/setData', {
-          prop: 'dashboardGroups',
-          value: response.data,
-        })
-        return true
+        this.$store.commit("groups/setData", {
+          prop: "dashboardGroupsChecked",
+          value: true
+        });
+        const response = await Api.readRequest("/dashboardgroups");
+        this.$store.commit("groups/setData", {
+          prop: "dashboardGroups",
+          value: response.data
+        });
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
+          console.log(error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
     async readDashboardGroupsIfNotChecked() {
       if (!this.dashboardGroupsChecked) {
         try {
-          this.$store.commit('groups/setData', {
-            prop: 'dashboardGroupsChecked',
-            value: true,
-          })
-          const response = await Api.readRequest('/dashboardgroups')
-          this.$store.commit('groups/setData', {
-            prop: 'dashboardGroups',
-            value: response.data,
-          })
-          return true
+          this.$store.commit("groups/setData", {
+            prop: "dashboardGroupsChecked",
+            value: true
+          });
+          const response = await Api.readRequest("/dashboardgroups");
+          this.$store.commit("groups/setData", {
+            prop: "dashboardGroups",
+            value: response.data
+          });
+          return true;
         } catch (error) {
           if (error.response) {
-            console.log(error.response)
+            console.log(error.response);
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        return true
+        return true;
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readDevices = {
   methods: {
     async readDevices() {
       // devicesChecked boolean prevents unnecessary API calls to read devices when they have been checked already (but possibly response not stored yet)
       try {
-        this.$store.commit('devices/setData', {
-          prop: 'devicesChecked',
-          value: true,
-        })
-        const response = await Api.readRequest('/devices')
-        this.$store.commit('devices/setData', {
-          prop: 'devices',
-          value: response.data,
-        })
-        return true
+        this.$store.commit("devices/setData", {
+          prop: "devicesChecked",
+          value: true
+        });
+        const response = await Api.readRequest("/devices");
+        this.$store.commit("devices/setData", {
+          prop: "devices",
+          value: response.data
+        });
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
-          if (error.response.data === 'no_devices_found') {
-            this.$store.commit('devices/setData', {
-              prop: 'devices',
-              value: [],
-            })
+          console.log(error.response);
+          if (error.response.data === "no_devices_found") {
+            this.$store.commit("devices/setData", {
+              prop: "devices",
+              value: []
+            });
           }
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readDevicesIfNotChecked = {
   methods: {
     async readDevicesIfNotChecked() {
       // devicesChecked boolean prevents unnecessary API calls to read devices when they have been checked already (but possibly response not stored yet)
-      const devicesChecked = this.$store.getters['devices/devicesChecked']
+      const devicesChecked = this.$store.getters["devices/devicesChecked"];
 
       if (!devicesChecked) {
         try {
-          this.$store.commit('devices/setData', {
-            prop: 'devicesChecked',
-            value: true,
-          })
-          const response = await Api.readRequest('/devices')
-          this.$store.commit('devices/setData', {
-            prop: 'devices',
-            value: response.data,
-          })
-          return true
+          this.$store.commit("devices/setData", {
+            prop: "devicesChecked",
+            value: true
+          });
+          const response = await Api.readRequest("/devices");
+          this.$store.commit("devices/setData", {
+            prop: "devices",
+            value: response.data
+          });
+          return true;
         } catch (error) {
           if (error.response) {
-            console.log(error.response)
-            if (error.response.data === 'no_devices_found') {
-              this.$store.commit('devices/setData', {
-                prop: 'devices',
-                value: [],
-              })
+            console.log(error.response);
+            if (error.response.data === "no_devices_found") {
+              this.$store.commit("devices/setData", {
+                prop: "devices",
+                value: []
+              });
             }
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        return true
+        return true;
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readGeneralInspections = {
   methods: {
     async readGeneralInspections() {
       try {
-        const response = await Api.readRequest('/inspections')
-        this.$store.commit('inspections/setGeneralInspections', response.data)
-        return true
+        const response = await Api.readRequest("/inspections");
+        this.$store.commit("inspections/setGeneralInspections", response.data);
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readGeneralInspectionsIfNotPresent = {
   methods: {
     async readGeneralInspectionsIfNotPresent() {
       if (this.generalInspections.length === 0) {
         try {
-          const response = await Api.readRequest('/inspections')
-          this.$store.commit('inspections/setGeneralInspections', response.data)
-          return true
+          const response = await Api.readRequest("/inspections");
+          this.$store.commit(
+            "inspections/setGeneralInspections",
+            response.data
+          );
+          return true;
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
+            console.log("Error: ", error.response);
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        return true
+        return true;
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readInspectionsForHiveId = {
   methods: {
-    async readInspectionsForHiveId(id, suffix = '') {
-      this.loadingInspections = true
-      this.show500Response = false
+    async readInspectionsForHiveId(id, suffix = "") {
+      this.loadingInspections = true;
+      this.show500Response = false;
 
       try {
         const response = await Api.readRequest(
-          '/inspections/hive/' + id.toString() + suffix
-        )
-        this.inspections = response.data
-        this.loadingInspections = false
-        return true
+          "/inspections/hive/" + id.toString() + suffix
+        );
+        this.inspections = response.data;
+        this.loadingInspections = false;
+        return true;
       } catch (error) {
-        this.loadingInspections = false
+        this.loadingInspections = false;
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
           if (error.response.status === 500) {
-            this.show500Response = true
+            this.show500Response = true;
           }
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const readTaxonomy = {
   methods: {
     async readTaxonomy() {
-      const beeRacesList = this.$store.getters['taxonomy/beeRacesList']
+      const beeRacesList = this.$store.getters["taxonomy/beeRacesList"];
       if (beeRacesList.length === 0) {
         try {
-          const response = await Api.readRequest('/taxonomy/lists')
-          this.$store.commit('taxonomy/setData', {
-            prop: 'taxonomyLists',
-            value: response.data,
-          })
-          return true
+          const response = await Api.readRequest("/taxonomy/lists");
+          this.$store.commit("taxonomy/setData", {
+            prop: "taxonomyLists",
+            value: response.data
+          });
+          return true;
         } catch (error) {
           if (error.response) {
-            console.log(error.response)
+            console.log(error.response);
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       }
-    },
-  },
-}
+    }
+  }
+};
 
 export const sortedDevices = {
   computed: {
-    ...mapGetters('devices', ['devices']),
+    ...mapGetters("devices", ["devices"])
   },
   methods: {
     sortedDevices(intervalLabel = false) {
-      const apiaryArray = []
+      const apiaryArray = [];
 
-      const devices = JSON.parse(JSON.stringify(this.devices)) // clone without v-bind to avoid vuex warning when mutating
+      const devices = JSON.parse(JSON.stringify(this.devices)); // clone without v-bind to avoid vuex warning when mutating
       devices.map((device, index) => {
         if (
           !intervalLabel ||
-          (device.hive_id !== null && device.hive_name !== '') // this means device is not connected to an (existing) hive
+          (device.hive_id !== null && device.hive_name !== "") // this means device is not connected to an (existing) hive
         ) {
           apiaryArray.push({
             id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
             label:
-              device.location_name !== ''
+              device.location_name !== ""
                 ? device.location_name
-                : this.$i18n.t('Unknown'),
-            children: [],
-          })
+                : this.$i18n.t("Unknown"),
+            children: []
+          });
         }
         if (!intervalLabel) {
           device.label = device.hive_name
-            ? device.hive_name + ' - ' + device.name
-            : device.name
+            ? device.hive_name + " - " + device.name
+            : device.name;
         }
-        return device
-      })
-      let uniqueApiaries = []
-      const map = new Map()
+        return device;
+      });
+      let uniqueApiaries = [];
+      const map = new Map();
       for (const item of apiaryArray) {
         if (!map.has(item.label)) {
-          map.set(item.label, true) // set any value to Map
-          uniqueApiaries.push(item)
+          map.set(item.label, true); // set any value to Map
+          uniqueApiaries.push(item);
         }
       }
       uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
         if (a.label < b.label) {
-          return -1
+          return -1;
         }
         if (a.label > b.label) {
-          return 1
+          return 1;
         }
-        return 0
-      })
-      devices.map((device) => {
-        uniqueApiaries.map((apiary) => {
+        return 0;
+      });
+      devices.map(device => {
+        uniqueApiaries.map(apiary => {
           if (!intervalLabel) {
             if (
               apiary.label === device.location_name ||
-              (apiary.label === this.$i18n.t('Unknown') &&
-                device.location_name === '')
+              (apiary.label === this.$i18n.t("Unknown") &&
+                device.location_name === "")
             ) {
-              apiary.children.push(device)
+              apiary.children.push(device);
             }
           } else {
             if (
               device.hive_id !== null &&
-              device.hive_name !== '' && // this means device is not connected to an (existing) hive
+              device.hive_name !== "" && // this means device is not connected to an (existing) hive
               (apiary.label === device.location_name ||
-                (apiary.label === this.$i18n.t('Unknown') &&
-                  device.location_name === ''))
+                (apiary.label === this.$i18n.t("Unknown") &&
+                  device.location_name === ""))
             ) {
               let deviceLabel = device.hive_name
-                ? device.hive_name + ' - ' + device.name
-                : device.name
+                ? device.hive_name + " - " + device.name
+                : device.name;
 
               const interval =
                 device.measurement_interval_min *
-                device.measurement_transmission_ratio
+                device.measurement_transmission_ratio;
               deviceLabel += interval
-                ? ' (' +
-                  this.$i18n.t('measurement_interval') +
-                  ': ' +
+                ? " (" +
+                  this.$i18n.t("measurement_interval") +
+                  ": " +
                   interval +
-                  ' ' +
-                  this.$i18n.tc('minute', interval) +
-                  ')'
-                : ''
+                  " " +
+                  this.$i18n.tc("minute", interval) +
+                  ")"
+                : "";
 
               apiary.children.push({
                 id: device.hive_id,
-                label: deviceLabel,
-              })
+                label: deviceLabel
+              });
             }
           }
-          return apiary
-        })
-        return true
-      })
-      uniqueApiaries.map((apiary) => {
+          return apiary;
+        });
+        return true;
+      });
+      uniqueApiaries.map(apiary => {
         const sortedChildren = apiary.children.slice().sort(function(a, b) {
           if (a.label < b.label) {
-            return -1
+            return -1;
           }
           if (a.label > b.label) {
-            return 1
+            return 1;
           }
-          return 0
-        })
-        apiary.children = sortedChildren
-        return apiary
-      })
-      return uniqueApiaries
-    },
-  },
-}
+          return 0;
+        });
+        apiary.children = sortedChildren;
+        return apiary;
+      });
+      return uniqueApiaries;
+    }
+  }
+};
 
 export const toggleFilterByGroup = {
   methods: {
     toggleFilterByGroup() {
       switch (this.filterByGroupStatus) {
-        case 'off':
-          this.filterByGroupStatus = 'group'
-          break
-        case 'group':
-          this.filterByGroupStatus = 'owned'
-          break
-        case 'owned':
-          this.filterByGroupStatus = 'off'
-          break
+        case "off":
+          this.filterByGroupStatus = "group";
+          break;
+        case "group":
+          this.filterByGroupStatus = "owned";
+          break;
+        case "owned":
+          this.filterByGroupStatus = "off";
+          break;
       }
-    },
-  },
-}
+    }
+  }
+};

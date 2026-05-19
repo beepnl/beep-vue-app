@@ -55,7 +55,7 @@
             v-if="!showHiveTagPlaceholder"
             class="d-flex justify-start align-center"
           >
-            <div class="text-overline ">{{ $tc('Hivetag', 2) }}</div>
+            <div class="text-label-small ">{{ $tc('Hivetag', 2) }}</div>
             <v-icon
               class="icon-info cursor-pointer ml-2"
               :size="mobile ? 'x-small' : 'small'"

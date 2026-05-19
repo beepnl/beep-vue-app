@@ -1,706 +1,701 @@
 <template>
-	<div class="inspection-item">
-		<labelWithDescription
-			v-if="item.input !== 'date'"
-			:precision="precision"
-			:item="item"
-			:parse-mode="parseMode"
-			:parsed-images="parsedImages"
-			:parsed-items="parsedItems"
-			:check-answer="checkAnswer"
-			:text-area="item.input === 'text'"
-		></labelWithDescription>
+  <div class="inspection-item">
+    <labelWithDescription
+      v-if="item.input !== 'date'"
+      :precision="precision"
+      :item="item"
+      :parse-mode="parseMode"
+      :parsed-images="parsedImages"
+      :parsed-items="parsedItems"
+      :check-answer="checkAnswer"
+      :text-area="item.input === 'text'"
+    ></labelWithDescription>
 
-		<selectHiveOrApiary
-			v-if="item.input === 'select_hive' || item.input === 'select_location'"
-			:object="object"
-			:item="item"
-		></selectHiveOrApiary>
+    <selectHiveOrApiary
+      v-if="item.input === 'select_hive' || item.input === 'select_location'"
+      :object="object"
+      :item="item"
+    ></selectHiveOrApiary>
 
-		<imageUploader
-			v-if="item.input === 'image'"
-			:object="object"
-			:item="item"
-			:input-disabled="disabled"
-		></imageUploader>
+    <imageUploader
+      v-if="item.input === 'image'"
+      :object="object"
+      :item="item"
+      :input-disabled="disabled"
+    ></imageUploader>
 
-		<v-list v-if="item.input === 'list'" class="inspection-checkbox-list">
-			<template v-for="(listItem, index) in item.children" :key="index">
-				<v-list-item
-					class="inspection-list-item"
-					:title="getLabel(listItem)"
-					@click.capture="toggleSelect(listItem.id, item.id)"
-				>
-					<template v-slot:prepend>
-						<v-list-item-action>
-							<v-checkbox-btn
-								v-if="listItem.input === 'list_item'"
-								:model-value="selectedArray"
-								:value="listItem.id.toString()"
-								density="compact"
-								multiple
-								@update:model-value="listItem.id.toString()"
-							/>
-						</v-list-item-action>
-					</template>
-				</v-list-item>
+    <v-list v-if="item.input === 'list'" class="inspection-checkbox-list">
+      <template v-for="(listItem, index) in item.children" :key="index">
+        <v-list-item
+          class="inspection-list-item"
+          :title="getLabel(listItem)"
+          @click.capture="toggleSelect(listItem.id, item.id)"
+        >
+          <template v-slot:prepend>
+            <v-list-item-action>
+              <v-checkbox-btn
+                v-if="listItem.input === 'list_item'"
+                :model-value="selectedArray"
+                :value="listItem.id.toString()"
+                density="compact"
+                multiple
+                @update:model-value="listItem.id.toString()"
+              />
+            </v-list-item-action>
+          </template>
+        </v-list-item>
 
-				<template v-if="listItem.children.length > 0">
-					<v-list-item
-						v-for="(nestedItem, n) in listItem.children"
-						:key="'nest-' + n"
-						class="inspection-list-item nested"
-						:title="getLabel(nestedItem)"
-						@click.capture="toggleSelect(nestedItem.id, item.id)"
-					>
-						<template v-slot:prepend>
-							<v-list-item-action>
-								<v-checkbox-btn
-									v-if="nestedItem.input === 'list_item'"
-									:model-value="selectedArray"
-									:value="nestedItem.id.toString()"
-									multiple
-									density="compact"
-									@update:model-value="nestedItem.id.toString()"
-								/>
-							</v-list-item-action>
-						</template>
-					</v-list-item>
-				</template>
-			</template>
-		</v-list>
+        <template v-if="listItem.children.length > 0">
+          <v-list-item
+            v-for="(nestedItem, n) in listItem.children"
+            :key="'nest-' + n"
+            class="inspection-list-item nested"
+            :title="getLabel(nestedItem)"
+            @click.capture="toggleSelect(nestedItem.id, item.id)"
+          >
+            <template v-slot:prepend>
+              <v-list-item-action>
+                <v-checkbox-btn
+                  v-if="nestedItem.input === 'list_item'"
+                  :model-value="selectedArray"
+                  :value="nestedItem.id.toString()"
+                  multiple
+                  density="compact"
+                  @update:model-value="nestedItem.id.toString()"
+                />
+              </v-list-item-action>
+            </template>
+          </v-list-item>
+        </template>
+      </template>
+    </v-list>
 
-		<v-radio-group
-			v-if="item.input === 'options'"
-			:model-value="parseInt(object[item.id])"
-			class="inspection-options-list"
-		>
-			<v-radio
-				v-for="(listItem, index) in item.children"
-				:key="index"
-				:label="getLabel(listItem)"
-				:model-value="parseInt(object[item.id])"
-				:value="listItem.id"
-				color="accent"
-				@input="toggleRadio(listItem.id)"
-			></v-radio>
-		</v-radio-group>
+    <v-radio-group
+      v-if="item.input === 'options'"
+      :model-value="parseInt(object[item.id])"
+      class="inspection-options-list"
+    >
+      <v-radio
+        v-for="(listItem, index) in item.children"
+        :key="index"
+        :label="getLabel(listItem)"
+        :model-value="parseInt(object[item.id])"
+        :value="listItem.id"
+        color="accent"
+        @input="toggleRadio(listItem.id)"
+      ></v-radio>
+    </v-radio-group>
 
-		<treeselect
-			v-if="item.input === 'select'"
-			:object="object"
-			:item="item"
-			:check-answer="checkAnswer"
-		></treeselect>
+    <treeselect
+      v-if="item.input === 'select'"
+      :object="object"
+      :item="item"
+      :check-answer="checkAnswer"
+    ></treeselect>
 
-		<dateTimePicker
-			v-if="item.input === 'date'"
-			:object="object"
-			:item="item"
-			:parse-mode="parseMode"
-			:parsed-images="parsedImages"
-			:parsed-items="parsedItems"
-			:check-answer="checkAnswer"
-		></dateTimePicker>
+    <dateTimePicker
+      v-if="item.input === 'date'"
+      :object="object"
+      :item="item"
+      :parse-mode="parseMode"
+      :parsed-images="parsedImages"
+      :parsed-items="parsedItems"
+      :check-answer="checkAnswer"
+    ></dateTimePicker>
 
-		<slider
-			v-if="
-				item.input === 'grade' ||
-					item.input === 'number_degrees' ||
-					item.input === 'number_percentage' ||
-					item.input === 'score_amount' ||
-					item.input === 'score_quality' ||
-					item.input === 'slider'
-			"
-			:item="item"
-			:object="object"
-		></slider>
+    <slider
+      v-if="
+        item.input === 'grade' ||
+          item.input === 'number_degrees' ||
+          item.input === 'number_percentage' ||
+          item.input === 'score_amount' ||
+          item.input === 'score_quality' ||
+          item.input === 'slider'
+      "
+      :item="item"
+      :object="object"
+    ></slider>
 
-		<NumericInput
-			v-if="item.input === 'number' || item.input === 'number_0_decimals'"
-			:object="object"
-			:property="item.id"
-			:step="1"
-			:disabled="disabled"
-			@update-number="updateInput($event, item.id, item.name, item.input)"
-		></NumericInput>
+    <NumericInput
+      v-if="item.input === 'number' || item.input === 'number_0_decimals'"
+      :object="object"
+      :property="item.id"
+      :step="1"
+      :disabled="disabled"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+    ></NumericInput>
 
-		<NumericInput
-			v-if="
-				item.input === 'number_1_decimals' ||
-					item.input === 'number_2_decimals' ||
-					item.input === 'square_25cm2'
-			"
-			:object="object"
-			:property="item.id"
-			:step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
-			:disabled="disabled"
-			@update-number="updateInput($event, item.id, item.name, item.input)"
-		></NumericInput>
+    <NumericInput
+      v-if="
+        item.input === 'number_1_decimals' ||
+          item.input === 'number_2_decimals' ||
+          item.input === 'square_25cm2'
+      "
+      :object="object"
+      :property="item.id"
+      :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
+      :disabled="disabled"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+    ></NumericInput>
 
-		<NumericInput
-			v-if="item.input === 'number_3_decimals'"
-			:object="object"
-			:property="item.id"
-			:step="0.001"
-			:disabled="disabled"
-			@update-number="updateInput($event, item.id, item.name, item.input)"
-		></NumericInput>
+    <NumericInput
+      v-if="item.input === 'number_3_decimals'"
+      :object="object"
+      :property="item.id"
+      :step="0.001"
+      :disabled="disabled"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+    ></NumericInput>
 
-		<NumericInput
-			v-if="item.input === 'number_negative'"
-			:object="object"
-			:property="item.id"
-			:max="0"
-			:disabled="disabled"
-			@update-number="updateInput($event, item.id, item.name, item.input)"
-		></NumericInput>
+    <NumericInput
+      v-if="item.input === 'number_negative'"
+      :object="object"
+      :property="item.id"
+      :max="0"
+      :disabled="disabled"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+    ></NumericInput>
 
-		<NumericInput
-			v-if="item.input === 'number_positive'"
-			:object="object"
-			:property="item.id"
-			:min="0"
-			:disabled="item.name === 'colony_size' || disabled"
-			@update-number="updateInput($event, item.id, item.name, item.input)"
-		></NumericInput>
+    <NumericInput
+      v-if="item.input === 'number_positive'"
+      :object="object"
+      :property="item.id"
+      :min="0"
+      :disabled="item.name === 'colony_size' || disabled"
+      @update-number="updateInput($event, item.id, item.name, item.input)"
+    ></NumericInput>
 
-		<starRating
-			v-if="item.input === 'score'"
-			:object="object"
-			:property="item.id"
-		></starRating>
+    <starRating
+      v-if="item.input === 'score'"
+      :object="object"
+      :property="item.id"
+    ></starRating>
 
-		<v-textarea
-			v-if="item.input === 'text'"
-			v-model="object[item.id]"
-			class="inspection-text-area"
-			:placeholder="getLabel(item)"
-			counter="2500"
-			:rows="getEnters(object[item.id])"
-			auto-grow
-			clearable
-			bg-color="white"
-			@update:model-value="validateText($event, item.id, 2500)"
-		></v-textarea>
+    <v-textarea
+      v-if="item.input === 'text'"
+      v-model="object[item.id]"
+      class="inspection-text-area"
+      :placeholder="getLabel(item)"
+      counter="2500"
+      :rows="getEnters(object[item.id])"
+      auto-grow
+      clearable
+      bg-color="white"
+      @update:model-value="validateText($event, item.id, 2500)"
+    ></v-textarea>
 
-		<smileRating
-			v-if="item.input === 'smileys_3'"
-			:object="object"
-			:property="item.id"
-		></smileRating>
+    <smileRating
+      v-if="item.input === 'smileys_3'"
+      :object="object"
+      :property="item.id"
+    ></smileRating>
 
-		<yesNoRating
-			v-if="
-				item.input === 'boolean' ||
-					item.input === 'boolean_yes_red' ||
-					item.input === 'list_item'
-			"
-			:object="object"
-			:property="item.id"
-			:yes-red="item.input === 'boolean_yes_red'"
-		></yesNoRating>
+    <yesNoRating
+      v-if="
+        item.input === 'boolean' ||
+          item.input === 'boolean_yes_red' ||
+          item.input === 'list_item'
+      "
+      :object="object"
+      :property="item.id"
+      :yes-red="item.input === 'boolean_yes_red'"
+    ></yesNoRating>
 
-		<sampleCode
-			v-if="item.input === 'sample_code'"
-			:item="item"
-			:object="object"
-		/>
+    <sampleCode
+      v-if="item.input === 'sample_code'"
+      :item="item"
+      :object="object"
+    />
 
-		<div
-			v-if="
-				item.input !== 'boolean' &&
-					item.input !== 'boolean_yes_red' &&
-					item.input !== 'smileys_3' &&
-					item.input !== 'text' &&
-					item.input !== 'score' &&
-					item.input !== 'number' &&
-					item.input !== 'number_0_decimals' &&
-					item.input !== 'number_1_decimals' &&
-					item.input !== 'number_2_decimals' &&
-					item.input !== 'number_3_decimals' &&
-					item.input !== 'number_negative' &&
-					item.input !== 'number_positive' &&
-					item.input !== 'square_25cm2' &&
-					item.input !== 'score_amount' &&
-					item.input !== 'score_quality' &&
-					item.input !== 'number_percentage' &&
-					item.input !== 'grade' &&
-					item.input !== 'number_degrees' &&
-					item.input !== 'slider' &&
-					item.input !== 'date' &&
-					item.input !== 'select' &&
-					item.input !== 'options' &&
-					item.input !== 'list' &&
-					item.input !== 'image' &&
-					item.input !== 'select_hive' &&
-					item.input !== 'select_location' &&
-					item.input !== 'sample_code'
-			"
-		>
-			{{ $t("Not_implemented_yet") }}
-		</div>
-	</div>
+    <div
+      v-if="
+        item.input !== 'boolean' &&
+          item.input !== 'boolean_yes_red' &&
+          item.input !== 'smileys_3' &&
+          item.input !== 'text' &&
+          item.input !== 'score' &&
+          item.input !== 'number' &&
+          item.input !== 'number_0_decimals' &&
+          item.input !== 'number_1_decimals' &&
+          item.input !== 'number_2_decimals' &&
+          item.input !== 'number_3_decimals' &&
+          item.input !== 'number_negative' &&
+          item.input !== 'number_positive' &&
+          item.input !== 'square_25cm2' &&
+          item.input !== 'score_amount' &&
+          item.input !== 'score_quality' &&
+          item.input !== 'number_percentage' &&
+          item.input !== 'grade' &&
+          item.input !== 'number_degrees' &&
+          item.input !== 'slider' &&
+          item.input !== 'date' &&
+          item.input !== 'select' &&
+          item.input !== 'options' &&
+          item.input !== 'list' &&
+          item.input !== 'image' &&
+          item.input !== 'select_hive' &&
+          item.input !== 'select_location' &&
+          item.input !== 'sample_code'
+      "
+    >
+      {{ $t("Not_implemented_yet") }}
+    </div>
+  </div>
 </template>
 
 <script>
-	import dateTimePicker from "@components/input-fields/date-time-picker.vue";
-	import labelWithDescription from "@components/input-fields/label-with-description.vue";
-	import NumericInput from "@components/input-fields/numeric-input.vue";
-	// import testOutput from '@components/svg/scan_results.json' // enable for debugging
-	import slider from "@/src/components/input-fields/slider-input.vue";
-	import treeselect from "@/src/components/input-fields/treeselect-input.vue";
-	import imageUploader from "@components/input-fields/image-uploader.vue";
-	import sampleCode from "@components/input-fields/sample-code.vue";
-	import selectHiveOrApiary from "@components/input-fields/select-hive-or-apiary.vue";
-	import smileRating from "@components/input-fields/smile-rating.vue";
-	import starRating from "@components/input-fields/star-rating.vue";
-	import yesNoRating from "@components/input-fields/yes-no-rating.vue";
-	import { getLabel, parseDate } from "@mixins/methodsMixin";
-	import { svgData } from "@mixins/svgMixin";
-	import { mapGetters } from "vuex";
+import dateTimePicker from "@components/input-fields/date-time-picker.vue";
+import labelWithDescription from "@components/input-fields/label-with-description.vue";
+import NumericInput from "@components/input-fields/numeric-input.vue";
+// import testOutput from '@components/svg/scan_results.json' // enable for debugging
+import slider from "@/src/components/input-fields/slider-input.vue";
+import treeselect from "@/src/components/input-fields/treeselect-input.vue";
+import imageUploader from "@components/input-fields/image-uploader.vue";
+import sampleCode from "@components/input-fields/sample-code.vue";
+import selectHiveOrApiary from "@components/input-fields/select-hive-or-apiary.vue";
+import smileRating from "@components/input-fields/smile-rating.vue";
+import starRating from "@components/input-fields/star-rating.vue";
+import yesNoRating from "@components/input-fields/yes-no-rating.vue";
+import { getLabel, parseDate } from "@mixins/methodsMixin";
+import { svgData } from "@mixins/svgMixin";
+import { mapGetters } from "vuex";
 
-	export default {
-		name: "ChecklistInput",
-		components: {
-			dateTimePicker,
-			imageUploader,
-			labelWithDescription,
-			NumericInput,
-			sampleCode,
-			selectHiveOrApiary,
-			slider,
-			smileRating,
-			starRating,
-			treeselect,
-			yesNoRating,
-		},
-		mixins: [getLabel, parseDate, svgData],
-		props: {
-			item: {
-				type: Object,
-				default: null,
-				required: true,
-			},
-			object: {
-				type: Object,
-				default: null,
-				required: true,
-			},
-			disabled: {
-				type: Boolean,
-				default: false,
-				required: false,
-			},
-			parseMode: {
-				type: Boolean,
-				required: false,
-				default: false,
-			},
-		},
-		emits: ["calculate-tpa-colony-size", "calculate-liebefeld-colony-size"],
-		data() {
-			return {
-				savedNrOfDecimals: 0,
-				checkAnswer: true,
-				booleanDefault: [1, 0],
-				// testOutput, // enable for debugging
-				testOutput: null, // disable for debugging
-				enableTestOutput: false, // true for debugging
-			};
-		},
-		computed: {
-			...mapGetters("inspections", ["parsedOfflineInput"]),
-			flattenedItems() {
-				return this.item.children !== null
-					? this.flattenItems([...this.item.children])
-					: [];
-			},
-			isSelectIdItem() {
-				return (
-					this.item.input === "select" ||
-					this.item.input === "list" ||
-					this.item.input === "options"
-				);
-			},
-			locale() {
-				return this.$i18n.locale;
-			},
-			parsedItems() {
-				return this.parsedAnswerRaw &&
-					(Array.isArray(this.parsedAnswerRaw) ||
-						this.parsedAnswerRaw.category_id.indexOf("boolean") === -1) &&
-					// this.parsedAnswer.type === 'checkbox' &&
-					this.flattenedItems.length <= this.maxNrOfItems
-					? this.flattenedItems
-					: [];
-			},
-			precision() {
-				const dIndex = this.item.input.indexOf("_decimals");
-				let dec = 0;
-				if (dIndex > -1) {
-					dec = parseInt(this.item.input.substr(dIndex - 1, 1));
-				} else if (this.item.input === "square_25cm2") {
-					dec = 1;
-				}
-				return dec;
-			},
-			parsedAnswer() {
-				if (this.parseMode) {
-					let answer = this.parsedAnswerRaw;
-					if (Array.isArray(this.parsedAnswerRaw)) {
-						if (this.parsedAnswerRaw[0].type === "checkbox") {
-							const posAnswer = this.parsedAnswerRaw.filter(
-								(answer) => answer.value[0] === 1,
-							);
-							answer =
-								posAnswer.length > 0
-									? this.item.input === "list"
-										? posAnswer
-										: posAnswer[0]
-									: null;
-						}
-						// else if ( // TODO remove if single-digits won't be used for sure
-						//   this.parsedAnswerRaw[0].category_id === 'date-field' ||
-						//   this.parsedAnswerRaw[0].type === 'single-digit'
-						// ) {
-						//   // merge items for date type items
-						//   answer = this.parsedAnswerRaw[0]
-						//   answer.value = answer.value.concat(this.parsedAnswerRaw[1].value)
-						//   answer.image = answer.image.concat(this.parsedAnswerRaw[1].image)
-						// }
-						else {
-							answer = this.parsedAnswerRaw[0];
-						}
-					}
-					return answer;
-				} else {
-					return null;
-				}
-			},
-			parsedAnswerRaw() {
-				if (this.parseMode) {
-					const parsedData =
-						this.enableTestOutput && this.queriedParseMode
-							? this.testOutput
-							: this.parsedOfflineInput;
-					const returnedItems = parsedData.scans
-						.map((el) => {
-							return el.scan.filter(
-								(answer) =>
-									answer.parent_category_id !== undefined &&
-									parseInt(answer.parent_category_id) === this.item.id,
-							);
-						})
-						.filter((el) => el.length > 0);
+export default {
+  name: "ChecklistInput",
+  components: {
+    dateTimePicker,
+    imageUploader,
+    labelWithDescription,
+    NumericInput,
+    sampleCode,
+    selectHiveOrApiary,
+    slider,
+    smileRating,
+    starRating,
+    treeselect,
+    yesNoRating
+  },
+  mixins: [getLabel, parseDate, svgData],
+  props: {
+    item: {
+      type: Object,
+      default: null,
+      required: true
+    },
+    object: {
+      type: Object,
+      default: null,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+    parseMode: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  emits: ["calculate-tpa-colony-size", "calculate-liebefeld-colony-size"],
+  data() {
+    return {
+      savedNrOfDecimals: 0,
+      checkAnswer: true,
+      booleanDefault: [1, 0],
+      // testOutput, // enable for debugging
+      testOutput: null, // disable for debugging
+      enableTestOutput: false // true for debugging
+    };
+  },
+  computed: {
+    ...mapGetters("inspections", ["parsedOfflineInput"]),
+    flattenedItems() {
+      return this.item.children !== null
+        ? this.flattenItems([...this.item.children])
+        : [];
+    },
+    isSelectIdItem() {
+      return (
+        this.item.input === "select" ||
+        this.item.input === "list" ||
+        this.item.input === "options"
+      );
+    },
+    locale() {
+      return this.$i18n.locale;
+    },
+    parsedItems() {
+      return this.parsedAnswerRaw &&
+        (Array.isArray(this.parsedAnswerRaw) ||
+          this.parsedAnswerRaw.category_id.indexOf("boolean") === -1) &&
+        // this.parsedAnswer.type === 'checkbox' &&
+        this.flattenedItems.length <= this.maxNrOfItems
+        ? this.flattenedItems
+        : [];
+    },
+    precision() {
+      const dIndex = this.item.input.indexOf("_decimals");
+      let dec = 0;
+      if (dIndex > -1) {
+        dec = parseInt(this.item.input.substr(dIndex - 1, 1));
+      } else if (this.item.input === "square_25cm2") {
+        dec = 1;
+      }
+      return dec;
+    },
+    parsedAnswer() {
+      if (this.parseMode) {
+        let answer = this.parsedAnswerRaw;
+        if (Array.isArray(this.parsedAnswerRaw)) {
+          if (this.parsedAnswerRaw[0].type === "checkbox") {
+            const posAnswer = this.parsedAnswerRaw.filter(
+              answer => answer.value[0] === 1
+            );
+            answer =
+              posAnswer.length > 0
+                ? this.item.input === "list"
+                  ? posAnswer
+                  : posAnswer[0]
+                : null;
+          }
+          // else if ( // TODO remove if single-digits won't be used for sure
+          //   this.parsedAnswerRaw[0].category_id === 'date-field' ||
+          //   this.parsedAnswerRaw[0].type === 'single-digit'
+          // ) {
+          //   // merge items for date type items
+          //   answer = this.parsedAnswerRaw[0]
+          //   answer.value = answer.value.concat(this.parsedAnswerRaw[1].value)
+          //   answer.image = answer.image.concat(this.parsedAnswerRaw[1].image)
+          // }
+          else {
+            answer = this.parsedAnswerRaw[0];
+          }
+        }
+        return answer;
+      } else {
+        return null;
+      }
+    },
+    parsedAnswerRaw() {
+      if (this.parseMode) {
+        const parsedData =
+          this.enableTestOutput && this.queriedParseMode
+            ? this.testOutput
+            : this.parsedOfflineInput;
+        const returnedItems = parsedData.scans
+          .map(el => {
+            return el.scan.filter(
+              answer =>
+                answer.parent_category_id !== undefined &&
+                parseInt(answer.parent_category_id) === this.item.id
+            );
+          })
+          .filter(el => el.length > 0);
 
-					let answer = null;
+        let answer = null;
 
-					if (returnedItems.length > 0) {
-						if (returnedItems[0].length > 1) {
-							answer = returnedItems[0];
-						} else {
-							answer = returnedItems[0][0];
-						}
-					}
+        if (returnedItems.length > 0) {
+          if (returnedItems[0].length > 1) {
+            answer = returnedItems[0];
+          } else {
+            answer = returnedItems[0][0];
+          }
+        }
 
-					return answer;
-				} else {
-					return null;
-				}
-			},
-			parsedImages() {
-				if (Array.isArray(this.parsedAnswerRaw)) {
-					let imgArr = [];
-					let i = 0;
-					if (this.parsedItems.length > 0) {
-						this.parsedItems.map((it, j) => {
-							if (it.hasChildren) {
-								// make sure that items without children (= headers of nested sublist) do not get a matched image
-								imgArr = imgArr.concat("");
-								return imgArr;
-							} else {
-								if (
-									this.parsedAnswerRaw[i] !== undefined &&
-									this.parsedAnswerRaw[i].image !== undefined
-								) {
-									imgArr = imgArr.concat(this.parsedAnswerRaw[i].image);
-								}
-								i++;
-							}
-							return true;
-						});
-					} else {
-						// TODO check if this is needed
-						// this.parsedAnswerRaw.map((ans) => {
-						//   if (ans.image !== undefined) {
-						//     imgArr = imgArr.concat(ans.image)
-						//   }
-						// })
-						return this.parsedAnswer.image;
-					}
-					return imgArr;
-				} else {
-					return this.parsedAnswerRaw &&
-						this.parsedAnswerRaw.image !== undefined
-						? this.parsedAnswerRaw.image
-						: [];
-				}
-			},
-			queriedParseMode() {
-				return this.$route.query.mode === "parse"; // TODO remove when enableTestOutput is removed
-			},
-			// for v-model of 'list' checkbox an array of value is needed instead of a string
-			selectedArray() {
-				if (this.item.input === "list") {
-					if (typeof this.object[this.item.id] === "string") {
-						return this.object[this.item.id].split(",");
-					}
-				}
-				return [];
-			},
-		},
-		created() {
-			if (this.parsedAnswer) {
-				let value;
-				if (this.item.input === "list") {
-					this.parsedAnswer.map((answer) => {
-						return this.toggleSelect(answer.category_id, this.item.id);
-					});
-				} else {
-					if (
-						this.item.input === "select" &&
-						this.parsedAnswer.type === "text"
-					) {
-						// in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
-						value = this.findCategoryId(this.parsedAnswer.value[0]);
-					} else if (this.parsedAnswer.type === "checkbox") {
-						if (this.parsedAnswer.value.length > 1) {
-							const checkboxIndex = this.parsedAnswer.value.findIndex(
-								(value) => value === 1,
-							);
-							value =
-								this.isSelectIdItem &&
-								this.flattenedItems[checkboxIndex] !== undefined
-									? this.flattenedItems[checkboxIndex].id
-									: (this.item.input === "smileys_3" ||
-											this.item.input.indexOf("score") > -1 ||
-											this.item.input === "grade") &&
-									  checkboxIndex > -1
-									? checkboxIndex + 1
-									: this.item.input.indexOf("boolean") > -1 &&
-									  checkboxIndex > -1
-									? this.booleanDefault[checkboxIndex]
-									: null;
-						} else {
-							value =
-								this.parsedAnswer.value[0] === 1
-									? this.parsedAnswer.category_id
-									: null;
-						}
-					} else if (this.parsedAnswer.category_id === "date-field") {
-						value = this.parseDate(this.parsedAnswer.value[0]);
-					} else if (
-						this.parsedAnswer.type === "text" ||
-						this.parsedAnswer.type === "number"
-					) {
-						value =
-							this.parsedAnswer.value[0] === ""
-								? null
-								: this.parsedAnswer.type === "text"
-								? this.parsedAnswer.value[0]
-								: parseFloat(this.parsedAnswer.value[0]);
+        return answer;
+      } else {
+        return null;
+      }
+    },
+    parsedImages() {
+      if (Array.isArray(this.parsedAnswerRaw)) {
+        let imgArr = [];
+        let i = 0;
+        if (this.parsedItems.length > 0) {
+          this.parsedItems.map(it => {
+            if (it.hasChildren) {
+              // make sure that items without children (= headers of nested sublist) do not get a matched image
+              imgArr = imgArr.concat("");
+              return imgArr;
+            } else {
+              if (
+                this.parsedAnswerRaw[i] !== undefined &&
+                this.parsedAnswerRaw[i].image !== undefined
+              ) {
+                imgArr = imgArr.concat(this.parsedAnswerRaw[i].image);
+              }
+              i++;
+            }
+            return true;
+          });
+        } else {
+          // TODO check if this is needed
+          // this.parsedAnswerRaw.map((ans) => {
+          //   if (ans.image !== undefined) {
+          //     imgArr = imgArr.concat(ans.image)
+          //   }
+          // })
+          return this.parsedAnswer.image;
+        }
+        return imgArr;
+      } else {
+        return this.parsedAnswerRaw && this.parsedAnswerRaw.image !== undefined
+          ? this.parsedAnswerRaw.image
+          : [];
+      }
+    },
+    queriedParseMode() {
+      return this.$route.query.mode === "parse"; // TODO remove when enableTestOutput is removed
+    },
+    // for v-model of 'list' checkbox an array of value is needed instead of a string
+    selectedArray() {
+      if (this.item.input === "list") {
+        if (typeof this.object[this.item.id] === "string") {
+          return this.object[this.item.id].split(",");
+        }
+      }
+      return [];
+    }
+  },
+  created() {
+    if (this.parsedAnswer) {
+      let value;
+      if (this.item.input === "list") {
+        this.parsedAnswer.map(answer => {
+          return this.toggleSelect(answer.category_id, this.item.id);
+        });
+      } else {
+        if (this.item.input === "select" && this.parsedAnswer.type === "text") {
+          // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
+          value = this.findCategoryId(this.parsedAnswer.value[0]);
+        } else if (this.parsedAnswer.type === "checkbox") {
+          if (this.parsedAnswer.value.length > 1) {
+            const checkboxIndex = this.parsedAnswer.value.findIndex(
+              value => value === 1
+            );
+            value =
+              this.isSelectIdItem &&
+              this.flattenedItems[checkboxIndex] !== undefined
+                ? this.flattenedItems[checkboxIndex].id
+                : (this.item.input === "smileys_3" ||
+                    this.item.input.indexOf("score") > -1 ||
+                    this.item.input === "grade") &&
+                  checkboxIndex > -1
+                ? checkboxIndex + 1
+                : this.item.input.indexOf("boolean") > -1 && checkboxIndex > -1
+                ? this.booleanDefault[checkboxIndex]
+                : null;
+          } else {
+            value =
+              this.parsedAnswer.value[0] === 1
+                ? this.parsedAnswer.category_id
+                : null;
+          }
+        } else if (this.parsedAnswer.category_id === "date-field") {
+          value = this.parseDate(this.parsedAnswer.value[0]);
+        } else if (
+          this.parsedAnswer.type === "text" ||
+          this.parsedAnswer.type === "number"
+        ) {
+          value =
+            this.parsedAnswer.value[0] === ""
+              ? null
+              : this.parsedAnswer.type === "text"
+              ? this.parsedAnswer.value[0]
+              : parseFloat(this.parsedAnswer.value[0]);
 
-						if (
-							value !== null &&
-							this.parsedAnswer.type === "number" &&
-							!isNaN(value) &&
-							this.numberHasconstraints(this.item.input)
-						) {
-							value = this.validateNumber(value, this.item.input);
-						}
-					}
-					// else if (this.parsedAnswer.type === 'single-digit') { // TODO remove if single-digits won't be used for sure
-					//   value = this.parseDigits(this.parsedAnswer.value)
-					// }
-					else {
-						value = null;
-						console.log("else input", this.item, this.parsedAnswer);
-					}
+          if (
+            value !== null &&
+            this.parsedAnswer.type === "number" &&
+            !isNaN(value) &&
+            this.numberHasconstraints(this.item.input)
+          ) {
+            value = this.validateNumber(value, this.item.input);
+          }
+        }
+        // else if (this.parsedAnswer.type === 'single-digit') { // TODO remove if single-digits won't be used for sure
+        //   value = this.parseDigits(this.parsedAnswer.value)
+        // }
+        else {
+          value = null;
+          console.log("else input", this.item, this.parsedAnswer);
+        }
 
-					if (value !== null) {
-						this.checkAnswer = false; // red eye only if answer is null / could not be parsed
-					}
+        if (value !== null) {
+          this.checkAnswer = false; // red eye only if answer is null / could not be parsed
+        }
 
-					if (
-						this.item.input !== "list" &&
-						Array.isArray(this.parsedAnswerRaw) &&
-						this.parsedAnswerRaw[0].type === "checkbox"
-					) {
-						const posAnswer = this.parsedAnswerRaw.filter(
-							(answer) => answer.value[0] === 1,
-						);
-						if (posAnswer.length > 1) {
-							this.checkAnswer = true; // if multiple answers are parsed for non-list checkbox, let user check answer via red eye
-						}
-					}
+        if (
+          this.item.input !== "list" &&
+          Array.isArray(this.parsedAnswerRaw) &&
+          this.parsedAnswerRaw[0].type === "checkbox"
+        ) {
+          const posAnswer = this.parsedAnswerRaw.filter(
+            answer => answer.value[0] === 1
+          );
+          if (posAnswer.length > 1) {
+            this.checkAnswer = true; // if multiple answers are parsed for non-list checkbox, let user check answer via red eye
+          }
+        }
 
-					this.updateInput(
-						value, // this.flattenedItems[checkboxIndex].id, // this.parsedAnswer.value[0], // TODO: check if array is always length 1
-						this.item.id,
-						this.item.name,
-						this.item.input,
-					);
-				}
-			}
-		},
-		methods: {
-			checkNameForEmit(name) {
-				if (name === "pixels_with_bees" || name === "pixels_total_top") {
-					this.$emit("calculate-tpa-colony-size");
-				}
-				if (name === "bees_squares_25cm2") {
-					this.$emit("calculate-liebefeld-colony-size");
-				}
-			},
-			findCategoryId(input) {
-				if (typeof input === "string") {
-					const value = input.toLowerCase();
-					const findItem = this.flattenedItems.filter(
-						(item) =>
-							Object.values(item.trans).filter(
-								(item) => item.toLowerCase() === value,
-							).length > 0, // no strict language check
-					);
-					const id = findItem.length > 0 ? findItem[0].id : null;
-					return id;
-				} else {
-					return null;
-				}
-			},
-			flattenItems(data, depth = 0) {
-				return data.reduce((r, { children, id, trans, name }) => {
-					const obj = {
-						id,
-						trans,
-						name,
-						depth,
-						hasChildren: children.length > 0,
-					};
-					r.push(obj);
+        this.updateInput(
+          value, // this.flattenedItems[checkboxIndex].id, // this.parsedAnswer.value[0], // TODO: check if array is always length 1
+          this.item.id,
+          this.item.name,
+          this.item.input
+        );
+      }
+    }
+  },
+  methods: {
+    checkNameForEmit(name) {
+      if (name === "pixels_with_bees" || name === "pixels_total_top") {
+        this.$emit("calculate-tpa-colony-size");
+      }
+      if (name === "bees_squares_25cm2") {
+        this.$emit("calculate-liebefeld-colony-size");
+      }
+    },
+    findCategoryId(input) {
+      if (typeof input === "string") {
+        const value = input.toLowerCase();
+        const findItem = this.flattenedItems.filter(
+          item =>
+            Object.values(item.trans).filter(
+              item => item.toLowerCase() === value
+            ).length > 0 // no strict language check
+        );
+        const id = findItem.length > 0 ? findItem[0].id : null;
+        return id;
+      } else {
+        return null;
+      }
+    },
+    flattenItems(data, depth = 0) {
+      return data.reduce((r, { children, id, trans, name }) => {
+        const obj = {
+          id,
+          trans,
+          name,
+          depth,
+          hasChildren: children.length > 0
+        };
+        r.push(obj);
 
-					if (children.length) {
-						r.push(...this.flattenItems([...children], depth + 1));
-					}
+        if (children.length) {
+          r.push(...this.flattenItems([...children], depth + 1));
+        }
 
-					return r;
-				}, []);
-			},
-			getEnters(string) {
-				return string !== null && string.indexOf("\n") > -1
-					? string.match(/\n/g).length
-					: 1;
-			},
-			numberHasconstraints(inputType) {
-				return inputType !== "number" && inputType !== "number_0_decimals"; // only svgNumber items without min & max constraints
-			},
-			// parseDigits(value) { // TODO remove if single-digits won't be used for sure
-			//   const number = value.slice(0, this.numberFields).join('')
-			//   const dec = value.slice(this.numberFields).join('')
-			//   var makesSense = // check if empty single-digit number boxes are either only at the start or at the end of the fields (before the decimals) (or is completely filled in)
-			//     number !== '' &&
-			//     dec !== '' &&
-			//     (value[this.numberFields - number.length - 1] === '' ||
-			//       value[0 + number.length] === '' ||
-			//       number.length === this.numberFields) &&
-			//     // + check if empty single-digit number boxes are either only at the start or at the end of the decimals (or is completely filled in)
-			//     (value[value.length - dec.length - 1] === '' ||
-			//       value[this.numberFields + dec.length] === '' ||
-			//       value.length - dec.length === this.numberFields)
+        return r;
+      }, []);
+    },
+    getEnters(string) {
+      return string !== null && string.indexOf("\n") > -1
+        ? string.match(/\n/g).length
+        : 1;
+    },
+    numberHasconstraints(inputType) {
+      return inputType !== "number" && inputType !== "number_0_decimals"; // only svgNumber items without min & max constraints
+    },
+    // parseDigits(value) { // TODO remove if single-digits won't be used for sure
+    //   const number = value.slice(0, this.numberFields).join('')
+    //   const dec = value.slice(this.numberFields).join('')
+    //   var makesSense = // check if empty single-digit number boxes are either only at the start or at the end of the fields (before the decimals) (or is completely filled in)
+    //     number !== '' &&
+    //     dec !== '' &&
+    //     (value[this.numberFields - number.length - 1] === '' ||
+    //       value[0 + number.length] === '' ||
+    //       number.length === this.numberFields) &&
+    //     // + check if empty single-digit number boxes are either only at the start or at the end of the decimals (or is completely filled in)
+    //     (value[value.length - dec.length - 1] === '' ||
+    //       value[this.numberFields + dec.length] === '' ||
+    //       value.length - dec.length === this.numberFields)
 
-			//   return makesSense ? parseFloat(number + '.' + dec) : null
-			// },
-			setInspectionEdited(bool) {
-				this.$store.commit("inspections/setInspectionEdited", bool);
-			},
-			toggleRadio(value) {
-				if (this.object[this.item.id] === value) {
-					this.object[this.item.id] = null; // allow to toggle if value has been set already
-				} else {
-					this.object[this.item.id] = value;
-				}
-				this.setInspectionEdited(true);
-			},
-			toggleSelect(listItemId, listId) {
-				let selectedArray = [];
-				if (typeof this.object[listId] === "string") {
-					selectedArray = this.object[listId].split(",");
-				}
-				if (selectedArray.indexOf(listItemId + "") > -1) {
-					selectedArray.splice(selectedArray.indexOf(listItemId), 1);
-				} else {
-					selectedArray.push(listItemId + "");
-				}
-				const selectedArrayToString = selectedArray.join(",");
-				this.object[listId] = selectedArrayToString;
-				this.setInspectionEdited(true);
-			},
-			updateInput(value, property, name = null, input = null) {
-				this.checkNameForEmit(name);
-				this.object[property] = value;
-				this.setInspectionEdited(true);
-			},
-			validateNumber(value, input) {
-				this.checkAnswer = false;
-				switch (input) {
-					case "number_degrees":
-						return value >= -180 && value <= 180 ? value : null;
-					case "number_percentage" || "slider":
-						return value >= 0 && value <= 100 ? value : null;
-					case "number_negative":
-						return value <= 0 ? value : value > 0 ? -value : null;
-					case "number_positive":
-						return value >= 0 ? value : null;
-				}
-				// else: not yet implemented
-				return value;
-			},
-			validateText(value, id, maxLength) {
-				if (value !== null && value.length > maxLength + 1) {
-					value = value.substring(0, maxLength);
-					this.object[id] = value;
-				}
-				this.setInspectionEdited(true);
-			},
-		},
-	};
+    //   return makesSense ? parseFloat(number + '.' + dec) : null
+    // },
+    setInspectionEdited(bool) {
+      this.$store.commit("inspections/setInspectionEdited", bool);
+    },
+    toggleRadio(value) {
+      if (this.object[this.item.id] === value) {
+        this.object[this.item.id] = null; // allow to toggle if value has been set already
+      } else {
+        this.object[this.item.id] = value;
+      }
+      this.setInspectionEdited(true);
+    },
+    toggleSelect(listItemId, listId) {
+      let selectedArray = [];
+      if (typeof this.object[listId] === "string") {
+        selectedArray = this.object[listId].split(",");
+      }
+      if (selectedArray.indexOf(listItemId + "") > -1) {
+        selectedArray.splice(selectedArray.indexOf(listItemId), 1);
+      } else {
+        selectedArray.push(listItemId + "");
+      }
+      const selectedArrayToString = selectedArray.join(",");
+      this.object[listId] = selectedArrayToString;
+      this.setInspectionEdited(true);
+    },
+    updateInput(value, property, name = null) {
+      this.checkNameForEmit(name);
+      this.object[property] = value;
+      this.setInspectionEdited(true);
+    },
+    validateNumber(value, input) {
+      this.checkAnswer = false;
+      switch (input) {
+        case "number_degrees":
+          return value >= -180 && value <= 180 ? value : null;
+        case "number_percentage" || "slider":
+          return value >= 0 && value <= 100 ? value : null;
+        case "number_negative":
+          return value <= 0 ? value : value > 0 ? -value : null;
+        case "number_positive":
+          return value >= 0 ? value : null;
+      }
+      // else: not yet implemented
+      return value;
+    },
+    validateText(value, id, maxLength) {
+      if (value !== null && value.length > maxLength + 1) {
+        value = value.substring(0, maxLength);
+        this.object[id] = value;
+      }
+      this.setInspectionEdited(true);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-	.checklist-number-input {
-		max-width: 150px !important;
-	}
-	.v-text-field.inspection-text-area {
-		padding-top: 0 !important;
-	}
-	.v-list-item.inspection-list-item {
-		height: 35px;
-		min-height: 35px;
-		padding: 0 !important;
-		.v-list-item__action {
-			margin-right: 12px !important;
-		}
-		.v-list-item__content {
-			padding: 0 !important;
-		}
-		&.nested {
-			margin-left: 30px;
-		}
-	}
-	.v-input--selection-controls.inspection-options-list {
-		margin-top: 0 !important;
-	}
-	.v-list.inspection-checkbox-list {
-		padding: 0 !important;
-	}
+.checklist-number-input {
+  max-width: 150px !important;
+}
+.v-text-field.inspection-text-area {
+  padding-top: 0 !important;
+}
+.v-list-item.inspection-list-item {
+  height: 35px;
+  min-height: 35px;
+  padding: 0 !important;
+  .v-list-item__action {
+    margin-right: 12px !important;
+  }
+  .v-list-item__content {
+    padding: 0 !important;
+  }
+  &.nested {
+    margin-left: 30px;
+  }
+}
+.v-input--selection-controls.inspection-options-list {
+  margin-top: 0 !important;
+}
+.v-list.inspection-checkbox-list {
+  padding: 0 !important;
+}
 </style>

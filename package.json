@@ -50,7 +50,7 @@
 		"vue-i18n": "^9.6.5",
 		"vue-ios-pwa-prompt": "^1.0.4",
 		"vue-meta": "^2.3.3",
-		"vue-router": "^4.2.5",
+		"vue-router": "^5.0.3",
 		"vue-virtual-scroller": "^2.0.0-beta.8",
 		"vue3-country-region-select": "^1.0.0",
 		"vue3-treeselect": "^0.1.10",
@@ -60,7 +60,7 @@
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@juggle/resize-observer": "^3.4.0",
-		"@vitejs/plugin-vue": "^6.0.5",
+		"@vitejs/plugin-vue": "^6.0.7",
 		"@vue/test-utils": "^2.4.1",
 		"cross-env": "^7.0.3",
 		"eslint": "^10.0.1",
@@ -71,15 +71,13 @@
 		"globals": "^17.6.0",
 		"oxlint": "^1.65.0",
 		"prettier": "^3.8.1",
-		"sass": "^1.32.8",
-		"sass-loader": "8.0.x",
-		"vite": "^6.4.2",
+		"sass-embedded": "^1.98.0",
+		"vite": "^8.0.13",
 		"vite-plugin-commonjs": "^0.10.4",
 		"vite-plugin-eslint": "^1.8.1",
-		"vite-plugin-vue-devtools": "^8.1.1",
+		"vite-plugin-vue-devtools": "^8.1.2",
 		"vite-plugin-vuetify": "^2.1.3",
-		"vue-eslint-parser": "^10.4.0",
-		"vuetify": "^3.8.0"
+		"vuetify": "^4.0.4"
 	},
 	"engines": {
 		"node": ">=10.13.3",

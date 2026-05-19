@@ -9,7 +9,7 @@
 							category.input !== 'options'))
 			"
 		>
-			<div class="text-overline mb-2">
+			<div class="text-label-small mb-2">
 				{{ getLabel(category) }}
 				<a
 					v-if="category.description !== null || category.source !== null"

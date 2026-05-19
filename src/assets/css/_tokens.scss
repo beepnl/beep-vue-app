@@ -1,0 +1,5 @@
+@forward 'variables';
+@forward 'mixins';
+
+// 1. Declare the layer stack first — order matters, not position in CSS output.
+@layer base, vuetify-core, vuetify-components, vuetify-overrides, vuetify-utilities, vuetify-final, overrides;

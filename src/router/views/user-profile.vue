@@ -21,7 +21,7 @@
           <v-icon v-if="!showDeleteLoadingIcon" color="red" start
             >mdi-delete</v-icon
           >
-          {{ $t('Delete') }}
+          {{ $t("Delete") }}
         </v-btn>
         <v-progress-circular
           v-if="mobile && showDeleteLoadingIcon"
@@ -54,7 +54,7 @@
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon
-          >{{ $t('save') }}</v-btn
+          >{{ $t("save") }}</v-btn
         >
       </v-toolbar>
 
@@ -85,7 +85,7 @@
             </v-alert>
           </v-col>
         </v-row>
-        <div class="text-overline mb-3" v-text="$t('User_data')"></div>
+        <div class="text-label-small mb-3" v-text="$t('User_data')"></div>
         <v-card>
           <v-card-text>
             <v-text-field
@@ -138,11 +138,11 @@
             >
               <template v-slot:label
                 ><span class="checkbox-label"
-                  >{{ $t('accept_policy_1')
+                  >{{ $t("accept_policy_1")
                   }}<a :href="$t('policy_url')" target="_blank" @click.stop>{{
-                    $t('terms_of_use')
+                    $t("terms_of_use")
                   }}</a
-                  >{{ $t('accept_policy_2') }}
+                  >{{ $t("accept_policy_2") }}
                 </span></template
               >
             </v-checkbox>
@@ -172,7 +172,7 @@
                     @click="saveApiToken"
                   >
                     <v-icon start color="secondary">mdi-check</v-icon
-                    >{{ $t('save_api') }}</v-btn
+                    >{{ $t("save_api") }}</v-btn
                   >
                 </div>
               </v-card-text>
@@ -187,10 +187,10 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Confirm from '@components/confirm-dialog.vue'
-import Layout from '@layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from "@api/Api";
+import Confirm from "@components/confirm-dialog.vue";
+import Layout from "@layouts/back-layout.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: { Confirm, Layout },
@@ -198,7 +198,7 @@ export default {
     return {
       errors: [],
       policyAccepted: true,
-      password: '',
+      password: "",
       newPassword: null,
       repeatPassword: null,
       successMessage: null,
@@ -212,13 +212,13 @@ export default {
       displayPasswordError: false,
       fieldErrors: {
         email: false,
-        password: false,
+        password: false
       },
-      apiToken: '',
-    }
+      apiToken: ""
+    };
   },
   computed: {
-    ...mapGetters('auth', ['currentUser', 'userIsAdmin']),
+    ...mapGetters("auth", ["currentUser", "userIsAdmin"]),
     edit() {
       return {
         name: this.name,
@@ -227,215 +227,214 @@ export default {
         password_new: this.newPassword,
         password_confirmation: this.repeatPassword,
         policy_accepted: this.policyAccepted
-          ? this.$i18n.t('policy_version')
-          : '',
-      }
+          ? this.$i18n.t("policy_version")
+          : ""
+      };
     },
     email: {
       get() {
-        return this.userCopy.email
+        return this.userCopy.email;
       },
       set(value) {
-        this.userCopy.email = value
-      },
+        this.userCopy.email = value;
+      }
     },
     emailRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('email_is_required'),
-        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
-      ]
+        v => !!v || this.$i18n.t("email_is_required"),
+        v => /.+@.+\..+/.test(v) || this.$i18n.t("no_valid_email")
+      ];
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     name: {
       get() {
-        return this.userCopy.name
+        return this.userCopy.name;
       },
       set(value) {
-        this.userCopy.name = value
-      },
+        this.userCopy.name = value;
+      }
     },
     passwordRules: function() {
-      return [(v) => !!v || this.$i18n.t('password_is_required')]
+      return [v => !!v || this.$i18n.t("password_is_required")];
     },
     newPasswordRules: function() {
       return [
-        (v) =>
+        v =>
           v === null ||
-          v === '' ||
+          v === "" ||
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
             v
           ) ||
-          this.$i18n.t('invalid_password'),
-      ]
+          this.$i18n.t("invalid_password")
+      ];
     },
     repeatPasswordRules: function() {
       return [
-        (v) =>
-          v === this.edit.password_new || this.$i18n.t('no_password_match'),
-      ]
+        v => v === this.edit.password_new || this.$i18n.t("no_password_match")
+      ];
     },
     termsRules: function() {
-      return [(v) => !!v || this.$i18n.t('policy_accepted_is_required')]
+      return [v => !!v || this.$i18n.t("policy_accepted_is_required")];
     },
     userCopy() {
       // do not use user prop directly as it results in vuex warning 'do not mutate prop'
       return this.currentUser !== undefined && this.currentUser !== null
         ? JSON.parse(JSON.stringify(this.currentUser))
         : {
-            api_token: '',
-            name: '',
-            email: '',
-            password: '',
-            policy_accepted: '',
-          }
-    },
+            api_token: "",
+            name: "",
+            email: "",
+            password: "",
+            policy_accepted: ""
+          };
+    }
   },
   watch: {
     currentUser() {
-      this.apiToken = JSON.parse(JSON.stringify(this.currentUser.api_token))
-    },
+      this.apiToken = JSON.parse(JSON.stringify(this.currentUser.api_token));
+    }
   },
   mounted() {
     if (this.currentUser !== undefined && this.currentUser !== null) {
-      this.apiToken = JSON.parse(JSON.stringify(this.currentUser.api_token))
+      this.apiToken = JSON.parse(JSON.stringify(this.currentUser.api_token));
     }
   },
   methods: {
     async deleteUser() {
-      this.clearMessages()
-      this.showDeleteLoadingIcon = true
+      this.clearMessages();
+      this.showDeleteLoadingIcon = true;
       try {
-        const response = await Api.deleteRequest('/user', '', {
-          password: this.password,
-        })
+        const response = await Api.deleteRequest("/user", "", {
+          password: this.password
+        });
         if (!response) {
           this.errors.push({
-            errorMessage: this.$i18n.tc('Error', 1),
-          })
-          this.showDeleteLoadingIcon = false
+            errorMessage: this.$i18n.tc("Error", 1)
+          });
+          this.showDeleteLoadingIcon = false;
         }
-        this.signOut()
+        this.signOut();
       } catch (error) {
-        this.showDeleteLoadingIcon = false
+        this.showDeleteLoadingIcon = false;
         if (error.response) {
-          console.log(error.response)
-          const msg = error.response.data.message
-          if (msg === 'invalid_user') {
-            this.fieldErrors.email = true
-            this.fieldErrors.password = true
-          } else if (msg === 'invalid_password') {
-            this.fieldErrors.password = true
-          } else if (msg.indexOf('email') > -1) {
-            this.fieldErrors.email = true
+          console.log(error.response);
+          const msg = error.response.data.message;
+          if (msg === "invalid_user") {
+            this.fieldErrors.email = true;
+            this.fieldErrors.password = true;
+          } else if (msg === "invalid_password") {
+            this.fieldErrors.password = true;
+          } else if (msg.indexOf("email") > -1) {
+            this.fieldErrors.email = true;
           }
           this.errors.push({
-            errorMessage: this.$i18n.t(msg),
-          })
+            errorMessage: this.$i18n.t(msg)
+          });
         } else {
           this.errors.push({
-            errorMessage: this.$i18n.tc('Error', 1),
-          })
+            errorMessage: this.$i18n.tc("Error", 1)
+          });
         }
       }
     },
     async editUser() {
       if (this.$refs.form.validate()) {
-        this.clearMessages()
-        this.showLoadingIcon = true
+        this.clearMessages();
+        this.showLoadingIcon = true;
         try {
-          const response = await Api.updateRequest('/user', '', this.edit)
+          const response = await Api.updateRequest("/user", "", this.edit);
           if (!response) {
             this.errors.push({
-              errorMessage: this.$i18n.t('not_saved_error'),
-            })
-            this.showLoadingIcon = false
+              errorMessage: this.$i18n.t("not_saved_error")
+            });
+            this.showLoadingIcon = false;
           }
-          this.$store.commit('auth/SET_CURRENT_USER', response.data)
+          this.$store.commit("auth/SET_CURRENT_USER", response.data);
           if (response.data.email_verified_at == null) {
-            this.successMessage = this.$i18n.t('new_email_verification_sent')
+            this.successMessage = this.$i18n.t("new_email_verification_sent");
           } else {
             this.successMessage =
-              this.$i18n.t('User_data') + ' ' + this.$i18n.t('updated')
+              this.$i18n.t("User_data") + " " + this.$i18n.t("updated");
           }
-          this.showLoadingIcon = false
-          this.password = null
-          this.newPassword = null
-          this.repeatPassword = null
-          this.$refs.form.resetValidation()
+          this.showLoadingIcon = false;
+          this.password = null;
+          this.newPassword = null;
+          this.repeatPassword = null;
+          this.$refs.form.resetValidation();
           // console.log(response)
         } catch (error) {
-          this.showLoadingIcon = false
+          this.showLoadingIcon = false;
           if (error.response) {
-            console.log(error.response)
-            const msg = error.response.data.message
-            if (msg === 'invalid_user') {
-              this.fieldErrors.email = true
-              this.fieldErrors.password = true
-            } else if (msg === 'invalid_password') {
-              this.fieldErrors.password = true
-            } else if (msg.indexOf('email') > -1) {
-              this.fieldErrors.email = true
+            console.log(error.response);
+            const msg = error.response.data.message;
+            if (msg === "invalid_user") {
+              this.fieldErrors.email = true;
+              this.fieldErrors.password = true;
+            } else if (msg === "invalid_password") {
+              this.fieldErrors.password = true;
+            } else if (msg.indexOf("email") > -1) {
+              this.fieldErrors.email = true;
             }
             this.errors.push({
-              errorMessage: this.$i18n.t(msg),
-            })
+              errorMessage: this.$i18n.t(msg)
+            });
           } else {
             this.errors.push({
-              errorMessage: this.$i18n.tc('Error', 1),
-            })
+              errorMessage: this.$i18n.tc("Error", 1)
+            });
           }
         }
       }
     },
     async saveApiToken() {
       this.$store
-        .dispatch('auth/setApiToken', this.apiToken)
+        .dispatch("auth/setApiToken", this.apiToken)
         .then(() => {
-          this.$store.dispatch('auth/authenticateUser')
+          this.$store.dispatch("auth/authenticateUser");
         })
         .then(() => {
-          this.$router.go({ name: 'home' })
+          this.$router.go({ name: "home" });
         })
-        .catch((error) => {
-          console.log('error', error)
-        })
+        .catch(error => {
+          console.log("error", error);
+        });
     },
     clearMessages() {
-      this.errors = []
-      this.successMessage = null
-      this.fieldErrors.email = false
-      this.fieldErrors.password = false
+      this.errors = [];
+      this.successMessage = null;
+      this.fieldErrors.email = false;
+      this.fieldErrors.password = false;
     },
     confirmDeleteUser() {
-      if (this.password === '' || this.password === null) {
-        this.displayPasswordError = true
+      if (this.password === "" || this.password === null) {
+        this.displayPasswordError = true;
       } else {
-        this.displayPasswordError = false
-        const warningMessage = this.$i18n.t('delete_complete_account')
+        this.displayPasswordError = false;
+        const warningMessage = this.$i18n.t("delete_complete_account");
         this.$refs.confirm
           .open(
-            this.$i18n.t('Delete') + ' ' + this.$i18n.t('user_data'),
+            this.$i18n.t("Delete") + " " + this.$i18n.t("user_data"),
             null,
             {
-              color: 'red',
+              color: "red"
             },
             warningMessage
           )
-          .then((confirm) => {
-            this.deleteUser()
+          .then(() => {
+            this.deleteUser();
           })
-          .catch((reject) => {
-            return true
-          })
+          .catch(() => {
+            return true;
+          });
       }
     },
     signOut() {
       this.$store
-        .dispatch('auth/signOut')
-        .then(() => this.$router.push({ name: 'sign-in' }))
-    },
-  },
-}
+        .dispatch("auth/signOut")
+        .then(() => this.$router.push({ name: "sign-in" }));
+    }
+  }
+};
 </script>

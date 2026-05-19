@@ -29,7 +29,7 @@ import "moment/dist/locale/sv";
 import "moment/dist/locale/uk";
 // import pl from '@public/js/lang/pl'
 // import enUS from '@public/js/lang/en-US'
-import "@assets/css/element.scss";
+import "@assets/css/index.scss";
 import languages from "@assets/js/languages";
 import { ResizeObserver as Polyfill } from "@juggle/resize-observer";
 import { Treeselect } from "@komgrip/vue3-treeselect"; // original 'vue3-treeselect' does not support multiple values reactivity
@@ -44,7 +44,7 @@ import veProgress from "vue-ellipse-progress";
 import { createI18n } from "vue-i18n";
 import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
 import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
-import vueCountryRegionSelect from "vue3-country-region-select";
+// import vueCountryRegionSelect from "vue3-country-region-select"; TODO-VITE replace
 import "vue3-treeselect/dist/vue3-treeselect.css";
 // * Vuetify
 import { createVuetify } from "vuetify";
@@ -55,138 +55,138 @@ import "vuetify/styles";
 import App from "./app.vue";
 
 const vuetify = createVuetify({
-	// default options
-	defaults: {
-		VAlert: {
-			variant: "tonal",
-			density: "compact",
-		},
-		VBtn: {
-			variant: "outlined",
-			rounded: 0,
-			slim: false,
-		},
-		VCard: {
-			variant: "outlined",
-		},
-		VCardActions: {
-			VBtn: {
-				variant: "outlined",
-				slim: false,
-			},
-		},
-		VCheckbox: {
-			color: "accent",
-		},
-		VCheckboxBtn: {
-			color: "accent",
-		},
-		VList: {
-			density: "default",
-			variant: "flat",
-		},
-		VSelect: {
-			density: "compact",
-			variant: "underlined",
-		},
-		VSwitch: {
-			density: "compact",
-			color: "accent",
-		},
-		VTable: {
-			density: "compact",
-		},
-		VTextarea: {
-			variant: "underlined",
-			clearIcon: "mdi-close",
-			density: "compact",
-			maxRows: "18",
-		},
-		VTextField: {
-			variant: "underlined",
-		},
-		VToolbar: {
-			VBtn: {
-				variant: "outlined",
-				slim: false,
-			},
-		},
-		VTooltip: {
-			location: "bottom",
-		},
-	},
-	display: {
-		mobileBreakpoint: "xs",
-		xs: 600,
-	},
-	icons: {
-		defaultSet: "mdi",
-		aliases,
-		sets: {
-			mdi,
-		},
-	},
-	components,
-	directives,
-	// breakpoint: {
-	//   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
-	// },
-	theme: {
-		defaultTheme: "beepTheme",
-		themes: {
-			beepTheme: {
-				light: true,
-				colors: {
-					primary: "#F8B133",
-					secondary: "#000000",
-					accent: "#f29100",
-					black: "#000000",
-					disabled: "#b0b0b0",
-					error: "#ff001d",
-					// "primary-darken-1": "#000000",
-					// "secondary-darken-1": "#000000",
-					// info: "#000000",
-					// success: "#000000",
-					// warning: "#000000",
-				},
-			},
-			beepDarkTheme: {
-				dark: true,
-				colors: {
-					primary: "#F8B133",
-					secondary: "#000000",
-					accent: "#ffffff",
-				},
-			},
-		},
-	},
+  // default options
+  defaults: {
+    VAlert: {
+      variant: "tonal",
+      density: "compact"
+    },
+    VBtn: {
+      class: "text-uppercase",
+      variant: "outlined",
+      rounded: 0,
+      ripple: false
+    },
+    VCard: {
+      variant: "outlined"
+    },
+    VCardActions: {
+      VBtn: {
+        variant: "outlined"
+      }
+    },
+    VCheckbox: {
+      color: "accent"
+    },
+    VCheckboxBtn: {
+      color: "accent"
+    },
+    VList: {
+      density: "default",
+      variant: "flat"
+    },
+    VSelect: {
+      density: "compact",
+      variant: "underlined"
+    },
+    VSwitch: {
+      density: "compact",
+      color: "accent"
+    },
+    VTable: {
+      density: "compact"
+    },
+    VTextarea: {
+      variant: "underlined",
+      clearIcon: "mdi-close",
+      density: "compact",
+      maxRows: "18"
+    },
+    VTextField: {
+      variant: "underlined"
+    },
+    VToolbar: {
+      VBtn: {
+        variant: "outlined",
+        slim: false
+      }
+    },
+    VTooltip: {
+      location: "bottom"
+    }
+  },
+  display: {
+    mobileBreakpoint: "xs",
+    xs: 600
+  },
+  icons: {
+    defaultSet: "mdi",
+    aliases,
+    sets: {
+      mdi
+    }
+  },
+  components,
+  directives,
+  // breakpoint: {
+  //   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
+  // },
+  theme: {
+    defaultTheme: "beepTheme",
+    themes: {
+      beepTheme: {
+        light: true,
+        colors: {
+          primary: "#F8B133",
+          secondary: "#000000",
+          accent: "#f29100",
+          black: "#000000",
+          disabled: "#b0b0b0",
+          error: "#ff001d"
+          // "primary-darken-1": "#000000",
+          // "secondary-darken-1": "#000000",
+          // info: "#000000",
+          // success: "#000000",
+          // warning: "#000000",
+        }
+      },
+      beepDarkTheme: {
+        dark: true,
+        colors: {
+          primary: "#F8B133",
+          secondary: "#000000",
+          accent: "#ffffff"
+        }
+      }
+    }
+  }
 });
 
 const i18n = createI18n({
-	// allowComposition: true, // you need to specify that!
-	// const i18n = new VueI18n({
-	//   legacy: true,
-	locale: languages.checkBrowserLanguage() || "en",
-	messages: {
-		cs,
-		de,
-		el,
-		en,
-		es,
-		fi,
-		fr,
-		it,
-		nb,
-		nl,
-		// pl,
-		pt,
-		ro,
-		ru,
-		sv,
-		uk,
-		// add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
-		// also add import 'moment/dist/locale/[locale]'
-	},
+  // allowComposition: true, // you need to specify that!
+  // const i18n = new VueI18n({
+  //   legacy: true,
+  locale: languages.checkBrowserLanguage() || "en",
+  messages: {
+    cs,
+    de,
+    el,
+    en,
+    es,
+    fi,
+    fr,
+    it,
+    nb,
+    nl,
+    // pl,
+    pt,
+    ro,
+    ru,
+    sv,
+    uk
+    // add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
+    // also add import 'moment/dist/locale/[locale]'
+  }
 });
 
 const app = createApp(App);
@@ -195,7 +195,7 @@ app.use(router);
 app.use(store);
 app.use(i18n);
 app.use(vuetify);
-app.use(vueCountryRegionSelect);
+// app.use(vueCountryRegionSelect);
 app.use(veProgress);
 app.config.globalProperties.$moment = moment;
 
@@ -206,17 +206,17 @@ app.component("TreeselectVue3", Treeselect);
 
 // If running inside Cypress...
 if (import.meta.env.VITE_TEST === "e2e") {
-	// Ensure tests fail when Vue emits an error.
-	app.config.errorHandler = window.Cypress.cy.onUncaughtException;
+  // Ensure tests fail when Vue emits an error.
+  app.config.errorHandler = window.Cypress.cy.onUncaughtException;
 } else {
-	app.config.errorHandler = (err, instance, info) => {
-		console.error("Vue caught error:", err, info);
-	};
+  app.config.errorHandler = (err, instance, info) => {
+    console.error("Vue caught error:", err, info);
+  };
 }
 
 // fix chartjs bug for older devices + better resize reactivity
 if (typeof window !== "undefined") {
-	window.ResizeObserver = window.ResizeObserver || Polyfill;
+  window.ResizeObserver = window.ResizeObserver || Polyfill;
 }
 
 app.mount("#app");

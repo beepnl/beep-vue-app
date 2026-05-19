@@ -39,10 +39,10 @@
         :stroke-width="strokeWidth"
       />
       <text :x="x + 'mm'" :y="y + 17 + 'mm'" :style="svgTextSmall">
-        {{ $t('Too_many_items_exp_1') }}
+        {{ $t("Too_many_items_exp_1") }}
       </text>
       <text :x="x + 'mm'" :y="y + 20.5 + 'mm'" :style="svgTextSmall">
-        {{ $t('Too_many_items_exp_2') }}
+        {{ $t("Too_many_items_exp_2") }}
       </text>
     </g>
 
@@ -95,114 +95,113 @@
 </template>
 
 <script>
-import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
-import svgLabel from '@/src/components/svg/svg-label.vue'
-import { svgData, svgStyles } from '@mixins/svgMixin'
-import { getLabel } from '@mixins/methodsMixin'
+import svgCheckbox from "@/src/components/svg/svg-checkbox.vue";
+import svgLabel from "@/src/components/svg/svg-label.vue";
+import { getLabel } from "@mixins/methodsMixin";
+import { svgData, svgStyles } from "@mixins/svgMixin";
 
 export default {
   components: {
     svgCheckbox,
-    svgLabel,
+    svgLabel
   },
   mixins: [getLabel, svgData, svgStyles],
   props: {
     position: {
       type: Object,
-      required: true,
+      required: true
     },
     label: {
       type: String,
-      required: true,
+      required: true
     },
     items: {
       type: Array,
       required: false,
-      default: null,
+      default: null
     },
     scoreAmount: {
       type: Boolean,
       required: false,
-      default: false,
+      default: false
     },
     scoreQuality: {
       type: Boolean,
       required: false,
-      default: false,
+      default: false
     },
     starRating: {
       type: Boolean,
       required: false,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
     flattenedItems() {
-      return this.items !== null ? this.flattenItems(this.items) : []
+      return this.items !== null ? this.flattenItems(this.items) : [];
     },
     presetItems() {
       return this.scoreAmount
         ? this.scoreAmountItems
         : this.scoreQuality
         ? this.scoreQualityItems
-        : false
+        : false;
     },
     x() {
-      return this.position ? this.position.x : null
+      return this.position ? this.position.x : null;
     },
     y() {
-      return this.position ? this.position.y : null
-    },
+      return this.position ? this.position.y : null;
+    }
   },
   created() {
-    this.checkListLengthWarning()
+    this.checkListLengthWarning();
   },
   methods: {
     checkListLengthWarning() {
       if (this.flattenedItems.length > this.maxNrOfItems) {
         const warning =
-          this.$i18n.t('Too_long_list_present') +
+          this.$i18n.t("Too_long_list_present") +
           ' "' +
           this.label +
           '". ' +
-          this.$i18n.t('Too_long_list_present_fix_1') +
-          ' ' +
+          this.$i18n.t("Too_long_list_present_fix_1") +
+          " " +
           this.maxNrOfItems +
-          ' ' +
-          this.$i18n.t('Too_long_list_present_fix_2')
-        this.$store.commit('inspections/addWarning', {
+          " " +
+          this.$i18n.t("Too_long_list_present_fix_2");
+        this.$store.commit("inspections/addWarning", {
           id: this.position.id,
-          warning,
-        })
+          warning
+        });
       } else {
-        this.$store.commit('inspections/removeWarning', this.position.id)
+        this.$store.commit("inspections/removeWarning", this.position.id);
       }
     },
     flattenItems(data, depth = 0) {
-       
-      return data.reduce((r, { children, id, parent_id, trans, name }) => {
+      return data.reduce((r, { children, id, trans, name }) => {
         const obj = {
           id,
           parent_id: this.items[0].parent_id, // always use parent_id from highest level because otherwise parsed results for each checkbox item cannot be related back to the parent item
           trans,
           name,
           depth,
-          hasChildren: children.length > 0,
-        }
-        r.push(obj)
+          hasChildren: children.length > 0
+        };
+        r.push(obj);
 
         if (children.length) {
-          r.push(...this.flattenItems(children, depth + 1))
+          r.push(...this.flattenItems(children, depth + 1));
         }
 
-        return r
-      }, [])
+        return r;
+      }, []);
     },
     itemText(item) {
-      const text = this.getLabel(item)
-      const maxLength = this.maxItemLength - item.depth * 4
-      return text.substring(0, maxLength)
-    },
-  },
-}
+      const text = this.getLabel(item);
+      const maxLength = this.maxItemLength - item.depth * 4;
+      return text.substring(0, maxLength);
+    }
+  }
+};
 </script>

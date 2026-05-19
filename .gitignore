@@ -33,6 +33,7 @@ yarn-error.log*
 *.sln
 *.sw*
 
+*.unit.js
 !.eslintrc.cjs
 !.prettierrc.cjs
 !.eslintrc.js

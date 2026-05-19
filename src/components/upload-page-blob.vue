@@ -64,23 +64,23 @@
 </template>
 
 <script>
-import Confirm from '@/src/components/confirm-dialog.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
 
 export default {
   components: {
-    Confirm,
+    Confirm
   },
   props: {
     pageNr: {
       type: Number,
-      required: true,
+      required: true
     },
     pageNrText: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
-  emits: ['set-page-blob'],
+  emits: ["set-page-blob"],
   data: () => ({
     // rules: [
     //   (value) =>
@@ -89,55 +89,55 @@ export default {
     // ],
     pageImageFile: null,
     pageImage: null,
-    errorMessage: '',
-    showLoading: false,
+    errorMessage: "",
+    showLoading: false
   }),
   computed: {
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     uploadText() {
-      return this.$i18n.t('Upload_pagenr', { pagenr: this.pageNr })
-    },
+      return this.$i18n.t("Upload_pagenr", { pagenr: this.pageNr });
+    }
   },
   created() {},
   methods: {
     async makeBlob(img) {
-      this.pageImageFile = img
-      const self = this
-      self.errorMessage = ''
-      self.showLoading = true
-      const reader = new FileReader()
+      this.pageImageFile = img;
+      const self = this;
+      self.errorMessage = "";
+      self.showLoading = true;
+      const reader = new FileReader();
       reader.onloadend = function() {
-        self.pageImage = reader.result
-        self.$emit('set-page-blob', reader.result)
-        self.showLoading = false
-      }
-      reader.readAsDataURL(img)
+        self.pageImage = reader.result;
+        self.$emit("set-page-blob", reader.result);
+        self.showLoading = false;
+      };
+      reader.readAsDataURL(img);
     },
-    confirmDeleteImage(id) {
+    confirmDeleteImage() {
       this.$refs.confirm
         .open(
-          this.$i18n.t('Delete'),
-          this.$i18n.t('remove_image') + ' "' + this.pageNrText + '"?',
+          this.$i18n.t("Delete"),
+          this.$i18n.t("remove_image") + ' "' + this.pageNrText + '"?',
           {
-            color: 'red',
+            color: "red"
           }
         )
-        .then((confirm) => {
-          this.removeBlob()
+        .then(() => {
+          this.removeBlob();
         })
-        .catch((reject) => {
-          return true
-        })
+        .catch(() => {
+          return true;
+        });
     },
     removeBlob() {
-      this.pageImageFile = null
-      this.pageImage = null
-      this.$emit('set-page-blob', null)
-    },
-  },
-}
+      this.pageImageFile = null;
+      this.pageImage = null;
+      this.$emit("set-page-blob", null);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

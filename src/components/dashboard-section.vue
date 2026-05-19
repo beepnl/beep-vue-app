@@ -2,7 +2,7 @@
   <div class="dashboard-section">
     <div
       v-if="!landscapeMode"
-      class="text-h4 text-md-h2 dashboard-section-title"
+      class="text-headline-large text-md-display-medium dashboard-section-title"
       v-text="title"
     ></div>
     <div class="d-flex flex-column align-center mt-2 dashboard-section-content">

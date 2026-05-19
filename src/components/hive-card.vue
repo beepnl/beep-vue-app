@@ -38,7 +38,7 @@
                 {{ hive.name }}
                 <span
                   v-if="hiveSetIsGroup"
-                  class="text-caption hive-name-caption"
+                  class="text-body-small hive-name-caption"
                   v-text="` (${hive.location})`"
                 >
                 </span>
@@ -54,7 +54,7 @@
                     {{ hive.name }}
                     <span
                       v-if="hiveSetIsGroup"
-                      class="text-caption hive-name-caption"
+                      class="text-body-small hive-name-caption"
                       v-text="` (${hive.location})`"
                     >
                     </span>
@@ -409,7 +409,7 @@
 
     <v-list class="hive-menu-list">
       <v-list-item>
-        <v-list-item-title class="text-h6">
+        <v-list-item-title class="text-headline-small">
           {{ hive.name }}
         </v-list-item-title>
       </v-list-item>

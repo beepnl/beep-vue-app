@@ -11,7 +11,7 @@
               "
             >
               <div
-                class="text-overline d-flex mr-3 consent-text-overline"
+                class="text-label-small d-flex mr-3 consent-custom-text-overline"
                 style="width: 100%;"
                 v-text="
                   compareMode
@@ -33,10 +33,10 @@
                   "
                 >
                   <v-icon color="black" start>mdi-check</v-icon>
-                  {{ researchMode ? $t('save') : $t('ok') }}</v-btn
+                  {{ researchMode ? $t("save") : $t("ok") }}</v-btn
                 >
                 <v-btn class="ml-3" color="red" @click="closeOverlay">{{
-                  $t('Cancel')
+                  $t("Cancel")
                 }}</v-btn>
               </div>
             </div>
@@ -121,155 +121,155 @@
 </template>
 
 <script>
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import { mapGetters } from 'vuex'
+import ApiaryPreviewHiveSelector from "@components/apiary-preview-hive-selector.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    ApiaryPreviewHiveSelector,
+    ApiaryPreviewHiveSelector
   },
   props: {
     compareMode: {
       type: Boolean,
       required: false,
-      default: false,
+      default: false
     },
     includeGroups: {
       type: Boolean,
       required: false,
-      default: false,
+      default: false
     },
     selectedConsent: {
       type: Object,
       default: () => null,
-      required: false,
+      required: false
     },
     selectedResearch: {
       type: Object,
       default: () => null,
-      required: false,
-    },
+      required: false
+    }
   },
-  emits: ['close-overlay', 'submit-consent-toggle', 'select-hives'],
+  emits: ["close-overlay", "submit-consent-toggle", "select-hives"],
   data: function() {
     return {
       selectedHiveIds: [],
-      overlay: true,
-    }
+      overlay: true
+    };
   },
   computed: {
-    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
+    ...mapGetters("locations", ["apiaries", "groups", "hivesObject"]),
     allHiveIds() {
       const hiveIds = this.sortedHiveSets.reduce((acc, hiveSet) => {
-        acc = acc.concat(this.getHiveIds(hiveSet.hives))
-        return acc
-      }, [])
-      const uniqueHiveIds = [...new Set(hiveIds)] // with both apiaries and groups hive ids can be duplicated
-      return uniqueHiveIds
+        acc = acc.concat(this.getHiveIds(hiveSet.hives));
+        return acc;
+      }, []);
+      const uniqueHiveIds = [...new Set(hiveIds)]; // with both apiaries and groups hive ids can be duplicated
+      return uniqueHiveIds;
     },
     allHivesSelected: {
       get() {
-        return this.selectedHiveIds.length === this.allHiveIds.length
+        return this.selectedHiveIds.length === this.allHiveIds.length;
       },
       set(value) {
         if (value === false) {
-          this.selectedHiveIds = []
+          this.selectedHiveIds = [];
         } else {
-          this.selectedHiveIds = [...this.allHiveIds]
+          this.selectedHiveIds = [...this.allHiveIds];
         }
-      },
+      }
     },
     hiveSets() {
       return this.includeGroups
         ? this.apiaries.concat(this.groups)
-        : this.apiaries
+        : this.apiaries;
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     researchMode() {
-      return this.selectedResearch !== null
+      return this.selectedResearch !== null;
     },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
         .slice()
-        .filter((hiveSet) => hiveSet.hives.length > 0)
+        .filter(hiveSet => hiveSet.hives.length > 0)
         .sort(function(a, b) {
           if (a.name > b.name) {
-            return 1
+            return 1;
           }
           if (b.name > a.name) {
-            return -1
+            return -1;
           }
-          return 0
+          return 0;
         })
         .sort(function(a, b) {
-          if ('type' in b) {
-            return 1
+          if ("type" in b) {
+            return 1;
           }
-          if ('type' in a) {
-            return -1
+          if ("type" in a) {
+            return -1;
           }
-          return 0
-        })
-      return sortedHiveSets
-    },
+          return 0;
+        });
+      return sortedHiveSets;
+    }
   },
   watch: {
     selectedConsent() {
       // update selected hive ids when consent is different
-      this.initSelectedHiveIds()
-    },
+      this.initSelectedHiveIds();
+    }
   },
   created() {
     // init selected hive ids the first time overlay is opened
-    this.initSelectedHiveIds()
+    this.initSelectedHiveIds();
   },
   methods: {
     closeOverlay() {
-      this.$emit('close-overlay')
+      this.$emit("close-overlay");
     },
     getHiveIds(hives) {
       return hives
-        .filter((hive) => hive.sensors.length > 0 || !this.compareMode)
-        .map((hive) => hive.id)
+        .filter(hive => hive.sensors.length > 0 || !this.compareMode)
+        .map(hive => hive.id);
     },
     hiveHasSensors(id) {
-      return !!this.hivesObject[id] && this.hivesObject[id].sensors.length > 0
+      return !!this.hivesObject[id] && this.hivesObject[id].sensors.length > 0;
     },
     initSelectedHiveIds() {
       // if consent already exists, use consent_hive_ids if present, otherwise all hive ids. For new consent, deselect all hives
       this.selectedHiveIds = this.selectedConsent
         ? this.selectedConsent.consent_hive_ids !== null
           ? this.selectedConsent.consent_hive_ids
-              .split(',')
-              .map((item) => parseInt(item))
+              .split(",")
+              .map(item => parseInt(item))
           : [...this.allHiveIds]
-        : []
+        : [];
     },
     selectHive(id) {
       if (!this.compareMode || this.hiveHasSensors(id)) {
         // in compareMode, only hives with sensors are available for comparing measurement data and therefore selectable
         if (!this.selectedHiveIds.includes(id)) {
-          this.selectedHiveIds.push(id)
+          this.selectedHiveIds.push(id);
         } else {
-          this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1)
+          this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1);
         }
       }
     },
     selectHives() {
-      this.$emit('select-hives', this.selectedHiveIds)
-      this.closeOverlay()
+      this.$emit("select-hives", this.selectedHiveIds);
+      this.closeOverlay();
     },
     submitConsentToggle(id, consent) {
-      this.$emit('submit-consent-toggle', {
+      this.$emit("submit-consent-toggle", {
         id,
         consent,
-        hiveIds: this.selectedHiveIds,
-      })
-    },
-  },
-}
+        hiveIds: this.selectedHiveIds
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss">
@@ -295,7 +295,7 @@ export default {
   }
 }
 
-.consent-text-overline {
+.consent-custom-text-overline {
   line-height: 1.5rem;
   @include for-phone-only {
     margin-bottom: 2px;

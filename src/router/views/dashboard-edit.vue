@@ -26,7 +26,7 @@
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
-          {{ $t('save') }}
+          {{ $t("save") }}
         </v-btn>
       </v-toolbar>
 
@@ -44,9 +44,9 @@
 
         <v-row v-if="dashboard">
           <v-col cols="12" md="6" xl="5">
-            <div class="text-overline mb-3">{{
-              '1. ' + $tc('Select_hive', 2)
-            }}</div>
+            <div class="text-label-small mb-3">
+              {{ "1. " + $tc("Select_hive", 2) }}
+            </div>
             <div v-if="!showApiaryPlaceholder" class="beep-label mt-n3 mb-3">
               <span v-text="$t('Select_hives_for_dashboard_exp')"></span>
               <span
@@ -62,20 +62,20 @@
                 v-if="showApiaryPlaceholder"
                 class="apiary-placeholder d-flex flex-column align-start"
               >
-                <div class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4">{{
-                  $t('no_apiaries_yet')
-                }}</div>
+                <div class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4">
+                  {{ $t("no_apiaries_yet") }}
+                </div>
 
                 <router-link
                   class="apiary-placeholder-item mb-3"
                   :to="{
-                    name: `apiary-create`,
+                    name: `apiary-create`
                   }"
                 >
-                  <div class="color-accent"
-                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
-                    >{{ $t('Add_apiary') }}</div
-                  >
+                  <div class="color-accent">
+                    <v-icon color="accent" start>mdi-plus-circle</v-icon
+                    >{{ $t("Add_apiary") }}
+                  </div>
                 </router-link>
               </div>
               <div v-if="!showApiaryPlaceholder">
@@ -131,7 +131,9 @@
           </v-col>
 
           <v-col cols="12" md="6">
-            <div class="text-overline mb-3">{{ '2. ' + $t('Settings') }}</div>
+            <div class="text-label-small mb-3">
+              {{ "2. " + $t("Settings") }}
+            </div>
 
             <v-row>
               <v-col cols="12" xl="9">
@@ -242,9 +244,9 @@
                 xl="3"
                 :class="xlScreen ? 'mt-n11' : 'mt-6'"
               >
-                <div class="text-overline mb-3">{{
-                  '3. ' + $t('Preview_share')
-                }}</div>
+                <div class="text-label-small mb-3">
+                  {{ "3. " + $t("Preview_share") }}
+                </div>
 
                 <v-row>
                   <v-col cols="12">
@@ -252,7 +254,7 @@
                     <a :href="dashboardUrl + dashboard.code" target="_blank">
                       <v-icon class="mr-2" color="accent">mdi-link</v-icon>
                       <span
-                        class="text-overline"
+                        class="text-label-small"
                         v-text="dashboard.code"
                       ></span>
                     </a>
@@ -261,7 +263,7 @@
                   <v-col cols="12">
                     <v-btn color="black" @click="copyUrl">
                       <v-icon start>mdi-content-copy</v-icon>
-                      {{ $t('Copy_url') }}
+                      {{ $t("Copy_url") }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -275,7 +277,7 @@
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="accent " variant="text" @click="snackbar.show = false">
-        {{ $t('Close') }}
+        {{ $t("Close") }}
       </v-btn>
     </v-snackbar>
 
@@ -284,18 +286,18 @@
 </template>
 
 <script>
-import Confirm from '@/src/components/confirm-dialog.vue'
-import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import Api from '@api/Api'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import MeasurementsDateSelection from "@/src/components/measurements/measurements-date-selection.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import Api from "@api/Api";
+import ApiaryPreviewHiveSelector from "@components/apiary-preview-hive-selector.vue";
+import yesNoRating from "@components/input-fields/yes-no-rating.vue";
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
-  readDashboardGroups,
-} from '@mixins/methodsMixin'
-import { mapGetters } from 'vuex'
+  readDashboardGroups
+} from "@mixins/methodsMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -303,12 +305,12 @@ export default {
     Confirm,
     Layout,
     MeasurementsDateSelection,
-    yesNoRating,
+    yesNoRating
   },
   mixins: [
     deleteDashboard,
     readApiariesAndGroupsIfNotPresent,
-    readDashboardGroups,
+    readDashboardGroups
   ],
   data: function() {
     return {
@@ -318,7 +320,7 @@ export default {
       snackbar: {
         show: false,
         timeout: 2000,
-        text: 'notification',
+        text: "notification"
       },
       valid: false,
       showLoadingIcon: false,
@@ -328,29 +330,29 @@ export default {
       maxNrOfHives: 10,
       speedOptions: [15, 30, 45, 60, 90, 120, 300],
       intervalOptions: [
-        { id: 'hour', label: this.$i18n.t('Hour') },
-        { id: 'day', label: this.$i18n.tc('Day', 1) },
-        { id: 'week', label: this.$i18n.t('week') },
-        { id: 'month', label: this.$i18n.t('month') },
-        { id: 'year', label: this.$i18n.t('year') },
+        { id: "hour", label: this.$i18n.t("Hour") },
+        { id: "day", label: this.$i18n.tc("Day", 1) },
+        { id: "week", label: this.$i18n.t("week") },
+        { id: "month", label: this.$i18n.t("month") },
+        { id: "year", label: this.$i18n.t("year") }
         // { id: 'selection', label: this.$i18n.t('selection') }, TODO: temp disabled because not implemented in api yet
       ],
-      dates: [],
-    }
+      dates: []
+    };
   },
   computed: {
-    ...mapGetters('groups', ['dashboardGroups']),
-    ...mapGetters('locations', [
-      'apiaries',
-      'groups',
-      'hiveSets',
-      'hivesObject',
+    ...mapGetters("groups", ["dashboardGroups"]),
+    ...mapGetters("locations", [
+      "apiaries",
+      "groups",
+      "hiveSets",
+      "hivesObject"
     ]),
     code() {
-      return this.$route.params.id || null
+      return this.$route.params.id || null;
     },
     createMode() {
-      return this.$route.name === 'dashboard-create'
+      return this.$route.name === "dashboard-create";
     },
     dashboardNotValid() {
       return (
@@ -359,61 +361,61 @@ export default {
         // this.dashboard.interval === null ||
         this.dashboard.hive_ids.length === 0
         // || this.dashboard.show_inspections === null
-      )
+      );
     },
     getTitle() {
       return this.createMode
-        ? this.$i18n.t('New_dashboard')
-        : this.$i18n.t('Edit_dashboard') +
-            (this.dashboard !== null ? ' - ' + this.dashboard.name : '')
+        ? this.$i18n.t("New_dashboard")
+        : this.$i18n.t("Edit_dashboard") +
+            (this.dashboard !== null ? " - " + this.dashboard.name : "");
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     showApiaryPlaceholder() {
-      return this.hiveSets.length === 0
+      return this.hiveSets.length === 0;
     },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
         .slice()
-        .filter((hiveSet) => hiveSet.hives.length > 0)
+        .filter(hiveSet => hiveSet.hives.length > 0)
         .sort(function(a, b) {
           if (a.name > b.name) {
-            return 1
+            return 1;
           }
           if (b.name > a.name) {
-            return -1
+            return -1;
           }
-          return 0
+          return 0;
         })
         .sort(function(a, b) {
-          if ('type' in b) {
-            return 1
+          if ("type" in b) {
+            return 1;
           }
-          if ('type' in a) {
-            return -1
+          if ("type" in a) {
+            return -1;
           }
-          return 0
-        })
-      return sortedHiveSets
+          return 0;
+        });
+      return sortedHiveSets;
     },
     tabletLandscapeUp() {
-      return this.$vuetify.display.mdAndUp
+      return this.$vuetify.display.mdAndUp;
     },
     xlScreen() {
-      return this.$vuetify.display.xl
-    },
+      return this.$vuetify.display.xl;
+    }
   },
   created() {
-    this.readDashboardGroupsIfNotChecked().then((response) => {
-      this.readApiariesAndGroupsIfNotPresent().then((response) => {
+    this.readDashboardGroupsIfNotChecked().then(() => {
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (!this.createMode) {
           const filteredDashboards = JSON.parse(
             JSON.stringify(this.dashboardGroups)
-          ).filter((dashboard) => dashboard.code === this.code)
+          ).filter(dashboard => dashboard.code === this.code);
 
           this.dashboard =
-            filteredDashboards.length === 0 ? null : filteredDashboards[0]
+            filteredDashboards.length === 0 ? null : filteredDashboards[0];
         }
 
         // If dashboard-create route is used, make empty dashboard object
@@ -423,108 +425,115 @@ export default {
             description: null,
             speed: 30,
             hive_ids: [],
-            interval: 'week',
+            interval: "week",
             show_inspections: true,
-            show_all: false,
-          }
+            show_all: false
+          };
         }
-      })
-    })
-    this.setDashboardEdited(false)
+      });
+    });
+    this.setDashboardEdited(false);
   },
   methods: {
     async createDashboard() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
+        this.showLoadingIcon = true;
         try {
           const response = await Api.postRequest(
-            '/dashboardgroups',
+            "/dashboardgroups",
             this.dashboard
-          )
+          );
           if (!response) {
             this.errorMessage =
-              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-            this.showLoadingIcon = false
+              this.$i18n.tc("Error", 1) +
+              ": " +
+              this.$i18n.t("not_saved_error");
+            this.showLoadingIcon = false;
           }
           setTimeout(() => {
             return this.readDashboardGroups().then(() => {
               this.$router.push({
-                name: 'dashboards',
-              })
-            })
-          }, 50) // wait for API to update dashboards
+                name: "dashboards"
+              });
+            });
+          }, 50); // wait for API to update dashboards
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.error
-            this.errorMessage = msg
-            this.showLoadingIcon = false
-            console.log(error.response)
+            const msg = error.response.data.error;
+            this.errorMessage = msg;
+            this.showLoadingIcon = false;
+            console.log(error.response);
           } else {
-            this.showLoadingIcon = false
-            console.log('Error: ', error)
+            this.showLoadingIcon = false;
+            console.log("Error: ", error);
           }
         }
       }
     },
     async updateDashboard() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
+        this.showLoadingIcon = true;
         try {
           const response = await Api.updateRequest(
-            '/dashboardgroups/',
+            "/dashboardgroups/",
             this.dashboard.id,
             this.dashboard
-          )
+          );
           if (!response) {
             this.errorMessage =
-              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+              this.$i18n.tc("Error", 1) +
+              ": " +
+              this.$i18n.t("not_saved_error");
           }
           setTimeout(() => {
             return this.readDashboardGroups().then(() => {
               this.$router.push({
-                name: 'dashboards',
-              })
-            })
-          }, 50) // wait for API to update dashboards
+                name: "dashboards"
+              });
+            });
+          }, 50); // wait for API to update dashboards
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.error
-            this.errorMessage = msg
-            this.showLoadingIcon = false
-            console.log(error.response)
+            const msg = error.response.data.error;
+            this.errorMessage = msg;
+            this.showLoadingIcon = false;
+            console.log(error.response);
           } else {
-            this.showLoadingIcon = false
-            console.log('Error: ', error)
+            this.showLoadingIcon = false;
+            console.log("Error: ", error);
           }
         }
       }
     },
     copyUrl() {
-      const copyText = this.dashboardUrl + this.dashboard.code
-      navigator.clipboard.writeText(copyText)
+      const copyText = this.dashboardUrl + this.dashboard.code;
+      navigator.clipboard.writeText(copyText);
     },
     getOwnedHives(hiveSet) {
-      return hiveSet.hives.filter((hive) => hive.owner).map((hive) => hive.id)
+      return hiveSet.hives.filter(hive => hive.owner).map(hive => hive.id);
     },
     saveDashboard() {
       if (this.createMode) {
-        this.createDashboard()
+        this.createDashboard();
       } else {
-        this.updateDashboard()
+        this.updateDashboard();
       }
     },
     selectHive(id) {
       if (this.hivesObject[id].owner) {
         if (!this.dashboard.hive_ids.includes(id)) {
           if (this.dashboard.hive_ids.length < this.maxNrOfHives) {
-            this.dashboard.hive_ids.push(id)
+            this.dashboard.hive_ids.push(id);
           }
         } else {
-          this.dashboard.hive_ids.splice(this.dashboard.hive_ids.indexOf(id), 1)
+          this.dashboard.hive_ids.splice(
+            this.dashboard.hive_ids.indexOf(id),
+            1
+          );
         }
         this.showMaxWarning =
-          this.dashboard.hive_ids.length >= this.maxNrOfHives
-        this.setDashboardEdited(true)
+          this.dashboard.hive_ids.length >= this.maxNrOfHives;
+        this.setDashboardEdited(true);
       }
     },
     // selectAction(actionId) {
@@ -533,20 +542,20 @@ export default {
     //   this.setDashboardEdited(true)
     // },
     setDashboardEdited(bool) {
-      this.$store.commit('groups/setData', {
-        prop: 'dashboardEdited', // TODO
-        value: bool,
-      })
+      this.$store.commit("groups/setData", {
+        prop: "dashboardEdited", // TODO
+        value: bool
+      });
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
-        value = value.substring(0, maxLength)
-        this.dashboard[property] = value
+        value = value.substring(0, maxLength);
+        this.dashboard[property] = value;
       }
-      this.setDashboardEdited(true)
-    },
-  },
-}
+      this.setDashboardEdited(true);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -104,127 +104,127 @@
 </template>
 
 <script>
-import { momentFormat } from '@mixins/momentMixin'
-import { mapGetters } from 'vuex'
+import { momentFormat } from "@mixins/momentMixin";
+import { mapGetters } from "vuex";
 
 export default {
   mixins: [momentFormat],
   props: {
     interval: {
       type: String,
-      default: 'day',
-      required: true,
+      default: "day",
+      required: true
     },
     periodTitle: {
       type: String,
-      default: '',
-      required: false,
+      default: "",
+      required: false
     },
     selectedDate: {
       type: String,
-      default: '',
-      required: false,
+      default: "",
+      required: false
     },
     relativeInterval: {
       type: Boolean,
       default: false,
-      required: true,
+      required: true
     },
     sticky: {
       type: Boolean,
       default: false,
-      required: false,
+      required: false
     },
     selectedDeviceTitle: {
       type: String,
-      default: '',
-      required: false,
+      default: "",
+      required: false
     },
     dates: {
       type: Array,
       default: () => [],
-      required: false,
+      required: false
     },
     showAsColumn: {
       type: Number,
       default: 0,
-      required: false,
+      required: false
     },
     timeIndex: {
       type: Number,
       default: 0,
-      required: false,
-    },
+      required: false
+    }
   },
-  emits: ['load-data', 'save-dates', 'select-date', 'set-time-index'],
+  emits: ["load-data", "save-dates", "select-date", "set-time-index"],
   data() {
     return {
       modal: false,
       menu: false,
-      selectedDateCopy: '',
+      selectedDateCopy: "",
       datesCopy: [],
-      datePickerFormat: 'yyyy-MM-dd', // TODO add option to include time 'yyyy-MM-dd HH:mm',
-    }
+      datePickerFormat: "yyyy-MM-dd" // TODO add option to include time 'yyyy-MM-dd HH:mm',
+    };
   },
   computed: {
-    ...mapGetters('devices', ['devices']),
+    ...mapGetters("devices", ["devices"]),
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     requiredRules() {
-      let laterEndDate = true
+      let laterEndDate = true;
       this.dates.length === 2 && this.dates[0] > this.dates[1]
         ? (laterEndDate = false)
-        : (laterEndDate = true)
+        : (laterEndDate = true);
       return [
-        (v) => laterEndDate || this.$i18n.t('later_end_start'), // don't allow start date later than end date
-        (v) =>
+        () => laterEndDate || this.$i18n.t("later_end_start"), // don't allow start date later than end date
+        () =>
           this.dates[0] !== this.dates[1] ||
-          this.$i18n.t('different_end_start'), // don't allow end date identical to start date
-        (v) =>
+          this.$i18n.t("different_end_start"), // don't allow end date identical to start date
+        () =>
           this.dates.length > 1 ||
-          this.$i18n.t('end_date') + ' ' + this.$i18n.t('not_filled'), // don't allow start date only
-      ]
-    },
+          this.$i18n.t("end_date") + " " + this.$i18n.t("not_filled") // don't allow start date only
+      ];
+    }
   },
   created() {
     // use own component data props instead of prop to avoid mutating a prop directly (vuex warning)
-    this.selectedDateCopy = this.selectedDate
-    this.datesCopy = this.dates
+    this.selectedDateCopy = this.selectedDate;
+    this.datesCopy = this.dates;
   },
   methods: {
     dateRangeText(dates) {
       if (this.dates.length > 0) {
         const momentDates = [
-          this.momentFormat(this.dates[0], 'll'),
+          this.momentFormat(this.dates[0], "ll"),
           this.dates[1] !== undefined
-            ? this.momentFormat(this.dates[1], 'll')
-            : '',
-        ]
-        return momentDates.join(' - ')
+            ? this.momentFormat(this.dates[1], "ll")
+            : ""
+        ];
+        return momentDates.join(" - ");
       } else {
-        return dates
+        return dates;
       }
     },
     saveDates(dates) {
       if (dates[1] === null) {
-        dates[1] = ''
+        dates[1] = "";
       }
-      console.log(dates)
-      this.$emit('save-dates', dates)
-      this.$emit('load-data')
+      console.log(dates);
+      this.$emit("save-dates", dates);
+      this.$emit("load-data");
     },
     selectDate(date) {
-      this.$emit('select-date', date)
+      this.$emit("select-date", date);
     },
     setTimeIndex(offset) {
-      this.$emit('set-time-index', offset)
-    },
-  },
-}
+      this.$emit("set-time-index", offset);
+    }
+  }
+};
 </script>
 
 <style lang="scss">

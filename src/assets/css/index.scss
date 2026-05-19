@@ -1,0 +1,27 @@
+// =============================================================================
+// index.scss — Single entry point for all styles
+//
+// Layer order (Vuetify 4 convention):
+//   @layer base, vuetify-core, vuetify-components, vuetify-overrides,
+//          vuetify-utilities, vuetify-final, overrides;
+//
+// "base"      → our resets, tokens, typography, layout primitives
+// "overrides" → our component overrides, vendor patches, print, utilities
+//
+// All @use statements must come before any other rules. Sass forwards
+// variables and mixins so downstream files can use them without re-importing.
+// =============================================================================
+// Forward tokens so external consumers (e.g. SFC <style lang="scss"> blocks) can @use 'tokens'
+@forward 'tokens';
+
+// Vuetify settings & core — must come before Vuetify emits its own layers.
+@use 'vuetify';
+
+// Our own layered partials (each file wraps itself in the right @layer).
+@use 'base';
+@use 'icons';
+@use 'typography';
+@use 'main';
+@use 'vendors';
+@use 'element';
+@use 'print';

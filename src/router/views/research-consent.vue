@@ -4,35 +4,35 @@
       <div>
         <v-row>
           <v-col cols="12">
-            <p class="text-red mb-2">{{ $t('research_warning') }}</p>
-            <p class="mb-2">{{ $t('research_explanation_p1') }}</p>
-            <p class="mb-2">{{ $t('research_explanation_p2') }}</p>
-            <p class="mb-0"
-              ><i>{{
+            <p class="text-red mb-2">{{ $t("research_warning") }}</p>
+            <p class="mb-2">{{ $t("research_explanation_p1") }}</p>
+            <p class="mb-2">{{ $t("research_explanation_p2") }}</p>
+            <p class="mb-0">
+              <i>{{
                 /* eslint-disable vue/comma-dangle */
-                $t('research_info')
-              }}</i></p
-            >
+                $t("research_info")
+              }}</i>
+            </p>
           </v-col>
         </v-row>
 
         <v-row class="mb-4 mb-sm-6">
           <v-col cols="12">
-            <div class="text-overline mb-2 mb-sm-3">{{
-              $t('my_beep_data')
-            }}</div>
+            <div class="text-label-small mb-2 mb-sm-3">
+              {{ $t("my_beep_data") }}
+            </div>
             <div class="rounded-border">
               <v-row>
                 <v-col cols="12" md="4">
                   <span class="d-flex align-center"
                     ><v-icon size="23" class="mr-1">mdi-home-analytics</v-icon>
-                    <span>{{ $tc('Location', 2) }}: {{ apiaries.length }}</span>
+                    <span>{{ $tc("Location", 2) }}: {{ apiaries.length }}</span>
                   </span>
                 </v-col>
                 <v-col cols="12" md="4">
                   <span class="d-flex align-center"
                     ><v-icon size="20" class="mr-1">mdi-archive</v-icon>
-                    <span>{{ $tc('Hive', 2) }}: {{ numberOfHives }}</span></span
+                    <span>{{ $tc("Hive", 2) }}: {{ numberOfHives }}</span></span
                   >
                 </v-col>
                 <v-col cols="12" md="4">
@@ -41,7 +41,7 @@
                       class="beep-icon beep-icon-sensors--no-outline ma-0 mr-1"
                     ></v-sheet>
                     <span
-                      >{{ $tc('device', 2) }}: {{ numberOfDevices }}</span
+                      >{{ $tc("device", 2) }}: {{ numberOfDevices }}</span
                     ></span
                   >
                 </v-col>
@@ -175,8 +175,8 @@
                       <strong>
                         <v-icon>{{
                           research.consent
-                            ? 'mdi-check text-green'
-                            : 'mdi-close text-red'
+                            ? "mdi-check text-green"
+                            : "mdi-close text-red"
                         }}</v-icon>
                       </strong>
                     </v-col>
@@ -211,13 +211,13 @@
                           :size="mdAndDown ? 'small' : 'default'"
                           :class="research.consent ? 'text-red' : 'text-green'"
                           >{{
-                            research.consent ? 'mdi-close' : 'mdi-check'
+                            research.consent ? "mdi-close" : "mdi-check"
                           }}</v-icon
                         >
                         {{
                           research.consent
-                            ? $t('consent_no')
-                            : $t('consent_yes')
+                            ? $t("consent_no")
+                            : $t("consent_yes")
                         }}
                       </v-btn>
                     </v-col>
@@ -301,7 +301,7 @@
                               class="text-green"
                               >mdi-check</v-icon
                             >
-                            {{ $t('save') }}</v-btn
+                            {{ $t("save") }}</v-btn
                           >
                         </span>
 
@@ -320,18 +320,18 @@
                               >
                             </template>
                             <span
-                              >{{ $t('click_date_to_edit') }}
-                              {{ $t('Consent_can_only_be_set') }}
+                              >{{ $t("click_date_to_edit") }}
+                              {{ $t("Consent_can_only_be_set") }}
                               {{
                                 chItem.consent === 1
-                                  ? $t('earlier') +
-                                    ' ' +
-                                    $t('start_date').toLowerCase() +
-                                    '.'
-                                  : $t('later') +
-                                    ' ' +
-                                    $t('end_date').toLowerCase() +
-                                    '.'
+                                  ? $t("earlier") +
+                                    " " +
+                                    $t("start_date").toLowerCase() +
+                                    "."
+                                  : $t("later") +
+                                    " " +
+                                    $t("end_date").toLowerCase() +
+                                    "."
                               }}
                             </span>
                           </v-tooltip>
@@ -349,7 +349,7 @@
                           chItem.consent === 1 ? 'text-green' : 'text-red'
                         "
                         >{{
-                          chItem.consent ? $t('consent_yes') : $t('consent_no')
+                          chItem.consent ? $t("consent_yes") : $t("consent_no")
                         }}</strong
                       >
                       <v-icon
@@ -375,7 +375,7 @@
         </v-row>
         <v-row v-if="ready && researchProjects.length === 0" class="mt-3">
           <v-col cols="12">
-            {{ $t('no_data') }}
+            {{ $t("no_data") }}
           </v-col>
         </v-row>
       </div>
@@ -396,28 +396,28 @@
 </template>
 
 <script>
-import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import Api from '@api/Api'
-import SelectHivesOverlay from '@components/select-hives-overlay.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import Api from "@api/Api";
+import SelectHivesOverlay from "@components/select-hives-overlay.vue";
 import {
   readApiariesAndGroups,
-  readDevicesIfNotChecked,
-} from '@mixins/methodsMixin'
-import { momentFullDateTime, momentify } from '@mixins/momentMixin'
-import { mapGetters } from 'vuex'
+  readDevicesIfNotChecked
+} from "@mixins/methodsMixin";
+import { momentFullDateTime, momentify } from "@mixins/momentMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Confirm,
     Layout,
-    SelectHivesOverlay,
+    SelectHivesOverlay
   },
   mixins: [
     momentify,
     momentFullDateTime,
     readApiariesAndGroups,
-    readDevicesIfNotChecked,
+    readDevicesIfNotChecked
   ],
   data: function() {
     return {
@@ -432,208 +432,208 @@ export default {
       selectHivesOverlay: false,
       selectedConsent: null,
       selectedResearch: null,
-      datePickerFormat: 'yyyy-MM-dd HH:mm',
-    }
+      datePickerFormat: "yyyy-MM-dd HH:mm"
+    };
   },
   computed: {
-    ...mapGetters('devices', ['devices']),
-    ...mapGetters('locations', ['apiaries', 'groups']),
+    ...mapGetters("devices", ["devices"]),
+    ...mapGetters("locations", ["apiaries", "groups"]),
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     mdAndDown() {
-      return this.$vuetify.display.mdAndDown
+      return this.$vuetify.display.mdAndDown;
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     numberOfDevices() {
-      return this.devices.length
+      return this.devices.length;
     },
     numberOfHives() {
       return this.apiaries.reduce((acc, apiary) => {
-        acc += apiary.hives.length
-        return acc
-      }, 0)
+        acc += apiary.hives.length;
+        return acc;
+      }, 0);
     },
     sortedResearchProjects() {
       const sortedRPs = this.researchProjects.slice().sort(function(a, b) {
         if (a.name > b.name) {
-          return 1
+          return 1;
         }
         if (b.name > a.name) {
-          return -1
+          return -1;
         }
-        return 0
-      })
-      return sortedRPs
-    },
+        return 0;
+      });
+      return sortedRPs;
+    }
   },
   created() {
-    this.readDevicesIfNotChecked()
+    this.readDevicesIfNotChecked();
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-      this.readApiariesAndGroups()
+      this.readApiariesAndGroups();
     }
     this.readResearchProjects().then(() => {
-      this.ready = true
-    })
+      this.ready = true;
+    });
   },
   methods: {
     async readChecklists() {
       try {
-        const response = await Api.readRequest('/inspections/lists')
+        const response = await Api.readRequest("/inspections/lists");
         this.$store.commit(
-          'inspections/setChecklists',
+          "inspections/setChecklists",
           response.data.checklists
-        )
-        this.$store.commit('inspections/setChecklist', response.data.checklist)
-        return true
+        );
+        this.$store.commit("inspections/setChecklist", response.data.checklist);
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
     async readResearchProjects() {
       try {
-        const response = await Api.readRequest('/research')
-        const researchProjects = response.data
-        researchProjects.map((researchProject) => {
+        const response = await Api.readRequest("/research");
+        const researchProjects = response.data;
+        researchProjects.map(researchProject => {
           if (researchProject.consent_history.length > 0) {
-            researchProject.consent_history.map((chItem) => {
+            researchProject.consent_history.map(chItem => {
               chItem.updated_at = this.momentify(
                 // required for datetimepicker v-model to work
                 chItem.updated_at,
                 true,
                 null
-              )
-              return chItem
-            })
+              );
+              return chItem;
+            });
           }
-          return researchProject
-        })
-        this.researchProjects = researchProjects
-        return true
+          return researchProject;
+        });
+        this.researchProjects = researchProjects;
+        return true;
       } catch (error) {
-        console.log('Error: ', error)
+        console.log("Error: ", error);
       }
     },
     async submitConsentToggle(id, consent, hiveIds = null) {
       if (consent === 1) {
-        this.selectHivesOverlay = false
+        this.selectHivesOverlay = false;
       }
-      this.setCTLoadingIcon(id, true)
+      this.setCTLoadingIcon(id, true);
       try {
         if (consent) {
           await Api.postRequest(
-            '/research/' + id + '/add_consent',
+            "/research/" + id + "/add_consent",
             hiveIds
               ? {
-                  hive_ids: hiveIds,
+                  hive_ids: hiveIds
                 }
               : null
-          )
+          );
         } else {
-          await Api.postRequest('/research/' + id + '/remove_consent')
+          await Api.postRequest("/research/" + id + "/remove_consent");
         }
-        this.readChecklists() // update checklists with or without research checklists
+        this.readChecklists(); // update checklists with or without research checklists
         this.readResearchProjects().then(() => {
-          this.setCTLoadingIcon(id, false)
-        })
-        return true
+          this.setCTLoadingIcon(id, false);
+        });
+        return true;
       } catch (error) {
-        this.setCTLoadingIcon(id, false)
-        console.log('Error: ', error)
+        this.setCTLoadingIcon(id, false);
+        console.log("Error: ", error);
       }
     },
     async deleteNoConsent(researchId, consentId) {
       try {
         await Api.deleteRequest(
-          '/research/' + researchId + '/delete/',
+          "/research/" + researchId + "/delete/",
           consentId
-        )
-        this.readResearchProjects()
-        return true
+        );
+        this.readResearchProjects();
+        return true;
       } catch (error) {
-        console.log('Error: ', error)
+        console.log("Error: ", error);
       }
     },
     async updateDate(researchId, consentId, date) {
       try {
         await Api.updateRequest(
-          '/research/' + researchId + '/edit/',
+          "/research/" + researchId + "/edit/",
           consentId,
           { updated_at: date }
-        )
+        );
         this.readResearchProjects().then(() => {
-          this.showLoadingIcon = []
-        })
-        return true
+          this.showLoadingIcon = [];
+        });
+        return true;
       } catch (error) {
-        console.log('Error: ', error)
+        console.log("Error: ", error);
       }
     },
     checkEditedChItems(itemId) {
       if (this.editedCHItems.indexOf(itemId) === -1)
-        this.editedCHItems.push(itemId)
+        this.editedCHItems.push(itemId);
     },
     confirmDeleteNoConsent(researchId, chItem) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('Delete') + ' ' + this.$i18n.t('Consent'),
-          this.$i18n.t('Delete') +
-            ' ' +
-            this.$i18n.t('Consent').toLocaleLowerCase() +
-            ': ' +
+          this.$i18n.t("Delete") + " " + this.$i18n.t("Consent"),
+          this.$i18n.t("Delete") +
+            " " +
+            this.$i18n.t("Consent").toLocaleLowerCase() +
+            ": " +
             this.momentify(chItem.updated_at, true) +
             ' "' +
-            this.$i18n.t('consent_no') +
+            this.$i18n.t("consent_no") +
             '"?',
           {
-            color: 'red',
+            color: "red"
           }
         )
-        .then((confirm) => {
-          this.deleteNoConsent(researchId, chItem.id)
+        .then(() => {
+          this.deleteNoConsent(researchId, chItem.id);
         })
-        .catch((reject) => {
-          return true
-        })
+        .catch(() => {
+          return true;
+        });
     },
     consentToggle(research, showSelectHivesOverlay, consent = null) {
       if (research.consent && !showSelectHivesOverlay) {
         // if changing to do NOT consent, simply submit that skipping the hive selection
-        this.submitConsentToggle(research.id, 0)
+        this.submitConsentToggle(research.id, 0);
       } else {
-        this.selectedResearch = research
-        this.selectedConsent = consent
-        this.selectHivesOverlay = true
+        this.selectedResearch = research;
+        this.selectedConsent = consent;
+        this.selectHivesOverlay = true;
       }
     },
     getFullUrl(thumbUrl) {
-      return thumbUrl.indexOf('https://') > -1
+      return thumbUrl.indexOf("https://") > -1
         ? thumbUrl
-        : this.baseApiUrl + thumbUrl
+        : this.baseApiUrl + thumbUrl;
     },
     setCTLoadingIcon(id, bool) {
       if (!bool) {
-        this.showCTLoadingIcon.splice(this.showCTLoadingIcon.indexOf(id), 1)
+        this.showCTLoadingIcon.splice(this.showCTLoadingIcon.indexOf(id), 1);
       } else {
-        this.showCTLoadingIcon.push(id)
+        this.showCTLoadingIcon.push(id);
       }
     },
     updateConsentDate(researchId, consentId, date) {
-      this.showLoadingIcon.push(consentId)
-      const formattedDate = this.momentFullDateTime(date, true)
-      this.editedCHItems.splice(this.editedCHItems.indexOf(consentId), 1)
-      console.log('Update consent: ', consentId, formattedDate)
-      this.updateDate(researchId, consentId, formattedDate)
-    },
-  },
-}
+      this.showLoadingIcon.push(consentId);
+      const formattedDate = this.momentFullDateTime(date, true);
+      this.editedCHItems.splice(this.editedCHItems.indexOf(consentId), 1);
+      console.log("Update consent: ", consentId, formattedDate);
+      this.updateDate(researchId, consentId, formattedDate);
+    }
+  }
+};
 </script>
 
 <style lang="scss">

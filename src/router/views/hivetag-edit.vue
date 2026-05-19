@@ -33,7 +33,7 @@
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
-          {{ $t('save') }}
+          {{ $t("save") }}
         </v-btn>
       </v-toolbar>
 
@@ -51,9 +51,9 @@
 
         <v-row v-if="hiveTag">
           <v-col cols="12" sm="6" md="3">
-            <div class="text-overline mb-3">{{
-              '1. ' + $tc('Hivetag', 1)
-            }}</div>
+            <div class="text-label-small mb-3">
+              {{ "1. " + $tc("Hivetag", 1) }}
+            </div>
 
             <v-select
               v-if="createMode && tag === null && possibleHiveTags.length > 0"
@@ -87,9 +87,9 @@
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="text-overline mb-3">{{
-              '2. ' + $t('Select_hivetag_action')
-            }}</div>
+            <div class="text-label-small mb-3">
+              {{ "2. " + $t("Select_hivetag_action") }}
+            </div>
             <div
               class="beep-label mb-3"
               v-text="$t('Select_hivetag_action_exp')"
@@ -138,9 +138,9 @@
           </v-col>
 
           <v-col cols="12" md="6" class="my-3 mt-md-0">
-            <div class="text-overline mb-3">{{
-              '3. ' + $tc('Select_hive', 1)
-            }}</div>
+            <div class="text-label-small mb-3">
+              {{ "3. " + $tc("Select_hive", 1) }}
+            </div>
             <div
               v-if="!showApiaryPlaceholder"
               class="beep-label mb-3"
@@ -151,20 +151,20 @@
                 v-if="showApiaryPlaceholder"
                 class="apiary-placeholder d-flex flex-column align-start"
               >
-                <div class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4">{{
-                  $t('no_apiaries_yet')
-                }}</div>
+                <div class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4">
+                  {{ $t("no_apiaries_yet") }}
+                </div>
 
                 <router-link
                   class="apiary-placeholder-item mb-3"
                   :to="{
-                    name: `apiary-create`,
+                    name: `apiary-create`
                   }"
                 >
-                  <div class="color-accent"
-                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
-                    >{{ $t('Add_apiary') }}</div
-                  >
+                  <div class="color-accent">
+                    <v-icon color="accent" start>mdi-plus-circle</v-icon
+                    >{{ $t("Add_apiary") }}
+                  </div>
                 </router-link>
               </div>
               <div v-if="!showApiaryPlaceholder">
@@ -224,7 +224,7 @@
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="accent " variant="text" @click="snackbar.show = false">
-        {{ $t('Close') }}
+        {{ $t("Close") }}
       </v-btn>
     </v-snackbar>
 
@@ -233,25 +233,25 @@
 </template>
 
 <script>
-import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import Api from '@api/Api'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import qrCodeIcon from '@components/qrcode-icon.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import Api from "@api/Api";
+import ApiaryPreviewHiveSelector from "@components/apiary-preview-hive-selector.vue";
+import qrCodeIcon from "@components/qrcode-icon.vue";
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
-  readHiveTags,
-} from '@mixins/methodsMixin'
-import _ from 'lodash'
-import { mapGetters } from 'vuex'
+  readHiveTags
+} from "@mixins/methodsMixin";
+import _ from "lodash";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     ApiaryPreviewHiveSelector,
     Confirm,
     Layout,
-    qrCodeIcon,
+    qrCodeIcon
   },
   mixins: [deleteHiveTag, readApiariesAndGroupsIfNotPresent, readHiveTags],
   data() {
@@ -259,43 +259,43 @@ export default {
       snackbar: {
         show: false,
         timeout: 2000,
-        text: 'notification',
+        text: "notification"
       },
       valid: false,
       showLoadingIcon: false,
       errorMessage: null,
-      hiveTag: null,
-    }
+      hiveTag: null
+    };
   },
   computed: {
-    ...mapGetters('hives', [
-      'hiveTagActionDescriptions',
-      'hiveTagEdited',
-      'hiveTags',
-      'tempSavedHiveTag',
+    ...mapGetters("hives", [
+      "hiveTagActionDescriptions",
+      "hiveTagEdited",
+      "hiveTags",
+      "tempSavedHiveTag"
     ]),
-    ...mapGetters('locations', [
-      'apiaries',
-      'groups',
-      'hiveSets',
-      'hivesObject',
+    ...mapGetters("locations", [
+      "apiaries",
+      "groups",
+      "hiveSets",
+      "hivesObject"
     ]),
     createMode() {
       return (
-        this.$route.name === 'hivetag-create' ||
-        this.$route.name === 'hivetag-create-id'
-      )
+        this.$route.name === "hivetag-create" ||
+        this.$route.name === "hivetag-create-id"
+      );
     },
     getTitle() {
       return (
         (this.createMode
-          ? this.$i18n.t('Add_hivetag')
-          : this.$i18n.t('Edit_hivetag')) +
-        (' ' +
+          ? this.$i18n.t("Add_hivetag")
+          : this.$i18n.t("Edit_hivetag")) +
+        (" " +
           (this.hiveTag !== null && this.hiveTag.tag !== null
             ? this.hiveTag.tag
-            : ''))
-      )
+            : ""))
+      );
     },
     hiveTagNotValid() {
       return (
@@ -304,184 +304,186 @@ export default {
         this.hiveTag.hive_id === null ||
         this.hiveTag.router_link === null ||
         this.hiveTag.action_id === null
-      )
+      );
     },
     hiveTagActions() {
       return [
         {
           id: 1,
           routerLink: {
-            name: 'home',
+            name: "home",
             query: {
-              search: 'id=' + this.hiveTag.hive_id,
-            },
+              search: "id=" + this.hiveTag.hive_id
+            }
           },
           description: this.hiveTagActionDescriptions[1],
           deviceRequired: false,
-          editableHiveRequired: false,
+          editableHiveRequired: false
         },
         {
           id: 2,
           routerLink: {
-            name: 'inspect',
+            name: "inspect",
             query: {
-              hiveId: this.hiveTag.hive_id,
-            },
+              hiveId: this.hiveTag.hive_id
+            }
           },
           description: this.hiveTagActionDescriptions[2],
           deviceRequired: false,
-          editableHiveRequired: true,
+          editableHiveRequired: true
         },
         {
           id: 3,
           routerLink: {
-            name: 'hive-inspections',
+            name: "hive-inspections",
             params: {
-              id: this.hiveTag.hive_id,
-            },
+              id: this.hiveTag.hive_id
+            }
           },
           description: this.hiveTagActionDescriptions[3],
           deviceRequired: false,
-          editableHiveRequired: false,
+          editableHiveRequired: false
         },
         {
           id: 4,
           routerLink: {
-            name: 'hive-edit',
+            name: "hive-edit",
             params: {
-              id: this.hiveTag.hive_id,
-            },
+              id: this.hiveTag.hive_id
+            }
           },
           description: this.hiveTagActionDescriptions[4],
           deviceRequired: false,
-          editableHiveRequired: true,
+          editableHiveRequired: true
         },
         {
           id: 5,
           routerLink: {
-            name: 'measurements-id',
+            name: "measurements-id",
             params: {
               id:
                 this.selectedHive !== null &&
                 this.selectedHive.sensors.length > 0
                   ? this.selectedHive.sensors[0]
-                  : null,
-            },
+                  : null
+            }
           },
           description: this.hiveTagActionDescriptions[5],
           deviceRequired: true,
-          editableHiveRequired: false,
-        },
-      ]
+          editableHiveRequired: false
+        }
+      ];
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     possibleHiveTags() {
-      let possibleHiveTags = []
+      let possibleHiveTags = [];
       for (let i = 1; i < 41; i++) {
-        possibleHiveTags.push((i < 10 ? '0' : '') + i.toString())
+        possibleHiveTags.push((i < 10 ? "0" : "") + i.toString());
       }
 
-      const existingHiveTags = this.hiveTags.map((hiveTag) => hiveTag.tag)
+      const existingHiveTags = this.hiveTags.map(hiveTag => hiveTag.tag);
 
       possibleHiveTags = possibleHiveTags.filter(
-        (el) => !existingHiveTags.includes(el)
-      )
+        el => !existingHiveTags.includes(el)
+      );
 
-      return possibleHiveTags
+      return possibleHiveTags;
     },
     selectedAction() {
       return this.hiveTag !== null && this.hiveTag.action_id !== null
         ? this.hiveTagActions.filter(
-            (action) => action.id === this.hiveTag.action_id
+            action => action.id === this.hiveTag.action_id
           )[0]
-        : null
+        : null;
     },
     selectedHive() {
       return this.hiveTag.hive_id !== null
         ? this.hivesObject[this.hiveTag.hive_id] || null
-        : null
+        : null;
     },
     showApiaryPlaceholder() {
-      return this.hiveSets.length === 0
+      return this.hiveSets.length === 0;
     },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
         .slice()
-        .filter((hiveSet) => hiveSet.hives.length > 0)
+        .filter(hiveSet => hiveSet.hives.length > 0)
         .sort(function(a, b) {
           if (a.name > b.name) {
-            return 1
+            return 1;
           }
           if (b.name > a.name) {
-            return -1
+            return -1;
           }
-          return 0
+          return 0;
         })
         .sort(function(a, b) {
-          if ('type' in b) {
-            return 1
+          if ("type" in b) {
+            return 1;
           }
-          if ('type' in a) {
-            return -1
+          if ("type" in a) {
+            return -1;
           }
-          return 0
-        })
-      return sortedHiveSets
+          return 0;
+        });
+      return sortedHiveSets;
     },
     tabletLandscapeUp() {
-      return this.$vuetify.display.mdAndUp
+      return this.$vuetify.display.mdAndUp;
     },
     tag() {
-      return this.$route.params.id || null
-    },
+      return this.$route.params.id || null;
+    }
   },
   created() {
-    this.readHiveTagsIfNotChecked().then((response) => {
-      this.readApiariesAndGroupsIfNotPresent().then((response) => {
+    this.readHiveTagsIfNotChecked().then(() => {
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (
           this.tempSavedHiveTag !== null &&
           this.tag === this.tempSavedHiveTag.tag
         ) {
-          this.hiveTag = _.cloneDeep(this.tempSavedHiveTag)
+          this.hiveTag = _.cloneDeep(this.tempSavedHiveTag);
         } else if (!this.createMode) {
-          this.setTempSavedHiveTag(null)
+          this.setTempSavedHiveTag(null);
           const filteredHiveTags = JSON.parse(
             JSON.stringify(this.hiveTags)
-          ).filter((hiveTag) => hiveTag.tag === this.tag)
+          ).filter(hiveTag => hiveTag.tag === this.tag);
 
           this.hiveTag =
-            filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+            filteredHiveTags.length === 0 ? null : filteredHiveTags[0];
         }
         // If hivetag-create route is used, make empty hiveTag object
         else if (this.createMode) {
-          this.setTempSavedHiveTag(null)
+          this.setTempSavedHiveTag(null);
           this.hiveTag = {
             tag: this.tag !== null ? _.cloneDeep(this.tag) : null,
             router_link: null,
             hive_id: null,
-            action_id: null,
-          }
+            action_id: null
+          };
 
           // if (this.tag === null && this.hiveTags.length > 0) {
           //   this.hiveTag.tag = this.possibleHiveTags[0]
           // }
         }
-      })
-    })
-    this.setHiveTagEdited(false)
+      });
+    });
+    this.setHiveTagEdited(false);
   },
   methods: {
     async createHiveTag() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
+        this.showLoadingIcon = true;
         try {
-          const response = await Api.postRequest('/hive-tags', this.hiveTag)
+          const response = await Api.postRequest("/hive-tags", this.hiveTag);
           if (!response) {
             this.errorMessage =
-              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-            this.showLoadingIcon = false
+              this.$i18n.tc("Error", 1) +
+              ": " +
+              this.$i18n.t("not_saved_error");
+            this.showLoadingIcon = false;
           }
           setTimeout(() => {
             return this.readHiveTags().then(() => {
@@ -489,52 +491,54 @@ export default {
               //   name: 'home',
               // })
               this.$router.push({
-                name: 'hivetags',
-              })
-            })
-          }, 50) // wait for API to update hive tags
+                name: "hivetags"
+              });
+            });
+          }, 50); // wait for API to update hive tags
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.error
-            this.errorMessage = msg
-            this.showLoadingIcon = false
-            console.log(error.response)
+            const msg = error.response.data.error;
+            this.errorMessage = msg;
+            this.showLoadingIcon = false;
+            console.log(error.response);
           } else {
-            this.showLoadingIcon = false
-            console.log('Error: ', error)
+            this.showLoadingIcon = false;
+            console.log("Error: ", error);
           }
         }
       }
     },
     async updateHiveTag() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
+        this.showLoadingIcon = true;
         try {
           const response = await Api.updateRequest(
-            '/hive-tags/',
+            "/hive-tags/",
             this.hiveTag.tag,
             this.hiveTag
-          )
+          );
           if (!response) {
             this.errorMessage =
-              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+              this.$i18n.tc("Error", 1) +
+              ": " +
+              this.$i18n.t("not_saved_error");
           }
           setTimeout(() => {
             return this.readHiveTags().then(() => {
               this.$router.push({
-                name: 'hivetags',
-              })
-            })
-          }, 50) // wait for API to update hive tags
+                name: "hivetags"
+              });
+            });
+          }, 50); // wait for API to update hive tags
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.error
-            this.errorMessage = msg
-            this.showLoadingIcon = false
-            console.log(error.response)
+            const msg = error.response.data.error;
+            this.errorMessage = msg;
+            this.showLoadingIcon = false;
+            console.log(error.response);
           } else {
-            this.showLoadingIcon = false
-            console.log('Error: ', error)
+            this.showLoadingIcon = false;
+            console.log("Error: ", error);
           }
         }
       }
@@ -550,61 +554,61 @@ export default {
             (hiveTagAction.editableHiveRequired &&
               this.selectedHive !== null &&
               (this.selectedHive.editable || this.selectedHive.owner))))
-      )
+      );
     },
     getEditableHives(hiveSet) {
       // const allHives = hiveSet.hives.map((hive) => hive.id)
       if (this.selectedAction !== null) {
         if (this.selectedAction.deviceRequired) {
           return hiveSet.hives
-            .filter((hive) => hive.sensors.length > 0)
-            .map((hive) => hive.id)
+            .filter(hive => hive.sensors.length > 0)
+            .map(hive => hive.id);
         } else if (this.selectedAction.editableHiveRequired && hiveSet.users) {
           return hiveSet.hives
-            .filter((hive) => hive.editable || hive.owner)
-            .map((hive) => hive.id)
+            .filter(hive => hive.editable || hive.owner)
+            .map(hive => hive.id);
         } else {
-          return hiveSet.hives.map((hive) => hive.id)
+          return hiveSet.hives.map(hive => hive.id);
         }
       } else {
-        return hiveSet.hives.map((hive) => hive.id)
+        return hiveSet.hives.map(hive => hive.id);
       }
     },
     saveHiveTag() {
       if (this.createMode) {
-        this.createHiveTag()
+        this.createHiveTag();
       } else {
-        this.updateHiveTag()
+        this.updateHiveTag();
       }
     },
     selectHive(id) {
-      const newId = this.hiveTag.hive_id !== id ? id : null
-      this.hiveTag.hive_id = newId
-      this.hiveTag.router_link = this.selectedAction.routerLink // re-set router link as it is now filled with a (different) hive id
-      this.setHiveTagEdited(true)
+      const newId = this.hiveTag.hive_id !== id ? id : null;
+      this.hiveTag.hive_id = newId;
+      this.hiveTag.router_link = this.selectedAction.routerLink; // re-set router link as it is now filled with a (different) hive id
+      this.setHiveTagEdited(true);
     },
     selectAction(actionId) {
-      this.hiveTag.action_id = actionId
-      this.hiveTag.router_link = this.selectedAction.routerLink
-      this.setHiveTagEdited(true)
+      this.hiveTag.action_id = actionId;
+      this.hiveTag.router_link = this.selectedAction.routerLink;
+      this.setHiveTagEdited(true);
     },
     setHiveTagEdited(bool) {
-      this.$store.commit('hives/setData', {
-        prop: 'hiveTagEdited',
-        value: bool,
-      })
+      this.$store.commit("hives/setData", {
+        prop: "hiveTagEdited",
+        value: bool
+      });
       if (bool === true) {
-        this.setTempSavedHiveTag(this.hiveTag)
+        this.setTempSavedHiveTag(this.hiveTag);
       }
     },
     setTempSavedHiveTag(hivetag) {
-      this.$store.commit('hives/setData', {
-        prop: 'tempSavedHiveTag',
-        value: _.cloneDeep(hivetag), // clone deep to avoid vuex errors
-      })
-    },
-  },
-}
+      this.$store.commit("hives/setData", {
+        prop: "tempSavedHiveTag",
+        value: _.cloneDeep(hivetag) // clone deep to avoid vuex errors
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

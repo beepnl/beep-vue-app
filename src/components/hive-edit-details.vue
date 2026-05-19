@@ -3,7 +3,7 @@
 	<v-row v-if="ready" class="hive-edit-details-wrapper">
 		<v-col cols="12">
 			<div
-				class="text-overline mb-3"
+				class="text-label-small mb-3"
 				v-text="`${$tc('Hive', 1) + ' ' + $t('configuration')}`"
 			></div>
 

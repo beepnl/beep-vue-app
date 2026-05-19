@@ -26,7 +26,7 @@
         :property="'offset'"
         :size="mobile ? 'small' : 'default'"
         :disabled="sensorDef.delete"
-        @update-number=";(sensorDef.offset = $event), setSensorDefEdited(true)"
+        @update-number="(sensorDef.offset = $event), setSensorDefEdited(true)"
       ></NumericInput>
     </td>
     <td>
@@ -36,7 +36,7 @@
         :size="mobile ? 'small' : 'default'"
         :disabled="sensorDef.delete"
         @update-number="
-          ;(sensorDef.multiplier = $event), setSensorDefEdited(true)
+          (sensorDef.multiplier = $event), setSensorDefEdited(true)
         "
       ></NumericInput>
     </td>
@@ -99,7 +99,7 @@
         </div>
 
         <p v-if="showInfo" class="info-text --sensordef">
-          <em>{{ $t('sensordef_date_info') }} </em>
+          <em>{{ $t("sensordef_date_info") }} </em>
         </p>
       </div>
       <span v-else v-text="$t('Not_yet_saved')"></span>
@@ -124,7 +124,7 @@
               >mdi-check</v-icon
             >
           </template>
-          <span>{{ $t('save') }}</span>
+          <span>{{ $t("save") }}</span>
         </v-tooltip>
         <v-tooltip open-delay="500" location="bottom">
           <template v-slot:activator="{ props }">
@@ -135,7 +135,7 @@
               >mdi-delete</v-icon
             >
           </template>
-          <span>{{ $t('Delete') }}</span>
+          <span>{{ $t("Delete") }}</span>
         </v-tooltip>
       </div>
       <v-alert
@@ -156,154 +156,154 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Confirm from '@components/confirm-dialog.vue'
-import NumericInput from '@components/input-fields/numeric-input.vue'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
-import { datePickerText, momentFormatUtcToLocal } from '@mixins/momentMixin'
-import { mapGetters } from 'vuex'
+import Api from "@api/Api";
+import Confirm from "@components/confirm-dialog.vue";
+import NumericInput from "@components/input-fields/numeric-input.vue";
+import yesNoRating from "@components/input-fields/yes-no-rating.vue";
+import { datePickerText, momentFormatUtcToLocal } from "@mixins/momentMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Confirm,
     NumericInput,
-    yesNoRating,
+    yesNoRating
   },
   mixins: [datePickerText, momentFormatUtcToLocal],
   props: {
     sensorDef: {
       type: Object,
       default: () => null,
-      required: true,
-    },
+      required: true
+    }
   },
-  emits: ['get-devices-for-list', 'remove-sensor-def', 'sensor-def-edited'],
+  emits: ["get-devices-for-list", "remove-sensor-def", "sensor-def-edited"],
   data() {
     return {
       errorMessage: null, // TODO show here?
       showLoadingIcon: false,
       showInfo: false,
-      dateZFormat: 'YYYY-MM-DD[T]HH:mm:ss[Z]',
-      datePickerFormat: 'yyyy-MM-dd HH:mm:ss',
-    }
+      dateZFormat: "YYYY-MM-DD[T]HH:mm:ss[Z]",
+      datePickerFormat: "yyyy-MM-dd HH:mm:ss"
+    };
   },
   computed: {
-    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters("taxonomy", ["sensorMeasurementsList"]),
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     sortedSensorMeasurements() {
       const sortedSMs = this.sensorMeasurementsList
         .slice()
         .sort(function(a, b) {
           if (a.abbreviation > b.abbrevation) {
-            return 1
+            return 1;
           }
           if (b.abbreviation > a.abbreviation) {
-            return -1
+            return -1;
           }
-          return 0
-        })
-      return sortedSMs
+          return 0;
+        });
+      return sortedSMs;
     },
     updatedDate: {
       get() {
         if (
           this.sensorDef &&
-          typeof this.sensorDef.updated_at !== 'undefined'
+          typeof this.sensorDef.updated_at !== "undefined"
         ) {
-          return this.sensorDef.updated_at
+          return this.sensorDef.updated_at;
         } else {
-          return ''
+          return "";
         }
       },
       set(value) {
-        this.sensorDef.updated_at = value
-        this.setSensorDefEdited(true)
-      },
-    },
+        this.sensorDef.updated_at = value;
+        this.setSensorDefEdited(true);
+      }
+    }
   },
   created() {},
   methods: {
     async updateSensorDef(sensorDef) {
-      this.errorMessage = null
-      this.showLoadingIcon = true
+      this.errorMessage = null;
+      this.showLoadingIcon = true;
       const sensorDefId =
-        typeof sensorDef.id !== 'undefined' ? sensorDef.id : null
+        typeof sensorDef.id !== "undefined" ? sensorDef.id : null;
       try {
-        let response = false
+        let response = false;
         if (sensorDef.delete === true) {
           response = await Api.deleteRequest(
-            '/sensordefinition/',
+            "/sensordefinition/",
             sensorDefId,
             sensorDef
-          )
+          );
         } else if (sensorDefId !== null) {
           response = await Api.putRequest(
-            '/sensordefinition/' + sensorDefId,
+            "/sensordefinition/" + sensorDefId,
             sensorDef
-          )
+          );
         } else {
-          response = await Api.postRequest('/sensordefinition', sensorDef)
+          response = await Api.postRequest("/sensordefinition", sensorDef);
         }
         if (!response) {
           this.errorMessage =
-            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-          this.showLoadingIcon = false
+            this.$i18n.tc("Error", 1) + ": " + this.$i18n.t("not_saved_error");
+          this.showLoadingIcon = false;
         }
-        this.setSensorDefEdited(false)
-        this.$emit('get-devices-for-list')
-        this.showLoadingIcon = false
+        this.setSensorDefEdited(false);
+        this.$emit("get-devices-for-list");
+        this.showLoadingIcon = false;
         // TODO: this.readApiaries() for latest measurement data? Groups as well??
-        return true
+        return true;
       } catch (error) {
-        this.showLoadingIcon = false
+        this.showLoadingIcon = false;
         if (error.response) {
-          console.log('Error: ', error.response)
-          const msg = error.response.data.message
-          this.errorMessage = this.$i18n.t(msg)
+          console.log("Error: ", error.response);
+          const msg = error.response.data.message;
+          this.errorMessage = this.$i18n.t(msg);
         } else {
-          this.errorMessage = this.$i18n.tc('Error', 1)
+          this.errorMessage = this.$i18n.tc("Error", 1);
         }
       }
     },
     datePickerUpdate(e) {
-      this.updatedDate = e
+      this.updatedDate = e;
     },
     deleteSensorDef(sensorDef) {
-      if (typeof sensorDef.id === 'undefined') {
-        this.$emit('remove-sensor-def')
+      if (typeof sensorDef.id === "undefined") {
+        this.$emit("remove-sensor-def");
       } else {
-        sensorDef.delete = !sensorDef.delete
+        sensorDef.delete = !sensorDef.delete;
         this.$refs.confirm
           .open(
-            this.$i18n.t('delete_sensordef'),
-            this.$i18n.t('delete_sensordef') + ' (' + sensorDef.name + ')?',
+            this.$i18n.t("delete_sensordef"),
+            this.$i18n.t("delete_sensordef") + " (" + sensorDef.name + ")?",
             {
-              color: 'red',
+              color: "red"
             }
           )
-          .then((confirm) => {
-            this.updateSensorDef(sensorDef)
+          .then(() => {
+            this.updateSensorDef(sensorDef);
           })
-          .catch((reject) => {
-            sensorDef.delete = !sensorDef.delete
-            return true
-          })
+          .catch(() => {
+            sensorDef.delete = !sensorDef.delete;
+            return true;
+          });
       }
     },
     selectInputMeasurementId(sensorDef, $event) {
-      sensorDef.output_measurement_id = $event
-      this.setSensorDefEdited(true)
+      sensorDef.output_measurement_id = $event;
+      this.setSensorDefEdited(true);
     },
     setSensorDefEdited(bool) {
-      this.$emit('sensor-def-edited', bool)
-    },
-  },
-}
+      this.$emit("sensor-def-edited", bool);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

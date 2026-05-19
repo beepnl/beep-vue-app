@@ -2,7 +2,7 @@
 	<v-row class="queen-details-wrapper">
 		<v-col cols="12">
 			<div
-				class="text-overline mb-3"
+				class="text-label-small mb-3"
 				v-text="`${$t('Queen') + ' ' + $t('details')}`"
 			></div>
 			<div class="rounded-border">

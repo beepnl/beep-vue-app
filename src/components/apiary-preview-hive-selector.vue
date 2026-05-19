@@ -91,7 +91,7 @@
           <span
             v-if="!dashboardMode"
             :style="`width: ${hiveWidth(hive) + 16}px;`"
-            class="hive-caption text-caption"
+            class="hive-caption text-body-small"
             >{{ hive.name }}</span
           >
         </v-sheet>
