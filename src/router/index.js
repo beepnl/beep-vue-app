@@ -58,7 +58,12 @@ router.beforeEach((routeTo, routeFrom) => {
 
   function redirectToLogin() {
     // Pass the original route to the login component
-    return { path: "sign-in", query: { redirectFrom: routeTo.fullPath } };
+    // Pass the original route to the login component
+    const query = { redirectFrom: routeTo.fullPath };
+    //  and add queries separately (if present) so they keep working (as is needed for the language query)
+    Object.assign(query, routeTo.query);
+
+    return { path: "sign-in", query };
   }
 });
 

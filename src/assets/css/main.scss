@@ -303,6 +303,11 @@
     text-align: center;
   }
 
+  .locale-changer-button {
+    min-width: 48px !important;
+    padding: 0 0 0 4px !important;
+  }
+
   .lowercase {
     text-transform: lowercase;
   }
