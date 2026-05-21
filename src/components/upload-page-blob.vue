@@ -57,7 +57,7 @@
       <Confirm ref="confirm"></Confirm>
     </div>
 
-    <span v-if="errorMessage" class="hcs-label text-red mt-1">
+    <span v-if="errorMessage" class="beep-label text-red mt-1">
       {{ errorMessage }}
     </span>
   </div>

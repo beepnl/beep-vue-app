@@ -70,7 +70,21 @@ export default {
     userLocale() {
       if (this.mountedAndLoggedIn) {
         // only set locale again when it has changed and the 'logged in' locale changer has mounted
-        this.setLocale();
+        if (
+          (this.userLocale === null && localStorage.beepLocale) ||
+          this.userLocale !== localStorage.beepLocale
+        ) {
+          // if beepLocale is set to something (different) via sign-in page
+          this.switchLocale(localStorage.beepLocale);
+        } else if (this.userLocale !== null) {
+          // else if locale is saved in database, use it
+          this.setLocale(this.userLocale);
+        } else {
+          // else base it on browser language
+          const newLocale = languages.checkBrowserLanguage();
+          this.$i18n.locale = newLocale;
+          this.$moment.locale(newLocale);
+        }
       }
     }
   },
@@ -85,9 +99,7 @@ export default {
       this.languageCodes.includes(this.queriedLanguage)
     ) {
       // if locale is queried and exists, use it
-      this.$i18n.locale = this.queriedLanguage;
-      localStorage.beepLocale = this.queriedLanguage;
-      this.$moment.locale(this.queriedLanguage);
+      this.setLocale(this.queriedLanguage);
     }
   },
   methods: {
@@ -104,10 +116,7 @@ export default {
             console.log("error");
           }
           this.$store.commit("auth/SET_CURRENT_USER", response.data);
-          this.$i18n.locale = locale;
-          localStorage.beepLocale = locale;
-          this.$moment.locale(locale);
-          console.log("switch language to ", locale);
+          this.setLocale(locale);
         } catch (error) {
           if (error.response) {
             console.log(error.response);
@@ -117,30 +126,15 @@ export default {
         }
       } else if (!this.loggedIn) {
         // if user is logged out and route has account layout, do not set userlocale yet
-        this.$i18n.locale = locale;
-        localStorage.beepLocale = locale;
-        this.$moment.locale(locale);
+        this.setLocale(locale);
       }
     },
-    setLocale() {
-      if (
-        (this.userLocale === null && localStorage.beepLocale) ||
-        this.userLocale !== localStorage.beepLocale
-      ) {
-        // if beepLocale is set to something (different) via sign-in page
-        this.switchLocale(localStorage.beepLocale);
-      } else if (this.userLocale !== null) {
-        // else if locale is saved in database, use it
-        this.$i18n.locale = this.userLocale;
-        localStorage.beepLocale = this.userLocale;
-        this.$moment.locale(this.userLocale);
-      } else {
-        // else base it on browser language
-        const newLocale = languages.checkBrowserLanguage();
-        this.$i18n.locale = newLocale;
-        this.$moment.locale(newLocale);
-      }
-      Settings.defaultLocale = this.$i18n.locale; // for hive-inspect vue-datetime picker
+    setLocale(locale) {
+      this.$i18n.locale = locale;
+      localStorage.beepLocale = locale; // remember language for sign-in
+      this.$moment.locale(locale);
+      console.log("switch language to", locale);
+      Settings.defaultLocale = locale; // for hive-inspect vue-datetime picker
     }
   }
 };
