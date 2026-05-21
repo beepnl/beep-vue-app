@@ -195,7 +195,7 @@
                     half
                     :angle="0"
                   >
-                    <template v-slot="{ counterTick }">
+                    <template v-slot:default>
                       <v-sheet
                         :class="
                           `beep-icon beep-icon-${sensorData.name} --no-outline mt-3 mb-n1 mt-sm-1 mb-sm-n1`
@@ -208,7 +208,7 @@
                   ;`
                         "
                       >
-                        {{ counterTick.currentValue
+                        {{ sensorData.value
                         }}<span style="font-size: 0.75rem;">{{
                           SENSOR_UNITS[sensorData.name]
                         }}</span>
