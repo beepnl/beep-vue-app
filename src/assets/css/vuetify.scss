@@ -137,10 +137,19 @@
     padding-inline-end: 0px;
   }
 
-  .v-textarea .v-field__field {
-    --v-input-control-height: calc(var(--v-textarea-control-height) + 20px);
-  }
+  // .v-textarea .v-field__field {
+  //   --v-input-control-height: calc(var(--v-textarea-control-height) + 20px);
+  // }
 
+  .v-textarea {
+    .v-field__input {
+      overflow: hidden;
+    }
+
+    .v-field__clearable {
+      padding-top: 4px;
+    }
+  }
   .v-input textarea {
     padding: 14px 4px 4px !important;
   }
