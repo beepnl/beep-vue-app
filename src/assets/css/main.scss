@@ -27,7 +27,7 @@
   }
 
   .beep-tooltip {
-    font-family: "Roboto", sans-serif !important;
+    font-family: 'Roboto', sans-serif !important;
     font-size: 0.8rem;
     font-weight: 500 !important;
     color: $color-grey-dark !important;
@@ -151,13 +151,17 @@
           }
         }
 
-        &.v-text-field.beep-search-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
+        &.v-text-field.beep-search-field.v-text-field--enclosed.v-input--dense:not(
+            .v-text-field--solo
+          ).v-text-field--outlined
           .v-input__append-outer {
           @include for-phone-only {
             margin-top: 2px !important;
           }
         }
-        &.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
+        &.v-text-field.v-text-field--enclosed.v-input--dense:not(
+            .v-text-field--solo
+          ).v-text-field--outlined {
           .v-input__slot {
             .v-label.v-label--active {
               color: $color-primary !important;
@@ -181,7 +185,9 @@
             }
           }
         }
-        &.v-text-field.v-input--is-focused.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
+        &.v-text-field.v-input--is-focused.v-input--dense:not(
+            .v-text-field--solo
+          ).v-text-field--outlined {
           .v-input__slot {
             @include for-phone-only {
               .v-text-field__slot {
@@ -278,7 +284,7 @@
     }
   }
 
-  input[disabled="disabled"],
+  input[disabled='disabled'],
   .input-disabled-overlay {
     cursor: not-allowed !important;
   }
@@ -403,6 +409,7 @@
     border-radius: 5px;
     &.text-green {
       border-color: $color-green;
+      color: $color-green;
     }
   }
 
