@@ -14,15 +14,8 @@ const json = readFileSync(file, 'utf8')
 const pkg = JSON.parse(json)
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  plugins: [
-    vue(),
-    // Enable on local dev AND staging
-    (mode === 'development' || mode === 'staging') && vueDevTools(),
-    vuetify(),
-    commonjs(),
-    eslint(),
-  ],
+export default defineConfig({
+  plugins: [vue(), vueDevTools(), vuetify(), commonjs(), eslint()],
   css: {
     devSourcemap: false,
     preprocessorOptions: {
@@ -56,4 +49,4 @@ export default defineConfig(({ mode }) => ({
       commonjsOptions: { transformMixedEsModules: true },
     },
   },
-}))
+})
