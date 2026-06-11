@@ -1677,6 +1677,7 @@ export default {
     padding: 4px;
     &.xs-view {
       padding: 0 !important;
+      margin-left: -2px;
     }
     &.xl-view {
       @include for-phone-only {

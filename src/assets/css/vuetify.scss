@@ -62,7 +62,7 @@
       var(--v-col-is-auto, auto) var(--v-col-is-grow, 0);
   }
 
-  .v-col:where([class*="v-col--offset-"]) {
+  .v-col:where([class*='v-col--offset-']) {
     margin-inline-start: calc(
       100% * var(--v-col-offset) / var(--v-col-size-columns)
     );
@@ -232,9 +232,11 @@
     --v-border-color: #ccc;
   }
 
-  .v-text-field:not(.v-field--variant-underlined):not(.v-field--variant-solo):not(.v-select):not(.beep-search-field) {
+  .v-text-field:not(.v-field--variant-underlined):not(
+      .v-field--variant-solo
+    ):not(.v-select):not(.beep-search-field):not(.large-font) {
     input {
-      padding: 8px 0 0 4px !important; // 8px 0 0 2px
+      padding: 18px 0 0 4px !important; // 8px 0 0 4px
     }
     &.beep-text-field {
       input {
@@ -261,7 +263,7 @@
     }
 
     input {
-      padding: 0 0 0 4px !important;
+      padding: 8px 0 0 4px !important;
       line-height: 1.8 !important;
     }
   }

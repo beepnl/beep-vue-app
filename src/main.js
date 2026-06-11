@@ -1,129 +1,130 @@
-import cs from "@public/js/lang/cs";
-import de from "@public/js/lang/de";
-import el from "@public/js/lang/el";
-import en from "@public/js/lang/en";
-import es from "@public/js/lang/es";
-import fi from "@public/js/lang/fi";
-import fr from "@public/js/lang/fr";
-import it from "@public/js/lang/it";
-import nb from "@public/js/lang/nb";
-import nl from "@public/js/lang/nl";
-import pt from "@public/js/lang/pt";
-import ro from "@public/js/lang/ro";
-import ru from "@public/js/lang/ru";
-import sv from "@public/js/lang/sv";
-import uk from "@public/js/lang/uk"; // NB was ua TODO-VITE replace all ua locales in live db with uk and remove ua flag
-import "moment/dist/locale/cs";
-import "moment/dist/locale/de";
-import "moment/dist/locale/el";
-import "moment/dist/locale/es";
-import "moment/dist/locale/fi";
-import "moment/dist/locale/fr";
-import "moment/dist/locale/it";
-import "moment/dist/locale/nb";
-import "moment/dist/locale/nl";
-import "moment/dist/locale/pt";
-import "moment/dist/locale/ro";
-import "moment/dist/locale/ru";
-import "moment/dist/locale/sv";
-import "moment/dist/locale/uk";
+import cs from '@public/js/lang/cs'
+import de from '@public/js/lang/de'
+import el from '@public/js/lang/el'
+import en from '@public/js/lang/en'
+import es from '@public/js/lang/es'
+import fi from '@public/js/lang/fi'
+import fr from '@public/js/lang/fr'
+import it from '@public/js/lang/it'
+import nb from '@public/js/lang/nb'
+import nl from '@public/js/lang/nl'
+import pt from '@public/js/lang/pt'
+import ro from '@public/js/lang/ro'
+import ru from '@public/js/lang/ru'
+import sv from '@public/js/lang/sv'
+import uk from '@public/js/lang/uk' // NB was ua TODO-VITE replace all ua locales in live db with uk and remove ua flag
+import 'moment/dist/locale/cs'
+import 'moment/dist/locale/de'
+import 'moment/dist/locale/el'
+import 'moment/dist/locale/es'
+import 'moment/dist/locale/fi'
+import 'moment/dist/locale/fr'
+import 'moment/dist/locale/it'
+import 'moment/dist/locale/nb'
+import 'moment/dist/locale/nl'
+import 'moment/dist/locale/pt'
+import 'moment/dist/locale/ro'
+import 'moment/dist/locale/ru'
+import 'moment/dist/locale/sv'
+import 'moment/dist/locale/uk'
 // import pl from '@public/js/lang/pl'
 // import enUS from '@public/js/lang/en-US'
-import "@assets/css/index.scss";
-import languages from "@assets/js/languages";
-import { ResizeObserver as Polyfill } from "@juggle/resize-observer";
-import { Treeselect } from "@komgrip/vue3-treeselect"; // original 'vue3-treeselect' does not support multiple values reactivity
-import router from "@router";
-import store from "@state/store";
-import VueDatePicker from "@vuepic/vue-datepicker";
-import "@vuepic/vue-datepicker/dist/main.css";
-import "element-plus/es/components/input-number/style/css";
-import moment from "moment-timezone";
-import { createApp } from "vue";
-import veProgress from "vue-ellipse-progress";
-import { createI18n } from "vue-i18n";
-import { DynamicScroller, DynamicScrollerItem } from "vue-virtual-scroller";
-import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
-import "vue3-treeselect/dist/vue3-treeselect.css";
+import '@assets/css/index.scss'
+import languages from '@assets/js/languages'
+import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
+import { Treeselect } from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
+import router from '@router'
+import store from '@state/store'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import 'element-plus/es/components/input-number/style/css'
+import moment from 'moment-timezone'
+import { createApp } from 'vue'
+import veProgress from 'vue-ellipse-progress'
+import { createI18n } from 'vue-i18n'
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import 'vue3-treeselect/dist/vue3-treeselect.css'
 // * Vuetify
-import { createVuetify } from "vuetify";
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
-import { aliases, mdi } from "vuetify/lib/iconsets/mdi";
-import "vuetify/styles";
-import App from "./app.vue";
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import { aliases, mdi } from 'vuetify/lib/iconsets/mdi'
+import 'vuetify/styles'
+import App from './app.vue'
 
 const vuetify = createVuetify({
   // default options
   defaults: {
     VAlert: {
-      variant: "tonal",
-      density: "compact"
+      variant: 'tonal',
+      density: 'compact',
     },
     VBtn: {
-      class: "text-uppercase",
-      variant: "outlined",
+      class: 'text-uppercase',
+      variant: 'outlined',
       rounded: 0,
-      ripple: false
+      ripple: false,
     },
     VCard: {
-      variant: "outlined"
+      variant: 'outlined',
     },
     VCardActions: {
       VBtn: {
-        variant: "outlined"
-      }
+        variant: 'outlined',
+      },
     },
     VCheckbox: {
-      color: "accent"
+      color: 'accent',
     },
     VCheckboxBtn: {
-      color: "accent"
+      color: 'accent',
     },
     VList: {
-      density: "default",
-      variant: "flat"
+      density: 'default',
+      variant: 'flat',
     },
     VSelect: {
-      density: "compact",
-      variant: "underlined"
+      density: 'compact',
+      variant: 'underlined',
     },
     VSwitch: {
-      density: "compact",
-      color: "accent"
+      density: 'compact',
+      color: 'accent',
     },
     VTable: {
-      density: "compact"
+      density: 'compact',
     },
     VTextarea: {
-      variant: "underlined",
-      clearIcon: "mdi-close",
-      density: "compact",
-      maxRows: "18"
+      variant: 'underlined',
+      clearIcon: 'mdi-close',
+      density: 'compact',
+      maxRows: '18',
     },
     VTextField: {
-      variant: "underlined"
+      variant: 'underlined',
+      clearIcon: 'mdi-close',
     },
     VToolbar: {
       VBtn: {
-        variant: "outlined",
-        slim: false
-      }
+        variant: 'outlined',
+        slim: false,
+      },
     },
     VTooltip: {
-      location: "bottom"
-    }
+      location: 'bottom',
+    },
   },
   display: {
-    mobileBreakpoint: "xs",
-    xs: 600
+    mobileBreakpoint: 'xs',
+    xs: 600,
   },
   icons: {
-    defaultSet: "mdi",
+    defaultSet: 'mdi',
     aliases,
     sets: {
-      mdi
-    }
+      mdi,
+    },
   },
   components,
   directives,
@@ -131,17 +132,17 @@ const vuetify = createVuetify({
   //   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
   // },
   theme: {
-    defaultTheme: "beepTheme",
+    defaultTheme: 'beepTheme',
     themes: {
       beepTheme: {
         light: true,
         colors: {
-          primary: "#F8B133",
-          secondary: "#000000",
-          accent: "#f29100",
-          black: "#000000",
-          disabled: "#b0b0b0",
-          error: "#ff001d"
+          primary: '#F8B133',
+          secondary: '#000000',
+          accent: '#f29100',
+          black: '#000000',
+          disabled: '#b0b0b0',
+          error: '#ff001d',
           // "primary-darken-1": "#000000",
           // "secondary-darken-1": "#000000",
           // info: "#000000",
@@ -149,29 +150,29 @@ const vuetify = createVuetify({
           // warning: "#000000",
         },
         variables: {
-          "border-color": "#bbbbbb",
-          "border-opacity": 0.8,
-          "medium-emphasis-opacity": 1,
-          "hover-opacity": 0
-        }
+          'border-color': '#bbbbbb',
+          'border-opacity': 0.8,
+          'medium-emphasis-opacity': 1,
+          'hover-opacity': 0,
+        },
       },
       beepDarkTheme: {
         dark: true,
         colors: {
-          primary: "#F8B133",
-          secondary: "#000000",
-          accent: "#ffffff"
-        }
-      }
-    }
-  }
-});
+          primary: '#F8B133',
+          secondary: '#000000',
+          accent: '#ffffff',
+        },
+      },
+    },
+  },
+})
 
 const i18n = createI18n({
   // allowComposition: true, // you need to specify that!
   // const i18n = new VueI18n({
   //   legacy: true,
-  locale: languages.checkBrowserLanguage() || "en",
+  locale: languages.checkBrowserLanguage() || 'en',
   messages: {
     cs,
     de,
@@ -188,42 +189,42 @@ const i18n = createI18n({
     ro,
     ru,
     sv,
-    uk
+    uk,
     // add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
     // also add import 'moment/dist/locale/[locale]'
-  }
-});
+  },
+})
 
-const app = createApp(App);
+const app = createApp(App)
 
-app.use(router);
-app.use(store);
-app.use(i18n);
-app.use(vuetify);
-app.use(veProgress);
-app.config.globalProperties.$moment = moment;
+app.use(router)
+app.use(store)
+app.use(i18n)
+app.use(vuetify)
+app.use(veProgress)
+app.config.globalProperties.$moment = moment
 
-app.component("VueDatePicker", VueDatePicker);
-app.component("DynamicScroller", DynamicScroller);
-app.component("DynamicScrollerItem", DynamicScrollerItem);
-app.component("TreeselectVue3", Treeselect);
+app.component('VueDatePicker', VueDatePicker)
+app.component('DynamicScroller', DynamicScroller)
+app.component('DynamicScrollerItem', DynamicScrollerItem)
+app.component('TreeselectVue3', Treeselect)
 
 // If running inside Cypress...
-if (import.meta.env.VITE_TEST === "e2e") {
+if (import.meta.env.VITE_TEST === 'e2e') {
   // Ensure tests fail when Vue emits an error.
-  app.config.errorHandler = window.Cypress.cy.onUncaughtException;
+  app.config.errorHandler = window.Cypress.cy.onUncaughtException
 } else {
   app.config.errorHandler = (err, instance, info) => {
-    console.error("Vue caught error:", err, info);
-  };
+    console.error('Vue caught error:', err, info)
+  }
 }
 
 // fix chartjs bug for older devices + better resize reactivity
-if (typeof window !== "undefined") {
-  window.ResizeObserver = window.ResizeObserver || Polyfill;
+if (typeof window !== 'undefined') {
+  window.ResizeObserver = window.ResizeObserver || Polyfill
 }
 
-app.mount("#app");
+app.mount('#app')
 
 // If running e2e tests...
 // if (import.meta.env.VITE_T === 'e2e') {
