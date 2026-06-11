@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div>
+    <div class="d-flex">
       <v-btn
         :class="`yes-no-button mr-1 ml-n1 pl-0 ${yesRed ? 'yes-red' : ''} ${
           small ? 'yes-no-button--small pr-0' : 'pr-2'
         }`"
         :disabled="disabled"
         variant="text"
+        :size="small ? 'small' : 'default'"
         @click="updateObject(1)"
       >
         <template v-slot:prepend>
@@ -28,6 +29,7 @@
         }`"
         :disabled="disabled"
         variant="text"
+        :size="small ? 'small' : 'default'"
         @click="updateObject(0)"
       >
         <template v-slot:prepend>
