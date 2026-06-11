@@ -119,12 +119,12 @@
   }
 
   .v-container {
-    padding-left: calc((100vw - 100%) / 2) !important;
-    padding-right: 12px !important;
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
-    // padding: 12px !important;
-    @include for-tablet-landscape-up {
+    padding: 12px !important;
+    @include for-md-and-up {
+      padding-left: calc((100vw - 100%) / 2) !important;
+      padding-right: 12px !important;
+      padding-top: 12px !important;
+      padding-bottom: 12px !important;
       max-width: calc(100vw - 48px) !important;
     }
   }
