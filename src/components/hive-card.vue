@@ -3,29 +3,27 @@
   <v-menu location="end top">
     <template v-slot:activator="{ props }">
       <v-card
-        :class="
-          `hive-card d-flex flex-column justify-end align-start ${
-            xsView ? 'xs-view' : ''
-          }`
-        "
-        :style="
-          `border-color: ${
-            hiveSet.hex_color
-              ? hiveSet.hex_color + ' !important'
-              : '#F8B133 !important'
-          };`
-        "
+        :class="`hive-card d-flex flex-column justify-end align-start ${
+          xsView ? 'xs-view' : ''
+        }`"
+        :style="`border-color: ${
+          xsView
+            ? 'transparent'
+            : hiveSet.hex_color
+              ? hiveSet.hex_color
+              : '#F8B133'
+        } !important;`"
       >
         <v-row
           v-if="!xsView"
           class="ml-0 mt-0 mb-3 d-flex justify-space-between align-start"
-          style="width: 100%;"
+          style="width: 100%"
         >
           <v-col cols="11" class="pa-0">
             <h4
               v-if="mView"
               class="hive-name truncate-md mb-3"
-              style="max-width: 120px;"
+              style="max-width: 120px"
               v-text="hive.name"
             >
             </h4>
@@ -33,7 +31,7 @@
               <h4
                 v-if="hiveTitle.length <= 14 || menuItemsPresent"
                 class="hive-name truncate-md mb-3"
-                style="max-width: 250px;"
+                style="max-width: 250px"
               >
                 {{ hive.name }}
                 <span
@@ -49,7 +47,7 @@
                   <h4
                     v-bind="props"
                     class="hive-name truncate-md mb-3"
-                    style="max-width: 250px;"
+                    style="max-width: 250px"
                   >
                     {{ hive.name }}
                     <span
@@ -79,11 +77,9 @@
           <div class="hive-icon-wrapper d-flex flex-column align-center">
             <div
               v-if="xsView"
-              :class="
-                `d-flex flex-row justify-center text-red xs-view-alert ${
-                  hasLayer('queen_excluder') ? 'mr-1' : ''
-                }`
-              "
+              :class="`d-flex flex-row justify-center text-red xs-view-alert ${
+                hasLayer('queen_excluder') ? 'mr-1' : ''
+              }`"
             >
               <router-link
                 :to="{
@@ -114,9 +110,7 @@
                   >
                     <v-icon color="red" size="24">mdi-bell</v-icon>
                   </v-badge>
-                  <v-icon v-else size="24" color="red">
-                    mdi-bell
-                  </v-icon>
+                  <v-icon v-else size="24" color="red"> mdi-bell </v-icon>
                   <v-tooltip activator="parent" location="bottom">
                     {{ alertRuleNamesText }}
                   </v-tooltip>
@@ -150,9 +144,7 @@
                     >
                       <v-icon color="red" size="24">mdi-bell</v-icon>
                     </v-badge>
-                    <v-icon v-else color="red" size="24">
-                      mdi-bell
-                    </v-icon>
+                    <v-icon v-else color="red" size="24"> mdi-bell </v-icon>
                     <v-tooltip activator="parent" location="bottom">
                       {{ alertRuleNamesText }}
                     </v-tooltip>
@@ -162,7 +154,7 @@
               <span
                 v-if="xlView"
                 class="truncate-md"
-                style="max-width: 224px;"
+                style="max-width: 224px"
                 v-text="alertRuleNamesText"
               ></span>
             </div>
@@ -200,11 +192,9 @@
                   }"
                 >
                   <v-sheet
-                    :class="
-                      `beep-icon beep-icon-queen  ${
-                        darkIconColor(hive.queen.color) ? 'dark' : ''
-                      }`
-                    "
+                    :class="`beep-icon beep-icon-queen  ${
+                      darkIconColor(hive.queen.color) ? 'dark' : ''
+                    }`"
                     :color="hive.queen.color"
                     :style="`border-color: ${hive.queen.color};`"
                   >
@@ -212,11 +202,9 @@
                 </router-link>
                 <v-sheet
                   v-else
-                  :class="
-                    `beep-icon beep-icon-queen  ${
-                      darkIconColor(hive.queen.color) ? 'dark' : ''
-                    }`
-                  "
+                  :class="`beep-icon beep-icon-queen  ${
+                    darkIconColor(hive.queen.color) ? 'dark' : ''
+                  }`"
                   :color="hive.queen.color"
                   :style="`border-color: ${hive.queen.color};`"
                 >
@@ -277,9 +265,7 @@
               </div>
               <span
                 v-if="xlView && hiveEditable"
-                :class="
-                  `${hiveHasInspection ? '' : 'color-grey'} mr-2 last-visit`
-                "
+                :class="`${hiveHasInspection ? '' : 'color-grey'} mr-2 last-visit`"
                 v-text="lastVisit"
               >
               </span>
@@ -300,7 +286,7 @@
               >
                 <span
                   class="truncate-md"
-                  style="max-width: 224px;"
+                  style="max-width: 224px"
                   v-text="hive.notes"
                 >
                 </span>
@@ -316,7 +302,7 @@
                 v-if="
                   hive.notes && (mobile || hive.notes.length <= 33) && xlView
                 "
-                style="max-width: 224px;"
+                style="max-width: 224px"
                 v-text="hive.notes"
               >
               </span>
@@ -337,13 +323,11 @@
                   <v-icon
                     v-if="hive.reminder_date"
                     size="24"
-                    :class="
-                      `${
-                        $moment(hive.reminder_date).isBefore()
-                          ? 'text-red'
-                          : 'text-green'
-                      }`
-                    "
+                    :class="`${
+                      $moment(hive.reminder_date).isBefore()
+                        ? 'text-red'
+                        : 'text-green'
+                    }`"
                   >
                     mdi-calendar-clock
                   </v-icon>
@@ -358,27 +342,25 @@
               </div>
               <span
                 v-if="hive.reminder_date"
-                :class="
-                  `to-do-date ${
-                    $moment(hive.reminder_date).isBefore()
-                      ? 'text-red'
-                      : 'text-green'
-                  } mr-2`
-                "
+                :class="`to-do-date ${
+                  $moment(hive.reminder_date).isBefore()
+                    ? 'text-red'
+                    : 'text-green'
+                } mr-2`"
                 v-text="hive.reminder_date_day_month"
               >
               </span>
               <div
                 v-if="
                   !mobile &&
-                    hive.reminder &&
-                    hive.reminder.length > 25 &&
-                    xlView
+                  hive.reminder &&
+                  hive.reminder.length > 25 &&
+                  xlView
                 "
               >
                 <span
                   class="truncate-md"
-                  style="max-width: 164px;"
+                  style="max-width: 164px"
                   v-text="hive.reminder"
                 >
                 </span>
@@ -393,11 +375,11 @@
               <span
                 v-if="
                   hive.reminder &&
-                    (mobile || hive.reminder.length <= 25) &&
-                    xlView
+                  (mobile || hive.reminder.length <= 25) &&
+                  xlView
                 "
                 class="truncate-md"
-                style="max-width: 164px;"
+                style="max-width: 164px"
                 v-text="hive.reminder"
               >
               </span>
@@ -562,8 +544,8 @@ export default {
           alert.alert_rule_name !== null
             ? alert.alert_rule_name
             : alert.alert_function !== null
-            ? alert.alert_function
-            : this.$i18n.t('Unknown')
+              ? alert.alert_function
+              : this.$i18n.t('Unknown')
         if (uniqueAlertRuleNames.indexOf(alertName) === -1) {
           uniqueAlertRuleNames.push(alertName)
         }

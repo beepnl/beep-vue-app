@@ -74,11 +74,11 @@
     }
 
     &-queen {
-      background-image: url("@public/img/icons/icn_bee.svg");
+      background-image: url('@public/img/icons/icn_bee.svg');
       background-size: 10px;
 
       &.dark {
-        background-image: url("@public/img/icons/icn_bee_dark.svg");
+        background-image: url('@public/img/icons/icn_bee_dark.svg');
         border: 1px solid $color-grey-dark !important;
       }
     }
@@ -87,11 +87,11 @@
       width: 31px;
       height: 28px;
       background-color: transparent;
-      background-image: url("@public/img/icons/icn_beep_base_small.png");
+      background-image: url('@public/img/icons/icn_beep_base_small.png');
       background-size: contain;
       border: 0;
       &.--grey {
-        background-image: url("@public/img/icons/icn_beep_base_small-grey.png");
+        background-image: url('@public/img/icons/icn_beep_base_small-grey.png');
       }
     }
 
@@ -102,7 +102,7 @@
 
     &-queen--no-outline {
       background-color: transparent;
-      background-image: url("@public/img/icons/icn_bee_dark.svg");
+      background-image: url('@public/img/icons/icn_bee_dark.svg');
       background-size: 17px;
       border: none;
       border-radius: 0;
@@ -120,8 +120,11 @@
         margin-left: 3px;
         top: -1px;
         position: relative;
-        font-family: "Material Design Icons";
-        content: "\F060A";
+        font-family: 'Material Design Icons';
+        content: '\F060A';
+      }
+      &.bg-green {
+        border-color: #4caf50;
       }
     }
 
@@ -132,8 +135,8 @@
       border: none;
       border-radius: 0;
       &::before {
-        font-family: "Material Design Icons";
-        content: "\F060A";
+        font-family: 'Material Design Icons';
+        content: '\F060A';
       }
 
       &--small {
@@ -155,32 +158,32 @@
         margin-left: 3px;
         position: relative;
         top: -1px;
-        font-family: "Material Design Icons";
-        content: "\F0262";
+        font-family: 'Material Design Icons';
+        content: '\F0262';
       }
     }
 
     &-bv {
       font-size: 15px;
       &::before {
-        font-family: "Material Design Icons";
-        content: "\F0081";
+        font-family: 'Material Design Icons';
+        content: '\F0081';
       }
     }
 
     &-h {
       font-size: 18px;
       &::before {
-        font-family: "Material Design Icons";
-        content: "\F058E";
+        font-family: 'Material Design Icons';
+        content: '\F058E';
       }
     }
 
     &-p {
       font-size: 15px;
       &::before {
-        font-family: "Material Design Icons";
-        content: "\F015F";
+        font-family: 'Material Design Icons';
+        content: '\F015F';
       }
     }
 
@@ -188,8 +191,8 @@
     &-rssi {
       font-size: 15px;
       &::before {
-        font-family: "Material Design Icons";
-        content: "\F0493";
+        font-family: 'Material Design Icons';
+        content: '\F0493';
       }
     }
 
@@ -207,16 +210,16 @@
     &-t_i {
       font-size: 16px;
       &::before {
-        font-family: "Material Design Icons";
-        content: "\F050F";
+        font-family: 'Material Design Icons';
+        content: '\F050F';
       }
     }
 
     &-weight_kg {
       font-size: 15px;
       &::before {
-        font-family: "Material Design Icons";
-        content: "\F05A1";
+        font-family: 'Material Design Icons';
+        content: '\F05A1';
       }
     }
 
@@ -224,13 +227,13 @@
       font-size: 15px;
       &::before {
         margin-left: 2px;
-        font-family: "Material Design Icons";
-        content: "\F0349";
+        font-family: 'Material Design Icons';
+        content: '\F0349';
       }
     }
 
     &-sound {
-      background-image: url("@public/img/icons/icn_bee.svg");
+      background-image: url('@public/img/icons/icn_bee.svg');
       background-size: 20px;
       border: none;
       border-radius: 0;

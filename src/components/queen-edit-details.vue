@@ -38,7 +38,7 @@
               <div class="d-flex justify-flex-start align-center">
                 <v-icon
                   class="mr-2"
-                  :color="queenBirthDate !== null ? 'accent' : ''"
+                  :color="queenBirthDate !== '' ? 'accent' : ''"
                   >mdi-calendar-clock</v-icon
                 >
                 <div>
@@ -56,7 +56,7 @@
                     :locale="locale"
                     :select-text="$t('ok')"
                     :cancel-text="$t('Cancel')"
-                    class=" text-accent"
+                    class="text-accent"
                     @update:model-value="datePickerUpdate"
                   >
                     <template v-slot:clear-icon>
@@ -124,11 +124,9 @@
                 <div>
                   <div class="mr-2 mb-2">
                     <v-sheet
-                      :class="
-                        `beep-icon beep-icon-queen beep-icon-queen--large ${
-                          darkIconColor(queenColor) ? 'dark' : ''
-                        }`
-                      "
+                      :class="`beep-icon beep-icon-queen beep-icon-queen--large ${
+                        darkIconColor(queenColor) ? 'dark' : ''
+                      }`"
                       :color="queenColor"
                       :style="`border-color: ${queenColor};`"
                     >
@@ -154,14 +152,14 @@
 </template>
 
 <script>
-import { darkIconMixin } from "@mixins/darkIconMixin";
-import { getLabel, readTaxonomy } from "@mixins/methodsMixin";
+import { darkIconMixin } from '@mixins/darkIconMixin'
+import { getLabel, readTaxonomy } from '@mixins/methodsMixin'
 import {
   momentAge,
   momentLastDigitOfYear,
-  momentifyRemoveTime
-} from "@mixins/momentMixin";
-import { mapGetters } from "vuex";
+  momentifyRemoveTime,
+} from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [
@@ -170,188 +168,186 @@ export default {
     momentAge,
     momentLastDigitOfYear,
     momentifyRemoveTime,
-    readTaxonomy
+    readTaxonomy,
   ],
   props: {
     queen: {
       type: Object,
       default: null,
-      required: true
-    }
+      required: true,
+    },
   },
-  data: function() {
+  data: function () {
     return {
       queen_colors: [
         // year ending of birth year is index
-        "#4A90E2",
-        "#F4F4F4",
-        "#F8DB31",
-        "#D0021B",
-        "#7ED321",
-        "#4A90E2",
-        "#F4F4F4",
-        "#F8DB31",
-        "#D0021B",
-        "#7ED321"
+        '#4A90E2',
+        '#F4F4F4',
+        '#F8DB31',
+        '#D0021B',
+        '#7ED321',
+        '#4A90E2',
+        '#F4F4F4',
+        '#F8DB31',
+        '#D0021B',
+        '#7ED321',
       ],
       swatchesQueen: [
-        ["#4A90E2"],
-        ["#F4F4F4"],
-        ["#F8DB31"],
-        ["#D0021B"],
-        ["#7ED321"]
+        ['#4A90E2'],
+        ['#F4F4F4'],
+        ['#F8DB31'],
+        ['#D0021B'],
+        ['#7ED321'],
       ],
       modal: false,
       useQueenMarkColor: false,
       queenHasColor: false,
-      datePickerFormat: "yyyy-MM-dd"
-    };
+      datePickerFormat: 'yyyy-MM-dd',
+    }
   },
   computed: {
-    ...mapGetters("taxonomy", ["beeRacesList"]),
+    ...mapGetters('taxonomy', ['beeRacesList']),
     endOfToday() {
-      return this.$moment()
-        .endOf("day")
-        .format();
+      return this.$moment().endOf('day').format()
     },
     locale() {
-      return this.$i18n.locale;
+      return this.$i18n.locale
     },
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
-        let treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)); // clone without v-bind to avoid vuex warning when mutating
-        treeselectArray.map(beeRace => {
-          beeRace.label = this.getLabel(beeRace);
-          return beeRace;
-        });
+        let treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)) // clone without v-bind to avoid vuex warning when mutating
+        treeselectArray.map((beeRace) => {
+          beeRace.label = this.getLabel(beeRace)
+          return beeRace
+        })
         const sortedTreeselectArray = treeselectArray
           .slice()
-          .sort(function(a, b) {
+          .sort(function (a, b) {
             if (a.label < b.label) {
-              return -1;
+              return -1
             }
             if (a.label > b.label) {
-              return 1;
+              return 1
             }
-            return 0;
-          });
-        treeselectArray = sortedTreeselectArray;
-        return treeselectArray;
+            return 0
+          })
+        treeselectArray = sortedTreeselectArray
+        return treeselectArray
       } else {
-        return [];
+        return []
       }
     },
     queenMarkColor() {
       if (this.queen && this.queen.birth_date) {
-        const lastDigit = this.momentLastDigitOfYear(this.queen.birth_date);
-        return this.queen_colors[lastDigit];
+        const lastDigit = this.momentLastDigitOfYear(this.queen.birth_date)
+        return this.queen_colors[lastDigit]
       } else {
-        const lastDigit = this.momentLastDigitOfYear(new Date());
-        return this.queen_colors[lastDigit];
+        const lastDigit = this.momentLastDigitOfYear(new Date())
+        return this.queen_colors[lastDigit]
       }
     },
     queenBirthDate: {
       get() {
         if (this.queen && this.queen.birth_date !== null) {
-          return this.momentifyRemoveTime(this.queen.birth_date);
+          return this.momentifyRemoveTime(this.queen.birth_date)
         } else {
-          return "";
+          return ''
         }
       },
       set(value) {
-        this.updateQueen(value, "birth_date");
-      }
+        this.updateQueen(value, 'birth_date')
+      },
     },
     queenClipped: {
       get() {
-        return this.queen.clipped === 1;
+        return this.queen.clipped === 1
       },
       set(value) {
-        const setValue = value === true ? 1 : 0;
-        this.updateQueen(setValue, "clipped");
-      }
+        const setValue = value === true ? 1 : 0
+        this.updateQueen(setValue, 'clipped')
+      },
     },
     queenColor: {
       get() {
         if (this.queenHasColor && !this.useQueenMarkColor) {
-          return this.queen.color;
+          return this.queen.color
         } else {
-          return this.queenMarkColor;
+          return this.queenMarkColor
         }
       },
       set(value) {
-        this.updateQueen(value, "color");
-      }
+        this.updateQueen(value, 'color')
+      },
     },
     queenFertilized: {
       get() {
-        return this.queen.fertilized === 1;
+        return this.queen.fertilized === 1
       },
       set(value) {
-        const setValue = value === true ? 1 : 0;
-        this.updateQueen(setValue, "fertilized");
-      }
+        const setValue = value === true ? 1 : 0
+        this.updateQueen(setValue, 'fertilized')
+      },
     },
     showQueenColorPicker: {
       get() {
-        return this.queenHasColor;
+        return this.queenHasColor
       },
       set(value) {
         if (value === false) {
-          this.updateQueen(null, "color");
-          this.queenHasColor = false;
+          this.updateQueen(null, 'color')
+          this.queenHasColor = false
         } else {
-          this.updateQueen(this.queenMarkColor, "color");
-          this.queenHasColor = true;
+          this.updateQueen(this.queenMarkColor, 'color')
+          this.queenHasColor = true
         }
-      }
-    }
+      },
+    },
   },
   created() {
-    this.readTaxonomy();
-    this.queenHasColor = this.queen.color !== null;
+    this.readTaxonomy()
+    this.queenHasColor = this.queen.color !== null
   },
   methods: {
     cancelDatePicker() {
-      this.useQueenMarkColor = false;
-      this.modal = false;
-      this.queenColor = this.queen.color;
+      this.useQueenMarkColor = false
+      this.modal = false
+      this.queenColor = this.queen.color
     },
     datePickerUpdate(e) {
-      this.queenBirthDate = e;
+      this.queenBirthDate = e
       if (this.queen.color) {
-        this.updateQueen(this.queenMarkColor, "color");
+        this.updateQueen(this.queenMarkColor, 'color')
       }
     },
     setHiveEdited(bool) {
-      this.$store.commit("hives/setHiveEdited", bool);
+      this.$store.commit('hives/setHiveEdited', bool)
     },
     toBoolean(int) {
-      return int === 1;
+      return int === 1
     },
     updateQueen(event, property) {
-      let value;
-      if (event === null || typeof event === "undefined") {
-        value = null;
+      let value
+      if (event === null || typeof event === 'undefined') {
+        value = null
       } else if (event.target !== undefined) {
-        value = event.target.value;
+        value = event.target.value
       } else {
-        value = event;
+        value = event
       }
-      if (property === "description" && value !== null && value.length > 101) {
-        value = value.substring(0, 100);
+      if (property === 'description' && value !== null && value.length > 101) {
+        value = value.substring(0, 100)
       }
-      if (property === "name" && value !== null && value.length > 31) {
-        value = value.substring(0, 30);
+      if (property === 'name' && value !== null && value.length > 31) {
+        value = value.substring(0, 30)
       }
-      if (property === "birth_date") {
-        this.useQueenMarkColor = true;
-      } else if (property === "color") {
-        this.useQueenMarkColor = false;
+      if (property === 'birth_date') {
+        this.useQueenMarkColor = true
+      } else if (property === 'color') {
+        this.useQueenMarkColor = false
       }
-      this.queen[property] = value;
-      this.setHiveEdited(true);
-    }
-  }
-};
+      this.queen[property] = value
+      this.setHiveEdited(true)
+    },
+  },
+}
 </script>
