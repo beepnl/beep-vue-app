@@ -17,11 +17,9 @@
               <v-text-field
                 v-model="search"
                 :label="`${$t('Search')}`"
-                :class="
-                  `${
-                    search !== null ? 'v-input--is-focused text-accent' : ''
-                  } beep-search-field`
-                "
+                :class="`${
+                  search !== null ? 'v-input--is-focused text-accent' : ''
+                } beep-search-field`"
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"
                 clearable
@@ -38,57 +36,47 @@
             </v-col>
             <v-card-actions class="pl-0">
               <v-icon
-                :class="
-                  `${
-                    filterByAttention ? 'text-red' : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByAttention ? 'text-red' : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="toggleFilterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByReminder ? 'text-red' : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByReminder ? 'text-red' : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="toggleFilterByReminder"
               >
                 mdi-calendar-clock
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(3)
-                      ? 'text-green'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(3)
+                    ? 'text-green'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="updateFilterByImpression(3)"
               >
                 mdi-emoticon-happy
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(2)
-                      ? 'text-orange'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(2)
+                    ? 'text-orange'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="updateFilterByImpression(2)"
               >
                 mdi-emoticon-neutral
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(1)
-                      ? 'text-red'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(1)
+                    ? 'text-red'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="updateFilterByImpression(1)"
               >
                 mdi-emoticon-sad
@@ -126,7 +114,7 @@
               color="black"
             >
               <v-icon start color="black">mdi-plus</v-icon>
-              {{ $t("New_inspection") }}
+              {{ $t('New_inspection') }}
             </v-btn>
             <router-link
               v-if="smallScreen"
@@ -152,8 +140,8 @@
       <div
         v-if="
           !noResults &&
-            inspections.inspections !== undefined &&
-            inspectionsData.length
+          inspections.inspections !== undefined &&
+          inspectionsData.length
         "
         class="hive-inspections-view-box"
       >
@@ -162,7 +150,7 @@
             <thead>
               <tr class="trh">
                 <th class="tdr">
-                  <strong>{{ $tc("Inspection", 2) }}</strong>
+                  <strong>{{ $tc('Inspection', 2) }}</strong>
                 </th>
                 <th
                   v-for="(inspection, a) in inspectionsData"
@@ -176,7 +164,7 @@
                     <router-link
                       :to="{
                         name: 'hive-inspect-edit',
-                        params: { id: id, inspection: inspection.id }
+                        params: { id: id, inspection: inspection.id },
                       }"
                       class="icon-button"
                     >
@@ -195,7 +183,7 @@
                   </div>
                   <strong class="d-flex justify-center">{{
                     smallScreen
-                      ? momentFormat(inspection.created_at, "ll")
+                      ? momentFormat(inspection.created_at, 'll')
                       : momentify(inspection.created_at)
                   }}</strong>
                 </th>
@@ -205,7 +193,7 @@
 
             <tbody>
               <tr>
-                <td class="tdr">{{ $t("positive_impression") }}</td>
+                <td class="tdr">{{ $t('positive_impression') }}</td>
                 <td
                   v-for="(inspection, b) in inspectionsData"
                   :key="b"
@@ -214,7 +202,7 @@
                   <div
                     v-if="
                       inspection.impression !== null &&
-                        inspection.impression > -1
+                      inspection.impression > -1
                     "
                   >
                     <v-icon
@@ -235,7 +223,7 @@
                 <td class="filler"></td>
               </tr>
               <tr>
-                <td class="tdr">{{ $t("needs_attention") }}</td>
+                <td class="tdr">{{ $t('needs_attention') }}</td>
                 <td
                   v-for="(inspection, c) in inspectionsData"
                   :key="c"
@@ -254,14 +242,14 @@
                       v-if="inspection.attention === 0"
                       class="beep-icon beep-icon-text color-green"
                     >
-                      {{ $t("no") }}
+                      {{ $t('no') }}
                     </v-sheet>
                   </div>
                 </td>
                 <td class="filler"></td>
               </tr>
               <tr>
-                <td class="tdr">{{ $t("notes") }}</td>
+                <td class="tdr">{{ $t('notes') }}</td>
                 <td
                   v-for="(inspection, d) in inspectionsData"
                   :key="d"
@@ -278,7 +266,7 @@
               </tr>
 
               <tr>
-                <td class="tdr">{{ $t("reminder") }}</td>
+                <td class="tdr">{{ $t('reminder') }}</td>
                 <td
                   v-for="(inspection, e) in inspectionsData"
                   :key="e"
@@ -297,7 +285,7 @@
                           class="add-to-calendar text-accent"
                           v-bind="props"
                         >
-                          {{ $t("add_to_calendar").toUpperCase() }}
+                          {{ $t('add_to_calendar').toUpperCase() }}
                         </span>
                       </template>
                       <v-list>
@@ -306,16 +294,12 @@
                           :key="index"
                         >
                           <AddToCalendar
-                            :title="
-                              `BEEP ${$t('reminder')} ${
-                                inspection.reminder !== null
-                                  ? ': ' + inspection.reminder
-                                  : ''
-                              }`
-                            "
-                            :location="
-                              `${activeHive.location} - ${activeHive.name}`
-                            "
+                            :title="`BEEP ${$t('reminder')} ${
+                              inspection.reminder !== null
+                                ? ': ' + inspection.reminder
+                                : ''
+                            }`"
+                            :location="`${activeHive.location} - ${activeHive.name}`"
                             :start="
                               new Date(
                                 inspection.reminder_date.replace(/-/g, '/')
@@ -326,11 +310,9 @@
                                 inspection.reminder_date.replace(/-/g, '/')
                               )
                             "
-                            :details="
-                              `BEEP app ${$tc('Inspection', 1)} @ ${momentify(
-                                inspection.created_at
-                              )}`
-                            "
+                            :details="`BEEP app ${$tc('Inspection', 1)} @ ${momentify(
+                              inspection.created_at
+                            )}`"
                             :calendar="calendarItem"
                           ></AddToCalendar>
                         </template>
@@ -342,7 +324,7 @@
               </tr>
 
               <tr>
-                <td class="tdr">{{ $t("remind_date") }}</td>
+                <td class="tdr">{{ $t('remind_date') }}</td>
                 <td
                   v-for="(inspection, f) in inspectionsData"
                   :key="f"
@@ -352,13 +334,11 @@
                     <span
                       v-if="inspection.reminder_date !== null"
                       :title="inspection.reminder_date"
-                      :class="
-                        `d-flex justify-center reminder-date ${
-                          $moment(inspection.reminder_date).isBefore()
-                            ? 'text-red'
-                            : 'text-green'
-                        }`
-                      "
+                      :class="`d-flex justify-center reminder-date ${
+                        $moment(inspection.reminder_date).isBefore()
+                          ? 'text-red'
+                          : 'text-green'
+                      }`"
                       v-text="
                         smallScreen
                           ? momentFormat(inspection.reminder_date, 'll')
@@ -382,13 +362,11 @@
                     v-if="itemByDate.items === null"
                     :id="`toggle-icon-${itemByDate.name}`"
                     start
-                    :class="
-                      `toggle-icon mdi ${
-                        hiddenCategories.includes(itemByDate.name)
-                          ? 'mdi-plus'
-                          : 'mdi-minus'
-                      }`
-                    "
+                    :class="`toggle-icon mdi ${
+                      hiddenCategories.includes(itemByDate.name)
+                        ? 'mdi-plus'
+                        : 'mdi-minus'
+                    }`"
                     @click="toggleCategory(itemByDate.name)"
                   ></v-icon>
                   <span v-if="itemByDate.items !== null" class="ancestors">{{
@@ -413,7 +391,7 @@
                     <div
                       v-for="(opt, o) in item.val.split(',')"
                       :key="o"
-                      style="margin-bottom: 3px;"
+                      style="margin-bottom: 3px"
                       class="label-inspection"
                     >
                       {{ opt }}
@@ -428,7 +406,7 @@
 
                   <span
                     v-if="item.type === 'sample_code'"
-                    style=" font-weight: bold;letter-spacing: 2px;"
+                    style="font-weight: bold; letter-spacing: 2px"
                     >{{ item.val }}</span
                   >
                   <span v-if="item.type === 'date'">{{
@@ -437,7 +415,7 @@
                   <span
                     v-if="
                       item.type !== undefined &&
-                        item.type.indexOf('number') > -1
+                      item.type.indexOf('number') > -1
                     "
                     >{{ item.val }}</span
                   >
@@ -450,13 +428,13 @@
                         v-if="parseInt(item.value) === 1"
                         class="beep-icon beep-icon-text color-green"
                       >
-                        {{ $t("yes") }}
+                        {{ $t('yes') }}
                       </v-sheet>
                       <v-sheet
                         v-if="parseInt(item.value) === 0"
                         class="beep-icon beep-icon-text color-red"
                       >
-                        {{ $t("no") }}
+                        {{ $t('no') }}
                       </v-sheet>
                     </div>
                   </span>
@@ -466,13 +444,13 @@
                         v-if="parseInt(item.value) === 1"
                         class="beep-icon beep-icon-text color-red"
                       >
-                        {{ $t("yes") }}
+                        {{ $t('yes') }}
                       </v-sheet>
                       <v-sheet
                         v-if="parseInt(item.value) === 0"
                         class="beep-icon beep-icon-text color-green"
                       >
-                        {{ $t("no") }}
+                        {{ $t('no') }}
                       </v-sheet>
                     </div>
                   </span>
@@ -504,8 +482,8 @@
                           star < item.val
                             ? 'color-accent'
                             : smallScreen
-                            ? 'd-none'
-                            : 'color-grey-medium'
+                              ? 'd-none'
+                              : 'color-grey-medium'
                         "
                         >mdi-star</v-icon
                       >
@@ -514,9 +492,7 @@
 
                   <span
                     v-if="item.type === 'grade'"
-                    :style="
-                      `color: ${gradeColor(item.value)}; font-weight: bold;`
-                    "
+                    :style="`color: ${gradeColor(item.value)}; font-weight: bold;`"
                     >{{ item.val }}</span
                   >
                   <span
@@ -526,11 +502,9 @@
                   >
                   <span
                     v-if="item.type === 'score_amount'"
-                    :style="
-                      `color: ${scoreAmountColor(
-                        item.value
-                      )}; font-weight: bold;`
-                    "
+                    :style="`color: ${scoreAmountColor(
+                      item.value
+                    )}; font-weight: bold;`"
                     >{{ scoreAmountOptions[item.value] }}</span
                   >
                   <span v-if="item.type === 'square_25cm2'"
@@ -585,10 +559,10 @@
           <v-col sm="auto" :cols="12">
             {{
               show500Response
-                ? $t("something_wrong")
+                ? $t('something_wrong')
                 : noInspections
-                ? $tc("Inspection", 2) + " " + $t("not_available_yet")
-                : $t("no_results")
+                  ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
+                  : $t('no_results')
             }}
           </v-col>
         </v-row>
@@ -598,7 +572,7 @@
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="accent " variant="text" @click="snackbar.show = false">
-        {{ $t("Close") }}
+        {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
 
@@ -607,39 +581,39 @@
 </template>
 
 <script>
-import Confirm from "@/src/components/confirm-dialog.vue";
-import Layout from "@/src/router/layouts/back-layout.vue";
-import Api from "@api/Api";
-import AddToCalendar from "@components/add-to-calendar.vue";
-import imageOverlay from "@components/image-overlay.vue";
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import AddToCalendar from '@components/add-to-calendar.vue'
+import imageOverlay from '@components/image-overlay.vue'
 import {
   readApiariesAndGroups,
   readGeneralInspections,
-  readInspectionsForHiveId
-} from "@mixins/methodsMixin";
-import { momentFormat, momentify } from "@mixins/momentMixin";
-import { mapGetters } from "vuex";
+  readInspectionsForHiveId,
+} from '@mixins/methodsMixin'
+import { momentFormat, momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     imageOverlay,
     Confirm,
     AddToCalendar,
-    Layout
+    Layout,
   },
   mixins: [
     momentify,
     momentFormat,
     readApiariesAndGroups,
     readGeneralInspections,
-    readInspectionsForHiveId
+    readInspectionsForHiveId,
   ],
-  data: function() {
+  data: function () {
     return {
       snackbar: {
         show: false,
         timeout: 2000,
-        text: "notification"
+        text: 'notification',
       },
       inspections: [],
       filterByAttention: false,
@@ -649,7 +623,7 @@ export default {
       hiddenCategories: [],
       images: null,
       activeImage: null,
-      calendars: ["Google", "Microsoft", "Office365"],
+      calendars: ['Google', 'Microsoft', 'Office365'],
       ready: false,
       show500Response: false,
       baseApiUrl:
@@ -657,18 +631,18 @@ export default {
         import.meta.env.VITE_E_API_URL_FALLBACK,
       pageIndex: 1,
       searchPageIndex: 1,
-      loadingInspections: false
-    };
+      loadingInspections: false,
+    }
   },
   computed: {
-    ...mapGetters("hives", ["activeHive"]),
+    ...mapGetters('hives', ['activeHive']),
     id() {
-      return parseInt(this.$route.params.id);
+      return parseInt(this.$route.params.id)
     },
     inspectionsData() {
       return this.inspections.inspections !== undefined
         ? this.inspections.inspections.data
-        : [];
+        : []
     },
     filters() {
       if (
@@ -677,34 +651,34 @@ export default {
         this.filterByImpression.length > 0
       ) {
         const parameters = [
-          this.filterByAttention ? "attention=1" : null,
-          this.filterByReminder ? "reminder=1" : null,
+          this.filterByAttention ? 'attention=1' : null,
+          this.filterByReminder ? 'reminder=1' : null,
           this.filterByImpression.length > 0
-            ? "impression=" + this.filterByImpression
-            : null
-        ];
+            ? 'impression=' + this.filterByImpression
+            : null,
+        ]
         return (
-          (this.search !== null ? "&" : "?") +
+          (this.search !== null ? '&' : '?') +
           parameters
-            .filter(p => {
-              return p !== null;
+            .filter((p) => {
+              return p !== null
             })
-            .join("&")
-        );
+            .join('&')
+        )
       } else {
-        return null;
+        return null
       }
     },
     hasPages() {
       return (
         this.inspections.inspections !== undefined &&
         this.inspections.inspections.total > 1
-      );
+      )
     },
     isFirstPage() {
       return this.searchOrFilter
         ? this.searchPageIndex === 1
-        : this.pageIndex === 1;
+        : this.pageIndex === 1
     },
     isLastPage() {
       return (
@@ -712,50 +686,50 @@ export default {
         (this.searchOrFilter
           ? this.searchPageIndex === this.lastPage
           : this.pageIndex === this.lastPage)
-      );
+      )
     },
     lastPage() {
       return this.inspectionsData.length > 0
         ? this.inspections.inspections.last_page
-        : null;
+        : null
     },
     locale() {
-      return this.$i18n.locale;
+      return this.$i18n.locale
     },
     matchedItemsByDate() {
-      let matchedItemsByDate;
+      let matchedItemsByDate
       matchedItemsByDate = this.inspections.items_by_date
         .reduce((acc, itemByDate) => {
           if (
             itemByDate.anc === null ||
             this.hiddenCategories.length === 0 ||
-            !this.hiddenCategories.includes(itemByDate.anc.split(" >")[0])
+            !this.hiddenCategories.includes(itemByDate.anc.split(' >')[0])
           ) {
-            acc.push(itemByDate);
+            acc.push(itemByDate)
           }
-          return acc;
+          return acc
         }, [])
-        .map(itemByDate => {
+        .map((itemByDate) => {
           if (itemByDate.items !== null) {
             return {
               ...itemByDate,
               items: itemByDate.items.reduce((acc, item) => {
-                if (typeof item === "object") {
-                  acc.push(item);
+                if (typeof item === 'object') {
+                  acc.push(item)
                 } else {
-                  acc.push("");
+                  acc.push('')
                 }
-                return acc;
-              }, [])
-            };
+                return acc
+              }, []),
+            }
           } else {
-            return itemByDate;
+            return itemByDate
           }
-        });
-      return matchedItemsByDate;
+        })
+      return matchedItemsByDate
     },
     mobile() {
-      return this.$vuetify.display.xs;
+      return this.$vuetify.display.xs
     },
     noInspections() {
       return (
@@ -763,218 +737,218 @@ export default {
         !this.searchOrFilter &&
         this.inspections.inspections !== undefined &&
         this.inspections.inspections.data.length === 0
-      );
+      )
     },
     noResults() {
       return (
         this.noInspections ||
         (this.searchOrFilter && this.inspectionsData.length === 0) ||
         this.show500Response
-      );
+      )
     },
     paginationText() {
       return (
-        (!this.mobile ? this.$i18n.tc("Page", 1) + " " : "") +
+        (!this.mobile ? this.$i18n.tc('Page', 1) + ' ' : '') +
         (this.searchOrFilter ? this.searchPageIndex : this.pageIndex) +
-        (!this.mobile ? " " + this.$i18n.t("of") + " " + this.lastPage : "")
-      );
+        (!this.mobile ? ' ' + this.$i18n.t('of') + ' ' + this.lastPage : '')
+      )
     },
     passOnQuery() {
-      const queries = this.$route.query;
-      if ("interval" in queries) {
-        return queries;
+      const queries = this.$route.query
+      if ('interval' in queries) {
+        return queries
       } else {
-        return null;
+        return null
       }
     },
     searchOrFilter() {
-      return this.search !== null || this.filters !== null;
+      return this.search !== null || this.filters !== null
     },
     smallScreen() {
-      return this.$vuetify.display.width < 700;
+      return this.$vuetify.display.width < 700
     },
     scoreAmountOptions() {
       return {
-        1: this.$i18n.t("Low"),
-        2: this.$i18n.t("Medium"),
-        3: this.$i18n.t("High"),
-        4: this.$i18n.t("Extreme")
-      };
+        1: this.$i18n.t('Low'),
+        2: this.$i18n.t('Medium'),
+        3: this.$i18n.t('High'),
+        4: this.$i18n.t('Extreme'),
+      }
     },
     scoreQualityOptions() {
       return {
-        1: this.$i18n.t("Poor"),
-        2: this.$i18n.t("Fair"),
-        3: this.$i18n.t("Good"),
-        4: this.$i18n.t("Excellent")
-      };
+        1: this.$i18n.t('Poor'),
+        2: this.$i18n.t('Fair'),
+        3: this.$i18n.t('Good'),
+        4: this.$i18n.t('Excellent'),
+      }
     },
     suffix() {
       const searchSpecific =
-        this.search !== null && this.search.indexOf("=") > -1
+        this.search !== null && this.search.indexOf('=') > -1
           ? this.search
-          : null;
+          : null
 
       const suffix = this.searchOrFilter
         ? (searchSpecific !== null
-            ? "?" + searchSpecific
+            ? '?' + searchSpecific
             : this.search
-            ? "?search=" + this.search
-            : "") +
-          (this.filters ? this.filters : "") +
-          (this.searchPageIndex !== 1 ? "&page=" + this.searchPageIndex : "")
-        : "?page=" + this.pageIndex;
-      return suffix;
-    }
+              ? '?search=' + this.search
+              : '') +
+          (this.filters ? this.filters : '') +
+          (this.searchPageIndex !== 1 ? '&page=' + this.searchPageIndex : '')
+        : '?page=' + this.pageIndex
+      return suffix
+    },
   },
   watch: {
     locale() {
-      this.readInspectionsForHiveId(this.id, this.suffix);
-    }
+      this.readInspectionsForHiveId(this.id, this.suffix)
+    },
   },
   created() {
-    this.search = this.$route.query.search || null;
-    this.getActiveHive(this.id).then(hive => {
-      this.$store.commit("hives/setActiveHive", hive);
-    });
+    this.search = this.$route.query.search || null
+    this.getActiveHive(this.id).then((hive) => {
+      this.$store.commit('hives/setActiveHive', hive)
+    })
     this.readInspectionsForHiveId(this.id, this.suffix).then(() => {
-      this.ready = true;
-    });
+      this.ready = true
+    })
   },
   methods: {
     async deleteInspection(id) {
       try {
-        const response = await Api.deleteRequest("/inspections/", id);
+        const response = await Api.deleteRequest('/inspections/', id)
         if (!response) {
-          this.snackbar.text = this.$i18n.t("something_wrong");
-          this.snackbar.show = true;
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
         }
-        this.readInspectionsForHiveId(this.id, this.suffix);
-        this.readGeneralInspections(); // update generalInspections in store for diary-list
-        this.readApiariesAndGroups(); // update apiaries and groups so the latest inspection will be displayed at apiary-list
+        this.readInspectionsForHiveId(this.id, this.suffix)
+        this.readGeneralInspections() // update generalInspections in store for diary-list
+        this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
         if (error.response) {
-          console.log("Error: ", error.response);
-          const msg = error.response.data.message;
-          this.snackbar.text = msg;
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
         } else {
-          console.log("Error: ", error);
-          this.snackbar.text = this.$i18n.t("something_wrong");
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
         }
-        this.snackbar.show = true;
+        this.snackbar.show = true
       }
     },
     async getActiveHive(id) {
       try {
-        const response = await Api.readRequest("/hives/", id);
+        const response = await Api.readRequest('/hives/', id)
         if (response.data.length === 0) {
-          this.$router.push({ name: "404", query: { resource: "hive" } });
+          this.$router.push({ name: '404', query: { resource: 'hive' } })
         }
-        const hive = response.data.hives[0];
-        return hive;
+        const hive = response.data.hives[0]
+        return hive
       } catch (error) {
         if (error.response) {
-          console.log("Error: ", error.response);
+          console.log('Error: ', error.response)
         } else {
-          console.log("Error: ", error);
+          console.log('Error: ', error)
         }
-        this.$router.push({ name: "404", query: { resource: "hive" } });
+        this.$router.push({ name: '404', query: { resource: 'hive' } })
       }
     },
     clearSearch() {
-      this.search = null;
-      this.searchPageIndex = 1;
-      this.readInspectionsForHiveId(this.id, this.suffix);
+      this.search = null
+      this.searchPageIndex = 1
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
         .open(
-          this.$i18n.t("remove_inspection"),
-          this.$i18n.t("remove_inspection") +
-            " (" +
-            this.$i18n.t("Date").toLocaleLowerCase() +
-            ": " +
+          this.$i18n.t('remove_inspection'),
+          this.$i18n.t('remove_inspection') +
+            ' (' +
+            this.$i18n.t('Date').toLocaleLowerCase() +
+            ': ' +
             this.momentify(inspection.created_at) +
-            ")?",
+            ')?',
           {
-            color: "red"
+            color: 'red',
           }
         )
         .then(() => {
-          this.deleteInspection(inspection.id);
+          this.deleteInspection(inspection.id)
         })
         .catch(() => {
-          return true;
-        });
+          return true
+        })
     },
     getFullUrl(val) {
-      return val.indexOf("https://") > -1 ? val : this.baseApiUrl + val;
+      return val.indexOf('https://') > -1 ? val : this.baseApiUrl + val
     },
     getNextHour(date) {
-      const today = new Date(date);
-      const nextHour = new Date(today.setHours(today.getHours() + 1));
-      return nextHour;
+      const today = new Date(date)
+      const nextHour = new Date(today.setHours(today.getHours() + 1))
+      return nextHour
     },
     gradeColor(value) {
-      if (value === 0) return "#CCC";
-      if (value < 4) return "#8F1619";
-      if (value < 6) return "#5F3F90";
-      if (value < 8) return "#243D80";
-      if (value < 11) return "#069518";
-      return "#F8B133";
+      if (value === 0) return '#CCC'
+      if (value < 4) return '#8F1619'
+      if (value < 6) return '#5F3F90'
+      if (value < 8) return '#243D80'
+      if (value < 11) return '#069518'
+      return '#F8B133'
     },
     toggleCategory(string) {
       if (this.hiddenCategories.includes(string)) {
-        this.hiddenCategories.splice(this.hiddenCategories.indexOf(string), 1);
+        this.hiddenCategories.splice(this.hiddenCategories.indexOf(string), 1)
       } else {
-        this.hiddenCategories.push(string);
+        this.hiddenCategories.push(string)
       }
     },
     toggleFilterByAttention() {
-      this.filterByAttention = !this.filterByAttention;
-      this.readInspectionsForHiveId(this.id, this.suffix);
+      this.filterByAttention = !this.filterByAttention
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     toggleFilterByReminder() {
-      this.filterByReminder = !this.filterByReminder;
-      this.readInspectionsForHiveId(this.id, this.suffix);
+      this.filterByReminder = !this.filterByReminder
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     scoreAmountColor(value) {
-      if (value === "0") return "#CCC";
-      if (value === "1") return "#069518";
-      if (value === "2") return "#243D80";
-      if (value === "3") return "#5F3F90";
-      if (value === "4") return "#8F1619";
-      return "#F8B133";
+      if (value === '0') return '#CCC'
+      if (value === '1') return '#069518'
+      if (value === '2') return '#243D80'
+      if (value === '3') return '#5F3F90'
+      if (value === '4') return '#8F1619'
+      return '#F8B133'
     },
     scoreQualityColor(value) {
-      if (value === "0") return "#CCC";
-      if (value === "1") return "#8F1619";
-      if (value === "2") return "#5F3F90";
-      if (value === "3") return "#243D80";
-      if (value === "4") return "#069518";
-      return "#F8B133";
+      if (value === '0') return '#CCC'
+      if (value === '1') return '#8F1619'
+      if (value === '2') return '#5F3F90'
+      if (value === '3') return '#243D80'
+      if (value === '4') return '#069518'
+      return '#F8B133'
     },
     setPageIndex(value) {
       if (!this.searchOrFilter) {
-        this.pageIndex += value;
+        this.pageIndex += value
       } else {
-        this.searchPageIndex += value;
+        this.searchPageIndex += value
       }
-      this.readInspectionsForHiveId(this.id, this.suffix);
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
         this.filterByImpression.splice(
           this.filterByImpression.indexOf(number),
           1
-        );
+        )
       } else {
-        this.filterByImpression.push(number);
+        this.filterByImpression.push(number)
       }
-      this.readInspectionsForHiveId(this.id, this.suffix);
-    }
-  }
-};
+      this.readInspectionsForHiveId(this.id, this.suffix)
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -1090,6 +1064,7 @@ export default {
         max-width: 80px;
       }
       &.text-green {
+        color: $color-green;
         border-color: $color-green;
       }
     }

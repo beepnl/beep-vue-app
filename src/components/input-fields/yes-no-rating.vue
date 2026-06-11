@@ -2,11 +2,9 @@
   <div>
     <div>
       <v-btn
-        :class="
-          `yes-no-button mr-1 ml-n1 pl-0 ${yesRed ? 'yes-red' : ''} ${
-            small ? 'yes-no-button--small pr-0' : 'pr-2'
-          }`
-        "
+        :class="`yes-no-button mr-1 ml-n1 pl-0 ${yesRed ? 'yes-red' : ''} ${
+          small ? 'yes-no-button--small pr-0' : 'pr-2'
+        }`"
         :disabled="disabled"
         variant="text"
         @click="updateObject(1)"
@@ -25,11 +23,9 @@
         {{ $t('yes') }}
       </v-btn>
       <v-btn
-        :class="
-          `yes-no-button pl-0 ${yesRed ? 'yes-red' : ''} ${
-            small ? 'yes-no-button--small pr-0' : 'pr-2'
-          }`
-        "
+        :class="`yes-no-button pl-0 ${yesRed ? 'yes-red' : ''} ${
+          small ? 'yes-no-button--small pr-0' : 'pr-2'
+        }`"
         :disabled="disabled"
         variant="text"
         @click="updateObject(0)"
@@ -93,23 +89,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.yes-no-button {
-  height: 30px !important;
-
-  &.yes-red {
-    .text-green {
-      color: $color-red !important;
-    }
-    .text-red {
-      color: $color-green !important;
-    }
-  }
-
-  &.yes-no-button--small {
-    height: auto !important;
-    font-size: 12px !important;
-  }
-}
-</style>

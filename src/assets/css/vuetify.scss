@@ -285,4 +285,24 @@
     margin-inline-start: 0px !important;
     min-width: 220px;
   }
+
+  .yes-no-button {
+    height: 30px !important;
+
+    &.yes-red {
+      .text-green {
+        color: $color-red !important;
+        caret-color: $color-red !important;
+      }
+      .text-red {
+        color: $color-green !important;
+        caret-color: $color-green !important;
+      }
+    }
+
+    &.yes-no-button--small {
+      height: auto !important;
+      font-size: 12px !important;
+    }
+  }
 }
