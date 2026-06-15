@@ -19,16 +19,14 @@
 
 <script>
 import svgDivider from '@/src/components/svg/svg-divider.vue'
+import svgFieldset from '@components/svg/svg-fieldset.vue'
 import svgHeader from '@components/svg/svg-header.vue'
 import { getLabel } from '@mixins/methodsMixin'
 import { svgComputed, svgData } from '@mixins/svgMixin'
-import { defineAsyncComponent } from 'vue'
 
 export default {
   components: {
-    svgFieldset: defineAsyncComponent(
-      () => import('@components/svg/svg-fieldset.vue')
-    ),
+    svgFieldset,
     svgDivider,
     svgHeader,
   },
