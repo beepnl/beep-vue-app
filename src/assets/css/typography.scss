@@ -13,7 +13,7 @@
 
   .beep-label {
     margin-bottom: 4px;
-    font-family: "Roboto", sans-serif !important;
+    font-family: 'Roboto', sans-serif !important;
     font-size: 0.75rem !important;
     font-weight: 400;
     line-height: 1rem;
@@ -26,7 +26,7 @@
     line-height: 2rem;
     font-weight: 500;
     letter-spacing: 0.1666666667em !important;
-    font-family: "Roboto", sans-serif !important;
+    font-family: 'Roboto', sans-serif !important;
     text-transform: uppercase !important;
   }
 
@@ -62,7 +62,13 @@
   }
 
   .roboto-condensed {
-    font-family: "Roboto Condensed", "Roboto", sans-serif !important;
+    font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
+  }
+
+  .single-line-height {
+    line-height: 1rem !important;
+    white-space: break-spaces;
+    word-break: break-word;
   }
 
   .unauthorized-title {

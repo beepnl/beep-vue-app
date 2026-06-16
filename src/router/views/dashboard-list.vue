@@ -5,7 +5,7 @@
         <v-row class="filter-bar d-flex align-center">
           <v-card-actions
             class="mr-1 d-flex justify-end align-center"
-            style="width: 100%;"
+            style="width: 100%"
           >
             <v-btn
               :to="{ name: 'dashboard-create' }"
@@ -14,7 +14,7 @@
               class="save-button-mobile-wide"
             >
               <v-icon start>mdi-plus</v-icon>
-              {{ $t("New_dashboard") }}
+              {{ $t('New_dashboard') }}
             </v-btn>
           </v-card-actions>
         </v-row>
@@ -34,9 +34,9 @@
             v-if="!showDashboardPlaceholder"
             class="d-flex justify-start align-center"
           >
-            <div class="custom-text-overline ">{{ $tc("Dashboard", 2) }}</div>
+            <div class="custom-text-overline">{{ $tc('Dashboard', 2) }}</div>
             <v-icon
-              class="icon-info cursor-pointer  ml-2"
+              class="icon-info cursor-pointer ml-2"
               :size="mobile ? 'x-small' : 'small'"
               :color="showExplanation ? 'accent' : 'grey'"
               @click="showExplanation = !showExplanation"
@@ -45,7 +45,7 @@
           </div>
           <div v-if="showExplanation" class="d-flex justify-start align-start">
             <p class="beep-label">
-              <em>{{ $t("Dashboard_exp") }} </em>
+              <em>{{ $t('Dashboard_exp') }} </em>
             </p>
           </div>
         </v-col>
@@ -57,19 +57,19 @@
                 <thead>
                   <tr>
                     <th class="text-left">
-                      {{ $t("Code") }}
+                      {{ $t('Code') }}
                     </th>
                     <th :class="mobile ? 'text-center' : 'text-left'">
-                      {{ $tc("Hive", 2) }}
+                      {{ $tc('Hive', 2) }}
                     </th>
                     <th class="text-left">
-                      {{ $t("Title") }}
+                      {{ $t('Title') }}
                     </th>
                     <th class="text-left">
-                      {{ $t("Description") }}
+                      {{ $t('Description') }}
                     </th>
                     <th class="text-left">
-                      {{ $t("edit") }}
+                      {{ $t('edit') }}
                     </th>
                     <th></th>
                   </tr>
@@ -117,7 +117,7 @@
                     </td>
                     <td>
                       <span
-                        class="custom-text-overline"
+                        class="custom-text-overline single-line-height"
                         v-text="dashboardGroup.name"
                       ></span>
                     </td>
@@ -129,7 +129,7 @@
                         class="mr-1 mr-sm-2 mr-md-3"
                         :to="{
                           name: 'dashboard-edit',
-                          params: { id: dashboardGroup.code }
+                          params: { id: dashboardGroup.code },
                         }"
                       >
                         <v-icon color="accent">mdi-pencil</v-icon>
@@ -155,30 +155,30 @@
 
 <script>
 // import Api from '@api/Api'
-import ApiaryPreviewHiveSelector from "@components/apiary-preview-hive-selector.vue";
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 // import HiveIcon from '@components/hive-icon.vue'
-import Confirm from "@/src/components/confirm-dialog.vue";
-import Layout from "@/src/router/layouts/back-layout.vue";
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
-  readDashboardGroups
-} from "@mixins/methodsMixin";
-import { mapGetters } from "vuex";
+  readDashboardGroups,
+} from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ApiaryPreviewHiveSelector,
     Confirm,
     // HiveIcon,
-    Layout
+    Layout,
   },
   mixins: [
     deleteDashboard,
     readApiariesAndGroupsIfNotPresent,
-    readDashboardGroups
+    readDashboardGroups,
   ],
-  data: function() {
+  data: function () {
     return {
       dashboardUrl:
         import.meta.env.VITE_DASHBOARD_URL ||
@@ -188,58 +188,58 @@ export default {
       showLoadingIconById: [],
       showExplanation: false,
       assetsUrl:
-        import.meta.env.VITE_ETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK
-    };
+        import.meta.env.VITE_ETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK,
+    }
   },
   computed: {
-    ...mapGetters("groups", ["dashboardGroups"]),
-    ...mapGetters("locations", ["apiaries", "groups", "hivesObject"]),
+    ...mapGetters('groups', ['dashboardGroups']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     mobile() {
-      return this.$vuetify.display.xs;
+      return this.$vuetify.display.xs
     },
     showDashboardPlaceholder() {
-      return this.dashboardGroups.length === 0;
+      return this.dashboardGroups.length === 0
     },
     sortedDashboardGroups() {
       const sortedDashboardGroups = this.dashboardGroups
         .slice()
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           return a.name !== null && b.name !== null
             ? a.name.localeCompare(b.name, undefined, {
                 numeric: true,
-                sensitivity: "base"
+                sensitivity: 'base',
               })
-            : 0;
-        });
-      return sortedDashboardGroups;
-    }
+            : 0
+        })
+      return sortedDashboardGroups
+    },
   },
   created() {
     this.readDashboardGroupsIfNotChecked().then(() => {
       // get hivesObject
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (this.dashboardGroups.length === 0) {
-          this.showExplanation = true;
+          this.showExplanation = true
         }
-        this.ready = true;
-      });
-    });
+        this.ready = true
+      })
+    })
   },
   methods: {
     copyUrl(code) {
-      const copyText = this.dashboardUrl + code; // TODO get url via env settings
-      navigator.clipboard.writeText(copyText);
+      const copyText = this.dashboardUrl + code // TODO get url via env settings
+      navigator.clipboard.writeText(copyText)
     },
     getHives(dashboardGroup) {
-      const hivesArray = [];
-      dashboardGroup.hive_ids.map(hiveId => {
-        hivesArray.push(this.hivesObject[hiveId]);
-        return true;
-      });
-      return hivesArray;
-    }
-  }
-};
+      const hivesArray = []
+      dashboardGroup.hive_ids.map((hiveId) => {
+        hivesArray.push(this.hivesObject[hiveId])
+        return true
+      })
+      return hivesArray
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
