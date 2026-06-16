@@ -15,9 +15,7 @@
             <v-btn
               v-for="period in periods"
               :key="period.interval"
-              :class="
-                `text-grey ${period.interval === interval ? 'text-accent' : ''}`
-              "
+              :class="`text-grey ${period.interval === interval ? 'text-accent' : ''}`"
               variant="text"
               @click="setPeriodInterval(period.interval)"
             >
@@ -39,9 +37,7 @@
             <v-btn
               v-for="period in periods.slice(0, -2)"
               :key="period.interval"
-              :class="
-                `text-grey ${period.interval === interval ? 'text-accent' : ''}`
-              "
+              :class="`text-grey ${period.interval === interval ? 'text-accent' : ''}`"
               size="small"
               variant="text"
               @click="setPeriodInterval(period.interval)"
@@ -58,11 +54,9 @@
               class="pa-0 d-flex justify-center"
             >
               <v-btn
-                :class="
-                  `text-grey ${
-                    period.interval === interval ? 'text-accent' : ''
-                  }`
-                "
+                :class="`text-grey ${
+                  period.interval === interval ? 'text-accent' : ''
+                }`"
                 size="small"
                 variant="text"
                 @click="setPeriodInterval(period.interval)"
@@ -121,7 +115,7 @@
       v-if="ready"
       :class="
         (devices.length > 0 ? 'measurements-content' : '') +
-          (touchDevice ? ' --touch-device' : '')
+        (touchDevice ? ' --touch-device' : '')
       "
     >
       <MeasurementsDateSelection
@@ -154,7 +148,7 @@
           <v-spacer></v-spacer>
           <v-btn :to="{ name: 'devices' }" class="edit-button" color="accent">
             <v-icon color="accent" :start="!mobile">mdi-pencil</v-icon>
-            {{ mobile && devices.length > 0 ? "" : $t("Edit_devices") }}
+            {{ mobile && devices.length > 0 ? '' : $t('Edit_devices') }}
           </v-btn>
         </v-col>
       </v-row>
@@ -197,19 +191,15 @@
                   >
                     <template v-slot:default>
                       <v-sheet
-                        :class="
-                          `beep-icon beep-icon-${sensorData.name} --no-outline mt-3 mb-n1 mt-sm-1 mb-sm-n1`
-                        "
+                        :class="`beep-icon beep-icon-${sensorData.name} --no-outline mt-3 mb-n1 mt-sm-1 mb-sm-n1`"
                       ></v-sheet>
                       <div
-                        :style="
-                          `color: #242424;
+                        :style="`color: #242424;
                   font-size: ${mobile ? '14px' : '16px'}
-                  ;`
-                        "
+                  ;`"
                       >
                         {{ sensorData.value
-                        }}<span style="font-size: 0.75rem;">{{
+                        }}<span style="font-size: 0.75rem">{{
                           SENSOR_UNITS[sensorData.name]
                         }}</span>
                       </div>
@@ -241,14 +231,14 @@
               <v-progress-circular color="primary" size="50" indeterminate />
             </v-col>
             <v-col v-if="noChartData" cols="12" class="text-center my-16">
-              {{ $t("no_chart_data") }}
+              {{ $t('no_chart_data') }}
             </v-col>
           </v-row>
           <v-row
             v-if="
               measurementData !== null &&
-                measurementData.measurements &&
-                measurementData.measurements.length > 0
+              measurementData.measurements &&
+              measurementData.measurements.length > 0
             "
             class="charts mt-6 mb-2"
           >
@@ -270,7 +260,7 @@
                 v-if="selectedDevice"
                 :class="
                   'custom-text-overline text-center mt-0 mt-sm-3 ' +
-                    (someSensorsHaveInfo && chartCols !== 12 ? 'mb-8' : 'mb-3')
+                  (someSensorsHaveInfo && chartCols !== 12 ? 'mb-8' : 'mb-3')
                 "
                 v-text="
                   !mobile
@@ -312,11 +302,9 @@
                   v-if="index === 0"
                   :class="
                     'custom-text-overline text-center mt-0 mt-sm-3 ' +
-                      (someSensorsHaveInfo &&
-                      !hasInfo(sensor) &&
-                      chartCols !== 12
-                        ? 'mb-8'
-                        : 'mb-3')
+                    (someSensorsHaveInfo && !hasInfo(sensor) && chartCols !== 12
+                      ? 'mb-8'
+                      : 'mb-3')
                   "
                   v-text="
                     measurementData.resolution
@@ -333,16 +321,16 @@
                   v-else-if="chartCols !== 12"
                   :class="
                     'header-filler ' +
-                      (someSensorsHaveInfo && !hasInfo(sensor)
-                        ? 'mt-3 mb-8'
-                        : 'my-3')
+                    (someSensorsHaveInfo && !hasInfo(sensor)
+                      ? 'mt-3 mb-8'
+                      : 'my-3')
                   "
                 ></div>
                 <div
                   v-if="hasInfo(sensor)"
                   :class="
                     'd-flex flex-column align-center' +
-                      (chartCols !== 12 ? ' mt-n3 mb-6' : '')
+                    (chartCols !== 12 ? ' mt-n3 mb-6' : '')
                   "
                 >
                   <div class="d-flex justify-start align-center">
@@ -363,14 +351,14 @@
                     v-if="hasInfo(sensor) && sensorInfo.indexOf(sensor) > -1"
                     :class="
                       'mt-0 mb-1 d-flex font-italic ' +
-                        (chartCols !== 12 ? 'mb-n5' : '')
+                      (chartCols !== 12 ? 'mb-n5' : '')
                     "
                   >
                     <span class="ml-1 color-accent">
                       <a
                         :href="getSensorMeasurement(sensor).data_repository_url"
                         target="_blank"
-                        >{{ $t("Explanation") }}</a
+                        >{{ $t('Explanation') }}</a
                       ></span
                     >
                   </p>
@@ -454,9 +442,9 @@
                   v-else-if="chartCols !== 12"
                   :class="
                     'header-filler ' +
-                      (someSensorsHaveInfo && !hasInfo(sensor)
-                        ? 'mt-3 mb-8'
-                        : 'my-3')
+                    (someSensorsHaveInfo && !hasInfo(sensor)
+                      ? 'mt-3 mb-8'
+                      : 'my-3')
                   "
                 ></div>
                 <div>
@@ -517,10 +505,10 @@
           <div class="text-center">
             <img
               :src="assetsUrl + '/img/beep-base-small.jpg'"
-              style=" width: 100%;max-width: 500px;"
+              style="width: 100%; max-width: 500px"
             />
           </div>
-          <div>{{ $t("beep_base_explanation") }}</div>
+          <div>{{ $t('beep_base_explanation') }}</div>
         </v-col>
       </v-row>
     </v-container>
@@ -530,31 +518,32 @@
 </template>
 
 <script>
-import Confirm from "@/src/components/confirm-dialog.vue";
-import MeasurementsChartHeatmap from "@/src/components/measurements/measurements-chart-heatmap.vue";
-import MeasurementsChartLine from "@/src/components/measurements/measurements-chart-line.vue";
-import MeasurementsDateSelection from "@/src/components/measurements/measurements-date-selection.vue";
-import Layout from "@/src/router/layouts/main-layout.vue";
-import Api from "@api/Api";
-import MeasurementsCardCompare from "@components/measurements/measurements-card-compare.vue";
-import MeasurementsCard from "@components/measurements/measurements-card.vue";
+import Confirm from '@/src/components/confirm-dialog.vue'
+import MeasurementsChartHeatmap from '@/src/components/measurements/measurements-chart-heatmap.vue'
+import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
+import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
+import Api from '@api/Api'
+import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
+import MeasurementsCard from '@components/measurements/measurements-card.vue'
 import {
   checkAlerts,
   readApiariesAndGroups,
   readDevicesIfNotChecked,
   readInspectionsForHiveId,
   readTaxonomy,
-  sortedDevices
-} from "@mixins/methodsMixin";
+  sortedDevices,
+  touchDevice,
+} from '@mixins/methodsMixin'
 import {
   momentFormat,
   momentFormatUtcToLocal,
   momentFromNow,
   momentifyDayMonth,
-  timeZone
-} from "@mixins/momentMixin";
-import { sensorMixin } from "@mixins/sensorMixin";
-import { mapGetters } from "vuex";
+  timeZone,
+} from '@mixins/momentMixin'
+import { sensorMixin } from '@mixins/sensorMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -564,7 +553,7 @@ export default {
     MeasurementsCardCompare,
     MeasurementsChartHeatmap,
     MeasurementsChartLine,
-    MeasurementsDateSelection
+    MeasurementsDateSelection,
   },
   mixins: [
     checkAlerts,
@@ -578,19 +567,20 @@ export default {
     readTaxonomy,
     sensorMixin,
     sortedDevices,
-    timeZone
+    timeZone,
+    touchDevice,
   ],
   data() {
     return {
-      initLocale: "nl",
+      initLocale: 'nl',
       lastSensorDate: null,
       measurementData: null,
       compareMeasurementData: {},
       noPeriodData: false,
-      interval: "day",
+      interval: 'day',
       timeIndex: 0,
-      timeFormat: "ddd D MMM YYYY",
-      dateTimeFormat: "YYYY-MM-DD HH:mm:ss",
+      timeFormat: 'ddd D MMM YYYY',
+      dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
       currentWeatherSensors: [],
       currentSensors: [],
       currentSoundSensors: {},
@@ -606,14 +596,14 @@ export default {
       ready: false,
       timer: 0,
       chartCols: 6,
-      selectedDate: "",
+      selectedDate: '',
       periodTitle: null,
       preselectedDeviceId: null,
       assetsUrl:
         import.meta.env.VITE_ASSETS_URL ||
         import.meta.env.VITE_ETS_URL_FALLBACK,
       dates: [],
-      dateFormat: "YYYY-MM-DD HH:mm:ss",
+      dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
       periodEnd: null,
       loadingData: false,
@@ -626,72 +616,72 @@ export default {
           min: 0,
           max: 5,
           low: 2.5,
-          high: 3
+          high: 3,
         },
         rssi: {
           min: -115,
           max: 0,
           low: -90,
-          high: -70
+          high: -70,
         },
         snr: {
           min: -10,
           max: 10,
           low: 0,
-          high: 5
-        }
+          high: 5,
+        },
       },
       inspections: null,
       selectedHiveId: null,
-      inspectionsSuffixText: ""
-    };
+      inspectionsSuffixText: '',
+    }
   },
   computed: {
-    ...mapGetters("alerts", ["alerts"]),
-    ...mapGetters("auth", ["permissions", "userIsAdmin", "userLocale"]),
-    ...mapGetters("devices", ["devices"]),
+    ...mapGetters('alerts', ['alerts']),
+    ...mapGetters('auth', ['permissions', 'userIsAdmin', 'userLocale']),
+    ...mapGetters('devices', ['devices']),
     // ...mapGetters('inspections', ['generalInspections']),
-    ...mapGetters("taxonomy", ["sensorMeasurementsList"]),
+    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsForDeviceAndPeriod() {
       const alertsForDevice = JSON.parse(JSON.stringify(this.alerts)) // clone without v-bind to avoid vuex warning when mutating
-        .filter(alert => alert.device_id === this.selectedDeviceId);
+        .filter((alert) => alert.device_id === this.selectedDeviceId)
 
-      const alertsForDeviceAndPeriod = alertsForDevice.filter(alert =>
+      const alertsForDeviceAndPeriod = alertsForDevice.filter((alert) =>
         this.alertInPeriod(alert)
-      );
+      )
 
-      alertsForDeviceAndPeriod.map(alert => {
-        alert.min = !this.dateWithinPeriod(alert, "created_at")
+      alertsForDeviceAndPeriod.map((alert) => {
+        alert.min = !this.dateWithinPeriod(alert, 'created_at')
           ? this.periodStartString
-          : this.momentFormatUtcToLocal(alert.created_at, this.dateTimeFormat);
-        alert.max = !this.dateWithinPeriod(alert, "updated_at")
+          : this.momentFormatUtcToLocal(alert.created_at, this.dateTimeFormat)
+        alert.max = !this.dateWithinPeriod(alert, 'updated_at')
           ? this.periodEndString
-          : this.momentFormatUtcToLocal(alert.updated_at, this.dateTimeFormat);
-        return alert;
-      });
+          : this.momentFormatUtcToLocal(alert.updated_at, this.dateTimeFormat)
+        return alert
+      })
 
-      return alertsForDeviceAndPeriod;
+      return alertsForDeviceAndPeriod
     },
     currentSuffixText() {
       return this.periodStart && this.periodEnd
-        ? "?start=" + this.periodStartString + "&end=" + this.periodEndString
-        : "";
+        ? '?start=' + this.periodStartString + '&end=' + this.periodEndString
+        : ''
     },
     dateRangeText() {
       if (this.dates.length > 0) {
         const momentDates = [
-          this.momentFormat(this.dates[0], "ll"),
+          this.momentFormat(this.dates[0], 'll'),
           this.dates[1] !== undefined
-            ? this.momentFormat(this.dates[1], "ll")
-            : ""
-        ];
-        return momentDates.join(" - ");
+            ? this.momentFormat(this.dates[1], 'll')
+            : '',
+        ]
+        return momentDates.join(' - ')
       } else {
-        return this.$i18n.t("selection_placeholder");
+        return this.$i18n.t('selection_placeholder')
       }
     },
     devicesOptions() {
-      return this.sortedDevices();
+      return this.sortedDevices()
     },
     hasInspections() {
       return (
@@ -699,366 +689,365 @@ export default {
         this.inspections.inspections !== undefined &&
         this.inspections.inspections.data !== undefined &&
         this.inspections.inspections.data.length > 0
-      );
+      )
     },
     inspectionsWithDates() {
       if (this.hasInspections) {
-        const inspectionsWithDates = this.inspections.inspections.data;
+        const inspectionsWithDates = this.inspections.inspections.data
         inspectionsWithDates
           .filter(
-            inspection => inspection.hive_id === this.selectedDevice.hive_id
+            (inspection) => inspection.hive_id === this.selectedDevice.hive_id
           )
-          .map(inspection => {
+          .map((inspection) => {
             inspection.created_at_locale_date = this.momentFormat(
               inspection.created_at,
-              "lll"
-            );
+              'lll'
+            )
             inspection.created_at_moment_from_now = this.momentFromNow(
               inspection.created_at
-            );
+            )
             inspection.reminder_date_locale_date = this.momentFormat(
               inspection.reminder_date,
-              "lll"
-            );
+              'lll'
+            )
             inspection.reminder_date_day_month = this.momentifyDayMonth(
               inspection.reminder_date
-            );
-            return inspection;
-          });
-        return inspectionsWithDates;
+            )
+            return inspection
+          })
+        return inspectionsWithDates
       } else {
-        return [];
+        return []
       }
     },
     inspectionsForCharts() {
-      const inspectionsForChartsArray = [];
+      const inspectionsForChartsArray = []
 
       if (this.timeArray.length > 0) {
         // for each inspection, find its position on the current chart
-        this.inspectionsWithDates.map(inspection => {
+        this.inspectionsWithDates.map((inspection) => {
           const inspectionDateInUtc = this.$moment(inspection.created_at)
             .tz(this.timeZone)
-            .utc();
+            .utc()
 
           const closestTime = this.momentTimeArray.reduce((prev, curr) => {
             return Math.abs(curr - inspectionDateInUtc) <
               Math.abs(prev - inspectionDateInUtc)
               ? curr
-              : prev;
-          });
+              : prev
+          })
 
           const closestIndex = this.timeArray.findIndex(
-            time =>
-              time === closestTime.utc().format("YYYY-MM-DD[T]HH:mm:ss[Z]")
-          );
+            (time) =>
+              time === closestTime.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+          )
 
-          const inspectionTimestamp = inspectionDateInUtc.valueOf();
+          const inspectionTimestamp = inspectionDateInUtc.valueOf()
 
           // and add position and meta data for charts
           const inspectionForChart = {
             id: inspection.id,
             closestIndex,
             xValue: inspectionTimestamp,
-            date: this.momentFormat(inspection.created_at, "llll"),
-            text: inspection.notes
-          };
+            date: this.momentFormat(inspection.created_at, 'llll'),
+            text: inspection.notes,
+          }
 
-          inspectionsForChartsArray.push(inspectionForChart);
-          return inspection;
-        });
+          inspectionsForChartsArray.push(inspectionForChart)
+          return inspection
+        })
       }
 
-      return inspectionsForChartsArray;
+      return inspectionsForChartsArray
     },
     locale() {
-      return this.$i18n.locale;
+      return this.$i18n.locale
     },
     measurementsForHeatmap() {
       // remove first value for month and year interval (belongs to previous month/year) (can't be skipped in v-for loop as v-if is not possible there)
-      let data = this.measurementData.measurements;
+      let data = this.measurementData.measurements
       if (
-        (this.interval === "month" || this.interval === "year") &&
+        (this.interval === 'month' || this.interval === 'year') &&
         !this.relativeInterval
       ) {
-        data = data.slice(1);
-        return data;
+        data = data.slice(1)
+        return data
       } else {
-        return data;
+        return data
       }
     },
     maxSoundSensorValue() {
-      const allSoundSensorValues = [];
-      const soundSensors = Object.values(this.currentSoundSensors);
-      this.measurementsForHeatmap.map(measurement =>
-        soundSensors.map(soundSensor => {
-          const value = measurement[soundSensor];
+      const allSoundSensorValues = []
+      const soundSensors = Object.values(this.currentSoundSensors)
+      this.measurementsForHeatmap.map((measurement) =>
+        soundSensors.map((soundSensor) => {
+          const value = measurement[soundSensor]
           if (value) {
-            allSoundSensorValues.push(value);
+            allSoundSensorValues.push(value)
           }
-          return value;
+          return value
         })
-      );
-      return Math.max(...allSoundSensorValues);
+      )
+      return Math.max(...allSoundSensorValues)
     },
     mdScreen() {
-      return this.$vuetify.display.width < 960;
+      return this.$vuetify.display.width < 960
     },
     mobile() {
-      return this.$vuetify.display.xs;
+      return this.$vuetify.display.xs
     },
     moduloFactor() {
       switch (this.screenSize) {
-        case "md":
-          return this.chartCols === 6 ? 2 : this.chartCols === 4 ? 3 : 1;
-        case "lg":
-          return this.chartCols === 4 ? 3 : 1;
-        case "xl":
-          return 1;
+        case 'md':
+          return this.chartCols === 6 ? 2 : this.chartCols === 4 ? 3 : 1
+        case 'lg':
+          return this.chartCols === 4 ? 3 : 1
+        case 'xl':
+          return 1
       }
-      return 1;
+      return 1
     },
     moduloNr() {
       switch (this.interval) {
-        case "hour":
-          if (this.resolutionUnit === "m" && this.resolutionNr === 1) {
-            return 2 * this.moduloFactor;
+        case 'hour':
+          if (this.resolutionUnit === 'm' && this.resolutionNr === 1) {
+            return 2 * this.moduloFactor
           } else {
-            return 1 * this.moduloFactor;
+            return 1 * this.moduloFactor
           }
-        case "week":
-          if (this.resolutionUnit === "m" && this.resolutionNr !== null) {
+        case 'week':
+          if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
             if (this.resolutionNr < 720) {
-              return (360 / this.resolutionNr) * this.moduloFactor;
+              return (360 / this.resolutionNr) * this.moduloFactor
             } else {
-              return 1 * this.moduloFactor;
+              return 1 * this.moduloFactor
             }
           } else {
-            return 6 * this.moduloFactor;
+            return 6 * this.moduloFactor
           }
-        case "month":
-          if (this.resolutionUnit === "m" && this.resolutionNr !== null) {
-            return (1440 / this.resolutionNr) * this.moduloFactor;
+        case 'month':
+          if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
+            return (1440 / this.resolutionNr) * this.moduloFactor
           } else {
-            return 8 * this.moduloFactor;
+            return 8 * this.moduloFactor
           }
 
-        case "year":
+        case 'year':
           if (
-            this.resolutionUnit === "d" &&
+            this.resolutionUnit === 'd' &&
             this.resolutionNr !== null &&
             this.resolutionNr > 1
           ) {
-            return (12 / this.resolutionNr) * this.moduloFactor;
+            return (12 / this.resolutionNr) * this.moduloFactor
           } else {
-            return 11 * this.moduloFactor;
+            return 11 * this.moduloFactor
           }
-        case "day":
-          if (this.resolutionUnit === "m" && this.resolutionNr !== null) {
+        case 'day':
+          if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
             if (this.resolutionNr < 60) {
-              return (60 / this.resolutionNr) * this.moduloFactor;
+              return (60 / this.resolutionNr) * this.moduloFactor
             } else {
-              return 1 * this.moduloFactor;
+              return 1 * this.moduloFactor
             }
           } else {
-            return 6 * this.moduloFactor;
+            return 6 * this.moduloFactor
           }
       }
-      return 6 * this.moduloFactor;
+      return 6 * this.moduloFactor
     },
     momentTimeArray() {
       if (this.timeArray.length > 0) {
-        return this.timeArray.map(time => this.$moment(time));
+        return this.timeArray.map((time) => this.$moment(time))
       } else {
-        return [];
+        return []
       }
     },
     periods() {
       return [
-        { name: this.$i18n.t("Hour"), interval: "hour" },
-        { name: this.$i18n.tc("day", 1), interval: "day" },
-        { name: this.$i18n.t("week"), interval: "week" },
-        { name: this.$i18n.t("month"), interval: "month" },
-        { name: this.$i18n.t("year"), interval: "year" },
-        { name: this.$i18n.t("selection"), interval: "selection" }
-      ];
+        { name: this.$i18n.t('Hour'), interval: 'hour' },
+        { name: this.$i18n.tc('day', 1), interval: 'day' },
+        { name: this.$i18n.t('week'), interval: 'week' },
+        { name: this.$i18n.t('month'), interval: 'month' },
+        { name: this.$i18n.t('year'), interval: 'year' },
+        { name: this.$i18n.t('selection'), interval: 'selection' },
+      ]
     },
     periodEndString() {
-      return this.periodEnd ? this.periodEnd.format(this.dateTimeFormat) : "";
+      return this.periodEnd ? this.periodEnd.format(this.dateTimeFormat) : ''
     },
     periodStartString() {
       return this.periodStart
         ? this.periodStart.format(this.dateTimeFormat)
-        : "";
+        : ''
     },
     queriedChartCols() {
-      const queriedValue = parseInt(this.$route.query.chartCols);
+      const queriedValue = parseInt(this.$route.query.chartCols)
       const valid =
-        queriedValue === 12 || queriedValue === 6 || queriedValue === 4;
-      return valid ? queriedValue : null;
+        queriedValue === 12 || queriedValue === 6 || queriedValue === 4
+      return valid ? queriedValue : null
     },
     queriedDate() {
-      return this.$route.query.date || null;
+      return this.$route.query.date || null
     },
     queriedInterval() {
-      return this.$route.query.interval;
+      return this.$route.query.interval
     },
     queriedTimeIndex() {
-      return parseInt(this.$route.query.timeIndex) || 0;
+      return parseInt(this.$route.query.timeIndex) || 0
     },
     queriedStart() {
-      return this.$route.query.start || null;
+      return this.$route.query.start || null
     },
     queriedEnd() {
-      return this.$route.query.end || null;
+      return this.$route.query.end || null
     },
     queriedRelativeInterval() {
-      return this.$route.query.relativeInterval;
+      return this.$route.query.relativeInterval
     },
     setRelativeInterval: {
       get() {
-        return this.relativeInterval;
+        return this.relativeInterval
       },
       set(value) {
-        localStorage.beepRelativeInterval = value.toString();
-        this.relativeInterval = value;
-      }
+        localStorage.beepRelativeInterval = value.toString()
+        this.relativeInterval = value
+      },
     },
     resolutionNr() {
       return this.measurementData !== null
         ? parseInt(this.measurementData.resolution.slice(0, -1))
-        : null;
+        : null
     },
     resolutionUnit() {
       return this.measurementData !== null
         ? this.measurementData.resolution.slice(-1)
-        : null;
+        : null
     },
     screenSize() {
       return this.$vuetify.display.width < 1300
-        ? "md"
+        ? 'md'
         : this.$vuetify.display.width > 1900
-        ? "xl"
-        : "lg";
+          ? 'xl'
+          : 'lg'
     },
     selectedDevice() {
       return (
-        this.devices.filter(device => {
-          return device.id === this.selectedDeviceId;
+        this.devices.filter((device) => {
+          return device.id === this.selectedDeviceId
         })[0] || null
-      );
+      )
     },
     selectedDeviceId: {
       get() {
-        const storeValue = this.$store.getters["devices/selectedDeviceId"];
+        const storeValue = this.$store.getters['devices/selectedDeviceId']
         const getValue =
           storeValue !== null && !isNaN(parseInt(storeValue))
             ? parseInt(storeValue)
-            : null;
-        return getValue;
+            : null
+        return getValue
       },
       set(value) {
-        const setValue = !isNaN(value) ? value : null;
-        this.$store.commit("devices/setSelectedDeviceId", setValue);
-        localStorage.beepSelectedDeviceId = setValue;
-      }
+        const setValue = !isNaN(value) ? value : null
+        this.$store.commit('devices/setSelectedDeviceId', setValue)
+        localStorage.beepSelectedDeviceId = setValue
+      },
     },
     selectedDeviceTitle() {
       return this.selectedDevice !== null
-        ? this.selectedDevice.hive_name + " - " + this.selectedDevice.name
-        : "";
+        ? this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
+        : ''
     },
     showCardCompare() {
       return (
         this.ready &&
         this.devices.length > 0 &&
-        (this.permissions.includes("hive-compare") ||
-          this.permissions.includes("multiple-hives-charts"))
-      );
+        (this.permissions.includes('hive-compare') ||
+          this.permissions.includes('multiple-hives-charts'))
+      )
     },
     smAndDown() {
-      return this.$vuetify.display.smAndDown;
+      return this.$vuetify.display.smAndDown
     },
     someSensorsHaveInfo() {
       return (
-        this.currentSensors.filter(sensor => this.hasInfo(sensor)).length > 0
-      );
+        this.currentSensors.filter((sensor) => this.hasInfo(sensor)).length > 0
+      )
     },
     sortedCurrentSoundSensors() {
       const sorted = Object.keys(this.currentSoundSensors)
-        .sort(function(a, b) {
-          const firstNumberA = parseInt(a.substring(0, a.indexOf("-")));
-          const firstNumberB = parseInt(b.substring(0, b.indexOf("-")));
+        .sort(function (a, b) {
+          const firstNumberA = parseInt(a.substring(0, a.indexOf('-')))
+          const firstNumberB = parseInt(b.substring(0, b.indexOf('-')))
 
           if (firstNumberA < firstNumberB) {
-            return 1;
+            return 1
           }
           if (firstNumberA > firstNumberB) {
-            return -1;
+            return -1
           }
-          return 0;
+          return 0
         })
         .reduce(
           (acc, key) => ({
             ...acc,
-            [key.replace(/^0/, "")]: this.currentSoundSensors[key] // remove first zero for legend legibility (esp with sound sensor s_bin_201_402 and further)
+            [key.replace(/^0/, '')]: this.currentSoundSensors[key], // remove first zero for legend legibility (esp with sound sensor s_bin_201_402 and further)
           }),
           {}
-        );
-      return sorted;
+        )
+      return sorted
     },
     timeArray() {
       return this.measurementData !== null
-        ? this.measurementData.measurements.map(measurement => measurement.time)
-        : [];
+        ? this.measurementData.measurements.map(
+            (measurement) => measurement.time
+          )
+        : []
     },
-    touchDevice() {
-      return window.matchMedia("(hover: none)").matches;
-    }
   },
   created() {
-    this.initLocale = this.userLocale;
+    this.initLocale = this.userLocale
     if (this.queriedChartCols !== null) {
-      this.chartCols = this.queriedChartCols;
+      this.chartCols = this.queriedChartCols
     } else if (localStorage.beepChartCols) {
-      this.chartCols = localStorage.beepChartCols;
+      this.chartCols = localStorage.beepChartCols
     }
     if (this.queriedRelativeInterval !== undefined) {
-      this.setRelativeInterval = this.queriedRelativeInterval === "true";
+      this.setRelativeInterval = this.queriedRelativeInterval === 'true'
     } else if (localStorage.beepRelativeInterval) {
-      this.setRelativeInterval = localStorage.beepRelativeInterval === "true";
+      this.setRelativeInterval = localStorage.beepRelativeInterval === 'true'
     }
-    this.preselectedDeviceId = parseInt(this.$route.params.id) || null;
-    this.stopTimer();
+    this.preselectedDeviceId = parseInt(this.$route.params.id) || null
+    this.stopTimer()
 
     if (this.devices.length > 0) {
       // improve app smoothness: if data tab has loaded before in the same session, only loadingData icon is needed instead of the overall loading icon
-      this.ready = true;
+      this.ready = true
     }
 
     this.readTaxonomy().then(() => {
       this.readDevicesIfNotChecked()
         .then(() => {
           // improve app smoothness: not completely ready here, but the rest will be loading with the loadingData icon is shown instead of the overall loading icon
-          this.ready = true;
+          this.ready = true
 
           // if selected device id is saved in localStorage, and there is no preselected device id, use it
           const storedDeviceId =
             localStorage.beepSelectedDeviceId &&
             !isNaN(parseInt(localStorage.beepSelectedDeviceId))
               ? parseInt(localStorage.beepSelectedDeviceId)
-              : null;
+              : null
 
           if (
             this.preselectedDeviceId === null &&
             storedDeviceId &&
             this.deviceExists(storedDeviceId)
           ) {
-            this.selectedDeviceId = storedDeviceId;
+            this.selectedDeviceId = storedDeviceId
           } else if (
             this.preselectedDeviceId !== null &&
             this.deviceExists(this.preselectedDeviceId)
           ) {
-            this.selectedDeviceId = this.preselectedDeviceId;
+            this.selectedDeviceId = this.preselectedDeviceId
           }
 
           if (
@@ -1066,30 +1055,30 @@ export default {
             this.queriedDate.length === 10 &&
             !isNaN(this.preselectedDeviceId)
           ) {
-            this.selectDate(this.queriedDate);
+            this.selectDate(this.queriedDate)
           } else if (this.devices.length > 0) {
             if (this.queriedInterval !== undefined) {
-              this.interval = this.queriedInterval;
-              this.timeIndex = this.queriedTimeIndex;
+              this.interval = this.queriedInterval
+              this.timeIndex = this.queriedTimeIndex
               this.dates =
                 this.queriedStart && this.queriedEnd
                   ? [this.queriedStart, this.queriedEnd]
-                  : [];
+                  : []
             }
 
-            this.checkAlertRulesAndAlerts(); // for alerts-tab badge AND alert-lines
-            this.setInitialDeviceIdAndLoadData();
+            this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
+            this.setInitialDeviceIdAndLoadData()
           }
         })
         .then(() => {
-          this.ready = true;
-        });
-    });
+          this.ready = true
+        })
+    })
   },
   beforeUnmount() {
     if (this.timer > 0) {
-      clearInterval(this.timer);
-      this.timer = 0;
+      clearInterval(this.timer)
+      this.timer = 0
     }
   },
   methods: {
@@ -1097,103 +1086,103 @@ export default {
       if (this.selectedDeviceId) {
         try {
           const response = await Api.readRequest(
-            "/sensors/lastvalues?id=" + this.selectedDeviceId
-          );
-          this.currentLastSensorValues = [];
-          const allLastSensorValues = response.data;
+            '/sensors/lastvalues?id=' + this.selectedDeviceId
+          )
+          this.currentLastSensorValues = []
+          const allLastSensorValues = response.data
           Object.entries(allLastSensorValues).map(([key, value]) => {
-            const mT = this.getSensorMeasurement(key);
-            if (value !== null && key === "weight_kg") {
-              const roundedValue = Math.round(value * 1e4) / 1e4;
+            const mT = this.getSensorMeasurement(key)
+            if (value !== null && key === 'weight_kg') {
+              const roundedValue = Math.round(value * 1e4) / 1e4
               this.currentLastSensorValues.push({
                 value: roundedValue,
-                name: key
-              });
+                name: key,
+              })
             } else if (
               value !== null &&
               mT !== undefined &&
               mT !== null &&
               mT.show_in_dials === 1
             ) {
-              this.currentLastSensorValues.push({ value, name: key });
+              this.currentLastSensorValues.push({ value, name: key })
             }
-            return [key, value];
-          });
+            return [key, value]
+          })
 
-          const self = this;
+          const self = this
           const sortedArray = this.currentLastSensorValues
             .slice()
-            .sort(function(a, b) {
-              const compareA = self.$i18n.t(a.name);
-              const compareB = self.$i18n.t(b.name);
+            .sort(function (a, b) {
+              const compareA = self.$i18n.t(a.name)
+              const compareB = self.$i18n.t(b.name)
               if (compareA < compareB) {
-                return -1;
+                return -1
               }
               if (compareA > compareB) {
-                return 1;
+                return 1
               }
-              return 0;
-            });
-          this.currentLastSensorValues = sortedArray;
-          this.lastSensorDate = response.data.time;
-          return true;
+              return 0
+            })
+          this.currentLastSensorValues = sortedArray
+          this.lastSensorDate = response.data.time
+          return true
         } catch (error) {
-          this.stopTimer();
+          this.stopTimer()
           if (error.response) {
-            console.log(error.response);
+            console.log(error.response)
             if (error.response.status === 500) {
-              this.lastSensorDate = null;
+              this.lastSensorDate = null
             }
           } else {
-            console.log("Error: ", error);
+            console.log('Error: ', error)
           }
         }
       } else {
-        return true;
+        return true
       }
     },
     async sensorMeasurementRequest(interval) {
-      const start = interval === "selection" ? this.dates[0] : null;
-      const end = interval === "selection" ? this.dates[1] : null;
+      const start = interval === 'selection' ? this.dates[0] : null
+      const end = interval === 'selection' ? this.dates[1] : null
       const timeGroup =
-        interval === "hour" || interval === "selection" ? null : interval;
-      this.noChartData = false;
-      this.noPeriodData = false;
-      this.loadingData = true;
+        interval === 'hour' || interval === 'selection' ? null : interval
+      this.noChartData = false
+      this.noPeriodData = false
+      this.loadingData = true
       try {
         const response = await Api.readRequest(
-          "/sensors/measurements?id=" +
+          '/sensors/measurements?id=' +
             this.selectedDeviceId +
-            "&interval=" +
+            '&interval=' +
             interval +
-            "&index=" +
+            '&index=' +
             this.timeIndex +
-            "&timeGroup=" +
+            '&timeGroup=' +
             timeGroup +
-            "&timezone=" +
+            '&timezone=' +
             this.timeZone +
-            (start !== null ? "&start=" + start + " 00:00" : "") +
-            (end !== null && end !== "" ? "&end=" + end + " 23:59" : "") +
-            "&relative_interval=" +
-            (this.relativeInterval ? "1" : "0") +
-            (this.permissions.includes("hive-compare") ? "&clean_weight=1" : "")
-        );
-        this.formatMeasurementData(response.data);
-        return true;
+            (start !== null ? '&start=' + start + ' 00:00' : '') +
+            (end !== null && end !== '' ? '&end=' + end + ' 23:59' : '') +
+            '&relative_interval=' +
+            (this.relativeInterval ? '1' : '0') +
+            (this.permissions.includes('hive-compare') ? '&clean_weight=1' : '')
+        )
+        this.formatMeasurementData(response.data)
+        return true
       } catch (error) {
-        this.loadingData = false;
-        this.measurementData = null;
+        this.loadingData = false
+        this.measurementData = null
         if (error.response) {
-          console.log(error.response);
+          console.log(error.response)
           if (error.response.status === 500) {
-            this.noChartData = true;
+            this.noChartData = true
           }
           if (error.response.status === 404 || error.response.status === 422) {
-            this.selectedDeviceId = parseInt(this.devices[0].id); // overwrite value in store with valid device id
-            this.$router.push({ name: "404", query: { resource: "device" } });
+            this.selectedDeviceId = parseInt(this.devices[0].id) // overwrite value in store with valid device id
+            this.$router.push({ name: '404', query: { resource: 'device' } })
           }
         } else {
-          console.log("Error: ", error);
+          console.log('Error: ', error)
         }
       }
     },
@@ -1201,264 +1190,264 @@ export default {
       const created = this.momentFormatUtcToLocal(
         alert.created_at,
         this.dateTimeFormat
-      );
+      )
       const updated = this.momentFormatUtcToLocal(
         alert.updated_at,
         this.dateTimeFormat
-      );
+      )
 
       const periodLongerThanAlert =
-        this.dateWithinPeriod(alert, "created_at") ||
-        (created !== updated && this.dateWithinPeriod(alert, "updated_at"));
+        this.dateWithinPeriod(alert, 'created_at') ||
+        (created !== updated && this.dateWithinPeriod(alert, 'updated_at'))
       const alertLongerThanPeriod =
         created !== updated &&
         created <= this.periodStartString &&
-        updated >= this.periodEndString;
+        updated >= this.periodEndString
 
-      return periodLongerThanAlert || alertLongerThanPeriod;
+      return periodLongerThanAlert || alertLongerThanPeriod
     },
     alertsForCharts(sensorArray) {
-      const alertsForCharts = this.alertsForDeviceAndPeriod.filter(alert =>
+      const alertsForCharts = this.alertsForDeviceAndPeriod.filter((alert) =>
         // DEBUG MOGE: alert.measurement_id === 20
         sensorArray.includes(
           this.getSensorMeasurementAbbrById(alert.measurement_id)
         )
-      );
+      )
 
       if (this.timeArray.length > 0) {
         // for each alert, find its position on the current chart
-        alertsForCharts.map(alert => {
-          const alertMinMoment = this.$moment(alert.min);
-          const alertMaxMoment = this.$moment(alert.max);
+        alertsForCharts.map((alert) => {
+          const alertMinMoment = this.$moment(alert.min)
+          const alertMaxMoment = this.$moment(alert.max)
 
           const closestTimeStart = this.momentTimeArray.reduce((prev, curr) => {
             return Math.abs(curr - alertMinMoment) <
               Math.abs(prev - alertMinMoment)
               ? curr
-              : prev;
-          });
+              : prev
+          })
 
           const closestIndexStart = this.timeArray.findIndex(
-            time =>
-              time === closestTimeStart.utc().format("YYYY-MM-DD[T]HH:mm:ss[Z]")
-          );
+            (time) =>
+              time === closestTimeStart.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+          )
 
-          let closestIndexEnd = closestIndexStart;
+          let closestIndexEnd = closestIndexStart
 
           if (alert.min !== alert.max) {
             const closestTimeEnd = this.momentTimeArray.reduce((prev, curr) => {
               return Math.abs(curr - alertMaxMoment) <
                 Math.abs(prev - alertMaxMoment)
                 ? curr
-                : prev;
-            });
+                : prev
+            })
 
             closestIndexEnd = this.timeArray.findIndex(
-              time =>
-                time === closestTimeEnd.utc().format("YYYY-MM-DD[T]HH:mm:ss[Z]")
-            );
+              (time) =>
+                time === closestTimeEnd.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+            )
           }
 
           // and add position and meta data for chart components
           Object.assign(alert, {
             closestIndexStart,
             closestIndexEnd,
-            date: this.momentFormatUtcToLocal(alert.created_at, "lll")
-          });
-          return alert;
-        });
+            date: this.momentFormatUtcToLocal(alert.created_at, 'lll'),
+          })
+          return alert
+        })
       }
 
-      return alertsForCharts;
+      return alertsForCharts
     },
     calculateProgress(name, value) {
       // get different target values for bv sensor if device is not beep
-      const sensorName = this.getSensorName(name);
-      const min = this.SENSOR_MIN[sensorName];
-      const max = this.SENSOR_MAX[sensorName];
+      const sensorName = this.getSensorName(name)
+      const min = this.SENSOR_MIN[sensorName]
+      const max = this.SENSOR_MAX[sensorName]
       if (value > max) {
-        return 100;
+        return 100
       } else {
-        return ((value - min) / (max - min)) * 100;
+        return ((value - min) / (max - min)) * 100
       }
     },
     calculateTimeIndex(newPeriod, startDate, zoom = false, fromPeriod = null) {
-      const todayEnd = this.$moment().endOf(newPeriod);
+      const todayEnd = this.$moment().endOf(newPeriod)
 
-      const endOfPeriod = this.$moment(startDate).endOf(fromPeriod);
+      const endOfPeriod = this.$moment(startDate).endOf(fromPeriod)
 
-      let halfPeriodInDays = 0;
+      let halfPeriodInDays = 0
 
-      if (fromPeriod === "week" || fromPeriod === "month")
+      if (fromPeriod === 'week' || fromPeriod === 'month')
         halfPeriodInDays = Math.floor(
-          Math.abs(this.$moment(startDate).diff(endOfPeriod, "days")) / 2
-        );
-      else if (fromPeriod === "year") halfPeriodInDays = 182;
+          Math.abs(this.$moment(startDate).diff(endOfPeriod, 'days')) / 2
+        )
+      else if (fromPeriod === 'year') halfPeriodInDays = 182
 
-      const middleDatePeriod = endOfPeriod.subtract(halfPeriodInDays, "days");
+      const middleDatePeriod = endOfPeriod.subtract(halfPeriodInDays, 'days')
 
-      let newIndex = todayEnd.diff(middleDatePeriod, newPeriod + "s");
+      let newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
 
-      if (this.relativeInterval && !zoom) newIndex -= 1;
+      if (this.relativeInterval && !zoom) newIndex -= 1
 
       if (this.relativeInterval && zoom) {
-        this.setRelativeInterval = false;
+        this.setRelativeInterval = false
       }
 
-      if (!zoom && newPeriod === "hour") newIndex += 10;
+      if (!zoom && newPeriod === 'hour') newIndex += 10
 
-      return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0;
+      return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
     },
     chartjsDataSeries(quantities, weather = false) {
       const data = {
         labels: [],
-        datasets: []
-      };
+        datasets: [],
+      }
       // const sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
-      quantities.map(quantity => {
-        const mT = this.getSensorMeasurement(quantity);
+      quantities.map((quantity) => {
+        const mT = this.getSensorMeasurement(quantity)
 
         if (mT === null || mT === undefined) {
-          console.log("mT not found ", quantity);
+          console.log('mT not found ', quantity)
         } else if (mT.show_in_charts === 1) {
           const sensorName =
             this.measurementData.sensorDefinitions[quantity] &&
             this.measurementData.sensorDefinitions[quantity].name !== null
               ? this.measurementData.sensorDefinitions[quantity].name
-              : this.$i18n.t(quantity);
+              : this.$i18n.t(quantity)
           const sensorLabel =
             sensorName +
-            (mT.unit !== "-" && mT.unit !== "" && mT.unit !== null
-              ? " (" + mT.unit + ")"
-              : "");
+            (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
+              ? ' (' + mT.unit + ')'
+              : '')
 
           data.datasets.push({
             id: mT.id,
             abbr: mT.abbreviation,
             fill: false,
-            borderColor: "#" + mT.hex_color,
-            backgroundColor: "#" + mT.hex_color,
+            borderColor: '#' + mT.hex_color,
+            backgroundColor: '#' + mT.hex_color,
             borderRadius: 2,
-            label: sensorLabel.replace(/^0/, ""),
+            label: sensorLabel.replace(/^0/, ''),
             name: sensorName,
-            unit: mT.unit !== "-" && mT.unit !== null ? mT.unit : "",
+            unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
             data: [],
             spanGaps:
-              weather || this.interval === "hour" || this.interval === "day" // false,
-          });
+              weather || this.interval === 'hour' || this.interval === 'day', // false,
+          })
         }
-        return quantity;
-      });
+        return quantity
+      })
 
       if (
-        typeof this.measurementData.measurements !== "undefined" &&
+        typeof this.measurementData.measurements !== 'undefined' &&
         this.measurementData.measurements.length > 0
       ) {
         this.measurementData.measurements.map((measurement, index) => {
           if (
             (!this.relativeInterval &&
-              (this.interval === "hour" ||
-                this.interval === "day" ||
-                this.interval === "week" ||
-                this.interval === "year" ||
+              (this.interval === 'hour' ||
+                this.interval === 'day' ||
+                this.interval === 'week' ||
+                this.interval === 'year' ||
                 // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
                 index !== 0)) ||
             this.relativeInterval
             // && index < this.measurementData.measurements.length - 3
           ) {
-            data.datasets.map(dataset => {
-              const quantity = dataset.abbr;
+            data.datasets.map((dataset) => {
+              const quantity = dataset.abbr
               // if (
               //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
               //   typeof measurement[quantity] === 'number'
               // ) {
               dataset.data.push({
                 x: measurement.time,
-                y: measurement[quantity]
-              });
+                y: measurement[quantity],
+              })
               // }
-              return dataset;
-            });
+              return dataset
+            })
           }
-          return measurement;
-        });
+          return measurement
+        })
       }
 
-      return data;
+      return data
     },
     checkDateOrder(dates) {
       if (dates[1] < dates[0]) {
-        this.dates = [dates[1], dates[0]];
+        this.dates = [dates[1], dates[0]]
       }
     },
     confirmViewAlert(alert) {
       // TODO: finetune message, add date?
       this.$refs.confirm
         .open(
-          this.$i18n.t("view") + " " + this.$i18n.tc("alert", 1),
-          this.$i18n.t("View_alert_confirm") + alert.alert_rule_name + '"?',
+          this.$i18n.t('view') + ' ' + this.$i18n.tc('alert', 1),
+          this.$i18n.t('View_alert_confirm') + alert.alert_rule_name + '"?',
           {
-            color: "red"
+            color: 'red',
           },
-          alert.alert_rule_name + " (" + alert.alert_function + ")"
+          alert.alert_rule_name + ' (' + alert.alert_function + ')'
         )
         .then(() => {
           return this.$router.push({
-            name: "alerts",
+            name: 'alerts',
             query: {
-              search: alert.date
-            }
-          });
+              search: alert.date,
+            },
+          })
         })
         .catch(() => {
-          return true;
-        });
+          return true
+        })
     },
     confirmViewInspection(inspectionId, inspectionDate) {
       this.$refs.confirm
         .open(
-          this.$i18n.tc("View_inspection", 1),
-          this.$i18n.t("View_inspection_confirm") + inspectionDate + "?",
+          this.$i18n.tc('View_inspection', 1),
+          this.$i18n.t('View_inspection_confirm') + inspectionDate + '?',
           {
-            color: "primary"
+            color: 'primary',
           }
         )
         .then(() => {
           const query = {
-            search: "id=" + inspectionId.toString(),
+            search: 'id=' + inspectionId.toString(),
             interval: this.interval,
             relativeInterval: this.relativeInterval,
-            chartCols: this.chartCols
-          };
-          if (this.interval === "selection" && this.dates.length > 0) {
-            query.start = this.dates[0];
-            query.end = this.dates[1];
+            chartCols: this.chartCols,
+          }
+          if (this.interval === 'selection' && this.dates.length > 0) {
+            query.start = this.dates[0]
+            query.end = this.dates[1]
           } else {
-            query.timeIndex = this.timeIndex;
+            query.timeIndex = this.timeIndex
           }
 
           return this.$router.push({
-            name: "hive-inspections",
+            name: 'hive-inspections',
             params: { id: this.selectedDevice.hive_id },
-            query
-          });
+            query,
+          })
         })
         .catch(() => {
-          return true;
-        });
+          return true
+        })
     },
     dateWithinPeriod(item, dateProp) {
       const date = this.momentFormatUtcToLocal(
         item[dateProp],
         this.dateTimeFormat
-      );
-      return date <= this.periodEndString && date >= this.periodStartString;
+      )
+      return date <= this.periodEndString && date >= this.periodStartString
     },
     deviceExists(deviceId) {
       return (
-        this.devices.filter(device => device.id === parseInt(deviceId)).length >
-        0
-      );
+        this.devices.filter((device) => device.id === parseInt(deviceId))
+          .length > 0
+      )
     },
     formatMeasurementData(measurementData) {
       if (
@@ -1466,100 +1455,100 @@ export default {
         measurementData.measurements &&
         measurementData.measurements.length > 0
       ) {
-        measurementData.measurements.sort(function(a, b) {
+        measurementData.measurements.sort(function (a, b) {
           if (a.time < b.time) {
-            return -1;
+            return -1
           }
           if (a.time > b.time) {
-            return 1;
+            return 1
           }
-          return 0;
-        });
-        this.measurementData = measurementData;
-        this.currentWeatherSensors = [];
-        this.currentSensors = [];
-        this.currentSoundSensors = {};
-        this.currentDebugSensors = [];
-        this.weatherSensorsPresent = false;
-        this.sensorsPresent = false;
-        this.soundSensorsPresent = false;
-        this.debugSensorsPresent = false;
-        Object.keys(this.measurementData.measurements[0]).map(quantity => {
+          return 0
+        })
+        this.measurementData = measurementData
+        this.currentWeatherSensors = []
+        this.currentSensors = []
+        this.currentSoundSensors = {}
+        this.currentDebugSensors = []
+        this.weatherSensorsPresent = false
+        this.sensorsPresent = false
+        this.soundSensorsPresent = false
+        this.debugSensorsPresent = false
+        Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.WEATHER.indexOf(quantity) > -1) {
             // const weatherSensorName = this.SENSOR_NAMES[quantity]
             // const weatherSensorUnit = this.SENSOR_UNITS[quantity]
             // weatherSensorName =
             //   this.$i18n.t(weatherSensorName) + ' (' + weatherSensorUnit + ')'
-            this.currentWeatherSensors.push(quantity);
-            this.weatherSensorsPresent = true;
+            this.currentWeatherSensors.push(quantity)
+            this.weatherSensorsPresent = true
           } else if (this.SENSORS.indexOf(quantity) > -1) {
-            this.currentSensors.push(quantity);
-            this.sensorsPresent = true;
+            this.currentSensors.push(quantity)
+            this.sensorsPresent = true
           } else if (this.SOUND.indexOf(quantity) > -1) {
             const soundSensorName = this.measurementData.sensorDefinitions[
               quantity
             ]
               ? this.measurementData.sensorDefinitions[quantity].name
-              : this.SENSOR_NAMES[quantity];
-            this.currentSoundSensors[soundSensorName] = quantity;
-            this.soundSensorsPresent = true;
+              : this.SENSOR_NAMES[quantity]
+            this.currentSoundSensors[soundSensorName] = quantity
+            this.soundSensorsPresent = true
           } else if (this.DEBUG.indexOf(quantity) > -1) {
-            this.currentDebugSensors.push(quantity);
-            this.debugSensorsPresent = true;
+            this.currentDebugSensors.push(quantity)
+            this.debugSensorsPresent = true
           }
-          return quantity;
-        });
+          return quantity
+        })
       } else {
-        this.measurementData = null;
-        this.noChartData = true;
+        this.measurementData = null
+        this.noChartData = true
       }
-      this.loadingData = false;
+      this.loadingData = false
     },
     getProgressColor(name, value) {
       // get different target values for bv sensor if device is not beep
-      const sensorName = this.getSensorName(name);
-      const low = this.SENSOR_LOW[sensorName];
-      const high = this.SENSOR_HIGH[sensorName];
-      return value < low ? "#ffcc66" : value > high ? "#f00" : "#417505";
+      const sensorName = this.getSensorName(name)
+      const low = this.SENSOR_LOW[sensorName]
+      const high = this.SENSOR_HIGH[sensorName]
+      return value < low ? '#ffcc66' : value > high ? '#f00' : '#417505'
     },
     getSensorMeasurement(abbr) {
       const smFilter = this.sensorMeasurementsList.filter(
-        measurementType => measurementType.abbreviation === abbr
-      );
-      return smFilter.length > 0 ? smFilter[0] : null;
+        (measurementType) => measurementType.abbreviation === abbr
+      )
+      return smFilter.length > 0 ? smFilter[0] : null
     },
     getSensorMeasurementAbbrById(id) {
       const smFilter = this.sensorMeasurementsList.filter(
-        measurementType => measurementType.id === id
-      );
-      return smFilter.length > 0 ? smFilter[0].abbreviation : null;
+        (measurementType) => measurementType.id === id
+      )
+      return smFilter.length > 0 ? smFilter[0].abbreviation : null
     },
     getSensorName(name) {
-      return name === "bv" &&
+      return name === 'bv' &&
         this.selectedDevice &&
-        this.selectedDevice.type !== "beep"
-        ? "bv_notbeep"
-        : name;
+        this.selectedDevice.type !== 'beep'
+        ? 'bv_notbeep'
+        : name
     },
     hasInfo(abbr) {
-      const mt = this.getSensorMeasurement(abbr);
-      return mt !== null && mt.data_repository_url !== null;
+      const mt = this.getSensorMeasurement(abbr)
+      return mt !== null && mt.data_repository_url !== null
     },
     invalidDates(dates) {
       return (
         (dates.length === 2 && dates[0] > dates[1]) ||
         dates[0] === dates[1] ||
         dates.length === 1
-      );
+      )
     },
     loadData(loadLastSensorValues = true, skipTitle = false) {
       if (!skipTitle) {
-        this.setPeriodTitle();
+        this.setPeriodTitle()
       }
       if (loadLastSensorValues) {
-        this.loadLastSensorValuesTimer();
+        this.loadLastSensorValuesTimer()
       }
-      this.sensorMeasurementRequest(this.interval);
+      this.sensorMeasurementRequest(this.interval)
       if (this.showCardCompare && this.$refs.cardCompare) {
         // trigger load compare data in child component whenever user is comparing data and a new data call is required
         // interval & timeIndex are passed on directly because the component props are passed on with a small delay so that does not work correctly
@@ -1568,24 +1557,24 @@ export default {
           this.interval,
           this.timeIndex,
           this.relativeInterval
-        );
+        )
       }
-      this.readInspections();
+      this.readInspections()
     },
     loadLastSensorValuesTimer() {
       if (
         this.timeIndex === 0 &&
-        (this.interval === "hour" || this.interval === "day")
+        (this.interval === 'hour' || this.interval === 'day')
       ) {
-        this.loadLastSensorValuesFunc();
-        this.startTimer();
+        this.loadLastSensorValuesFunc()
+        this.startTimer()
       } else {
-        this.stopTimer();
-        this.loadLastSensorValuesFunc();
+        this.stopTimer()
+        this.loadLastSensorValuesFunc()
       }
     },
     maxMinSensorValue(quantity, hardcodedMinMax, returnMax = true) {
-      const mT = this.getSensorMeasurement(quantity);
+      const mT = this.getSensorMeasurement(quantity)
 
       if (
         mT !== null &&
@@ -1596,77 +1585,71 @@ export default {
       ) {
         const allSensorValues = this.measurementData.measurements
           .filter(
-            measurement =>
+            (measurement) =>
               measurement[mT.abbreviation] !== undefined &&
               measurement[mT.abbreviation] !== null
           )
-          .map(measurement => measurement[mT.abbreviation]);
+          .map((measurement) => measurement[mT.abbreviation])
 
         const result = returnMax
           ? Math.max(...allSensorValues)
-          : Math.min(...allSensorValues); // if returnMax is false, return the minimum value instead
+          : Math.min(...allSensorValues) // if returnMax is false, return the minimum value instead
 
-        const margin = Math.abs(result) * 0.1;
+        const margin = Math.abs(result) * 0.1
 
         const newMinMax = Math.ceil(
           returnMax ? result + margin : result - margin
-        );
+        )
 
         if (returnMax) {
-          return newMinMax > hardcodedMinMax ? newMinMax : hardcodedMinMax;
+          return newMinMax > hardcodedMinMax ? newMinMax : hardcodedMinMax
         } else {
-          return newMinMax < hardcodedMinMax ? newMinMax : hardcodedMinMax;
+          return newMinMax < hardcodedMinMax ? newMinMax : hardcodedMinMax
         }
       } else {
-        return hardcodedMinMax;
+        return hardcodedMinMax
       }
     },
     momentFromISO8601(date) {
       // automagically converted from utc time to users timezone because moment guesses (and then sets its) timezone in this view
-      if (this.interval === "hour") {
-        return this.$moment(date)
-          .locale(this.locale)
-          .format("LT");
-      } else if (this.interval === "day" || this.interval === "week") {
-        const unit = this.locale === "nl" ? "u" : "h";
+      if (this.interval === 'hour') {
+        return this.$moment(date).locale(this.locale).format('LT')
+      } else if (this.interval === 'day' || this.interval === 'week') {
+        const unit = this.locale === 'nl' ? 'u' : 'h'
         return (
-          this.$moment(date)
-            .locale(this.locale)
-            .format("ddd") +
-          " " +
-          this.$moment(date)
-            .locale(this.locale)
-            .format("H") +
+          this.$moment(date).locale(this.locale).format('ddd') +
+          ' ' +
+          this.$moment(date).locale(this.locale).format('H') +
           unit
-        );
+        )
       } else {
-        const currentYear = this.$moment(date).format("YYYY");
-        const currentYearEn = ", " + currentYear;
-        const currentYearEsPt = " de " + currentYear;
-        const currentYearNl = ". " + currentYear;
+        const currentYear = this.$moment(date).format('YYYY')
+        const currentYearEn = ', ' + currentYear
+        const currentYearEsPt = ' de ' + currentYear
+        const currentYearNl = '. ' + currentYear
         return this.$moment(date)
           .locale(this.locale)
-          .format("ll")
-          .replace(currentYearNl, "")
-          .replace(currentYearEn, "")
-          .replace(currentYearEsPt, "")
-          .replace(" " + currentYear, ""); // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
+          .format('ll')
+          .replace(currentYearNl, '')
+          .replace(currentYearEn, '')
+          .replace(currentYearEsPt, '')
+          .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
     },
     readInspections() {
       if (this.selectedDevice) {
-        const hiveId = this.selectedDevice.hive_id;
+        const hiveId = this.selectedDevice.hive_id
 
         if (
           hiveId !== this.selectedHiveId ||
           this.inspectionsSuffixText !== this.currentSuffixText
         ) {
           // read inspections for hive only if hiveId OR suffix (= period) differs from previous call
-          this.readInspectionsForHiveId(hiveId, this.currentSuffixText);
-          this.inspectionsSuffixText = this.currentSuffixText;
+          this.readInspectionsForHiveId(hiveId, this.currentSuffixText)
+          this.inspectionsSuffixText = this.currentSuffixText
         }
 
-        this.selectedHiveId = hiveId;
+        this.selectedHiveId = hiveId
       }
     },
     runAtInterval(fn, interval) {
@@ -1674,135 +1657,128 @@ export default {
         this.timer = setTimeout(
           () => this.runAtInterval(fn, interval),
           interval
-        );
-      });
+        )
+      })
     },
     selectDate(date) {
-      const p = this.interval;
-      const d = p + "s";
+      const p = this.interval
+      const d = p + 's'
 
-      const selectedMoment = this.$moment(date);
-      const currentMoment = this.$moment();
-      const periodeDiff = currentMoment.diff(selectedMoment, d);
+      const selectedMoment = this.$moment(date)
+      const currentMoment = this.$moment()
+      const periodeDiff = currentMoment.diff(selectedMoment, d)
 
       if (!isNaN(periodeDiff)) {
-        this.timeIndex = periodeDiff;
-        this.loadData();
+        this.timeIndex = periodeDiff
+        this.loadData()
       } else {
-        console.log("Error selectDate: " + date);
+        console.log('Error selectDate: ' + date)
       }
     },
     selectDevice(event) {
       if (event === undefined) {
-        this.selectedDeviceId = null;
-        this.lastSensorDate = null;
-        this.stopTimer();
+        this.selectedDeviceId = null
+        this.lastSensorDate = null
+        this.stopTimer()
       } else {
-        this.loadData();
+        this.loadData()
       }
     },
     setPeriodTitle() {
-      let p = this.interval;
-      const d = p + "s";
-      const i = this.timeIndex;
-      let startTimeFormat = this.timeFormat;
-      let endTimeFormat = this.timeFormat;
+      let p = this.interval
+      const d = p + 's'
+      const i = this.timeIndex
+      let startTimeFormat = this.timeFormat
+      let endTimeFormat = this.timeFormat
 
-      if (p === "selection") {
-        this.periodTitle = this.dateRangeText;
-        this.periodStart = this.$moment.utc(this.dates[0]); // FIXME: results in previous day if time = 00:00
-        this.periodEnd = this.$moment.utc(this.dates[1]); // FIXME: results in previous day if time = 00:00
+      if (p === 'selection') {
+        this.periodTitle = this.dateRangeText
+        this.periodStart = this.$moment.utc(this.dates[0]) // FIXME: results in previous day if time = 00:00
+        this.periodEnd = this.$moment.utc(this.dates[1]) // FIXME: results in previous day if time = 00:00
       } else {
-        if (p === "hour") {
-          endTimeFormat = "HH:mm";
-          startTimeFormat += " " + endTimeFormat;
-        } else if (p === "day") {
+        if (p === 'hour') {
+          endTimeFormat = 'HH:mm'
+          startTimeFormat += ' ' + endTimeFormat
+        } else if (p === 'day') {
           !this.relativeInterval
             ? (endTimeFormat = null)
-            : (endTimeFormat = this.timeFormat);
-        } else if (p === "week") {
-          !this.relativeInterval ? (p = "isoweek") : (p = "week");
+            : (endTimeFormat = this.timeFormat)
+        } else if (p === 'week') {
+          !this.relativeInterval ? (p = 'isoweek') : (p = 'week')
         }
 
-        const ep = p;
+        const ep = p
 
         if (!this.relativeInterval) {
-          this.periodStart = this.$moment()
-            .subtract(i, d)
-            .startOf(p);
-          this.periodEnd = this.$moment()
-            .subtract(i, d)
-            .endOf(ep);
+          this.periodStart = this.$moment().subtract(i, d).startOf(p)
+          this.periodEnd = this.$moment().subtract(i, d).endOf(ep)
         } else {
-          this.periodStart = this.$moment().subtract(i + 1, d);
-          this.periodEnd = this.$moment().subtract(i, d);
+          this.periodStart = this.$moment().subtract(i + 1, d)
+          this.periodEnd = this.$moment().subtract(i, d)
         }
 
-        const formatStart = this.momentFormat(
-          this.periodStart,
-          startTimeFormat
-        );
-        const formatEnd = this.momentFormat(this.periodEnd, endTimeFormat);
+        const formatStart = this.momentFormat(this.periodStart, startTimeFormat)
+        const formatEnd = this.momentFormat(this.periodEnd, endTimeFormat)
 
         this.periodTitle =
-          formatStart + "" + (endTimeFormat !== null ? " - " + formatEnd : "");
-        this.selectedDate = this.periodStart.format("YYYY-MM-DD");
+          formatStart + '' + (endTimeFormat !== null ? ' - ' + formatEnd : '')
+        this.selectedDate = this.periodStart.format('YYYY-MM-DD')
       }
     },
     setPeriodToDate(date, period = null) {
       if (period === null) {
-        if (this.interval === "day")
+        if (this.interval === 'day')
           // switch period zoom levels
-          period = "hour";
-        else period = "day";
+          period = 'hour'
+        else period = 'day'
       }
 
       if (this.touchDevice) {
-        const format = period === "hour" ? "lll" : "ll";
+        const format = period === 'hour' ? 'lll' : 'll'
 
         this.$refs.confirm
           .open(
-            this.$i18n.t("data_zoom"),
-            (this.interval !== "hour"
-              ? this.$i18n.t("data_zoom_ok")
-              : this.$i18n.t("data_zoom_out_ok")) +
+            this.$i18n.t('data_zoom'),
+            (this.interval !== 'hour'
+              ? this.$i18n.t('data_zoom_ok')
+              : this.$i18n.t('data_zoom_out_ok')) +
               this.momentFormat(date, format) +
-              "?",
+              '?',
             {
-              color: "primary"
+              color: 'primary',
             }
           )
           .then(() => {
-            this.zoomTo(period, date);
+            this.zoomTo(period, date)
           })
           .catch(() => {
-            return true;
-          });
+            return true
+          })
       } else {
-        this.zoomTo(period, date);
+        this.zoomTo(period, date)
       }
     },
     setInitialDeviceIdAndLoadData() {
-      if (this.$route.name === "measurements-id") {
-        this.selectedDeviceId = parseInt(this.$route.params.id);
+      if (this.$route.name === 'measurements-id') {
+        this.selectedDeviceId = parseInt(this.$route.params.id)
       } else if (
         this.selectedDeviceId === null ||
         (isNaN(this.selectedDeviceId) && this.devices.length > 0)
       ) {
-        this.selectedDeviceId = parseInt(this.devices[0].id);
+        this.selectedDeviceId = parseInt(this.devices[0].id)
       }
-      this.loadData();
-      return true;
+      this.loadData()
+      return true
     },
     setPeriodInterval(interval) {
-      const prevInterval = this.interval;
-      this.interval = interval;
-      if (interval === "selection" && this.dates.length === 0) {
-        this.noPeriodData = true;
+      const prevInterval = this.interval
+      this.interval = interval
+      if (interval === 'selection' && this.dates.length === 0) {
+        this.noPeriodData = true
       } else {
         if (prevInterval === interval) {
           // set index to 0 if if clicked interval is same as already selected
-          this.timeIndex = 0;
+          this.timeIndex = 0
         } else if (this.timeIndex !== 0) {
           // change period around the same date instead of resetting to timeIndex 0
           this.timeIndex = this.calculateTimeIndex(
@@ -1810,55 +1786,55 @@ export default {
             this.selectedDate,
             false,
             prevInterval
-          );
+          )
         }
-        this.loadData();
+        this.loadData()
       }
     },
     setTimeIndex(offset) {
-      const timeIndexWhenClicked = this.timeIndex;
-      this.timeIndex += offset;
-      this.setPeriodTitle();
+      const timeIndexWhenClicked = this.timeIndex
+      this.timeIndex += offset
+      this.setPeriodTitle()
       setTimeout(() => {
         // only load data when user is done clicking through periods, so when intended timeIndex has been reached
         if (timeIndexWhenClicked + offset === this.timeIndex) {
-          this.loadData(true, true);
+          this.loadData(true, true)
         }
-      }, 600);
+      }, 600)
     },
     startTimer() {
-      this.stopTimer();
-      this.runAtInterval(this.loadLastSensorValuesFunc, 60 * 1000);
+      this.stopTimer()
+      this.runAtInterval(this.loadLastSensorValuesFunc, 60 * 1000)
     },
     stopTimer() {
       if (this.timer > 0) {
-        clearTimeout(this.timer);
-        clearInterval(this.timer);
-        this.timer = 0;
+        clearTimeout(this.timer)
+        clearInterval(this.timer)
+        this.timer = 0
       }
     },
     toggleSensorInfo(abbr) {
       if (this.sensorInfo.indexOf(abbr) > -1) {
-        this.sensorInfo.splice(this.sensorInfo.indexOf(abbr), 1);
+        this.sensorInfo.splice(this.sensorInfo.indexOf(abbr), 1)
       } else {
-        this.sensorInfo.push(abbr);
+        this.sensorInfo.push(abbr)
       }
     },
 
     zoomTo(period, date) {
-      this.timeIndex = this.calculateTimeIndex(period, date, true);
-      this.interval = period;
-      this.loadData();
-    }
-  }
-};
+      this.timeIndex = this.calculateTimeIndex(period, date, true)
+      this.interval = period
+      this.loadData()
+    },
+  },
+}
 </script>
 
 <style lang="scss">
 .period-title {
   margin-top: 1px;
   margin-left: 2px;
-  font-family: "Roboto", sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   font-size: 1rem !important;
   font-weight: 500;
   line-height: 1rem;

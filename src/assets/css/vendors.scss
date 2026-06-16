@@ -164,7 +164,9 @@
       min-height: auto !important;
     }
 
-    &:not(.v-text-field--outlined):not(.v-text-field--solo):not(.v-select)input {
+    &:not(.v-text-field--outlined):not(.v-text-field--solo):not(
+        .v-select
+      )input {
       padding: 8px 0 0;
     }
 
@@ -176,7 +178,9 @@
       }
     }
 
-    &.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
+    &.v-text-field--enclosed.v-input--dense:not(
+        .v-text-field--solo
+      ).v-text-field--outlined {
       .v-input__slot {
         padding-right: 4px !important;
       }
@@ -233,7 +237,7 @@
     }
 
     textarea {
-      margin-top: -12px !important;
+      margin-top: -8px !important;
     }
   }
 
@@ -264,7 +268,7 @@
 
     &.slider--default {
       .v-slider {
-        div[aria-valuenow="0"] {
+        div[aria-valuenow='0'] {
           .primary {
             color: $color-grey-medium !important;
             background-color: $color-grey-medium !important;
@@ -290,7 +294,7 @@
 
     &.slider--number-percentage {
       .v-slider {
-        div[aria-valuenow="-1"] {
+        div[aria-valuenow='-1'] {
           .primary {
             color: $color-grey-medium !important;
             background-color: $color-grey-medium !important;
@@ -561,7 +565,7 @@
     border-radius: 0 !important;
     font-size: 14px !important;
     font-weight: 500;
-    font-family: "Roboto", sans-serif !important;
+    font-family: 'Roboto', sans-serif !important;
     letter-spacing: 1.25px;
     text-transform: uppercase;
   }
