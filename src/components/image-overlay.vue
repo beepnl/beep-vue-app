@@ -82,6 +82,7 @@ export default {
   max-width: 90vw;
   @include for-phone-only {
     max-width: 300px;
+    min-width: fit-content;
   }
 }
 .image-overlay-toolbar {
