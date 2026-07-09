@@ -1,5 +1,9 @@
 <template>
-  <v-overlay v-model="overlay" class="d-flex align-center justify-center">
+  <v-overlay
+    v-model="overlay"
+    @click:outside="closeOverlay"
+    class="d-flex align-center justify-center"
+  >
     <div class="image-overlay">
       <v-toolbar
         density="compact"

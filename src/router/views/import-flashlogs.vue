@@ -6,13 +6,13 @@
       class="save-bar save-bar--back"
       density="compact"
     >
-      <div class="d-flex justify-end align-center" style="width: 100%;">
+      <div class="d-flex justify-end align-center" style="width: 100%">
         <v-spacer></v-spacer>
         <div class="beep-label mr-2" v-text="$t('From_cache') + ': '"></div>
         <v-switch
           v-model="fromCache"
           class="pt-0 mt-0 mr-4"
-          style="max-width: 40px;"
+          style="max-width: 40px"
           hide-details
         ></v-switch>
         <div class="beep-label" v-text="$t('Nr_of_match_props') + ': '"></div>
@@ -20,7 +20,7 @@
           v-model="matchProps"
           color="accent"
           class="slider--default mt-5"
-          style="display: block !important; max-width: 200px;"
+          style="display: block !important; max-width: 200px"
           track-color="#b0b0b0"
           min="5"
           max="12"
@@ -62,7 +62,7 @@
           <div class="d-flex justify-space-between align-end">
             <div class="mb-2">
               <div class="custom-text-overline mt-0 mt-sm-3">
-                {{ $t("Log_files") }}
+                {{ $t('Log_files') }}
                 <v-icon
                   class="ml-1 icon-info cursor-pointer"
                   :size="mobile ? 'x-small' : 'small'"
@@ -76,9 +76,9 @@
 
           <p v-if="showInfo" class="info-text">
             <em
-              >{{ $t("import_log_data_explanation") + " "
+              >{{ $t('import_log_data_explanation') + ' '
               }}<a :href="$t('import_log_data_support_url')" target="_blank">{{
-                $t("import_log_data_url_text")
+                $t('import_log_data_url_text')
               }}</a></em
             >
           </p>
@@ -126,13 +126,13 @@
                   v-if="value === 1"
                   class="beep-icon beep-icon-text color-green text-center"
                 >
-                  {{ $t("yes") }}
+                  {{ $t('yes') }}
                 </v-sheet>
                 <v-sheet
                   v-if="value === 0"
                   class="beep-icon beep-icon-text color-red text-center"
                 >
-                  {{ $t("no") }}
+                  {{ $t('no') }}
                 </v-sheet>
               </template>
 
@@ -163,7 +163,7 @@
                       start
                       >mdi-check</v-icon
                     >
-                    {{ $t("check_log_data") }}</v-btn
+                    {{ $t('check_log_data') }}</v-btn
                   >
 
                   <v-tooltip v-if="item.delete" open-delay="500">
@@ -176,7 +176,7 @@
                         >mdi-refresh</v-icon
                       >
                     </template>
-                    <span v-if="item.delete">{{ $t("Undelete") }}</span>
+                    <span v-if="item.delete">{{ $t('Undelete') }}</span>
                   </v-tooltip>
                   <v-icon
                     v-if="!item.delete"
@@ -234,9 +234,9 @@
         <v-col v-if="flashLogs.length === 0" cols="12">
           <span>
             <em
-              >{{ $t("import_log_data_explanation") + " "
+              >{{ $t('import_log_data_explanation') + ' '
               }}<a :href="$t('import_log_data_support_url')" target="_blank">{{
-                $t("import_log_data_url_text")
+                $t('import_log_data_url_text')
               }}</a></em
             >
           </span>
@@ -304,10 +304,10 @@
                       color="accent"
                       >mdi-file-export</v-icon
                     >
-                    {{ $t("Export_full_csv") }}
+                    {{ $t('Export_full_csv') }}
                   </v-btn>
                 </template>
-                <span>{{ $t("Export_as_csv") }}</span>
+                <span>{{ $t('Export_as_csv') }}</span>
               </v-tooltip>
 
               <v-tooltip v-if="lgAndUp" open-delay="500">
@@ -340,10 +340,10 @@
                       color="accent"
                       >mdi-download</v-icon
                     >
-                    {{ $t("Export_full_json") }}
+                    {{ $t('Export_full_json') }}
                   </v-btn>
                 </template>
-                <span>{{ $t("Export_as_json") }}</span>
+                <span>{{ $t('Export_as_json') }}</span>
               </v-tooltip>
 
               <v-tooltip
@@ -367,7 +367,7 @@
                     >mdi-file-export</v-icon
                   >
                 </template>
-                <span>{{ $t("Export_as_csv") }}</span>
+                <span>{{ $t('Export_as_csv') }}</span>
               </v-tooltip>
 
               <v-progress-circular
@@ -399,7 +399,7 @@
                     >mdi-download</v-icon
                   >
                 </template>
-                <span>{{ $t("Export_as_json") }}</span>
+                <span>{{ $t('Export_as_json') }}</span>
               </v-tooltip>
 
               <v-progress-circular
@@ -452,6 +452,7 @@
                   v-if="
                     item.matches !== undefined && item.block === matchesOverlay
                   "
+                  @click:outside="matchesOverlay = null"
                   class="align-center justify-center"
                 >
                   <v-toolbar
@@ -510,7 +511,7 @@
                   :to="{
                     name: `flashlog`,
                     params: { id: selectedFlashLog.flashlog_id },
-                    query: { blockId: item.block }
+                    query: { blockId: item.block },
                   }"
                 >
                   <v-btn
@@ -523,7 +524,7 @@
                       start
                       >mdi-chart-line</v-icon
                     >
-                    {{ $t("View_data") }}
+                    {{ $t('View_data') }}
                   </v-btn>
                 </router-link>
                 <!-- <v-btn
@@ -572,7 +573,7 @@
                 <v-tooltip
                   v-if="
                     selectedFlashLog !== null &&
-                      showExportLoadingById.indexOf('csv-' + item.block) === -1
+                    showExportLoadingById.indexOf('csv-' + item.block) === -1
                   "
                   open-delay="500"
                 >
@@ -593,13 +594,13 @@
                       >mdi-file-export</v-icon
                     >
                   </template>
-                  <span>{{ $t("Export_as_csv") }}</span>
+                  <span>{{ $t('Export_as_csv') }}</span>
                 </v-tooltip>
 
                 <v-progress-circular
                   v-if="
                     selectedFlashLog !== null &&
-                      showExportLoadingById.indexOf('csv-' + item.block) > -1
+                    showExportLoadingById.indexOf('csv-' + item.block) > -1
                   "
                   class="mr-3"
                   size="19"
@@ -611,7 +612,7 @@
                 <v-tooltip
                   v-if="
                     selectedFlashLog !== null &&
-                      showExportLoadingById.indexOf('json-' + item.block) === -1
+                    showExportLoadingById.indexOf('json-' + item.block) === -1
                   "
                   open-delay="500"
                 >
@@ -631,13 +632,13 @@
                       >mdi-download</v-icon
                     >
                   </template>
-                  <span>{{ $t("Export_as_json") }}</span>
+                  <span>{{ $t('Export_as_json') }}</span>
                 </v-tooltip>
 
                 <v-progress-circular
                   v-if="
                     selectedFlashLog !== null &&
-                      showExportLoadingById.indexOf('json-' + item.block) > -1
+                    showExportLoadingById.indexOf('json-' + item.block) > -1
                   "
                   class="ml-1"
                   size="19"
@@ -657,25 +658,25 @@
 </template>
 
 <script>
-import Confirm from "@/src/components/confirm-dialog.vue";
-import Layout from "@/src/router/layouts/back-layout.vue";
-import Api from "@api/Api";
-import { readApiariesAndGroupsIfNotPresent } from "@mixins/methodsMixin";
-import { momentDurationDays, momentify } from "@mixins/momentMixin";
-import { mapGetters } from "vuex";
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import { momentDurationDays, momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Confirm,
-    Layout
+    Layout,
   },
   mixins: [momentDurationDays, momentify, readApiariesAndGroupsIfNotPresent],
   props: {
     importMessage: {
       type: Object,
       default: null,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
@@ -683,8 +684,8 @@ export default {
       successMessage: null,
       showSuccessMessage: false,
       undoMessage: null,
-      dateFormat: "YYYY-MM-DD",
-      dateFormatLong: "YYYY-MM-DD HH:mm:ss",
+      dateFormat: 'YYYY-MM-DD',
+      dateFormatLong: 'YYYY-MM-DD HH:mm:ss',
       showLoadingIconById: [],
       showUndoLoadingIconById: [],
       showExportLoadingById: [],
@@ -698,506 +699,503 @@ export default {
         import.meta.env.VITE_BASE_API_URL ||
         import.meta.env.VITE_E_API_URL_FALLBACK,
       importMessageCopy: null,
-      itemsPerPage: 5 // was 1 for smAndDown for Vuetify 2 but in 3 there is only the normal row view (instead of 1 row per column for mobile view)
-    };
+      itemsPerPage: 5, // was 1 for smAndDown for Vuetify 2 but in 3 there is only the normal row view (instead of 1 row per column for mobile view)
+    }
   },
   computed: {
-    ...mapGetters("auth", ["userIsAdmin"]),
-    ...mapGetters("devices", ["devices"]),
-    ...mapGetters("locations", ["apiaries", "groups"]),
+    ...mapGetters('auth', ['userIsAdmin']),
+    ...mapGetters('devices', ['devices']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     importSentence() {
       return this.importMessageCopy !== null &&
         this.importMessageCopy.data_stored
-        ? this.$i18n.t("data_stored_for_log") +
+        ? this.$i18n.t('data_stored_for_log') +
             this.importMessageCopy.flashlog_id +
-            " - " +
+            ' - ' +
             this.importMessageCopy.device_name +
-            " - " +
-            this.$i18n.t("Block") +
-            " " +
+            ' - ' +
+            this.$i18n.t('Block') +
+            ' ' +
             this.importMessageCopy.block_id +
-            ". " +
-            this.$i18n.t("persisted_measurements") +
-            ": " +
+            '. ' +
+            this.$i18n.t('persisted_measurements') +
+            ': ' +
             this.importMessageCopy.persisted_measurements +
-            ", " +
-            this.$i18n.t("persisted_days") +
-            ": " +
+            ', ' +
+            this.$i18n.t('persisted_days') +
+            ': ' +
             this.importMessageCopy.persisted_days
-        : this.$i18n.t("no_data_stored") +
-            ". " +
-            JSON.stringify(this.importMessageCopy);
+        : this.$i18n.t('no_data_stored') +
+            '. ' +
+            JSON.stringify(this.importMessageCopy)
     },
     lgAndUp() {
-      return this.$vuetify.display.lgAndUp;
+      return this.$vuetify.display.lgAndUp
     },
     locale() {
-      return this.$i18n.locale;
+      return this.$i18n.locale
     },
     logDataHeaders() {
       return [
-        { title: this.$i18n.t("Block"), key: "block" },
+        { title: this.$i18n.t('Block'), key: 'block' },
         {
-          title: this.$i18n.t("Data_imported"),
-          key: "data_imported"
+          title: this.$i18n.t('Data_imported'),
+          key: 'data_imported',
         },
-        { title: this.$i18n.tc("Match", 2), key: "matches" },
+        { title: this.$i18n.tc('Match', 2), key: 'matches' },
         {
-          title: this.$i18n.t("Size"),
-          key: "duration_hours"
-        },
-        {
-          title: this.$i18n.t("Missing_data"),
-          key: "missing_data"
+          title: this.$i18n.t('Size'),
+          key: 'duration_hours',
         },
         {
-          title: this.$i18n.t("period"),
-          key: "time_end"
+          title: this.$i18n.t('Missing_data'),
+          key: 'missing_data',
         },
         {
-          title: this.$i18n.t("Firmware_version"),
-          key: "fw_version"
+          title: this.$i18n.t('period'),
+          key: 'time_end',
         },
         {
-          title: this.$i18n.t("Interval") + " (min)",
-          key: "interval_min"
+          title: this.$i18n.t('Firmware_version'),
+          key: 'fw_version',
         },
         {
-          title: this.$i18n.tc("Action", 2),
+          title: this.$i18n.t('Interval') + ' (min)',
+          key: 'interval_min',
+        },
+        {
+          title: this.$i18n.tc('Action', 2),
           sortable: false,
-          key: "actions"
+          key: 'actions',
         },
-        { title: this.$i18n.t("Export"), sortable: false, key: "export" }
-      ];
+        { title: this.$i18n.t('Export'), sortable: false, key: 'export' },
+      ]
     },
     logFileHeaders() {
       return [
-        { title: "ID", key: "id" },
-        { title: this.$i18n.t("Upload_date"), key: "created_at" },
+        { title: 'ID', key: 'id' },
+        { title: this.$i18n.t('Upload_date'), key: 'created_at' },
         {
-          title: this.$i18n.tc("device", 1),
-          key: "device_name"
+          title: this.$i18n.tc('device', 1),
+          key: 'device_name',
         },
         {
-          title: this.$i18n.tc("Hive", 1),
-          key: "hive_name"
+          title: this.$i18n.tc('Hive', 1),
+          key: 'hive_name',
         },
         {
-          title: this.$i18n.t("Messages"),
-          key: "log_messages"
+          title: this.$i18n.t('Messages'),
+          key: 'log_messages',
         },
         {
-          title: this.$i18n.t("persisted_measurements"),
-          key: "persisted_measurements"
+          title: this.$i18n.t('persisted_measurements'),
+          key: 'persisted_measurements',
         },
         {
-          title: this.$i18n.t("Memory_erased"),
-          key: "log_erased"
+          title: this.$i18n.t('Memory_erased'),
+          key: 'log_erased',
         },
         {
-          title: this.$i18n.t("File_size"),
-          key: "bytes_received"
+          title: this.$i18n.t('File_size'),
+          key: 'bytes_received',
         },
         {
-          title: this.$i18n.tc("Action", 2),
+          title: this.$i18n.tc('Action', 2),
           sortable: false,
-          key: "actions"
-        }
-      ];
+          key: 'actions',
+        },
+      ]
     },
     logFileHeadersAdmin() {
       const userNameColumn = {
-        title: this.$i18n.t("username"),
-        key: "user_name"
-      };
-      const newHeaderArray = this.logFileHeaders.slice();
-      newHeaderArray.splice(4, 0, userNameColumn);
-      return newHeaderArray;
+        title: this.$i18n.t('username'),
+        key: 'user_name',
+      }
+      const newHeaderArray = this.logFileHeaders.slice()
+      newHeaderArray.splice(4, 0, userNameColumn)
+      return newHeaderArray
     },
     logSearch: {
       get() {
-        return this.$store.getters["devices/logSearch"];
+        return this.$store.getters['devices/logSearch']
       },
       set(value) {
-        this.$store.commit("devices/setData", {
-          prop: "logSearch",
-          value
-        });
-      }
+        this.$store.commit('devices/setData', {
+          prop: 'logSearch',
+          value,
+        })
+      },
     },
     mobile() {
-      return this.$vuetify.display.xs;
+      return this.$vuetify.display.xs
     },
     selectedFlashLog: {
       get() {
-        return this.$store.getters["devices/selectedFlashLog"];
+        return this.$store.getters['devices/selectedFlashLog']
       },
       set(value) {
-        this.$store.commit("devices/setData", {
-          prop: "selectedFlashLog",
-          value
-        });
-      }
+        this.$store.commit('devices/setData', {
+          prop: 'selectedFlashLog',
+          value,
+        })
+      },
     },
     selectedFlashLogHeader() {
       return this.selectedFlashLog !== null &&
         this.selectedFlashLog.log !== undefined
-        ? "Log ID: " +
+        ? 'Log ID: ' +
             this.selectedFlashLog.flashlog_id +
-            ", " +
+            ', ' +
             this.selectedFlashLog.device_name +
-            ", Time: " +
+            ', Time: ' +
             this.selectedFlashLog.time_percentage +
-            ", Weight: " +
+            ', Weight: ' +
             this.selectedFlashLog.weight_percentage +
-            ", Blocks: " +
+            ', Blocks: ' +
             this.selectedFlashLog.log.length +
-            ", Lines: " +
+            ', Lines: ' +
             this.selectedFlashLog.lines_received +
-            ", Messages: " +
+            ', Messages: ' +
             this.selectedFlashLog.records_flashlog
-        : "";
+        : ''
     },
     smAndDown() {
-      return this.$vuetify.display.smAndDown;
+      return this.$vuetify.display.smAndDown
     },
     undoSentence() {
-      const stringifiedMessage = JSON.stringify(this.undoMessage);
+      const stringifiedMessage = JSON.stringify(this.undoMessage)
       return this.undoMessage !== null && this.undoMessage.data_deleted
-        ? this.$i18n.t("data_deleted") +
-            ". " +
-            this.$i18n.t("deleted_measurements") +
-            ": " +
+        ? this.$i18n.t('data_deleted') +
+            '. ' +
+            this.$i18n.t('deleted_measurements') +
+            ': ' +
             this.undoMessage.deleted_measurements +
-            ", " +
-            this.$i18n.t("deleted_days") +
-            ": " +
+            ', ' +
+            this.$i18n.t('deleted_days') +
+            ': ' +
             this.undoMessage.deleted_days
-        : this.$i18n.t("data_not_deleted") +
-            ". " +
+        : this.$i18n.t('data_not_deleted') +
+            '. ' +
             stringifiedMessage.substr(0, 1000) +
-            (stringifiedMessage.length > 1000 ? " ... " : "");
-    }
+            (stringifiedMessage.length > 1000 ? ' ... ' : '')
+    },
   },
   created() {
     // use own component data props instead of prop to avoid mutating a prop directly (vuex warning)
-    this.importMessageCopy = this.importMessage;
+    this.importMessageCopy = this.importMessage
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.readFlashLogs().then(() => {
         if (
-          localStorage.beepPreviousRoute === "flashlog" &&
+          localStorage.beepPreviousRoute === 'flashlog' &&
           this.selectedFlashLog !== null &&
           this.importMessageCopy === null
         ) {
           // update flashlog result if coming from the flashlog view & flashlog has previously been selected (= saved in store) and has not just been imported
-          this.checkFlashLog(this.selectedFlashLog.flashlog_id);
+          this.checkFlashLog(this.selectedFlashLog.flashlog_id)
         } else {
           if (this.importMessageCopy !== null) {
-            this.logSearch = this.importMessageCopy.flashlog_id.toString(); // make persisted log item remain on top of table
-            this.reCheckFlashLog(this.importMessageCopy.flashlog_id);
+            this.logSearch = this.importMessageCopy.flashlog_id.toString() // make persisted log item remain on top of table
+            this.reCheckFlashLog(this.importMessageCopy.flashlog_id)
           }
-          this.selectedFlashLog = null;
+          this.selectedFlashLog = null
         }
-        this.ready = true;
-      });
-    });
+        this.ready = true
+      })
+    })
   },
   methods: {
     async exportBlockData(
       flashLogId,
-      blockId = "",
+      blockId = '',
       csvFormat = false,
       loadingId
     ) {
-      this.clearMessages();
-      this.showExportLoadingById.push(loadingId);
+      this.clearMessages()
+      this.showExportLoadingById.push(loadingId)
       try {
         const response = await Api.readRequest(
-          "/flashlogs/" +
+          '/flashlogs/' +
             flashLogId +
-            "?block_id=" +
+            '?block_id=' +
             blockId +
-            (csvFormat ? "&csv=1" : "&json=1")
-        );
+            (csvFormat ? '&csv=1' : '&json=1')
+        )
         if (response.status === -1) {
-          this.errorMessage = this.$i18n.t("too_much_data");
+          this.errorMessage = this.$i18n.t('too_much_data')
         }
 
-        const link = document.createElement("a");
+        const link = document.createElement('a')
         let fileName =
-          "beep-base-log-export-user-" +
+          'beep-base-log-export-user-' +
           this.selectedFlashLog.user_id +
-          "-" +
+          '-' +
           this.selectedFlashLog.device_name +
-          "-log-file-" +
+          '-log-file-' +
           flashLogId +
-          (blockId === "" ? "-all-data" : "-block-" + blockId);
-        fileName = fileName.replace(" ", "");
+          (blockId === '' ? '-all-data' : '-block-' + blockId)
+        fileName = fileName.replace(' ', '')
 
-        let hrefStr = "";
+        let hrefStr = ''
         if (csvFormat) {
-          hrefStr = "data:text/csv;charset=utf-8," + response.data;
+          hrefStr = 'data:text/csv;charset=utf-8,' + response.data
         } else {
           hrefStr =
-            "data:text/json;charset=utf-8," +
-            encodeURIComponent(JSON.stringify(response.data));
+            'data:text/json;charset=utf-8,' +
+            encodeURIComponent(JSON.stringify(response.data))
         }
 
-        link.setAttribute("target", "_blank");
-        link.setAttribute("href", hrefStr);
-        link.setAttribute(
-          "download",
-          fileName + (csvFormat ? ".csv" : ".json")
-        );
-        document.body.appendChild(link);
-        link.click();
+        link.setAttribute('target', '_blank')
+        link.setAttribute('href', hrefStr)
+        link.setAttribute('download', fileName + (csvFormat ? '.csv' : '.json'))
+        document.body.appendChild(link)
+        link.click()
 
         this.showExportLoadingById.splice(
           this.showExportLoadingById.indexOf(loadingId),
           1
-        );
+        )
 
         if (response.status === 200) {
-          this.successMessage = this.$i18n.t("Export_file_being_saved");
-          this.showSuccessMessage = true;
+          this.successMessage = this.$i18n.t('Export_file_being_saved')
+          this.showSuccessMessage = true
           setTimeout(() => {
-            this.showSuccessMessage = false;
-          }, 5000); // wait for file to be saved by user
+            this.showSuccessMessage = false
+          }, 5000) // wait for file to be saved by user
         }
-        return response;
+        return response
       } catch (error) {
         this.showExportLoadingById.splice(
           this.showExportLoadingById.indexOf(loadingId),
           1
-        );
-        console.log("Error: ", error);
-        this.errorMessage = this.$i18n.t("no_data");
+        )
+        console.log('Error: ', error)
+        this.errorMessage = this.$i18n.t('no_data')
       }
     },
     async undoBlockImport(flashLogId, blockId) {
-      this.clearMessages();
-      this.showUndoLoadingIconById.push(blockId);
+      this.clearMessages()
+      this.showUndoLoadingIconById.push(blockId)
       try {
         const response = await Api.deleteRequest(
-          "/flashlogs/" + flashLogId + "?block_id=",
+          '/flashlogs/' + flashLogId + '?block_id=',
           blockId
-        );
-        this.undoMessage = response.data;
+        )
+        this.undoMessage = response.data
         this.showUndoLoadingIconById.splice(
           this.showUndoLoadingIconById.indexOf(blockId),
           1
-        );
-        this.reCheckFlashLog(flashLogId);
+        )
+        this.reCheckFlashLog(flashLogId)
       } catch (error) {
         this.showUndoLoadingIconById.splice(
           this.showUndoLoadingIconById.indexOf(blockId),
           1
-        );
+        )
         if (error.response) {
-          console.log(error.response);
-          this.errorMessage = this.$i18n.t(error.response.data.error);
+          console.log(error.response)
+          this.errorMessage = this.$i18n.t(error.response.data.error)
         } else {
-          console.log("Error: ", error);
-          this.errorMessage = this.$i18n.t("something_wrong");
+          console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
         }
       }
     },
     async deleteFlashLog(id) {
-      this.clearMessages();
+      this.clearMessages()
       try {
-        await Api.deleteRequest("/flashlogs/", id);
+        await Api.deleteRequest('/flashlogs/', id)
         setTimeout(() => {
-          this.readFlashLogs();
-        }, 100); // wait for API to update flashlogs
+          this.readFlashLogs()
+        }, 100) // wait for API to update flashlogs
       } catch (error) {
         if (error.response) {
-          console.log(error.response);
-          const msg = error.response.data.error;
-          this.errorMessage = this.$i18n.t(msg);
+          console.log(error.response)
+          const msg = error.response.data.error
+          this.errorMessage = this.$i18n.t(msg)
         } else {
-          console.log("Error: ", error);
-          this.errorMessage = this.$i18n.t("something_wrong");
+          console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
         }
       }
     },
     async checkFlashLog(flashLogId, keepMessages = false) {
       if (!keepMessages) {
-        this.clearMessages();
+        this.clearMessages()
       }
-      this.selectedFlashLog = null;
-      this.showLoadingIconById.push(flashLogId);
+      this.selectedFlashLog = null
+      this.showLoadingIconById.push(flashLogId)
       try {
         const response = await Api.readRequest(
-          "/flashlogs/" +
+          '/flashlogs/' +
             flashLogId +
-            "?match_props=" +
+            '?match_props=' +
             this.matchProps +
-            "&from_cache=" +
-            (this.fromCache ? "1" : "0")
-        );
+            '&from_cache=' +
+            (this.fromCache ? '1' : '0')
+        )
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLogId),
           1
-        );
-        this.selectedFlashLog = response.data;
+        )
+        this.selectedFlashLog = response.data
 
         if (this.selectedFlashLog.log !== undefined) {
-          const newFlashLog = JSON.parse(JSON.stringify(this.selectedFlashLog)); // clone without v-bind to avoid vuex warning when mutating
-          newFlashLog.log.map(item => {
+          const newFlashLog = JSON.parse(JSON.stringify(this.selectedFlashLog)) // clone without v-bind to avoid vuex warning when mutating
+          newFlashLog.log.map((item) => {
             // set extra properties here to enable column sort for these columns
             item.data_imported =
               this.selectedFlashLog.persisted_block_ids_array !== undefined &&
               this.selectedFlashLog.persisted_block_ids_array.indexOf(
                 item.block
-              ) > -1;
-            item.missing_data = this.percentageNotInDB(item);
-            return item;
-          });
-          this.selectedFlashLog = newFlashLog; // avoid vuex do not mutate warning by setting selectedFlashLog at once instead of just the .log prop
+              ) > -1
+            item.missing_data = this.percentageNotInDB(item)
+            return item
+          })
+          this.selectedFlashLog = newFlashLog // avoid vuex do not mutate warning by setting selectedFlashLog at once instead of just the .log prop
           setTimeout(() => {
-            this.scrollTo("log-data");
-          }, 100);
+            this.scrollTo('log-data')
+          }, 100)
         } else {
-          this.errorMessage = this.$i18n.t("no_flashlog_data");
+          this.errorMessage = this.$i18n.t('no_flashlog_data')
         }
       } catch (error) {
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLogId),
           1
-        );
-        this.selectedFlashLog = null;
+        )
+        this.selectedFlashLog = null
         if (error.response) {
-          console.log(error.response);
-          const msg = error.response.data.error;
-          this.errorMessage = this.$i18n.t(msg);
+          console.log(error.response)
+          const msg = error.response.data.error
+          this.errorMessage = this.$i18n.t(msg)
         } else {
-          console.log("Error: ", error);
-          this.errorMessage = this.$i18n.t("something_wrong");
+          console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
         }
       }
     },
     async readFlashLogs() {
       try {
-        const response = await Api.readRequest("/flashlogs");
-        this.flashLogs = response.data;
-        return true;
+        const response = await Api.readRequest('/flashlogs')
+        this.flashLogs = response.data
+        return true
       } catch (error) {
         if (error.response) {
-          console.log(error.response);
-          const msg = error.response.data.error;
-          this.errorMessage = this.$i18n.t(msg);
+          console.log(error.response)
+          const msg = error.response.data.error
+          this.errorMessage = this.$i18n.t(msg)
         } else {
-          console.log("Error: ", error);
-          this.errorMessage = this.$i18n.t("something_wrong");
+          console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
         }
       }
     },
     confirmUndoBlockImport(flashLogId, blockId) {
       this.$refs.confirm
         .open(
-          this.$i18n.t("undo_import"),
-          this.$i18n.t("Block") +
-            " " +
+          this.$i18n.t('undo_import'),
+          this.$i18n.t('Block') +
+            ' ' +
             blockId +
-            " - " +
-            this.$i18n.t("undo_block_import_exp"),
+            ' - ' +
+            this.$i18n.t('undo_block_import_exp'),
           {
-            color: "red"
+            color: 'red',
           }
         )
         .then(() => {
-          this.undoBlockImport(flashLogId, blockId);
+          this.undoBlockImport(flashLogId, blockId)
         })
         .catch(() => {
-          return true;
-        });
+          return true
+        })
     },
     confirmDeleteFlashLog(flashLog) {
       this.$refs.confirm
         .open(
-          this.$i18n.t("delete_log_file") + " - " + flashLog.hive_name,
-          this.$i18n.t("delete_log_file") +
+          this.$i18n.t('delete_log_file') + ' - ' + flashLog.hive_name,
+          this.$i18n.t('delete_log_file') +
             ' "' +
             flashLog.hive_name +
-            " - " +
+            ' - ' +
             this.momentify(flashLog.created_at, true, this.dateFormatLong) +
             '"?',
           {
-            color: "red"
+            color: 'red',
           }
         )
         .then(() => {
-          this.deleteFlashLog(flashLog.id);
+          this.deleteFlashLog(flashLog.id)
         })
         .catch(() => {
-          return true;
-        });
+          return true
+        })
     },
     clearMessages() {
-      this.importMessageCopy = null;
-      this.undoMessage = null;
-      this.errorMessage = null;
-      this.successMessage = null;
+      this.importMessageCopy = null
+      this.undoMessage = null
+      this.errorMessage = null
+      this.successMessage = null
     },
     deviceHasRtc(item) {
-      const deviceId = item.device_id;
+      const deviceId = item.device_id
       const deviceFilter = this.devices.filter(
-        device => device.id === deviceId
-      );
+        (device) => device.id === deviceId
+      )
 
-      return deviceFilter.length > 0 ? deviceFilter[0].rtc === 1 : false;
+      return deviceFilter.length > 0 ? deviceFilter[0].rtc === 1 : false
     },
     fileSizeText(item) {
-      const nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2);
+      const nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2)
       return (
         nrOfMB +
-        "MB (" +
+        'MB (' +
         (item.log_size_bytes !== null
-          ? ((item.bytes_received / item.log_size_bytes) * 100).toFixed(1) + "%"
-          : this.$i18n.t("unknown")) +
-        ")"
-      );
+          ? ((item.bytes_received / item.log_size_bytes) * 100).toFixed(1) + '%'
+          : this.$i18n.t('unknown')) +
+        ')'
+      )
     },
     getDeviceText(item) {
-      const value = item.device_name;
-      return value !== null ? value : this.$i18n.t("unknown");
+      const value = item.device_name
+      return value !== null ? value : this.$i18n.t('unknown')
     },
     matchText(match, index) {
-      let text = index + ": ";
+      let text = index + ': '
       Object.entries(match).map(([key, value]) => {
-        if (key !== "flashlog_index" && key !== "minute_interval") {
-          text += key + ": " + value + ", ";
+        if (key !== 'flashlog_index' && key !== 'minute_interval') {
+          text += key + ': ' + value + ', '
         }
-        return [key, value];
-      });
-      return text;
+        return [key, value]
+      })
+      return text
     },
     matchesHeader(log) {
-      const nrOfMatches = Object.keys(log.matches.matches).length;
+      const nrOfMatches = Object.keys(log.matches.matches).length
       return (
-        this.$i18n.t("Matches_found") +
-        ": " +
+        this.$i18n.t('Matches_found') +
+        ': ' +
         nrOfMatches +
-        " (Log " +
+        ' (Log ' +
         this.selectedFlashLog.flashlog_id +
-        ", " +
-        this.$i18n.t("Block") +
-        " " +
+        ', ' +
+        this.$i18n.t('Block') +
+        ' ' +
         log.block +
-        ")"
-      );
+        ')'
+      )
     },
     missingDataText(log) {
-      const ptNotInDb = this.percentageNotInDB(log);
+      const ptNotInDb = this.percentageNotInDB(log)
       return (
         this.momentDurationDays(
           log.duration_hours * (ptNotInDb / 100),
-          "hours"
+          'hours'
         ) +
         (ptNotInDb !== null
-          ? "<br>(" + ptNotInDb + "% " + this.$i18n.t("not_yet_in_db") + ")"
-          : "")
-      );
+          ? '<br>(' + ptNotInDb + '% ' + this.$i18n.t('not_yet_in_db') + ')'
+          : '')
+      )
     },
     percentageNotInDB(log) {
       if (
@@ -1206,66 +1204,66 @@ export default {
         log.setCount !== undefined &&
         log.setCount !== null
       ) {
-        let ptNotInDb = (100 * (1 - log.dbCount / log.setCount)).toFixed(1);
+        let ptNotInDb = (100 * (1 - log.dbCount / log.setCount)).toFixed(1)
         // ptNotinDb can be max 100 and min 0
-        if (ptNotInDb > 100) ptNotInDb = 100;
-        if (ptNotInDb < 0) ptNotInDb = 0;
-        return ptNotInDb;
+        if (ptNotInDb > 100) ptNotInDb = 100
+        if (ptNotInDb < 0) ptNotInDb = 0
+        return ptNotInDb
       } else {
-        return null;
+        return null
       }
     },
     periodText(log) {
       return (
         this.momentify(log.time_start, true, this.dateFormat) +
-        " - " +
+        ' - ' +
         this.momentify(log.time_end, true, this.dateFormat)
-      );
+      )
     },
     reCheckFlashLog(flashLogId) {
       // check flashlog after (undo) importing data again to display correct values in the table
       setTimeout(() => {
-        this.readFlashLogs();
-        this.checkFlashLog(flashLogId, true);
-      }, 500);
+        this.readFlashLogs()
+        this.checkFlashLog(flashLogId, true)
+      }, 500)
     },
     rowClassLogFile(item) {
       return this.selectedFlashLog !== null &&
         item.id === this.selectedFlashLog.flashlog_id
-        ? "flashlog-selected"
-        : "" + (item.delete === true ? "flashlog-delete" : "");
+        ? 'flashlog-selected'
+        : '' + (item.delete === true ? 'flashlog-delete' : '')
     },
     rowProps({ item }) {
       return {
         class:
           item.matches === undefined
-            ? "no-match-block"
-            : "match-block " +
-              (this.percentageNotInDB(item) < 50 ? "text-green" : "text-red")
-      };
+            ? 'no-match-block'
+            : 'match-block ' +
+              (this.percentageNotInDB(item) < 50 ? 'text-green' : 'text-red'),
+      }
     },
     scrollTo(refName) {
-      const element = this.$refs[refName];
-      const offset = this.smAndDown ? 54 : 60;
-      const top = element.offsetTop;
+      const element = this.$refs[refName]
+      const offset = this.smAndDown ? 54 : 60
+      const top = element.offsetTop
 
-      window.scrollTo(0, top - offset);
+      window.scrollTo(0, top - offset)
     },
     sizeText(log) {
       return (
         this.momentDurationDays(
           log.duration_hours,
-          "hours",
-          this.$i18n.t("Length")
+          'hours',
+          this.$i18n.t('Length')
         ) +
-        "<br>" +
-        this.$i18n.t("Messages") +
-        ": " +
+        '<br>' +
+        this.$i18n.t('Messages') +
+        ': ' +
         (log.end_i - log.start_i).toString()
-      );
-    }
-  }
-};
+      )
+    },
+  },
+}
 </script>
 
 <style lang="scss">

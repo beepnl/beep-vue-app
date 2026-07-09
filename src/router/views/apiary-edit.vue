@@ -3,19 +3,19 @@
     <h1
       v-if="
         activeApiary &&
-          typeof activeApiary.name !== 'undefined' &&
-          !activeApiary.owner
+        typeof activeApiary.name !== 'undefined' &&
+        !activeApiary.owner
       "
       class="unauthorized-title"
     >
       {{
-        $t("sorry") +
-          ", " +
-          $tc("location", 1) +
-          ' "' +
-          activeApiary.name +
-          '" ' +
-          $t("not_editable")
+        $t('sorry') +
+        ', ' +
+        $tc('location', 1) +
+        ' "' +
+        activeApiary.name +
+        '" ' +
+        $t('not_editable')
       }}
     </h1>
 
@@ -49,7 +49,7 @@
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
-          {{ $t("save") }}
+          {{ $t('save') }}
         </v-btn>
       </v-toolbar>
 
@@ -57,7 +57,7 @@
         <v-row>
           <v-col cols="12">
             <div class="custom-text-overline mb-3">
-              {{ $tc("Location", 1) + " " + $t("settings") }}
+              {{ $tc('Location', 1) + ' ' + $t('settings') }}
             </div>
             <div class="rounded-border">
               <v-row>
@@ -94,6 +94,7 @@
 
                   <v-overlay
                     v-model="overlay"
+                    @click:outside="overlay = false"
                     class="align-center justify-center"
                   >
                     <v-toolbar
@@ -161,7 +162,7 @@
           <v-col cols="12">
             <div class="custom-text-overline mb-3">
               {{
-                $t("Place") + " " + $t("details") + " (" + $t("optional") + ")"
+                $t('Place') + ' ' + $t('details') + ' (' + $t('optional') + ')'
               }}
             </div>
             <div class="rounded-border">
@@ -272,7 +273,7 @@
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="accent " variant="text" @click="snackbar.show = false">
-        {{ $t("Close") }}
+        {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
 
@@ -281,202 +282,202 @@
 </template>
 
 <script>
-import Confirm from "@/src/components/confirm-dialog.vue";
-import Layout from "@/src/router/layouts/back-layout.vue";
-import Api from "@api/Api";
-import { treeselectCountries } from "@assets/js/countries.js";
-import NumericInput from "@components/input-fields/numeric-input.vue";
-import { readApiariesAndGroups } from "@mixins/methodsMixin";
-import VueGoogleAutocomplete from "vue-google-autocomplete";
-import { mapGetters } from "vuex";
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import { treeselectCountries } from '@assets/js/countries.js'
+import NumericInput from '@components/input-fields/numeric-input.vue'
+import { readApiariesAndGroups } from '@mixins/methodsMixin'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Confirm,
     Layout,
     NumericInput,
-    VueGoogleAutocomplete
+    VueGoogleAutocomplete,
   },
   mixins: [readApiariesAndGroups, treeselectCountries],
-  data: function() {
+  data: function () {
     return {
       snackbar: {
         show: false,
         timeout: 2000,
-        text: "notification"
+        text: 'notification',
       },
       swatchesApiary: [
-        ["#606060", "#b7701f", "#F8B133"],
-        ["#2dbde5", "#094da0", "#27820e"],
-        ["#ffe900", "#d80d0d", "#754B1F"]
+        ['#606060', '#b7701f', '#F8B133'],
+        ['#2dbde5', '#094da0', '#27820e'],
+        ['#ffe900', '#d80d0d', '#754B1F'],
       ],
       overlay: false,
-      colorPickerValue: "",
+      colorPickerValue: '',
       activeApiary: null,
       valid: false,
-      showLoadingIcon: false
-    };
+      showLoadingIcon: false,
+    }
   },
   computed: {
-    ...mapGetters("locations", ["apiaryEdited"]),
+    ...mapGetters('locations', ['apiaryEdited']),
     id() {
-      return parseInt(this.$route.params.id);
+      return parseInt(this.$route.params.id)
     },
     colorPicker: {
       get() {
-        if (this.colorPickerValue !== "") {
-          return this.colorPickerValue;
+        if (this.colorPickerValue !== '') {
+          return this.colorPickerValue
         } else if (this.activeApiary && this.activeApiary.hex_color !== null) {
-          return this.activeApiary.hex_color;
+          return this.activeApiary.hex_color
         } else {
-          return "#F8B133";
+          return '#F8B133'
         }
       },
       set(value) {
-        this.colorPickerValue = value;
-      }
+        this.colorPickerValue = value
+      },
     },
     countryCode: {
       get() {
         return this.activeApiary.country_code
           ? this.activeApiary.country_code.toUpperCase()
-          : null;
+          : null
       },
       set(value) {
         if (this.activeApiary) {
-          this.activeApiary.country_code = value;
+          this.activeApiary.country_code = value
         }
-      }
+      },
     },
     locale() {
-      return this.$i18n.locale;
+      return this.$i18n.locale
     },
-    requiredRule: function() {
+    requiredRule: function () {
       return [
-        v =>
+        (v) =>
           !!v ||
-          this.$i18n.t("the_field") +
+          this.$i18n.t('the_field') +
             ' "' +
-            this.$i18n.t("Name") +
+            this.$i18n.t('Name') +
             '" ' +
-            this.$i18n.t("is_required")
-      ];
-    }
+            this.$i18n.t('is_required'),
+      ]
+    },
   },
   created() {
-    this.getApiary(this.id).then(apiary => {
-      this.activeApiary = apiary;
-      this.setApiaryEdited(false);
-    });
+    this.getApiary(this.id).then((apiary) => {
+      this.activeApiary = apiary
+      this.setApiaryEdited(false)
+    })
   },
   methods: {
     async deleteApiary() {
       try {
         const response = await Api.deleteRequest(
-          "/locations/",
+          '/locations/',
           this.activeApiary.id
-        );
+        )
         if (!response) {
-          this.snackbar.text = this.$i18n.t("something_wrong");
-          this.snackbar.show = true;
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
         }
         setTimeout(() => {
           return this.readApiariesAndGroups().then(() => {
             this.$router.push({
-              name: "home"
-            });
-          });
-        }, 50); // wait for API to update locations/hives
+              name: 'home',
+            })
+          })
+        }, 50) // wait for API to update locations/hives
       } catch (error) {
         if (error.response) {
-          console.log(error.response);
+          console.log(error.response)
         } else {
-          console.log("Error: ", error);
+          console.log('Error: ', error)
         }
-        this.snackbar.text = this.$i18n.t("something_wrong");
-        this.snackbar.show = true;
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
       }
     },
     async getApiary(id) {
       try {
-        const response = await Api.readRequest("/locations/", id);
+        const response = await Api.readRequest('/locations/', id)
         if (response.data.length === 0) {
-          this.$router.push({ name: "404", query: { resource: "location" } });
+          this.$router.push({ name: '404', query: { resource: 'location' } })
         }
-        const apiary = response.data.locations[0];
-        return apiary;
+        const apiary = response.data.locations[0]
+        return apiary
       } catch (error) {
         if (error.response) {
-          console.log(error.response);
+          console.log(error.response)
           if (error.response.status === 404) {
-            this.$router.push({ name: "404", query: { resource: "location" } });
+            this.$router.push({ name: '404', query: { resource: 'location' } })
           }
         } else {
-          console.log("Error: ", error);
+          console.log('Error: ', error)
         }
       }
     },
     async updateApiary() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true;
+        this.showLoadingIcon = true
         try {
           const response = await Api.updateRequest(
-            "/locations/",
+            '/locations/',
             this.activeApiary.id,
             this.activeApiary
-          );
+          )
           if (!response) {
-            this.snackbar.text = this.$i18n.t("not_saved_error");
-            this.snackbar.show = true;
-            this.showLoadingIcon = false;
+            this.snackbar.text = this.$i18n.t('not_saved_error')
+            this.snackbar.show = true
+            this.showLoadingIcon = false
           }
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
-              this.$store.commit("locations/setData", {
-                prop: "hiveFilterByGroup",
-                value: "off"
-              });
-              this.$store.commit("locations/setData", {
-                prop: "hiveSearch",
-                value: this.activeApiary.name // set search term via store instead of query to overrule possible stored search terms
-              });
+              this.$store.commit('locations/setData', {
+                prop: 'hiveFilterByGroup',
+                value: 'off',
+              })
+              this.$store.commit('locations/setData', {
+                prop: 'hiveSearch',
+                value: this.activeApiary.name, // set search term via store instead of query to overrule possible stored search terms
+              })
               this.$router.push({
-                name: "home"
-              });
-            });
-          }, 50); // wait for API to update locations/hives
+                name: 'home',
+              })
+            })
+          }, 50) // wait for API to update locations/hives
         } catch (error) {
           if (error.response) {
-            console.log(error.response);
+            console.log(error.response)
           } else {
-            console.log("Error: ", error);
+            console.log('Error: ', error)
           }
-          this.snackbar.text = this.$i18n.t("not_saved_error");
-          this.snackbar.show = true;
-          this.showLoadingIcon = false;
+          this.snackbar.text = this.$i18n.t('not_saved_error')
+          this.snackbar.show = true
+          this.showLoadingIcon = false
         }
       }
     },
     confirmDeleteApiary() {
       const warningMessage =
         this.activeApiary.hives.length > 0
-          ? this.$i18n.t("first_remove_hives")
-          : null;
+          ? this.$i18n.t('first_remove_hives')
+          : null
       this.$refs.confirm
         .open(
-          this.$i18n.t("remove_apiary"),
-          this.$i18n.t("remove_apiary") + ' "' + this.activeApiary.name + '"?',
+          this.$i18n.t('remove_apiary'),
+          this.$i18n.t('remove_apiary') + ' "' + this.activeApiary.name + '"?',
           {
-            color: "red"
+            color: 'red',
           },
           warningMessage
         )
         .then(() => {
-          this.deleteApiary();
+          this.deleteApiary()
         })
         .catch(() => {
-          return true;
-        });
+          return true
+        })
     },
     /**
      * When the location found
@@ -484,54 +485,54 @@ export default {
      * @param {Object} placeResultData PlaceResult object
      * @param {String} id Input container ID
      */
-    getAddressData: function(addressData, placeResultData) {
+    getAddressData: function (addressData, placeResultData) {
       // console.log('addressData ', addressData)
       // console.log('placeResultData ', placeResultData)
       // console.log('id ', id)
       const countryCode = placeResultData.address_components.filter(
-        addressComponent => {
-          return addressComponent.types.includes("country");
+        (addressComponent) => {
+          return addressComponent.types.includes('country')
         }
-      )[0].short_name;
-      this.activeApiary.country_code = countryCode;
-      this.activeApiary.coordinate_lat = addressData.latitude;
-      this.activeApiary.coordinate_lon = addressData.longitude;
-      this.activeApiary.lat = addressData.latitude;
-      this.activeApiary.lon = addressData.longitude;
-      this.activeApiary.city = addressData.locality;
-      this.activeApiary.postal_code = addressData.postal_code;
-      this.activeApiary.street = addressData.route;
-      this.activeApiary.street_no = addressData.street_number;
+      )[0].short_name
+      this.activeApiary.country_code = countryCode
+      this.activeApiary.coordinate_lat = addressData.latitude
+      this.activeApiary.coordinate_lon = addressData.longitude
+      this.activeApiary.lat = addressData.latitude
+      this.activeApiary.lon = addressData.longitude
+      this.activeApiary.city = addressData.locality
+      this.activeApiary.postal_code = addressData.postal_code
+      this.activeApiary.street = addressData.route
+      this.activeApiary.street_no = addressData.street_number
     },
     setApiaryEdited(bool) {
-      this.$store.commit("locations/setApiaryEdited", bool);
+      this.$store.commit('locations/setApiaryEdited', bool)
     },
     editApiary(value, property) {
-      this.activeApiary[property] = value;
+      this.activeApiary[property] = value
 
-      if (property === "hex_color") {
-        this.overlay = false;
+      if (property === 'hex_color') {
+        this.overlay = false
       }
       // always include both lat & lon even when editing only one of them
-      else if (property === "lat") {
-        this.activeApiary.coordinate_lat = value;
-        this.activeApiary.lon = this.activeApiary.coordinate_lon;
-      } else if (property === "lon") {
-        this.activeApiary.coordinate_lon = value;
-        this.activeApiary.lat = this.activeApiary.coordinate_lat;
+      else if (property === 'lat') {
+        this.activeApiary.coordinate_lat = value
+        this.activeApiary.lon = this.activeApiary.coordinate_lon
+      } else if (property === 'lon') {
+        this.activeApiary.coordinate_lon = value
+        this.activeApiary.lat = this.activeApiary.coordinate_lat
       }
 
-      this.setApiaryEdited(true);
+      this.setApiaryEdited(true)
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
-        value = value.substring(0, maxLength);
-        this.activeApiary[property] = value;
+        value = value.substring(0, maxLength)
+        this.activeApiary[property] = value
       }
-      this.setApiaryEdited(true);
-    }
-  }
-};
+      this.setApiaryEdited(true)
+    },
+  },
+}
 </script>
 
 <style lang="scss">
