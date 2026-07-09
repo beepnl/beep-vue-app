@@ -82,9 +82,10 @@ export default {
   max-width: 90vw;
   @include for-phone-only {
     max-width: 300px;
-    min-width: fit-content;
+    min-width: 70vw;
   }
 }
+
 .image-overlay-toolbar {
   border-radius: 4px 4px 0 0 !important;
 }
@@ -113,7 +114,9 @@ export default {
     max-height: 90vh;
   }
 }
+
 .image-overlay-content {
+  min-width: 60vw;
   max-width: 80vw;
   max-height: 80vh;
   margin-top: -2px;
