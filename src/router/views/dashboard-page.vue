@@ -90,6 +90,7 @@
                 <div class="loading">
                   <v-progress-circular
                     color="primary"
+                    :bg-color="darkMode ? '#000' : '#fff'"
                     size="50"
                     indeterminate
                   />
@@ -323,6 +324,7 @@
                   >
                     <v-progress-circular
                       color="primary"
+                      :bg-color="darkMode ? '#000' : '#fff'"
                       size="50"
                       indeterminate
                     />

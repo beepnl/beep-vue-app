@@ -11,7 +11,7 @@
   }
 
   .v-icon,
-  .theme--light.v-btn.v-btn--icon,
+  .v-theme--beepLightTheme.v-btn.v-btn--icon,
   .v-btn > .v-btn__content .v-icon {
     &.color-black {
       color: $color-black;
@@ -26,7 +26,7 @@
     color: $color-black;
   }
 
-  .theme--light.v-btn.v-btn--disabled {
+  .v-theme--beepLightTheme.v-btn.v-btn--disabled {
     border-color: rgba(0, 0, 0, 0.26) !important; // fix mobile styling bug
   }
 
