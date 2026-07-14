@@ -17,11 +17,9 @@
               <v-text-field
                 v-model="search"
                 :label="`${$t('Search')}`"
-                :class="
-                  `${
-                    search !== null ? 'v-input--is-focused text-accent' : ''
-                  } beep-search-field`
-                "
+                :class="`${
+                  search !== null ? 'v-input--is-focused text-accent' : ''
+                } beep-search-field`"
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"
                 clearable
@@ -29,66 +27,56 @@
                 persistent-clear
                 density="compact"
                 hide-details
-                :append-outer-icon="search ? 'mdi-magnify' : ''"
+                :append-icon="search ? 'mdi-magnify' : ''"
                 variant="outlined"
-                @click:append-outer="readInspectionsForHiveId(id, suffix)"
+                @click:append="readInspectionsForHiveId(id, suffix)"
                 @click:clear="clearSearch"
                 @keydown.enter.prevent="readInspectionsForHiveId(id, suffix)"
               ></v-text-field>
             </v-col>
             <v-card-actions class="pl-0">
               <v-icon
-                :class="
-                  `${
-                    filterByAttention ? 'text-red' : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByAttention ? 'text-red' : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="toggleFilterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByReminder ? 'text-red' : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByReminder ? 'text-red' : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="toggleFilterByReminder"
               >
                 mdi-calendar-clock
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(3)
-                      ? 'text-green'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(3)
+                    ? 'text-green'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="updateFilterByImpression(3)"
               >
                 mdi-emoticon-happy
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(2)
-                      ? 'text-orange'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(2)
+                    ? 'text-orange'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="updateFilterByImpression(2)"
               >
                 mdi-emoticon-neutral
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(1)
-                      ? 'text-red'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(1)
+                    ? 'text-red'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="updateFilterByImpression(1)"
               >
                 mdi-emoticon-sad
@@ -125,14 +113,14 @@
               :to="{ name: 'inspect', query: { hiveId: id } }"
               color="black"
             >
-              <v-icon start>mdi-plus</v-icon>
+              <v-icon start color="black">mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>
             <router-link
               v-if="smallScreen"
               :to="{ name: 'inspect', query: { hiveId: id } }"
             >
-              <v-icon dark color="accent">mdi-plus-circle</v-icon></router-link
+              <v-icon color="accent">mdi-plus-circle</v-icon></router-link
             >
           </v-card-actions>
         </v-row>
@@ -152,8 +140,8 @@
       <div
         v-if="
           !noResults &&
-            inspections.inspections !== undefined &&
-            inspectionsData.length
+          inspections.inspections !== undefined &&
+          inspectionsData.length
         "
         class="hive-inspections-view-box"
       >
@@ -161,9 +149,9 @@
           <table>
             <thead>
               <tr class="trh">
-                <th class="tdr"
-                  ><strong>{{ $tc('Inspection', 2) }}</strong></th
-                >
+                <th class="tdr">
+                  <strong>{{ $tc('Inspection', 2) }}</strong>
+                </th>
                 <th
                   v-for="(inspection, a) in inspectionsData"
                   :key="a"
@@ -214,7 +202,7 @@
                   <div
                     v-if="
                       inspection.impression !== null &&
-                        inspection.impression > -1
+                      inspection.impression > -1
                     "
                   >
                     <v-icon
@@ -306,16 +294,12 @@
                           :key="index"
                         >
                           <AddToCalendar
-                            :title="
-                              `BEEP ${$t('reminder')} ${
-                                inspection.reminder !== null
-                                  ? ': ' + inspection.reminder
-                                  : ''
-                              }`
-                            "
-                            :location="
-                              `${activeHive.location} - ${activeHive.name}`
-                            "
+                            :title="`BEEP ${$t('reminder')} ${
+                              inspection.reminder !== null
+                                ? ': ' + inspection.reminder
+                                : ''
+                            }`"
+                            :location="`${activeHive.location} - ${activeHive.name}`"
                             :start="
                               new Date(
                                 inspection.reminder_date.replace(/-/g, '/')
@@ -326,11 +310,9 @@
                                 inspection.reminder_date.replace(/-/g, '/')
                               )
                             "
-                            :details="
-                              `BEEP app ${$tc('Inspection', 1)} @ ${momentify(
-                                inspection.created_at
-                              )}`
-                            "
+                            :details="`BEEP app ${$tc('Inspection', 1)} @ ${momentify(
+                              inspection.created_at
+                            )}`"
                             :calendar="calendarItem"
                           ></AddToCalendar>
                         </template>
@@ -352,13 +334,11 @@
                     <span
                       v-if="inspection.reminder_date !== null"
                       :title="inspection.reminder_date"
-                      :class="
-                        `d-flex justify-center reminder-date ${
-                          $moment(inspection.reminder_date).isBefore()
-                            ? 'text-red'
-                            : 'text-green'
-                        }`
-                      "
+                      :class="`d-flex justify-center reminder-date ${
+                        $moment(inspection.reminder_date).isBefore()
+                          ? 'text-red'
+                          : 'text-green'
+                      }`"
                       v-text="
                         smallScreen
                           ? momentFormat(inspection.reminder_date, 'll')
@@ -381,14 +361,12 @@
                   <v-icon
                     v-if="itemByDate.items === null"
                     :id="`toggle-icon-${itemByDate.name}`"
-                    left
-                    :class="
-                      `toggle-icon mdi ${
-                        hiddenCategories.includes(itemByDate.name)
-                          ? 'mdi-plus'
-                          : 'mdi-minus'
-                      }`
-                    "
+                    start
+                    :class="`toggle-icon mdi ${
+                      hiddenCategories.includes(itemByDate.name)
+                        ? 'mdi-plus'
+                        : 'mdi-minus'
+                    }`"
                     @click="toggleCategory(itemByDate.name)"
                   ></v-icon>
                   <span v-if="itemByDate.items !== null" class="ancestors">{{
@@ -413,10 +391,11 @@
                     <div
                       v-for="(opt, o) in item.val.split(',')"
                       :key="o"
-                      style="margin-bottom: 3px;"
+                      style="margin-bottom: 3px"
                       class="label-inspection"
-                      >{{ opt }}</div
                     >
+                      {{ opt }}
+                    </div>
                   </span>
 
                   <span v-if="item.type === 'options'">{{ item.val }}</span>
@@ -427,7 +406,7 @@
 
                   <span
                     v-if="item.type === 'sample_code'"
-                    style=" font-weight: bold;letter-spacing: 2px;"
+                    style="font-weight: bold; letter-spacing: 2px"
                     >{{ item.val }}</span
                   >
                   <span v-if="item.type === 'date'">{{
@@ -436,7 +415,7 @@
                   <span
                     v-if="
                       item.type !== undefined &&
-                        item.type.indexOf('number') > -1
+                      item.type.indexOf('number') > -1
                     "
                     >{{ item.val }}</span
                   >
@@ -494,17 +473,17 @@
                     </div>
                   </span>
                   <span v-if="item.type === 'score'">
-                    <div class="d-flex flex-row justify-center flex-wrap"
-                      ><v-icon
+                    <div class="d-flex flex-row justify-center flex-wrap">
+                      <v-icon
                         v-for="star in [0, 1, 2, 3, 4]"
                         :key="star + 1"
-                        :x-small="smallScreen"
+                        :size="smallScreen ? 'x-small' : 'default'"
                         :class="
                           star < item.val
                             ? 'color-accent'
                             : smallScreen
-                            ? 'd-none'
-                            : 'color-grey-medium'
+                              ? 'd-none'
+                              : 'color-grey-medium'
                         "
                         >mdi-star</v-icon
                       >
@@ -513,9 +492,7 @@
 
                   <span
                     v-if="item.type === 'grade'"
-                    :style="
-                      `color: ${gradeColor(item.value)}; font-weight: bold;`
-                    "
+                    :style="`color: ${gradeColor(item.value)}; font-weight: bold;`"
                     >{{ item.val }}</span
                   >
                   <span
@@ -525,11 +502,9 @@
                   >
                   <span
                     v-if="item.type === 'score_amount'"
-                    :style="
-                      `color: ${scoreAmountColor(
-                        item.value
-                      )}; font-weight: bold;`
-                    "
+                    :style="`color: ${scoreAmountColor(
+                      item.value
+                    )}; font-weight: bold;`"
                     >{{ scoreAmountOptions[item.value] }}</span
                   >
                   <span v-if="item.type === 'square_25cm2'"
@@ -586,8 +561,8 @@
               show500Response
                 ? $t('something_wrong')
                 : noInspections
-                ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
-                : $t('no_results')
+                  ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
+                  : $t('no_results')
             }}
           </v-col>
         </v-row>
@@ -633,7 +608,7 @@ export default {
     readGeneralInspections,
     readInspectionsForHiveId,
   ],
-  data: function() {
+  data: function () {
     return {
       snackbar: {
         show: false,
@@ -652,8 +627,8 @@ export default {
       ready: false,
       show500Response: false,
       baseApiUrl:
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK,
+        import.meta.env.VITE_BASE_API_URL ||
+        import.meta.env.VITE_E_API_URL_FALLBACK,
       pageIndex: 1,
       searchPageIndex: 1,
       loadingInspections: false,
@@ -722,7 +697,7 @@ export default {
       return this.$i18n.locale
     },
     matchedItemsByDate() {
-      let matchedItemsByDate = []
+      let matchedItemsByDate
       matchedItemsByDate = this.inspections.items_by_date
         .reduce((acc, itemByDate) => {
           if (
@@ -818,8 +793,8 @@ export default {
         ? (searchSpecific !== null
             ? '?' + searchSpecific
             : this.search
-            ? '?search=' + this.search
-            : '') +
+              ? '?search=' + this.search
+              : '') +
           (this.filters ? this.filters : '') +
           (this.searchPageIndex !== 1 ? '&page=' + this.searchPageIndex : '')
         : '?page=' + this.pageIndex
@@ -899,10 +874,10 @@ export default {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.deleteInspection(inspection.id)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1089,6 +1064,7 @@ export default {
         max-width: 80px;
       }
       &.text-green {
+        color: $color-green;
         border-color: $color-green;
       }
     }

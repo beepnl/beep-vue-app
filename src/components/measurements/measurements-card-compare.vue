@@ -14,7 +14,7 @@
             <div>
               <div class="mb-2">
                 <div class="beep-label">
-                  {{ $t('Compare_hives') }}
+                  {{ $t("Compare_hives") }}
                   <v-icon
                     class="ml-1 icon-info cursor-pointer"
                     :size="mobile ? 'x-small' : 'small'"
@@ -27,9 +27,9 @@
 
               <p v-if="showInfo" class="info-text">
                 <em
-                  >{{ $t('compare_hives_exp') + ' '
+                  >{{ $t("compare_hives_exp") + " "
                   }}<a :href="$t('compare_support_url')" target="_blank">{{
-                    $t('compare_url_text')
+                    $t("compare_url_text")
                   }}</a></em
                 >
               </p>
@@ -40,7 +40,7 @@
               class="save-button-mobile-wide"
               @click.prevent="selectHivesOverlay = true"
             >
-              {{ $tc('Select_hive', 2) }}
+              {{ $tc("Select_hive", 2) }}
             </v-btn>
             <SelectHivesOverlay
               v-if="selectHivesOverlay"
@@ -139,7 +139,7 @@
         cols="12"
         class="d-flex align-center justify-center my-16"
       >
-        {{ $t('compare_no_chart_data') }}
+        {{ $t("compare_no_chart_data") }}
       </v-col>
     </v-row>
 
@@ -161,7 +161,10 @@
         class="expandable-section-bar d-flex align-center"
       >
         <v-spacer />
-        <div class="text-overline ml-7" v-text="$t('Compare_with_mean')"></div>
+        <div
+          class="custom-text-overline ml-7"
+          v-text="$t('Compare_with_mean')"
+        ></div>
         <v-spacer />
         <v-icon
           class="mb-1 mr-1"
@@ -180,12 +183,12 @@
         >
           <div
             v-if="!multipleSections && index === 0"
-            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t('Compare_with_mean')"
           ></div>
           <div
             v-if="index === 0"
-            class="text-overline mb-3 text-center"
+            class="custom-text-overline mb-3 text-center"
             v-text="
               compareMeasurementData.resolution
                 ? $tc('measurement', 2) +
@@ -200,7 +203,7 @@
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div class="d-flex justify-center align-center">
             <div
-              class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+              class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
               v-text="$t(COMPARE_SENSOR[sensor])"
             ></div>
             <v-icon
@@ -219,7 +222,7 @@
             <em
               >{{ compareChartExpText
               }}<a :href="$t('compare_support_url')" target="_blank">{{
-                $t('compare_url_text')
+                $t("compare_url_text")
               }}</a></em
             >
           </p>
@@ -252,13 +255,13 @@
         >
           <div
             v-if="j === 0"
-            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$tc('overall_intake_loss')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div class="d-flex justify-center align-center">
             <div
-              class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+              class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
               v-text="$t(COMPARE_SENSOR[sensor])"
             ></div>
             <v-icon
@@ -277,7 +280,7 @@
             <em
               >{{ compareChartExpText
               }}<a :href="$t('compare_support_url')" target="_blank">{{
-                $t('compare_url_text')
+                $t("compare_url_text")
               }}</a></em
             >
           </p>
@@ -315,7 +318,7 @@
         cols="12"
         class="d-flex align-center justify-center my-16"
       >
-        {{ $t('multiple_hives_no_chart_data') }}
+        {{ $t("multiple_hives_no_chart_data") }}
       </v-col>
     </v-row>
 
@@ -337,7 +340,7 @@
       >
         <v-spacer />
         <div
-          class="text-overline ml-7"
+          class="custom-text-overline ml-7"
           v-text="$t('Multiple_hives_charts')"
         ></div>
         <v-spacer />
@@ -358,12 +361,12 @@
         >
           <div
             v-if="!multipleSections && index === 0"
-            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t('Multiple_hives_charts')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div
-            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t(SENSOR_NAMES[sensor])"
           ></div>
           <div>
@@ -394,12 +397,12 @@
         >
           <div
             v-if="index === 0"
-            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div
-            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t(SENSOR_NAMES[sensor])"
           ></div>
           <div>
@@ -425,19 +428,19 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import { mapGetters } from 'vuex'
-import { sensorMixin } from '@mixins/sensorMixin'
-import { timeZone } from '@mixins/momentMixin'
-import SelectHivesOverlay from '@components/select-hives-overlay.vue'
+import MeasurementsChartBar from "@/src/components/measurements/measurements-chart-bar.vue";
+import MeasurementsChartLine from "@/src/components/measurements/measurements-chart-line.vue";
+import Api from "@api/Api";
+import ApiaryPreviewHiveSelector from "@components/apiary-preview-hive-selector.vue";
+import MeasurementsCard from "@components/measurements/measurements-card.vue";
+import SelectHivesOverlay from "@components/select-hives-overlay.vue";
 import {
   lightenColor,
-  readApiariesAndGroupsIfNotPresent,
-} from '@mixins/methodsMixin'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import MeasurementsCard from '@components/measurements/measurements-card.vue'
-import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
-import MeasurementsChartBar from '@/src/components/measurements/measurements-chart-bar.vue'
+  readApiariesAndGroupsIfNotPresent
+} from "@mixins/methodsMixin";
+import { timeZone } from "@mixins/momentMixin";
+import { sensorMixin } from "@mixins/sensorMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -445,70 +448,70 @@ export default {
     MeasurementsCard,
     MeasurementsChartLine,
     MeasurementsChartBar,
-    SelectHivesOverlay,
+    SelectHivesOverlay
   },
   mixins: [
     lightenColor,
     readApiariesAndGroupsIfNotPresent,
     sensorMixin,
-    timeZone,
+    timeZone
   ],
   props: {
     dates: {
       type: Array,
       default: () => [],
-      required: false,
+      required: false
     },
     defaultHiveId: {
       type: Number,
       default: null,
-      required: false,
+      required: false
     },
     measurementData: {
       type: Object,
       default: () => {},
-      required: false,
+      required: false
     },
     interval: {
       type: String,
-      default: 'day',
-      required: true,
+      default: "day",
+      required: true
     },
     inspectionsForCharts: {
       type: Array,
       default: () => [],
-      required: false,
+      required: false
     },
     periodEndString: {
       type: String,
-      default: '',
-      required: false,
+      default: "",
+      required: false
     },
     periodStartString: {
       type: String,
-      default: '',
-      required: false,
+      default: "",
+      required: false
     },
     relativeInterval: {
       type: Boolean,
       default: false,
-      required: true,
+      required: true
     },
     selectedDeviceTitle: {
       type: String,
-      default: '',
-      required: false,
+      default: "",
+      required: false
     },
     timeIndex: {
       type: Number,
       default: 0,
-      required: false,
-    },
+      required: false
+    }
   },
   emits: [
-    'confirm-view-alert',
-    'confirm-view-inspection',
-    'set-period-to-date',
+    "confirm-view-alert",
+    "confirm-view-inspection",
+    "set-period-to-date"
   ],
   data() {
     return {
@@ -520,11 +523,11 @@ export default {
       initMultiple: false,
       loadingCompareData: false,
       selectHivesOverlay: false,
-      cardName: 'Compare',
+      cardName: "Compare",
       ready: false,
       comparingData: false,
       chartCols: 6,
-      SDsigns: ['-', '+'],
+      SDsigns: ["-", "+"],
       showInfo: false,
       selectedHives: [],
       multipleHivesMeasurementData: {},
@@ -533,116 +536,116 @@ export default {
       currentSensors: [],
       currentDebugSensors: [],
       multipleHivesNoChartData: false,
-      fallbackColor: '#d6d6d6',
+      fallbackColor: "#d6d6d6",
       cardExpanded: false,
       showCompareSection: true,
       showMultipleSection: true,
-      chartInfo: [],
-    }
+      chartInfo: []
+    };
   },
   computed: {
-    ...mapGetters('auth', ['permissions']),
-    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
-    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters("auth", ["permissions"]),
+    ...mapGetters("locations", ["apiaries", "groups", "hivesObject"]),
+    ...mapGetters("taxonomy", ["sensorMeasurementsList"]),
     allHivesSelected: {
       get() {
-        return this.selectedHives.length === this.initSelectedHives.length
+        return this.selectedHives.length === this.initSelectedHives.length;
       },
       set(value) {
         if (value === false) {
-          this.selectedHives = []
+          this.selectedHives = [];
         } else {
-          this.selectedHives = [...this.initSelectedHives]
+          this.selectedHives = [...this.initSelectedHives];
         }
-      },
+      }
     },
     compareChartExpText() {
-      const expText = this.$i18n.t('compare_chart_exp', {
-        hivename: '"' + this.defaultHiveName + '"',
-      })
-      return this.defaultHiveIsSelected ? expText : '' // if the default hive is selected, add text that it will not be included in the mean calculation to the compare chart info text
+      const expText = this.$i18n.t("compare_chart_exp", {
+        hivename: '"' + this.defaultHiveName + '"'
+      });
+      return this.defaultHiveIsSelected ? expText : ""; // if the default hive is selected, add text that it will not be included in the mean calculation to the compare chart info text
     },
     compareHives() {
-      const selectedHives = [...this.selectedHives]
+      const selectedHives = [...this.selectedHives];
       if (this.defaultHiveIsSelected) {
-        selectedHives.splice(selectedHives.indexOf(this.defaultHiveId), 1) // always remove default hive id from list of hive ids that are included in the sensorCompareMeasurementRequest because you don't want to included it in the mean you are comparing the default hive against
+        selectedHives.splice(selectedHives.indexOf(this.defaultHiveId), 1); // always remove default hive id from list of hive ids that are included in the sensorCompareMeasurementRequest because you don't want to included it in the mean you are comparing the default hive against
       }
-      return selectedHives
+      return selectedHives;
     },
     defaultHiveName() {
       return this.hivesObject[this.defaultHiveId] !== undefined
         ? this.hivesObject[this.defaultHiveId].name
-        : ''
+        : "";
     },
     defaultHiveIsSelected() {
-      return this.selectedHives.indexOf(this.defaultHiveId) > -1
+      return this.selectedHives.indexOf(this.defaultHiveId) > -1;
     },
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     localVar() {
-      return 'beepChartCols' + this.cardName
+      return "beepChartCols" + this.cardName;
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     multipleHivesDataPresent() {
-      return this.multipleHivesWithData.length > 0 // Object.keys(this.multipleHivesMeasurementData) somehow does not work
+      return this.multipleHivesWithData.length > 0; // Object.keys(this.multipleHivesMeasurementData) somehow does not work
     },
     multipleSections() {
       return (
-        this.permissions.includes('multiple-hives-charts') &&
-        this.permissions.includes('hive-compare')
-      ) // TODO adapt when permissions setup is changed
-    },
+        this.permissions.includes("multiple-hives-charts") &&
+        this.permissions.includes("hive-compare")
+      ); // TODO adapt when permissions setup is changed
+    }
   },
   watch: {
     showCompareSection() {
       if (
         this.showCompareSection &&
-        this.permissions.includes('hive-compare')
+        this.permissions.includes("hive-compare")
       ) {
         this.sensorCompareMeasurementRequest(
           this.interval,
           this.timeIndex,
           this.relativeInterval
-        )
+        );
       }
     },
     showMultipleSection() {
       if (
         this.showMultipleSection &&
-        this.permissions.includes('multiple-hives-charts')
+        this.permissions.includes("multiple-hives-charts")
       ) {
         this.getMultipleHivesMeasurements(
           this.interval,
           this.timeIndex,
           this.relativeInterval
-        )
+        );
       }
-    },
+    }
   },
   created() {
     // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-    this.readApiariesAndGroupsIfNotPresent()
+    this.readApiariesAndGroupsIfNotPresent();
   },
   methods: {
     async getMultipleHivesMeasurements(interval, timeIndex, relativeInterval) {
-      this.loadingData = true
-      this.multipleHivesNoChartData = true
+      this.loadingData = true;
+      this.multipleHivesNoChartData = true;
       await Promise.all(
-        this.selectedHives.map(async (hiveId) => {
+        this.selectedHives.map(async hiveId => {
           await this.sensorMeasurementRequest(
             interval,
             timeIndex,
             relativeInterval,
             hiveId
-          )
-          return true
+          );
+          return true;
         })
-      )
-      this.loadingData = false
-      this.initMultiple = true
+      );
+      this.loadingData = false;
+      this.initMultiple = true;
     },
     async sensorMeasurementRequest(
       interval,
@@ -650,35 +653,35 @@ export default {
       relativeInterval,
       hiveId
     ) {
-      const start = interval === 'selection' ? this.dates[0] : null
-      const end = interval === 'selection' ? this.dates[1] : null
+      const start = interval === "selection" ? this.dates[0] : null;
+      const end = interval === "selection" ? this.dates[1] : null;
       const timeGroup =
-        interval === 'hour' || interval === 'selection' ? null : interval
+        interval === "hour" || interval === "selection" ? null : interval;
 
       try {
         const response = await Api.readRequest(
-          '/sensors/measurements?hive_id=' +
+          "/sensors/measurements?hive_id=" +
             hiveId +
-            '&interval=' +
+            "&interval=" +
             interval +
-            '&index=' +
+            "&index=" +
             timeIndex +
-            '&timeGroup=' +
+            "&timeGroup=" +
             timeGroup +
-            '&timezone=' +
+            "&timezone=" +
             this.timeZone +
-            (start !== null ? '&start=' + start + ' 00:00' : '') +
-            (end !== null && end !== '' ? '&end=' + end + ' 23:59' : '') +
-            '&relative_interval=' +
-            (relativeInterval ? '1' : '0')
-        )
-        this.formatMeasurementData(response.data, hiveId)
-        return true
+            (start !== null ? "&start=" + start + " 00:00" : "") +
+            (end !== null && end !== "" ? "&end=" + end + " 23:59" : "") +
+            "&relative_interval=" +
+            (relativeInterval ? "1" : "0")
+        );
+        this.formatMeasurementData(response.data, hiveId);
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
+          console.log(error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
@@ -687,88 +690,88 @@ export default {
       timeIndex,
       relativeInterval
     ) {
-      const start = interval === 'selection' ? this.dates[0] : null
-      const end = interval === 'selection' ? this.dates[1] : null
+      const start = interval === "selection" ? this.dates[0] : null;
+      const end = interval === "selection" ? this.dates[1] : null;
       const timeGroup =
-        interval === 'hour' || interval === 'selection' ? null : interval
-      this.noCompareChartData = false
-      this.loadingCompareData = true
-      const hivecall = this.compareHives.join('&hive_id[]=')
+        interval === "hour" || interval === "selection" ? null : interval;
+      this.noCompareChartData = false;
+      this.loadingCompareData = true;
+      const hivecall = this.compareHives.join("&hive_id[]=");
       if (this.selectedHives.length > 0) {
         try {
           const response = await Api.readRequest(
-            '/sensors/comparemeasurements?hive_id[]=' +
+            "/sensors/comparemeasurements?hive_id[]=" +
               hivecall +
-              '&interval=' +
+              "&interval=" +
               interval +
-              '&index=' +
+              "&index=" +
               timeIndex +
-              '&timeGroup=' +
+              "&timeGroup=" +
               timeGroup +
-              '&timezone=' +
+              "&timezone=" +
               this.timeZone +
-              (start !== null ? '&start=' + start + ' 00:00' : '') +
-              (end !== null && end !== '' ? '&end=' + end + ' 23:59' : '') +
-              '&relative_interval=' +
-              (relativeInterval ? '1' : '0')
-          )
-          this.formatCompareMeasurementData(response.data)
-          this.ready = true
-          return true
+              (start !== null ? "&start=" + start + " 00:00" : "") +
+              (end !== null && end !== "" ? "&end=" + end + " 23:59" : "") +
+              "&relative_interval=" +
+              (relativeInterval ? "1" : "0")
+          );
+          this.formatCompareMeasurementData(response.data);
+          this.ready = true;
+          return true;
         } catch (error) {
-          this.loadingCompareData = false
-          this.compareMeasurementData = null
+          this.loadingCompareData = false;
+          this.compareMeasurementData = null;
           if (error.response) {
-            console.log(error.response)
+            console.log(error.response);
             if (
               error.response.status === 500 ||
               error.response.status === 404 ||
               error.response.status === 422
             ) {
-              this.noCompareChartData = true
+              this.noCompareChartData = true;
             }
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        return true
+        return true;
       }
     },
     getSensorMeasurement(abbr) {
       const smFilter = this.sensorMeasurementsList.filter(
-        (measurementType) => measurementType.abbreviation === abbr
-      )
-      return smFilter.length > 0 ? smFilter[0] : null
+        measurementType => measurementType.abbreviation === abbr
+      );
+      return smFilter.length > 0 ? smFilter[0] : null;
     },
     chartjsCompareDataSeries(quantities, bar = false) {
       const data = {
         labels: [],
-        datasets: [],
-      }
+        datasets: []
+      };
 
-      let SDdata = null
+      let SDdata = null;
       if (!bar) {
         SDdata = {
           labels: [],
-          datasets: [],
-        }
+          datasets: []
+        };
       }
 
-      quantities.map((compareQuantity, index) => {
-        const compareMt = this.getSensorMeasurement(compareQuantity)
-        const compareSD = this.COMPARE_SD[compareQuantity]
+      quantities.map(compareQuantity => {
+        const compareMt = this.getSensorMeasurement(compareQuantity);
+        const compareSD = this.COMPARE_SD[compareQuantity];
 
         if (compareMt === null || compareMt === undefined) {
-          console.log('compareMt not found ', compareQuantity)
+          console.log("compareMt not found ", compareQuantity);
         } else if (compareMt.show_in_charts === 1) {
           // for data
           data.datasets.push({
             id: compareMt.id,
             abbr: compareMt.abbreviation,
             fill: false,
-            borderColor: '#' + compareMt.hex_color,
-            backgroundColor: '#' + compareMt.hex_color,
+            borderColor: "#" + compareMt.hex_color,
+            backgroundColor: "#" + compareMt.hex_color,
             borderRadius: 2,
             label: this.getSensorLabel(
               this.compareMeasurementData.sensorDefinitions,
@@ -780,22 +783,22 @@ export default {
               compareQuantity
             ),
             unit:
-              compareMt.unit !== '-' && compareMt.unit !== null
+              compareMt.unit !== "-" && compareMt.unit !== null
                 ? compareMt.unit
-                : '',
+                : "",
             data: [],
-            spanGaps: this.interval === 'hour' || this.interval === 'day',
-            mtType: 'compare',
-          })
+            spanGaps: this.interval === "hour" || this.interval === "day",
+            mtType: "compare"
+          });
 
           if (!bar) {
             // for sd
-            this.SDsigns.map((sign) => {
+            this.SDsigns.map(sign => {
               SDdata.datasets.push({
                 id: compareSD,
                 abbr: compareSD + sign,
                 fill: 0,
-                borderColor: '#' + compareMt.hex_color,
+                borderColor: "#" + compareMt.hex_color,
                 backgroundColor: this.lightenColor(
                   compareMt.hex_color,
                   8,
@@ -806,29 +809,29 @@ export default {
                 hidden: false,
                 // showLine: false,
                 pointRadius: 0,
-                label: 'mean ' + sign + ' SD',
-                name: 'mean ' + sign + ' SD',
-                unit: '',
+                label: "mean " + sign + " SD",
+                name: "mean " + sign + " SD",
+                unit: "",
                 data: [],
-                spanGaps: this.interval === 'hour' || this.interval === 'day',
-                mtType: 'compareSD',
-              })
-              return true
-            })
+                spanGaps: this.interval === "hour" || this.interval === "day",
+                mtType: "compareSD"
+              });
+              return true;
+            });
           }
 
-          const quantity = this.COMPARE_SENSOR[compareQuantity]
-          const mt = this.getSensorMeasurement(quantity)
+          const quantity = this.COMPARE_SENSOR[compareQuantity];
+          const mt = this.getSensorMeasurement(quantity);
 
           if (mt === null || mt === undefined) {
-            console.log('mt not found ', quantity)
+            console.log("mt not found ", quantity);
           } else if (mt.show_in_charts === 1) {
             data.datasets.push({
               id: mt.id,
               abbr: mt.abbreviation,
               fill: false,
-              borderColor: '#' + mt.hex_color,
-              backgroundColor: '#' + mt.hex_color,
+              borderColor: "#" + mt.hex_color,
+              backgroundColor: "#" + mt.hex_color,
               borderRadius: 2,
               label: this.getSensorLabel(
                 this.measurementData.sensorDefinitions,
@@ -839,167 +842,167 @@ export default {
                 this.measurementData.sensorDefinitions,
                 quantity
               ),
-              unit: mt.unit !== '-' && mt.unit !== null ? mt.unit : '',
+              unit: mt.unit !== "-" && mt.unit !== null ? mt.unit : "",
               data: [],
-              spanGaps: this.interval === 'hour' || this.interval === 'day',
-              mtType: 'normal',
-            })
+              spanGaps: this.interval === "hour" || this.interval === "day",
+              mtType: "normal"
+            });
           }
         }
-        return true
-      })
+        return true;
+      });
 
       if (
-        typeof this.compareMeasurementData.measurements !== 'undefined' &&
+        typeof this.compareMeasurementData.measurements !== "undefined" &&
         this.compareMeasurementData.measurements.length > 0
       ) {
         this.compareMeasurementData.measurements.map((measurement, index) => {
           if (
             (!this.relativeInterval &&
-              (this.interval === 'hour' ||
-                this.interval === 'day' ||
-                this.interval === 'week' ||
-                this.interval === 'year' ||
+              (this.interval === "hour" ||
+                this.interval === "day" ||
+                this.interval === "week" ||
+                this.interval === "year" ||
                 // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
                 index !== 0)) ||
             this.relativeInterval
           ) {
-            data.datasets.map((dataset, index) => {
-              if (dataset.mtType === 'compare') {
-                const compareQuantity = dataset.abbr
+            data.datasets.map(dataset => {
+              if (dataset.mtType === "compare") {
+                const compareQuantity = dataset.abbr;
 
                 dataset.data.push({
                   x: measurement.time,
-                  y: measurement[compareQuantity],
-                })
+                  y: measurement[compareQuantity]
+                });
 
                 if (!bar) {
-                  const compareSD = this.COMPARE_SD[compareQuantity]
-                  if (compareSD !== 'undefined' && compareSD !== null) {
-                    this.SDsigns.map((sign) => {
-                      const abbr = compareSD + sign
+                  const compareSD = this.COMPARE_SD[compareQuantity];
+                  if (compareSD !== "undefined" && compareSD !== null) {
+                    this.SDsigns.map(sign => {
+                      const abbr = compareSD + sign;
                       const dataset = SDdata.datasets.filter(
-                        (dataset) => dataset.abbr === abbr
-                      )[0]
+                        dataset => dataset.abbr === abbr
+                      )[0];
 
                       dataset.data.push({
                         x: measurement.time,
                         y:
-                          sign === '-'
+                          sign === "-"
                             ? measurement[compareQuantity] -
                               measurement[compareSD]
                             : measurement[compareQuantity] +
-                              measurement[compareSD],
-                      })
-                      return true
-                    })
+                              measurement[compareSD]
+                      });
+                      return true;
+                    });
                   }
                 }
               }
-              return dataset
-            })
+              return dataset;
+            });
           }
-          return true
-        })
+          return true;
+        });
       }
 
       if (
-        typeof this.measurementData.measurements !== 'undefined' &&
+        typeof this.measurementData.measurements !== "undefined" &&
         this.measurementData.measurements.length > 0
       ) {
         this.measurementData.measurements.map((measurement, index) => {
           if (
             (!this.relativeInterval &&
-              (this.interval === 'hour' ||
-                this.interval === 'day' ||
-                this.interval === 'week' ||
-                this.interval === 'year' ||
+              (this.interval === "hour" ||
+                this.interval === "day" ||
+                this.interval === "week" ||
+                this.interval === "year" ||
                 // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
                 index !== 0)) ||
             this.relativeInterval
           ) {
-            data.datasets.map((dataset, index) => {
-              if (dataset.mtType === 'normal') {
-                const quantity = dataset.abbr
+            data.datasets.map(dataset => {
+              if (dataset.mtType === "normal") {
+                const quantity = dataset.abbr;
 
                 dataset.data.push({
                   x: measurement.time,
-                  y: measurement[quantity],
-                })
+                  y: measurement[quantity]
+                });
               }
-              return true
-            })
+              return true;
+            });
           }
-          return true
-        })
+          return true;
+        });
       }
 
       // console.log('bar')
       // console.log(bar)
       if (bar) {
-        data.datasets.map((barset, index) => {
+        data.datasets.map(barset => {
           // console.log(barset.name)
-          const allData = barset.data
-          const barData = allData.reduce((resultArray, item, index) => {
+          const allData = barset.data;
+          const barData = allData.reduce((resultArray, item) => {
             if (!resultArray[0]) {
-              resultArray[0] = item // save at least something
+              resultArray[0] = item; // save at least something
             }
             if (item.y !== null && resultArray[0].y === null) {
               // save first item that is not null
-              resultArray[0].y = item.y
+              resultArray[0].y = item.y;
             }
             if (item.y !== null) {
               // save last item that is not null
-              resultArray[1] = item
+              resultArray[1] = item;
             }
-            return resultArray
-          }, [])
+            return resultArray;
+          }, []);
           // console.log(barData)
-          const bdy1 = barData[0] && barData[0].y ? barData[0].y : null
-          const bdy2 = barData[1] && barData[1].y ? barData[1].y : null
-          const barDiffData = { x: this.$i18n.tc(this.interval, 1), y: null }
+          const bdy1 = barData[0] && barData[0].y ? barData[0].y : null;
+          const bdy2 = barData[1] && barData[1].y ? barData[1].y : null;
+          const barDiffData = { x: this.$i18n.tc(this.interval, 1), y: null };
           if (bdy1 !== null && bdy2 !== null) {
-            barDiffData.y = bdy2 - bdy1
+            barDiffData.y = bdy2 - bdy1;
           }
           // console.log(barDiffData)
-          barset.data = [barDiffData]
-          return barset
-        })
+          barset.data = [barDiffData];
+          return barset;
+        });
       }
 
       if (!bar) {
-        data.datasets.push.apply(data.datasets, SDdata.datasets)
+        data.datasets.push.apply(data.datasets, SDdata.datasets);
       }
 
-      return data
+      return data;
     },
     chartjsMultipleHivesDataSeries(quantity) {
       const data = {
         labels: [],
-        datasets: [],
-      }
+        datasets: []
+      };
 
-      const mT = this.getSensorMeasurement(quantity)
+      const mT = this.getSensorMeasurement(quantity);
 
       if (mT === null || mT === undefined) {
-        console.log('mT not found ', quantity)
+        console.log("mT not found ", quantity);
       } else if (mT.show_in_charts === 1) {
-        this.selectedHives.map((hiveId) => {
-          const hiveData = []
+        this.selectedHives.map(hiveId => {
+          const hiveData = [];
           if (
-            typeof this.multipleHivesMeasurementData[hiveId] !== 'undefined' &&
+            typeof this.multipleHivesMeasurementData[hiveId] !== "undefined" &&
             typeof this.multipleHivesMeasurementData[hiveId].measurements !==
-              'undefined' &&
+              "undefined" &&
             this.multipleHivesMeasurementData[hiveId].measurements.length > 0
           ) {
             this.multipleHivesMeasurementData[hiveId].measurements.map(
               (measurement, index) => {
                 if (
                   (!this.relativeInterval &&
-                    (this.interval === 'hour' ||
-                      this.interval === 'day' ||
-                      this.interval === 'week' ||
-                      this.interval === 'year' ||
+                    (this.interval === "hour" ||
+                      this.interval === "day" ||
+                      this.interval === "week" ||
+                      this.interval === "year" ||
                       // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
                       index !== 0)) ||
                   this.relativeInterval
@@ -1007,21 +1010,21 @@ export default {
                   if (measurement[quantity] !== undefined) {
                     hiveData.push({
                       x: measurement.time,
-                      y: measurement[quantity],
-                    })
+                      y: measurement[quantity]
+                    });
                   }
                 }
-                return true
+                return true;
               }
-            )
+            );
 
             const hiveColor =
               this.hivesObject[hiveId].layers[0].color !== null
                 ? this.hivesObject[hiveId].layers[0].color
-                : this.fallbackColor
+                : this.fallbackColor;
 
             data.datasets.push({
-              id: mT.id + '_' + hiveId,
+              id: mT.id + "_" + hiveId,
               abbr: mT.abbreviation,
               fill: false,
               borderColor: hiveColor,
@@ -1029,26 +1032,26 @@ export default {
               borderRadius: 2,
               label: this.hivesObject[hiveId].name,
               name: this.hivesObject[hiveId].name,
-              unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
+              unit: mT.unit !== "-" && mT.unit !== null ? mT.unit : "",
               data: hiveData,
-              spanGaps: this.interval === 'hour' || this.interval === 'day', // false,
-            })
+              spanGaps: this.interval === "hour" || this.interval === "day" // false,
+            });
           }
-          return true
-        })
+          return true;
+        });
       }
 
-      return data
+      return data;
     },
     confirmViewAlert(alert) {
       // TODO: add alert lines to compare charts!
-      this.$emit('confirm-view-alert', alert)
+      this.$emit("confirm-view-alert", alert);
     },
     confirmViewInspection(inspectionId, inspectionDate) {
-      this.$emit('confirm-view-inspection', {
+      this.$emit("confirm-view-inspection", {
         id: inspectionId,
-        date: inspectionDate,
-      })
+        date: inspectionDate
+      });
     },
     formatCompareMeasurementData(compareMeasurementData) {
       if (
@@ -1058,40 +1061,40 @@ export default {
       ) {
         compareMeasurementData.measurements.sort(function(a, b) {
           if (a.time < b.time) {
-            return -1
+            return -1;
           }
           if (a.time > b.time) {
-            return 1
+            return 1;
           }
-          return 0
-        })
+          return 0;
+        });
 
-        this.compareMeasurementData = compareMeasurementData
-        this.currentCompareSensors = []
-        this.compareSensorsPresent = false
+        this.compareMeasurementData = compareMeasurementData;
+        this.currentCompareSensors = [];
+        this.compareSensorsPresent = false;
         // console.log(this.compareMeasurementData)
         Object.keys(this.compareMeasurementData.measurements[0])
           .sort(function(a, b) {
             if (a > b) {
-              return -1
+              return -1;
             }
             if (a < b) {
-              return 1
+              return 1;
             }
-            return a < b
+            return a < b;
           })
-          .map((quantity) => {
+          .map(quantity => {
             if (this.COMPARE.indexOf(quantity) > -1) {
-              this.currentCompareSensors.push(quantity)
-              this.compareSensorsPresent = true
+              this.currentCompareSensors.push(quantity);
+              this.compareSensorsPresent = true;
             }
-            return true
-          })
+            return true;
+          });
       } else {
-        this.compareMeasurementData = null
-        this.noCompareChartData = true
+        this.compareMeasurementData = null;
+        this.noCompareChartData = true;
       }
-      this.loadingCompareData = false
+      this.loadingCompareData = false;
     },
     formatMeasurementData(measurementData, hiveId) {
       if (
@@ -1099,72 +1102,72 @@ export default {
         measurementData.measurements &&
         measurementData.measurements.length > 0
       ) {
-        this.multipleHivesNoChartData = false
+        this.multipleHivesNoChartData = false;
         measurementData.measurements.sort(function(a, b) {
           if (a.time < b.time) {
-            return -1
+            return -1;
           }
           if (a.time > b.time) {
-            return 1
+            return 1;
           }
-          return 0
-        })
-        this.multipleHivesMeasurementData[hiveId] = measurementData
+          return 0;
+        });
+        this.multipleHivesMeasurementData[hiveId] = measurementData;
         if (!this.multipleHivesWithData.includes(hiveId)) {
-          this.multipleHivesWithData.push(hiveId) // keep track of for which hiveId data is included, as Object.keys() does not work
+          this.multipleHivesWithData.push(hiveId); // keep track of for which hiveId data is included, as Object.keys() does not work
         }
 
-        Object.keys(measurementData.measurements[0]).map((quantity) => {
+        Object.keys(measurementData.measurements[0]).map(quantity => {
           if (
             this.SENSORS.indexOf(quantity) > -1 &&
             this.currentSensors.indexOf(quantity) === -1
           ) {
-            this.currentSensors.push(quantity)
+            this.currentSensors.push(quantity);
           } else if (
             this.DEBUG.indexOf(quantity) > -1 &&
             this.currentDebugSensors.indexOf(quantity) === -1
           ) {
-            this.currentDebugSensors.push(quantity)
+            this.currentDebugSensors.push(quantity);
           }
-          return true
-        })
+          return true;
+        });
       } else if (this.multipleHivesWithData.includes(hiveId)) {
         // if previous data contains measurements for this hiveId, but not for the current measurements request, delete it from the data
-        delete this.multipleHivesMeasurementData[hiveId]
+        delete this.multipleHivesMeasurementData[hiveId];
         this.multipleHivesWithData.splice(
           this.multipleHivesWithData.indexOf(hiveId),
           1
-        )
+        );
       }
     },
     getHives(hiveIds) {
-      const hivesArray = []
-      hiveIds.map((hiveId) => {
-        hivesArray.push(this.hivesObject[hiveId])
-        return true
-      })
-      return hivesArray
+      const hivesArray = [];
+      hiveIds.map(hiveId => {
+        hivesArray.push(this.hivesObject[hiveId]);
+        return true;
+      });
+      return hivesArray;
     },
     getSensorLabel(sensordefs, quantity, unit) {
       const label =
         this.getSensorName(sensordefs, quantity) +
-        (unit !== '-' && unit !== '' && unit !== null ? ' (' + unit + ')' : '')
+        (unit !== "-" && unit !== "" && unit !== null ? " (" + unit + ")" : "");
 
-      return label.replace(/^0/, '')
+      return label.replace(/^0/, "");
     },
     getSensorName(sensordefs, quantity) {
       const trans =
         sensordefs[quantity] && sensordefs[quantity].name !== null
           ? sensordefs[quantity].name
-          : this.$i18n.t(quantity)
+          : this.$i18n.t(quantity);
 
       const hive =
-        ' (' +
-        (quantity.indexOf('mean_') === -1
+        " (" +
+        (quantity.indexOf("mean_") === -1
           ? this.defaultHiveName
-          : this.$i18n.tc('selected_hive', this.initSelectedHives.length)) +
-        ')'
-      return trans + hive
+          : this.$i18n.tc("selected_hive", this.initSelectedHives.length)) +
+        ")";
+      return trans + hive;
     },
     loadCompareData(
       init = false,
@@ -1173,58 +1176,58 @@ export default {
       relativeInterval = null
     ) {
       if (init) {
-        this.comparingData = true
+        this.comparingData = true;
       }
       if (this.comparingData && this.cardExpanded) {
-        const i = interval !== null ? interval : this.interval
-        const t = timeIndex !== null ? timeIndex : this.timeIndex
+        const i = interval !== null ? interval : this.interval;
+        const t = timeIndex !== null ? timeIndex : this.timeIndex;
         const r =
-          relativeInterval !== null ? relativeInterval : this.relativeInterval
+          relativeInterval !== null ? relativeInterval : this.relativeInterval;
         if (
           this.showCompareSection &&
-          this.permissions.includes('hive-compare')
+          this.permissions.includes("hive-compare")
         ) {
-          this.sensorCompareMeasurementRequest(i, t, r)
+          this.sensorCompareMeasurementRequest(i, t, r);
         }
         if (
           this.showMultipleSection &&
-          this.permissions.includes('multiple-hives-charts')
+          this.permissions.includes("multiple-hives-charts")
         ) {
-          this.getMultipleHivesMeasurements(i, t, r)
+          this.getMultipleHivesMeasurements(i, t, r);
         }
       }
     },
     selectHive(id) {
       if (!this.selectedHives.includes(id)) {
-        this.selectedHives.push(id)
+        this.selectedHives.push(id);
       } else {
-        this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
+        this.selectedHives.splice(this.selectedHives.indexOf(id), 1);
       }
-      this.loadCompareData(true)
+      this.loadCompareData(true);
     },
     selectHives(hives) {
-      this.initSelectedHives = [...hives]
-      this.selectedHives = [...hives]
-      this.loadCompareData(true)
+      this.initSelectedHives = [...hives];
+      this.selectedHives = [...hives];
+      this.loadCompareData(true);
     },
     setPeriodToDate(date) {
-      this.$emit('set-period-to-date', date)
+      this.$emit("set-period-to-date", date);
     },
     toggleCardExpanded(bool) {
-      this.cardExpanded = bool
+      this.cardExpanded = bool;
       if (this.cardExpanded) {
-        this.loadCompareData()
+        this.loadCompareData();
       }
     },
     toggleChartInfo(index) {
       if (this.chartInfo.indexOf(index) > -1) {
-        this.chartInfo.splice(this.chartInfo.indexOf(index), 1)
+        this.chartInfo.splice(this.chartInfo.indexOf(index), 1);
       } else {
-        this.chartInfo.push(index)
+        this.chartInfo.push(index);
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -1237,7 +1240,7 @@ export default {
 }
 
 .expandable-section {
-  @extend .rounded-border;
+  @extend .rounded-border !optional;
   border: thin solid rgba(0, 0, 0, 0.12);
   padding: 4px;
   margin-left: 4px;

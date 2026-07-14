@@ -1,8 +1,6 @@
 <template>
   <Layout
-    :title="
-      `${checklistsPage ? $tc('Checklist_template', 2) : $t('Edit_checklist')}`
-    "
+    :title="`${checklistsPage ? $tc('Checklist_template', 2) : $t('Edit_checklist')}`"
     :edited="checklistEdited"
   >
     <h1
@@ -11,12 +9,12 @@
     >
       {{
         $t('sorry') +
-          ', ' +
-          $tc('checklist', 1) +
-          ' "' +
-          activeChecklist.name +
-          '" ' +
-          $t('not_editable')
+        ', ' +
+        $tc('checklist', 1) +
+        ' "' +
+        activeChecklist.name +
+        '" ' +
+        $t('not_editable')
       }}
     </h1>
 
@@ -34,7 +32,7 @@
           v-if="!mobile && activeChecklist"
           color="primary"
           class="mr-3"
-          :small="smAndDown"
+          :size="smAndDown ? 'small' : 'default'"
           @click="initNewChecklist"
         >
           <v-icon color="primary" :start="!smallScreen">mdi-plus</v-icon>
@@ -44,7 +42,7 @@
           v-if="!mobile && activeChecklist"
           color="primary"
           class="mr-3"
-          :small="smAndDown"
+          :size="smAndDown ? 'small' : 'default'"
           @click="createChecklist(true)"
         >
           <v-icon color="primary" :start="!smallScreen"
@@ -57,7 +55,7 @@
           class="mr-3"
           color="red"
           :disabled="showDeleteLoadingIcon"
-          :small="smAndDown"
+          :size="smAndDown ? 'small' : 'default'"
           @click="confirmDeleteChecklist"
         >
           <v-progress-circular
@@ -83,10 +81,10 @@
           type="submit"
           :disabled="
             !valid ||
-              (activeChecklist && !activeChecklist.owner) ||
-              showLoadingIcon
+            (activeChecklist && !activeChecklist.owner) ||
+            showLoadingIcon
           "
-          :small="smAndDown"
+          :size="smAndDown ? 'small' : 'default'"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -96,7 +94,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -110,13 +108,13 @@
       <v-container
         v-if="
           ready &&
-            ((activeChecklist && activeChecklist.owner) || checklistsPage)
+          ((activeChecklist && activeChecklist.owner) || checklistsPage)
         "
         class="content-container"
       >
         <v-btn
           v-if="mobile && activeChecklist"
-          small
+          size="small"
           color="primary"
           class="save-button-mobile-wide mt-n2 mb-3"
           @click="initNewChecklist"
@@ -126,7 +124,7 @@
         </v-btn>
         <v-btn
           v-if="mobile && activeChecklist"
-          small
+          size="small"
           color="primary"
           class="save-button-mobile-wide mb-5"
           @click="createChecklist(true)"
@@ -147,21 +145,25 @@
             v-if="
               checklistsPage && checklists !== null && checklists.length > 1
             "
-            class="d-flex"
             cols="12"
             sm="4"
           >
-            <v-select
-              v-model="selectedChecklistId"
-              class="select-checklist"
-              :items="checklists"
-              :item-title="getText"
-              item-value="id"
-              hide-details
-              :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
-              @update:model-value="readChecklistAndTaxonomy($event)"
-            >
-            </v-select>
+            <div class="d-flex flex-column">
+              <div
+                class="beep-label mb-0"
+                v-text="$t('Select') + ' ' + $tc('checklist', 1)"
+              ></div>
+              <v-select
+                v-model="selectedChecklistId"
+                :items="checklists"
+                :item-title="getText"
+                item-value="id"
+                hide-details
+                single-line
+                @update:model-value="readChecklistAndTaxonomy($event)"
+              >
+              </v-select>
+            </div>
           </v-col>
           <v-col cols="12" sm="6" md="4">
             <v-text-field
@@ -182,21 +184,25 @@
             </div>
           </v-col>
           <v-col v-if="!retrievingChecklist && activeChecklist" cols="12">
-            <p v-if="!activeChecklist.owner" class="description">{{
-              $t('sorry') +
+            <p v-if="!activeChecklist.owner" class="description">
+              {{
+                $t('sorry') +
                 ', ' +
                 $tc('checklist', 1) +
                 ' "' +
                 activeChecklist.name +
                 '" ' +
                 $t('not_editable')
-            }}</p>
+              }}
+            </p>
             <div class="beep-label" v-text="`${$t('Checklist_items')}`"></div>
-            <p v-if="activeChecklist.owner" class="description">{{
-              mobile || touchDevice
-                ? $t('edit_hive_checklist_touch')
-                : $t('edit_hive_checklist_no_touch')
-            }}</p>
+            <p v-if="activeChecklist.owner" class="description">
+              {{
+                mobile || touchDevice
+                  ? $t('edit_hive_checklist_touch')
+                  : $t('edit_hive_checklist_no_touch')
+              }}
+            </p>
             <checklistTree
               v-if="activeChecklistTaxonomy"
               :items="activeChecklistTaxonomy"
@@ -214,11 +220,12 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
-import checklistTree from '@components/checklist-tree.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import checklistTree from '@components/checklist-tree.vue'
+import { touchDevice } from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -226,7 +233,8 @@ export default {
     Layout,
     checklistTree,
   },
-  data: function() {
+  mixins: [touchDevice],
+  data: function () {
     return {
       activeChecklist: null,
       activeChecklistTaxonomy: null,
@@ -290,9 +298,6 @@ export default {
     },
     storedInspectionMode() {
       return localStorage.beepSelectedInspectionMode
-    },
-    touchDevice() {
-      return window.matchMedia('(hover: none)').matches
     },
   },
   watch: {
@@ -436,7 +441,7 @@ export default {
         return true
       }
     },
-    async updateChecklist(newChecklist = false) {
+    async updateChecklist() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         let categoryIds = null
@@ -527,7 +532,7 @@ export default {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           if (this.activeChecklist.id === undefined) {
             this.selectedChecklistId = null
             this.activeChecklist = null
@@ -535,7 +540,7 @@ export default {
             this.deleteChecklist(this.activeChecklist.id)
           }
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },

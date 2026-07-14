@@ -2,7 +2,7 @@
   <v-row class="queen-details-wrapper">
     <v-col cols="12">
       <div
-        class="text-overline mb-3"
+        class="custom-text-overline mb-3"
         v-text="`${$t('Queen') + ' ' + $t('details')}`"
       ></div>
       <div class="rounded-border">
@@ -13,7 +13,6 @@
                 :model-value="queen ? queen.name : null"
                 :label="`${$t('Queen')} ${$t('name')}`"
                 :placeholder="`${$t('Queen')} ${$t('name')}`"
-                height="36px"
                 class="queen-name"
                 counter="30"
                 clearable
@@ -24,7 +23,7 @@
 
             <div>
               <div class="beep-label" v-text="`${$t('Bee_race')}`"></div>
-              <Treeselect
+              <TreeselectVue3
                 :model-value="queen ? queen.race_id : null"
                 :options="treeselectBeeRaces"
                 :no-results-text="`${$t('no_results')}`"
@@ -39,7 +38,7 @@
               <div class="d-flex justify-flex-start align-center">
                 <v-icon
                   class="mr-2"
-                  :color="queenBirthDate !== null ? 'accent' : ''"
+                  :color="queenBirthDate !== '' ? 'accent' : ''"
                   >mdi-calendar-clock</v-icon
                 >
                 <div>
@@ -57,10 +56,10 @@
                     :locale="locale"
                     :select-text="$t('ok')"
                     :cancel-text="$t('Cancel')"
-                    class=" text-accent"
+                    class="text-accent"
                     @update:model-value="datePickerUpdate"
                   >
-                    <template v-slot:clear-icon="{ clear }">
+                    <template v-slot:clear-icon>
                       <span
                         class="description clear-icon mr-1"
                         @click="cancelDatePicker"
@@ -81,8 +80,7 @@
                     ? momentAge(queen.birth_date)
                     : `0` + ` ${$t('years_old')}`
                 "
-              >
-              </p>
+              ></p>
             </div>
           </v-col>
           <v-col cols="12" sm="7" md="6" lg="4">
@@ -90,7 +88,6 @@
               <v-text-field
                 :model-value="queen ? queen.description : null"
                 :label="`${$t('Queen')} ${$t('queen_description')}`"
-                height="36px"
                 counter="100"
                 clearable
                 @update:model-value="updateQueen($event, 'description')"
@@ -127,12 +124,11 @@
                 <div>
                   <div class="mr-2 mb-2">
                     <v-sheet
-                      :class="
-                        `beep-icon beep-icon-queen beep-icon-queen--large ${
-                          darkIconColor(queenColor) ? 'dark' : ''
-                        }`
-                      "
+                      :class="`beep-icon beep-icon-queen beep-icon-queen--large ${
+                        darkIconColor(queenColor) ? 'dark' : ''
+                      }`"
                       :color="queenColor"
+                      :style="`border-color: ${queenColor};`"
                     >
                     </v-sheet>
                   </div>
@@ -156,7 +152,6 @@
 </template>
 
 <script>
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import { darkIconMixin } from '@mixins/darkIconMixin'
 import { getLabel, readTaxonomy } from '@mixins/methodsMixin'
 import {
@@ -167,9 +162,6 @@ import {
 import { mapGetters } from 'vuex'
 
 export default {
-  components: {
-    Treeselect,
-  },
   mixins: [
     darkIconMixin,
     getLabel,
@@ -185,7 +177,7 @@ export default {
       required: true,
     },
   },
-  data: function() {
+  data: function () {
     return {
       queen_colors: [
         // year ending of birth year is index
@@ -216,9 +208,7 @@ export default {
   computed: {
     ...mapGetters('taxonomy', ['beeRacesList']),
     endOfToday() {
-      return this.$moment()
-        .endOf('day')
-        .format()
+      return this.$moment().endOf('day').format()
     },
     locale() {
       return this.$i18n.locale
@@ -232,7 +222,7 @@ export default {
         })
         const sortedTreeselectArray = treeselectArray
           .slice()
-          .sort(function(a, b) {
+          .sort(function (a, b) {
             if (a.label < b.label) {
               return -1
             }
@@ -336,7 +326,7 @@ export default {
       return int === 1
     },
     updateQueen(event, property) {
-      let value = null
+      let value
       if (event === null || typeof event === 'undefined') {
         value = null
       } else if (event.target !== undefined) {

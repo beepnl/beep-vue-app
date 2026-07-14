@@ -1,161 +1,308 @@
+// =============================================================================
+// vuetify.scss — Vuetify configuration + our overrides
+//
+// @use must come first and cannot be inside a @layer block, so the settings
+// forward is done at the top level. Vuetify itself emits into its own layers
+// (vuetify-core, vuetify-components, vuetify-utilities).
+//
+// Our custom overrides sit in @layer vuetify-overrides, which is declared in
+// index.scss and slots between vuetify-components and vuetify-utilities in the
+// cascade — giving us clean specificity without !important spam.
+// =============================================================================
+@use 'tokens' as *;
+
 @use '../../../node_modules/vuetify/settings' with (
   $list-item-plain-opacity: 1,
   $overlay-opacity: 0.7,
+  $slider-track-active-size-offset: 0px
 );
 
-.sensordef-table {
-  min-height: 130px;
-  .v-table__wrapper {
-    min-height: 112px;
+@layer vuetify-core.reset {
+  // * {
+  //   padding: 0;
+  //   margin: 0;
+  // }
+
+  ul,
+  ol,
+  figure,
+  details,
+  summary {
+    padding: 0;
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
   }
 }
 
-.slider--large .v-input__control {
-  width: 100%;
-}
-
-.text-accent .v-icon {
-  color: $color-accent !important;
-}
-
-.v-alert__content {
-  overflow: visible !important;
-}
-
-.v-card--variant-outlined {
-  border: thin solid #ccc !important;
-}
-
-.v-container {
-  padding: 12px !important;
-  @include for-tablet-landscape-up {
-    max-width: calc(100vw - 48px) !important;
+@layer vuetify-overrides {
+  .v-row {
+    gap: unset;
+    margin: calc(var(--v-col-gap-y) * -0.5) calc(var(--v-col-gap-x) * -0.5);
   }
-}
 
-.v-data-table-footer {
-  margin-top: 16px !important;
-}
-
-.v-field.v-field--appended {
-  padding-inline-end: 0px;
-}
-
-.v-textarea .v-field__field {
-  --v-input-control-height: calc(var(--v-textarea-control-height) + 20px);
-}
-
-.v-input textarea {
-  padding: 14px 4px 4px !important;
-}
-
-.v-field:not(.v-field--focused):not(.v-field--active) .v-label.v-field-label {
-  font-size: 16px !important;
-  margin-top: 8px;
-}
-
-.v-input
-  .v-field--center-affix:not(.v-field--focused):not(.v-field--active)
-  .v-label.v-field-label {
-  margin-top: 12px !important;
-  top: 20% !important;
-  margin-left: 8px; //
-}
-
-.v-field--active.v-field--variant-underlined .v-label.v-field-label {
-  font-size: 0.75rem !important;
-}
-
-.v-list-item-title {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1rem;
-}
-
-.v-list-item__prepend > .v-icon ~ .v-list-item__spacer {
-  width: 12px !important;
-}
-
-.v-list-item-subtitle {
-  color: rgba(0, 0, 0, 0.6) !important;
-  font-size: 0.8125rem !important;
-}
-
-.v-label {
-  font-size: 0.75rem !important;
-  line-height: 1rem;
-  letter-spacing: 0.0333333333em !important;
-}
-
-.v-progress-circular__underlay {
-  color: #ffffff !important;
-}
-
-.v-selection-control--density-default.hivetag-radio {
-  max-width: 45px;
-  margin-top: -2px;
-}
-
-.v-slider.v-input--horizontal
-  .v-slider-track__tick
-  .v-slider-track__tick-label {
-  font-size: 0.75rem !important;
-  transform: translateX(-50%) !important;
-}
-
-.v-table .v-input--density-compact {
-  .v-field--variant-solo {
-    --v-input-control-height: 30px !important;
+  .v-row + .v-row {
+    margin-top: calc(var(--v-col-gap-y) * 0.5);
   }
-  .v-field--no-label {
-    --v-field-padding-bottom: 0px !important;
-  }
-}
 
-.v-theme--beepTheme {
-  --v-medium-emphasis-opacity: 1;
-  --v-hover-opacity: 0;
-  --v-border-color: #ccc;
-}
-
-.v-text-field:not(.v-field--variant-underlined):not(.v-field--variant-solo):not(.v-select):not(.beep-search-field) {
-  input {
-    padding: 8px 0 0 4px !important; // 8px 0 0 2px
+  .v-col {
+    padding: calc(var(--v-col-gap-y) * 0.5) calc(var(--v-col-gap-x) * 0.5);
+    flex-basis: var(
+        --v-col-is-size,
+        calc(100% * var(--v-col-size) / var(--v-col-size-columns))
+      )
+      var(--v-col-is-auto, auto) var(--v-col-is-grow, 0);
   }
-  &.beep-text-field {
-    input {
-      padding: 8px 0 0 8px !important; // 8px 0 0 2px
+
+  .v-col:where([class*='v-col--offset-']) {
+    margin-inline-start: calc(
+      100% * var(--v-col-offset) / var(--v-col-size-columns)
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Everything below is our Vuetify component style tuning.
+  // Uses @layer overrides so it wins over vuetify-final without !important.
+  // ---------------------------------------------------------------------------
+
+  .sensordef-table {
+    min-height: 130px;
+    .v-table__wrapper {
+      min-height: 112px;
     }
   }
-}
 
-.v-text-field.beep-search-field input {
-  padding: 6px 0 0 8px !important;
-  @include for-phone-only {
-    padding: 0 6px !important;
-    margin-top: -12px !important;
-    top: 30%;
+  .slider--large .v-input__control {
+    width: 100%;
   }
-}
 
-.v-text-field.large-font input {
-  padding: 12px 0 0 2px !important;
-  font-size: 1.6rem;
-  @include for-tablet-landscape-up {
-    font-size: 2rem;
+  .text-accent .v-icon {
+    color: $color-accent !important;
   }
-}
 
-.v-toolbar__content {
-  padding: 4px 10px !important;
-}
+  .v-alert__content {
+    overflow: visible !important;
+  }
 
-.v-tooltip .v-overlay__content {
-  background: rgba(var(--v-theme-surface-variant), 0.8) !important;
-}
+  a.v-btn--size-default,
+  .v-btn--size-default {
+    padding: 0 16px !important;
+  }
 
-.v-theme--beepTheme .v-toolbar__content .v-toolbar-title {
-  -webkit-margin-start: 0px !important;
-  margin-inline-start: 0px !important;
-  min-width: 220px;
+  .v-btn:not(.v-btn--round).v-btn--size-small {
+    .v-btn__content {
+      letter-spacing: 1.07px;
+      font-size: 12px;
+    }
+  }
+
+  .v-btn__content {
+    letter-spacing: 0.089em !important;
+    font-size: 14px;
+  }
+
+  .v-btn--disabled.v-btn--variant-flat {
+    background-color: transparent !important;
+    color: transparent !important;
+  }
+
+  .v-card--variant-outlined {
+    border: thin solid #ccc !important;
+  }
+
+  .v-container {
+    padding: 12px !important;
+    @include for-md-and-up {
+      padding-left: calc((100vw - 100%) / 2) !important;
+      padding-right: 12px !important;
+      padding-top: 12px !important;
+      padding-bottom: 12px !important;
+      max-width: calc(100vw - 48px) !important;
+    }
+  }
+
+  .v-data-table-footer {
+    margin-top: 16px !important;
+  }
+
+  .v-divider {
+    opacity: 0.2 !important;
+  }
+
+  .v-field.v-field--appended {
+    padding-inline-end: 0px;
+  }
+
+  // .v-textarea .v-field__field {
+  //   --v-input-control-height: calc(var(--v-textarea-control-height) + 20px);
+  // }
+
+  .v-textarea {
+    .v-field__input {
+      overflow: hidden;
+    }
+
+    .v-field__clearable {
+      padding-top: 4px;
+    }
+  }
+  .v-input textarea {
+    padding: 14px 4px 4px !important;
+  }
+
+  .v-field:not(.v-field--focused):not(.v-field--active) .v-label.v-field-label {
+    font-size: 16px !important;
+    margin-top: 8px;
+  }
+
+  .v-input
+    .v-field--center-affix:not(.v-field--focused):not(.v-field--active)
+    .v-label.v-field-label {
+    margin-top: 12px !important;
+    top: 20% !important;
+    margin-left: 8px; //
+  }
+
+  .v-field--active.v-field--variant-underlined .v-label.v-field-label {
+    font-size: 0.75rem !important;
+  }
+
+  .v-list-item:not(.inspection-list-item) .v-list-item-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1rem;
+  }
+
+  .v-list-item.inspection-list-item .v-list-item-title {
+    margin-left: 6px;
+  }
+
+  .v-list-item__prepend > .v-icon ~ .v-list-item__spacer {
+    width: 12px !important;
+  }
+
+  .v-list-item-subtitle {
+    color: rgba(0, 0, 0, 0.6) !important;
+    font-size: 0.8125rem !important;
+  }
+
+  .v-label {
+    font-size: 0.75rem !important;
+    line-height: 1rem;
+    letter-spacing: 0.0333333333em !important;
+  }
+
+  .v-progress-circular__underlay {
+    color: #ffffff !important;
+  }
+
+  .v-selection-control--density-default.hivetag-radio {
+    max-width: 45px;
+    margin-top: -2px;
+  }
+
+  .v-selection-control.v-selection-control--density-default.v-checkbox-btn
+    .v-label {
+    font-size: 1rem !important;
+  }
+
+  .v-slider.v-input--horizontal
+    .v-slider-track__tick
+    .v-slider-track__tick-label {
+    font-size: 0.75rem !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .v-table .v-input--density-compact {
+    .v-field--variant-solo {
+      --v-input-control-height: 30px !important;
+    }
+    .v-field--no-label {
+      --v-field-padding-bottom: 0px !important;
+    }
+  }
+
+  .v-theme--beepTheme {
+    --v-medium-emphasis-opacity: 1;
+    --v-hover-opacity: 0;
+    --v-border-color: #ccc;
+  }
+
+  .v-text-field:not(.v-field--variant-underlined):not(
+      .v-field--variant-solo
+    ):not(.v-select):not(.beep-search-field):not(.large-font) {
+    input {
+      padding: 18px 0 0 4px !important; // 8px 0 0 4px
+    }
+    &.beep-text-field {
+      input {
+        padding: 8px 0 0 8px !important; // 8px 0 0 2px
+      }
+    }
+  }
+
+  .v-text-field.beep-search-field input {
+    padding: 6px 0 0 8px !important;
+    @include for-phone-only {
+      padding: 0 6px !important;
+      margin-top: -12px !important;
+      top: 30%;
+    }
+  }
+
+  .v-text-field.large-font {
+    .v-input__control .v-field {
+      height: 52px !important;
+      min-height: 42px !important;
+      font-size: 1.8rem !important;
+      padding-top: 2px !important;
+    }
+
+    input {
+      padding: 8px 0 0 4px !important;
+      line-height: 1.8 !important;
+    }
+  }
+
+  .v-toolbar__content {
+    padding: 4px 10px !important;
+  }
+
+  .v-tooltip .v-overlay__content {
+    background: rgba(var(--v-theme-surface-variant), 0.8) !important;
+  }
+
+  .v-theme--beepTheme .v-toolbar__content .v-toolbar-title {
+    -webkit-margin-start: 0px !important;
+    margin-inline-start: 0px !important;
+    min-width: 220px;
+  }
+
+  .yes-no-button {
+    height: 30px !important;
+
+    &.yes-red {
+      .text-green {
+        color: $color-red !important;
+        caret-color: $color-red !important;
+      }
+      .text-red {
+        color: $color-green !important;
+        caret-color: $color-green !important;
+      }
+    }
+
+    &.yes-no-button--small {
+      height: auto !important;
+      font-size: 12px !important;
+    }
+  }
 }

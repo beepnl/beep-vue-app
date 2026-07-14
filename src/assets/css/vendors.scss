@@ -1,613 +1,617 @@
-/* Element-UI */
-// .el-checkbox {
-//   --el-checkbox-checked-input-border-color: $color-primary;
-//   --el-checkbox-checked-bg-color: $color-primary;
-//   --el-checkbox-checked-icon-color: $color-primary;
-//   --el-checkbox-input-border-color-hover: $color-primary;
-// }
+// =============================================================================
+// vendors.scss — Third-party component overrides
+//
+// @layer overrides: wins over Vuetify layers and gives vendor patches a clean
+// specificity boundary without requiring !important escalation.
+// =============================================================================
+@use 'tokens' as *;
 
-.el-checkbox__input:not(.is-disabled).is-checked .el-checkbox__inner,
-.el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  background-color: $color-primary !important;
-  border-color: $color-primary !important;
-}
-
-.el-input-number.comma-warning .el-input__inner {
-  border: 1px solid $color-red !important;
-}
-
-.el-input-number--medium {
-  width: 160px !important;
-}
-
-.el-input-number__decrease,
-.el-input-number__increase {
-  background: none !important;
-}
-
-.el-input.is-active .el-input__inner,
-.el-input__inner:focus,
-.el-input-number__decrease:hover:not(.is-disabled)
-  ~ .el-input
-  .el-input__inner:not(.is-disabled),
-.el-input-number__increase:hover:not(.is-disabled)
-  ~ .el-input
-  .el-input__inner:not(.is-disabled) {
-  border-color: $color-primary !important;
-}
-
-/* Vuetify */
-.v-application {
-  .text-red {
-    color: $color-red !important;
-    caret-color: $color-red !important;
-  }
-}
-
-.v-application .red {
-  background-color: $color-red !important;
-  border-color: $color-red !important;
-}
-
-.theme--light.v-label {
-  color: $color-grey-dark;
-}
-
-.theme--light.v-card.v-card--outlined {
-  border: thin solid $color-grey-light;
-}
-
-.theme--light.v-btn {
-  color: inherit;
-}
-
-.theme--light.v-input--is-disabled input,
-.theme--light.v-input--is-disabled textarea {
-  @include for-phone-only {
-    color: $color-grey !important;
-  }
-}
-
-.v-icon.v-icon::after,
-.v-btn::before,
-.v-btn .v-ripple__container {
-  display: none !important;
-}
-
-.theme--light.v-icon.v-icon--disabled.color-transparent {
-  color: transparent !important;
-}
-
-.v-text-field--outlined fieldset {
-  border-color: $color-grey-light;
-}
-
-.v-tabs > .v-slide-group__container {
-  height: 48px !important;
-  .v-tab {
-    text-transform: none !important;
-    letter-spacing: 0.075;
-    > *:first-child {
-      margin-bottom: 2px !important;
-    }
-    @include for-phone-only {
-      font-size: 12px !important;
-      letter-spacing: 0.05;
-    }
-    @media (max-width: 400px) {
-      min-width: 70px !important;
-      padding: 0 4px !important;
-    }
-    @media (max-width: 500px) {
-      padding: 0 8px !important;
-    }
-  }
-}
-.v-tabs {
-  .v-tab {
-    &:hover::before {
-      opacity: 0 !important;
-    }
-  }
-  .v-tab--active {
-    &:hover::before {
-      opacity: 0 !important;
-    }
-  }
-}
-
-.apiary-create .v-item-group.v-tabs-bar {
-  position: fixed !important;
-  top: 48px !important;
-  z-index: 1 !important;
-  width: 100% !important;
-}
-
-.v-toolbar__content {
-  // height: 48px !important;
-  .v-toolbar-title {
-    -webkit-margin-start: 8px !important;
-    margin-inline-start: 8px !important;
-  }
-}
-
-.v-text-field {
-  &.text-error .v-label {
-    color: #ff5252 !important;
-    caret-color: #ff5252 !important;
-  }
-  &.v-text-field--solo .v-input__control {
-    min-width: 160px !important;
-    @include for-desktop-up {
-      min-width: 0 !important;
-    }
-    .v-input__slot {
-      background: transparent !important;
-    }
-  }
-  .v-input__control .v-input__slot {
-    display: flex !important;
-    align-items: center !important;
-    min-height: auto !important;
+@layer overrides {
+  .el-checkbox__input:not(.is-disabled).is-checked .el-checkbox__inner,
+  .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+    background-color: $color-primary !important;
+    border-color: $color-primary !important;
   }
 
-  &:not(.v-text-field--outlined):not(.v-text-field--solo):not(.v-select)input {
-    padding: 8px 0 0;
+  .el-input-number.comma-warning .el-input__inner {
+    border: 1px solid $color-red !important;
   }
 
-  &.v-text-field--outlined {
-    input {
-      width: 100%;
-      max-height: none !important;
-      padding-top: 10px;
+  .el-input-number--medium {
+    width: 160px !important;
+  }
+
+  .el-input-number__decrease,
+  .el-input-number__increase {
+    background: none !important;
+  }
+
+  .el-input.is-active .el-input__inner,
+  .el-input__inner:focus,
+  .el-input-number__decrease:hover:not(.is-disabled)
+    ~ .el-input
+    .el-input__inner:not(.is-disabled),
+  .el-input-number__increase:hover:not(.is-disabled)
+    ~ .el-input
+    .el-input__inner:not(.is-disabled) {
+    border-color: $color-primary !important;
+  }
+
+  .el-input-number.is-center .el-input__inner {
+    color: black;
+  }
+
+  /* Vuetify */
+  .v-application {
+    .text-red {
+      color: $color-red !important;
+      caret-color: $color-red !important;
     }
   }
 
-  &.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
-    .v-input__slot {
-      padding-right: 4px !important;
-    }
-    .v-input__append-inner {
-      margin-top: 6px !important;
-      @include for-phone-only {
-        margin-top: 3px !important;
-      }
-    }
-  }
-  &.beep--large {
-    padding-top: 0 !important;
-    font-size: 1.8rem !important;
-
-    @include for-phone-only {
-      font-size: 1.6rem !important;
-    }
-
-    &.v-text-field {
-      .v-input__control .v-input__slot {
-        height: 45px !important;
-        min-height: 45px !important;
-      }
-      input {
-        padding: 0 !important;
-        margin-top: 8px !important;
-        margin-bottom: -10px;
-        @include for-phone-only {
-          margin-bottom: -14px;
-        }
-      }
-    }
-  }
-}
-
-.v-input.v-file-input.image-uploader-page-blob {
-  width: 100%;
-  height: 100%;
-  .v-field.v-field--appended {
-    padding: 0px 12px !important;
-    height: 100% !important;
-    display: flex;
-    flex-direction: column;
-    height: 100% !important;
-    margin-bottom: 0px;
-    border-radius: 0px;
-    .v-field__prepend-inner {
-      height: 82px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      cursor: default !important;
-    }
-    .v-field__field {
-      border-radius: 4px;
-      border: 1px dashed $color-grey-light;
-      cursor: pointer !important;
-      min-height: 100px !important;
-      max-height: 100px !important;
-      width: 116px !important;
-      text-align: center;
-      margin: 4px 0 12px !important;
-      .v-label.v-field-label {
-        align-items: center;
-        white-space: wrap !important;
-      }
-    }
-  }
-}
-
-.v-input {
-  &.v-input--selection-controls.v-input--switch .v-input__slot > .v-label {
-    font-size: 0.75rem !important;
-    line-height: 1rem;
-    letter-spacing: 0.0333333333em !important;
-  }
-
-  textarea {
-    padding-top: 4px;
-  }
-}
-
-.v-input__slider {
-  &:not(.slider--large) {
-    max-width: 600px;
-  }
-
-  .v-slider.v-slider--horizontal .v-slider__tick .v-slider__tick-label {
-    width: 65px;
-    max-width: 65px;
-    margin-top: 2px;
-    font-size: 0.75rem !important;
-    line-height: 1rem;
-    text-align: center;
-    white-space: normal;
-  }
-
-  .v-slider.v-slider--horizontal
-    .v-slider__tick:last-child
-    .v-slider__tick-label,
-  .v-slider.v-slider--horizontal
-    .v-slider__tick:first-child
-    .v-slider__tick-label {
-    -webkit-transform: translateX(-50%) !important;
-    transform: translateX(-50%) !important;
-  }
-
-  &.slider--default {
-    .v-slider {
-      div[aria-valuenow='0'] {
-        .primary {
-          color: $color-grey-medium !important;
-          background-color: $color-grey-medium !important;
-        }
-        .v-slider__thumb-label {
-          display: none !important;
-        }
-      }
-    }
-    &:not(.slider--big-label) {
-      .v-slider {
-        max-width: 245px !important;
-        margin-top: 18px !important;
-      }
-    }
-  }
-
-  &.slider--big-label {
-    .v-slider {
-      margin-top: 25px !important;
-    }
-  }
-
-  &.slider--number-percentage {
-    .v-slider {
-      div[aria-valuenow='-1'] {
-        .primary {
-          color: $color-grey-medium !important;
-          background-color: $color-grey-medium !important;
-        }
-        .v-slider__thumb-label {
-          display: none !important;
-        }
-      }
-    }
-  }
-
-  &.slider--score-amount .v-slider__ticks-container .v-slider__tick {
-    &:nth-child(2) {
-      background-color: #069518 !important;
-    }
-    &:nth-child(3) {
-      background-color: #243d80 !important;
-    }
-    &:nth-child(4) {
-      background-color: #5f3f90 !important;
-    }
-    &:nth-child(5) {
-      background-color: #8f1619 !important;
-    }
-  }
-
-  &.slider--score-quality .v-slider__ticks-container .v-slider__tick {
-    &:nth-child(5) {
-      background-color: #069518 !important;
-    }
-    &:nth-child(4) {
-      background-color: #243d80 !important;
-    }
-    &:nth-child(3) {
-      background-color: #5f3f90 !important;
-    }
-    &:nth-child(2) {
-      background-color: #8f1619 !important;
-    }
-  }
-
-  &.slider--grade .v-slider__ticks-container .v-slider__tick {
-    &:nth-child(11),
-    &:nth-child(10),
-    &:nth-child(9) {
-      background-color: #069518 !important;
-    }
-    &:nth-child(8),
-    &:nth-child(7) {
-      background-color: #243d80 !important;
-    }
-    &:nth-child(6),
-    &:nth-child(5) {
-      background-color: #5f3f90 !important;
-    }
-    &:nth-child(4),
-    &:nth-child(3),
-    &:nth-child(2) {
-      background-color: #8f1619 !important;
-    }
-  }
-}
-
-.v-card__subtitle,
-.v-card__text,
-.v-card__title {
-  padding: 12px !important;
-  @include for-phone-only {
-    padding: 10px !important;
-  }
-}
-
-.v-card__title + .v-card__subtitle,
-.v-card__title + .v-card__text {
-  padding: 0 12px !important;
-  @include for-phone-only {
-    padding: 0 10px !important;
-  }
-}
-
-.v-data-table:not(.table-heatmap),
-.v-table:not(.table-heatmap) {
-  background-color: transparent !important;
-  input {
-    @include for-phone-only {
-      font-size: 12px !important;
-    }
-  }
-  .v-input__control {
-    @include for-phone-only {
-      font-size: 12px !important;
-    }
-  }
-  .td--small {
-    .v-input__control {
-      min-width: 116px !important;
-      max-width: 116px !important;
-      @include for-phone-only {
-        min-width: 80px !important;
-        max-width: 80px !important;
-      }
-    }
-  }
-  .td--medium {
-    .v-input__control {
-      min-width: 130px !important;
-      max-width: 140px !important;
-    }
-  }
-
-  .v-table__wrapper > table > tbody > tr > td,
-  .v-table__wrapper > table > thead > tr > th {
-    font-size: 12px !important;
-    @include for-phone-only {
-      padding: 0 5px !important;
-    }
-  }
-
-  input {
-    font-size: 12px !important;
-  }
-  .v-input__control {
-    font-size: 12px !important;
-  }
-}
-
-.v-expansion-panel-text__wrapper {
-  padding: 0px 24px 8px 36px !important;
-}
-
-.v-table.v-table--density-compact.table-heatmap
-  > .v-table__wrapper
-  > table
-  > tbody
-  > tr
-  > td {
-  height: 13px !important;
-}
-
-.v-table
-  > .v-table__wrapper
-  > table
-  > tbody
-  > tr:not(:last-child)
-  > td:not(.v-data-table__mobile-row),
-.v-table
-  > .v-table__wrapper
-  > table
-  > tbody
-  > tr:not(:last-child)
-  > th:not(.v-data-table__mobile-row),
-.v-table > .v-table__wrapper > table > thead > tr:last-child > th {
-  border-bottom: thin solid rgba(0, 0, 0, 0.12);
-}
-
-.v-table.table-heatmap .v-table__wrapper {
-  width: 100%;
-}
-
-.v-navigation-drawer {
-  z-index: 999999 !important;
-}
-
-.v-list-item--dense,
-.v-list--dense .v-list-item {
-  max-height: 52px;
-}
-
-.v-list-item--active > .v-list-item__overlay {
-  opacity: 0 !important;
-}
-
-.v-list-item--density-compact.v-list-item--one-line {
-  min-height: unset !important;
-}
-
-.v-badge__badge {
-  min-width: 16px !important;
-  height: 16px !important;
-  padding: 3px 5px !important;
-  font-size: 10.5px !important;
-  @include for-phone-only {
-    font-size: 10px !important;
-  }
-}
-
-.alerts-item .v-alert__wrapper {
-  align-items: start !important;
-}
-
-/* Treeselect */
-.vue-treeselect .vue-treeselect__control {
-  background: transparent;
-  border-color: $color-grey-light;
-  border-radius: 4px;
-}
-
-.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
-  border-color: $color-primary !important;
-  box-shadow: none !important;
-}
-
-.vue-treeselect__multi-value-item {
-  color: $color-accent !important;
-  background: $color-orange-medium !important;
-  .vue-treeselect__multi-value-label {
-    font-weight: 600 !important;
-  }
-}
-
-.vue-treeselect__value-remove {
-  color: $color-accent !important;
-}
-
-.vue-treeselect__checkbox--checked {
-  background: $color-primary !important;
-  border-color: $color-primary !important;
-}
-
-.vue-treeselect.color-red {
-  .vue-treeselect__multi-value-item,
-  .vue-treeselect__value-remove,
-  &.vue-treeselect--single {
-    color: $color-red !important;
-    background: $color-red-light !important;
-  }
-  .vue-treeselect__checkbox--checked {
-    background: $color-red !important;
+  .v-application .red {
+    background-color: $color-red !important;
     border-color: $color-red !important;
   }
-}
 
-.vue-treeselect--disabled {
-  cursor: not-allowed !important;
-}
-
-/* VueDatePicker */
-.dp__main {
-  word-break: normal !important;
-}
-
-.dp__input {
-  line-height: 26px !important;
-  padding: 4px 8px !important;
-}
-
-.dp__input_wrap {
-  width: calc(100% + 13px) !important;
-}
-
-.dp__theme_light {
-  --dp-border-color: #cccccc !important;
-  --dp-primary-color: #f29100 !important;
-}
-
-.dp__action_button {
-  cursor: pointer !important;
-  padding: 16px !important;
-  border-radius: 0 !important;
-  font-size: 14px !important;
-  font-weight: 500;
-  font-family: 'Roboto', sans-serif !important;
-  letter-spacing: 1.25px;
-  text-transform: uppercase;
-}
-
-.dp__action_cancel {
-  border: 1px solid $color-black !important;
-}
-
-.dp__action_select {
-  background: $color-white !important;
-  color: $color-accent !important;
-  border-color: $color-accent !important;
-}
-
-.dp__range_end,
-.dp__range_start,
-.dp__active_date {
-  background: $color-accent !important;
-}
-
-.dp__today {
-  border: 1px solid $color-accent !important;
-}
-
-.dp__selection_preview {
-  display: none !important; // hide date preview inside date picker popup
-}
-
-@media print {
-  .v-main {
-    display: block !important;
-    padding: 0px 0px 0px 0px !important;
+  .v-theme--beepLightTheme.v-label {
+    color: $color-grey-dark;
   }
-  .v-application {
-    line-height: 0 !important;
-  }
-  .v-application-wrap {
-    display: block !important;
-    min-height: 0px !important;
-  }
-}
 
-/* VueRecycleScroller */
+  .v-theme--beepLightTheme.v-card.v-card--outlined {
+    border: thin solid $color-grey-light;
+  }
 
-.vue-recycle-scroller.direction-vertical.scroller.--single-page
-  .vue-recycle-scroller__item-wrapper {
-  min-height: calc(100vh - 156px) !important;
+  .v-theme--beepLightTheme.v-btn {
+    color: inherit;
+  }
+
+  .v-theme--beepLightTheme.v-input--is-disabled input,
+  .v-theme--beepLightTheme.v-input--is-disabled textarea {
+    @include for-phone-only {
+      color: $color-grey !important;
+    }
+  }
+
+  .v-icon.v-icon::after,
+  .v-btn::before,
+  .v-btn .v-ripple__container {
+    display: none !important;
+  }
+
+  .v-btn.v-btn--density-default.v-btn--variant-outlined.beep-input-button {
+    // oa generate unique sample code button
+    white-space: nowrap !important;
+    overflow: visible !important;
+    width: auto !important;
+    max-width: fit-content;
+  }
+
+  .v-theme--beepLightTheme.v-icon.v-icon--disabled.color-transparent {
+    color: transparent !important;
+  }
+
+  .v-text-field--outlined fieldset {
+    border-color: $color-grey-light;
+  }
+
+  .v-tabs > .v-slide-group__container {
+    height: 48px !important;
+    .v-tab {
+      text-transform: none !important;
+      letter-spacing: 0.075;
+      > *:first-child {
+        margin-bottom: 2px !important;
+      }
+      @include for-phone-only {
+        font-size: 12px !important;
+        letter-spacing: 0.05;
+      }
+      @media (max-width: 400px) {
+        min-width: 70px !important;
+        padding: 0 4px !important;
+      }
+      @media (max-width: 500px) {
+        padding: 0 8px !important;
+      }
+    }
+  }
+  .v-tabs {
+    .v-tab {
+      &:hover::before {
+        opacity: 0 !important;
+      }
+    }
+    .v-tab--active {
+      &:hover::before {
+        opacity: 0 !important;
+      }
+    }
+  }
+
+  .apiary-create .v-item-group.v-tabs-bar {
+    position: fixed !important;
+    top: 48px !important;
+    z-index: 1 !important;
+    width: 100% !important;
+  }
+
+  .v-toolbar__content {
+    // height: 48px !important;
+    .v-toolbar-title {
+      -webkit-margin-start: 8px !important;
+      margin-inline-start: 8px !important;
+    }
+  }
+
+  .v-text-field {
+    &.text-error .v-label {
+      color: #ff5252 !important;
+      caret-color: #ff5252 !important;
+    }
+    &.v-text-field--solo .v-input__control {
+      min-width: 160px !important;
+      @include for-desktop-up {
+        min-width: 0 !important;
+      }
+      .v-input__slot {
+        background: transparent !important;
+      }
+    }
+    .v-input__control .v-input__slot {
+      display: flex !important;
+      align-items: center !important;
+      min-height: auto !important;
+    }
+
+    &:not(.v-text-field--outlined):not(.v-text-field--solo):not(
+        .v-select
+      )input {
+      padding: 8px 0 0;
+    }
+
+    &.v-text-field--outlined {
+      input {
+        width: 100%;
+        max-height: none !important;
+        padding-top: 10px;
+      }
+    }
+
+    &.v-text-field--enclosed.v-input--dense:not(
+        .v-text-field--solo
+      ).v-text-field--outlined {
+      .v-input__slot {
+        padding-right: 4px !important;
+      }
+      .v-input__append-inner {
+        margin-top: 6px !important;
+        @include for-phone-only {
+          margin-top: 3px !important;
+        }
+      }
+    }
+  }
+
+  .v-input.v-file-input.image-uploader-page-blob {
+    width: 100%;
+    height: 100%;
+    .v-field.v-field--appended {
+      padding: 0px 12px !important;
+      height: 100% !important;
+      display: flex;
+      flex-direction: column;
+      height: 100% !important;
+      margin-bottom: 0px;
+      border-radius: 0px;
+      .v-field__prepend-inner {
+        height: 82px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        cursor: default !important;
+      }
+      .v-field__field {
+        border-radius: 4px;
+        border: 1px dashed $color-grey-light;
+        cursor: pointer !important;
+        min-height: 100px !important;
+        max-height: 100px !important;
+        width: 116px !important;
+        text-align: center;
+        margin: 4px 0 12px !important;
+        .v-label.v-field-label {
+          align-items: center;
+          white-space: wrap !important;
+        }
+      }
+    }
+  }
+
+  .v-input {
+    &.v-input--selection-controls.v-input--switch .v-input__slot > .v-label {
+      font-size: 0.75rem !important;
+      line-height: 1rem;
+      letter-spacing: 0.0333333333em !important;
+    }
+
+    textarea {
+      margin-top: -8px !important;
+    }
+  }
+
+  .v-input__slider {
+    &:not(.slider--large) {
+      max-width: 600px;
+    }
+
+    .v-slider.v-slider--horizontal .v-slider__tick .v-slider__tick-label {
+      width: 65px;
+      max-width: 65px;
+      margin-top: 2px;
+      font-size: 0.75rem !important;
+      line-height: 1rem;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .v-slider.v-slider--horizontal
+      .v-slider__tick:last-child
+      .v-slider__tick-label,
+    .v-slider.v-slider--horizontal
+      .v-slider__tick:first-child
+      .v-slider__tick-label {
+      -webkit-transform: translateX(-50%) !important;
+      transform: translateX(-50%) !important;
+    }
+
+    &.slider--default {
+      .v-slider {
+        div[aria-valuenow='0'] {
+          .primary {
+            color: $color-grey-medium !important;
+            background-color: $color-grey-medium !important;
+          }
+          .v-slider__thumb-label {
+            display: none !important;
+          }
+        }
+      }
+      &:not(.slider--big-label) {
+        .v-slider {
+          max-width: 245px !important;
+          margin-top: 18px !important;
+        }
+      }
+    }
+
+    &.slider--big-label {
+      .v-slider {
+        margin-top: 25px !important;
+      }
+    }
+
+    &.slider--number-percentage {
+      .v-slider {
+        div[aria-valuenow='-1'] {
+          .primary {
+            color: $color-grey-medium !important;
+            background-color: $color-grey-medium !important;
+          }
+          .v-slider__thumb-label {
+            display: none !important;
+          }
+        }
+      }
+    }
+
+    &.slider--score-amount .v-slider__ticks-container .v-slider__tick {
+      &:nth-child(2) {
+        background-color: #069518 !important;
+      }
+      &:nth-child(3) {
+        background-color: #243d80 !important;
+      }
+      &:nth-child(4) {
+        background-color: #5f3f90 !important;
+      }
+      &:nth-child(5) {
+        background-color: #8f1619 !important;
+      }
+    }
+
+    &.slider--score-quality .v-slider__ticks-container .v-slider__tick {
+      &:nth-child(5) {
+        background-color: #069518 !important;
+      }
+      &:nth-child(4) {
+        background-color: #243d80 !important;
+      }
+      &:nth-child(3) {
+        background-color: #5f3f90 !important;
+      }
+      &:nth-child(2) {
+        background-color: #8f1619 !important;
+      }
+    }
+
+    &.slider--grade .v-slider__ticks-container .v-slider__tick {
+      &:nth-child(11),
+      &:nth-child(10),
+      &:nth-child(9) {
+        background-color: #069518 !important;
+      }
+      &:nth-child(8),
+      &:nth-child(7) {
+        background-color: #243d80 !important;
+      }
+      &:nth-child(6),
+      &:nth-child(5) {
+        background-color: #5f3f90 !important;
+      }
+      &:nth-child(4),
+      &:nth-child(3),
+      &:nth-child(2) {
+        background-color: #8f1619 !important;
+      }
+    }
+  }
+
+  .v-card__subtitle,
+  .v-card__text,
+  .v-card__title {
+    padding: 12px !important;
+    @include for-phone-only {
+      padding: 10px !important;
+    }
+  }
+
+  .v-card__title + .v-card__subtitle,
+  .v-card__title + .v-card__text {
+    padding: 0 12px !important;
+    @include for-phone-only {
+      padding: 0 10px !important;
+    }
+  }
+
+  .v-data-table:not(.table-heatmap),
+  .v-table:not(.table-heatmap) {
+    background-color: transparent !important;
+    input {
+      @include for-phone-only {
+        font-size: 12px !important;
+      }
+    }
+    .v-input__control {
+      @include for-phone-only {
+        font-size: 12px !important;
+      }
+    }
+    .td--small {
+      .v-input__control {
+        min-width: 116px !important;
+        max-width: 116px !important;
+        @include for-phone-only {
+          min-width: 80px !important;
+          max-width: 80px !important;
+        }
+      }
+    }
+    .td--medium,
+    .th--medium {
+      min-width: 130px !important;
+      max-width: 140px !important;
+      @include for-tablet-portrait-up {
+        min-width: 170px !important;
+      }
+    }
+
+    .td--qr {
+      width: 60px !important;
+      @include for-tablet-portrait-up {
+        width: 100px !important;
+      }
+    }
+
+    .v-table__wrapper > table > tbody > tr > td,
+    .v-table__wrapper > table > thead > tr > th {
+      font-size: 12px !important;
+      @include for-phone-only {
+        padding: 0 5px !important;
+      }
+    }
+
+    input {
+      font-size: 12px !important;
+    }
+    .v-input__control {
+      font-size: 12px !important;
+    }
+  }
+
+  .v-expansion-panel-text__wrapper {
+    padding: 0px 4px 8px 30px;
+  }
+
+  .v-table.v-table--density-compact.table-heatmap
+    > .v-table__wrapper
+    > table
+    > tbody
+    > tr
+    > td {
+    height: 13px !important;
+  }
+
+  .v-table
+    > .v-table__wrapper
+    > table
+    > tbody
+    > tr:not(:last-child)
+    > td:not(.v-data-table__mobile-row),
+  .v-table
+    > .v-table__wrapper
+    > table
+    > tbody
+    > tr:not(:last-child)
+    > th:not(.v-data-table__mobile-row),
+  .v-table > .v-table__wrapper > table > thead > tr:last-child > th {
+    border-bottom: thin solid rgba(0, 0, 0, 0.12);
+  }
+
+  .v-table.table-heatmap .v-table__wrapper {
+    width: 100%;
+  }
+
+  .v-navigation-drawer {
+    z-index: 999999 !important;
+  }
+
+  .v-list-item--dense,
+  .v-list--dense .v-list-item {
+    max-height: 52px;
+  }
+
+  .v-list-item--active > .v-list-item__overlay {
+    opacity: 0 !important;
+  }
+
+  .v-navigation-drawer.--main .v-list {
+    width: 100%;
+  }
+
+  .v-badge__badge {
+    min-width: 16px !important;
+    height: 16px !important;
+    padding: 3px 5px !important;
+    font-size: 10.5px !important;
+    @include for-phone-only {
+      font-size: 10px !important;
+    }
+  }
+
+  .alerts-item .v-alert__wrapper {
+    align-items: start !important;
+  }
+
+  /* Treeselect */
+  .vue-treeselect .vue-treeselect__control {
+    background: transparent;
+    border-color: $color-grey-light !important;
+    border-radius: 4px !important;
+  }
+
+  .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
+    border-color: $color-primary !important;
+    box-shadow: none !important;
+  }
+
+  .vue-treeselect__multi-value-item {
+    color: $color-accent !important;
+    background: $color-orange-medium !important;
+    .vue-treeselect__multi-value-label {
+      font-weight: 600 !important;
+    }
+  }
+
+  .vue-treeselect__value-remove {
+    color: $color-accent !important;
+  }
+
+  .vue-treeselect__checkbox--checked {
+    background: $color-primary !important;
+    border-color: $color-primary !important;
+  }
+
+  .vue-treeselect.color-red {
+    .vue-treeselect__multi-value-item,
+    .vue-treeselect__value-remove,
+    &.vue-treeselect--single {
+      color: $color-red !important;
+      background: $color-red-light !important;
+    }
+    .vue-treeselect__checkbox--checked {
+      background: $color-red !important;
+      border-color: $color-red !important;
+    }
+  }
+
+  .vue-treeselect--disabled {
+    cursor: not-allowed !important;
+  }
+
+  /* VueDatePicker */
+  .dp__main {
+    word-break: normal !important;
+  }
+
+  .dp__input {
+    line-height: 26px !important;
+    padding: 4px 8px !important;
+  }
+
+  .dp__input_wrap {
+    width: calc(100% + 13px) !important;
+  }
+
+  .dp__theme_light {
+    --dp-border-color: #cccccc !important;
+    --dp-primary-color: #f29100 !important;
+  }
+
+  .dp__action_button {
+    cursor: pointer !important;
+    padding: 16px !important;
+    border-radius: 0 !important;
+    font-size: 14px !important;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif !important;
+    letter-spacing: 1.25px;
+    text-transform: uppercase;
+  }
+
+  .dp__action_cancel {
+    border: 1px solid $color-black !important;
+  }
+
+  .dp__action_select {
+    background: $color-white !important;
+    color: $color-accent !important;
+    border-color: $color-accent !important;
+  }
+
+  .dp__range_end,
+  .dp__range_start,
+  .dp__active_date {
+    background: $color-accent !important;
+  }
+
+  .dp__today {
+    border: 1px solid $color-accent !important;
+  }
+
+  .dp__selection_preview {
+    display: none !important; // hide date preview inside date picker popup
+  }
+
+  @media print {
+    .v-main {
+      display: block !important;
+      padding: 0px 0px 0px 0px !important;
+    }
+    .v-application {
+      line-height: 0 !important;
+    }
+    .v-application-wrap {
+      display: block !important;
+      min-height: 0px !important;
+    }
+  }
+
+  /* VueRecycleScroller */
+
+  .vue-recycle-scroller.direction-vertical.scroller.--single-page
+    .vue-recycle-scroller__item-wrapper {
+    min-height: calc(100vh - 170px) !important;
+  }
 }

@@ -1,7 +1,7 @@
 <template>
   <v-sheet
     :class="
-      `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+      `hive-icon d-flex flex-column justify-center align-center text-white text--small mr-1 ${
         hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
       } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''} ${
         xsView ? 'xs-view' : diaryView ? 'xs-view diary-view' : ''
@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [getMaxFramecount, orderedLayers],

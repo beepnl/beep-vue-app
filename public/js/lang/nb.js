@@ -326,10 +326,11 @@ const translations = {
   /* user */
   Data_export: 'Data eksport',
   Export_your_data:
-    "Eksporter alle data som er i BEEP-kontoen din og send en e-post som inneholder dataene som en Excel-fil (OR download the Excel file via the 'Download CSV' button). Excel-filen har forskjellige faner som inneholder dine personlige data, bikube, plassering og inspeksjons data.",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Eksporter alle data som er i BEEP-kontoen din og send en e-post som inneholder dataene som en Excel-fil (OR download the Excel file via the 'Download XLS' button). Excel-filen har forskjellige faner som inneholder dine personlige data, bikube, plassering og inspeksjons data.",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -512,7 +513,7 @@ const translations = {
   accept_policy_2: ', som er kompatible med den nye europeiske personvernloven',
   terms_of_use: 'Vilkår for bruk',
   invalid_password:
-    "{'Passord må inneholde minst 8 tegn, en liten bokstav, en stor bokstav, ett tall og ett spesialtegn ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'Passord må inneholde minst 8 tegn, en liten bokstav, en stor bokstav, ett tall og ett spesialtegn ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'sensordefinisjon | sensordefinisjoner',
   measurement: 'måling | målinger',
   remove_device: 'Fjern enheten',
@@ -526,6 +527,8 @@ const translations = {
     'En melding med en bekreftelselenke er sendt til den nye e-postadressen din. Klikk på koblingen i e-posten for å bekrefte din nye e-postadresse og logge på.',
   sensordef_info:
     "En sensordefinisjon er ment å konvertere en sensorverdi fra en innkommende 'rå' sensorverdi til en verdi i henhold til en fysisk mengde og enhet (f.eks. w_v = 1098273 => weight_kg = 62.400 kg) eller å kalibrere en sensor (f.eks. t_0 = 15,3 °C => t_0 = 15,8 °C). Dette kan gjøres ved å sette en 'offset' og en 'multiplikator'. Inn- og utgangsverdien forblir den samme hvis offset '0' og multiplikator '1' er satt. BEEP base-appen (fra App Store) vil gi deg de riktige sensordefinisjonene ved første oppsett av BEEP-basen.",
+  sensordef_date_info:
+    'Denne kalibreringen gjelder fra den angitte datoen til nå (eller en annen innstilt kalibreringsverdi)',
   or: 'eller',
   select_all_hives: 'Velg alle bikuber',
   select_all_editable_hives: 'Velg alle redigerbare bikuber',
@@ -661,6 +664,7 @@ const translations = {
   drag_layers_info_text:
     'Dra lag fra venstre side til ønsket posisjon i bikuben på høyre side. Slett et lag fra bikuben ved å klikke på det og deretter klikke på det røde søppelikonet. Innenfor bikuben kan lag også dras for å redigere posisjonen, lagfarge kan redigeres ved å klikke på laget.',
   New_hive: 'Ny bikube',
+  New_beep_base: 'Ny BEEP-base',
   New_alertrule: 'Ny varslingsregel',
   Add_alertrule: 'Legg til varslingsregel',
   Add_apiary: 'Legg til bigård',
@@ -904,6 +908,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -916,8 +923,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1077,6 +1084,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

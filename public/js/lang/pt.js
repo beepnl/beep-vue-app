@@ -110,7 +110,7 @@ const translations = {
 
   /* login */
   login_title: 'Login',
-  login: 'Login',
+  login: 'entrar',
   back_to_login: 'Regressar ao login',
   forgot_password: 'Esqueceu-se da sua senha?',
 
@@ -404,10 +404,11 @@ const translations = {
   /* user */
   Data_export: 'Exportação de dados',
   Export_your_data:
-    "Exportar todos os dados que estão na sua conta BEEP e enviar um email contendo os dados como um ficheiro Excel (OR download the Excel file via the 'Download CSV' button). O ficheiro Excel possui seções diferentes que contêm os seus dados pessoais, das colmeias, de localização e de inspeção.",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Exportar todos os dados que estão na sua conta BEEP e enviar um email contendo os dados como um ficheiro Excel (OR download the Excel file via the 'Download XLS' button). O ficheiro Excel possui seções diferentes que contêm os seus dados pessoais, das colmeias, de localização e de inspeção.",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -617,7 +618,7 @@ const translations = {
     ' do BEEP, compatíveis com a nova lei de privacidade europeia',
   terms_of_use: 'termos de serviço',
   invalid_password:
-    "{'A password deve conter pelo menos 8 caracteres, incluindo pelo menos: uma letra minúscula, uma letra maiúscula, um número e um caracter especial ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'A password deve conter pelo menos 8 caracteres, incluindo pelo menos: uma letra minúscula, uma letra maiúscula, um número e um caracter especial ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'definição do sensor | definições do sensor',
   measurement: 'medição | medições',
   remove_device: 'Remover aparelho',
@@ -631,6 +632,8 @@ const translations = {
     'Foi enviada para o seu novo endereço de email uma mensagem com uma ligação de verificação. Clique nessa ligação, no email, para confirmar o seu novo endereço de email e conectar-se.',
   sensordef_info:
     "Uma definição de sensor destina-se a converter um valor do sensor, a partir de um valor de entrada 'em bruto' no sensor, num valor de acordo com uma quantidade física e unidade (por exemplo, w_v = 1098273 => peso_kg = 62.400 kg) ou para calibrar um sensor (por exemplo, t_0 = 15,3 ° C => t_0 = 15,8 ° C). Isto pode ser feito definindo um 'alinhamento' e um 'multiplicador'. Os valores de entrada e saída permanecem os mesmos se o alinhamento '0' e o multiplicador '1' forem definidos. A aplicação base BEEP (da App Store) fornecerá as definições de sensor corretas na configuração inicial da sua base BEEP.",
+  sensordef_date_info:
+    'Esta calibração aplica-se a partir da data definida até ao momento (ou outro valor de calibração definido)',
   or: 'ou',
   select_all_hives: 'Selecionar todas as colmeias',
   select_all_editable_hives: 'Selecione todas as colmeias personalizáveis',
@@ -772,6 +775,7 @@ const translations = {
   drag_layers_info_text:
     'Arraste as camadas do lado esquerdo para a posição desejada dentro da colmeia, no lado direito. Exclua uma camada da seção clicando nela e, em seguida, clicando no ícone de lixo vermelho. Dentro da colmeia, as camadas também podem ser arrastadas para editar a posição a cor da camada pode ser editada clicando na camada.',
   New_hive: 'Nova colmeia',
+  New_beep_base: 'Nova base BEEP',
   New_alertrule: 'Nova regra de alerta',
   Add_alertrule: 'Adicionar regra de alerta',
   Add_apiary: 'Adicionar apiário',
@@ -1018,6 +1022,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -1030,8 +1037,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1191,6 +1198,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

@@ -19,7 +19,7 @@
         @click="changeBlockDataIndex(blockDataIndex - 1)"
       >
         <v-icon start color="black">mdi-chevron-left</v-icon>
-        {{ $t('prev') }}</v-btn
+        {{ $t("prev") }}</v-btn
       >
       <v-icon
         v-if="smAndDown && !noMatches"
@@ -35,7 +35,9 @@
         v-if="blockData !== null"
         :class="
           'font-weight-bold ' +
-            (smAndDown ? 'd-flex flex-column font-small' : 'text-overline')
+            (smAndDown
+              ? 'd-flex flex-column font-small'
+              : 'custom-text-overline')
         "
       >
         <div class="d-flex flex-row">
@@ -94,7 +96,7 @@
         :disabled="loading"
         @click="changeBlockDataIndex(blockDataIndex + 1)"
       >
-        {{ $t('next') }}
+        {{ $t("next") }}
         <v-icon end color="black">mdi-chevron-right</v-icon>
       </v-btn>
       <v-icon
@@ -154,7 +156,7 @@
             :max="blockDataIndexMax"
             validate-on="blur"
             hide-details
-            @change="checkBlockDataWithDelay(true)"
+            @update:model-value="checkBlockDataWithDelay(true)"
           >
             <template v-slot:append>
               <span
@@ -194,7 +196,7 @@
             >
               <div class="chart-wrapper pt-0 pb-5 pb-md-10">
                 <div
-                  class="text-overline mt-0 mb-2 text-center"
+                  class="custom-text-overline mt-0 mb-2 text-center"
                   v-text="dataSet + nrOfMeasurementsText(dataSet)"
                 ></div>
                 <MeasurementsChartLine
@@ -221,7 +223,7 @@
                   v-if="!loading && measurements[dataSet] === undefined"
                   class="text-center my-8"
                 >
-                  {{ $t('no_chart_data') }}
+                  {{ $t("no_chart_data") }}
                 </div>
               </div>
             </template>
@@ -256,7 +258,7 @@
                 <v-icon v-if="!showLoadingIcon" color="accent" start
                   >mdi-import</v-icon
                 >
-                {{ $t('import_block_data_short') }}
+                {{ $t("import_block_data_short") }}
               </v-btn>
             </v-col>
           </v-row>
@@ -269,20 +271,20 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import { readTaxonomy } from '@mixins/methodsMixin'
-import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import { sensorMixin } from '@mixins/sensorMixin'
-import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
-import { mapGetters } from 'vuex'
-import { momentFormatUtcToLocal } from '@mixins/momentMixin'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import MeasurementsChartLine from "@/src/components/measurements/measurements-chart-line.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import Api from "@api/Api";
+import { readTaxonomy } from "@mixins/methodsMixin";
+import { momentFormatUtcToLocal } from "@mixins/momentMixin";
+import { sensorMixin } from "@mixins/sensorMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Confirm,
     Layout,
-    MeasurementsChartLine,
+    MeasurementsChartLine
   },
   mixins: [momentFormatUtcToLocal, readTaxonomy, sensorMixin],
   data() {
@@ -295,33 +297,33 @@ export default {
       blockDataIndex: 0,
       blockDataIndexMax: 0,
       showLoadingIcon: false,
-      dataSets: ['flashlog', 'database'],
+      dataSets: ["flashlog", "database"],
       thresholdSecDiff: 120,
       thresholdMatches: 99,
       deviceName: null,
       fillHoles: false,
       shownMeasurements: {
-        flashlog: ['t_0', 't_i', 't_1', 'weight_kg'],
-        database: ['t_0', 't_i', 't_1', 'weight_kg'],
+        flashlog: ["t_0", "t_i", "t_1", "weight_kg"],
+        database: ["t_0", "t_i", "t_1", "weight_kg"]
       },
       currentMinutes: 1440,
-      dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
-    }
+      dateTimeFormat: "YYYY-MM-DD HH:mm:ss"
+    };
   },
   computed: {
-    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters("taxonomy", ["sensorMeasurementsList"]),
     blockId() {
-      return parseInt(this.$route.query.blockId)
+      return parseInt(this.$route.query.blockId);
     },
     finalIndex() {
       return (
         (this.blockData !== null &&
           this.blockDataIndex === this.blockDataIndexMax) ||
         this.blockData === null
-      )
+      );
     },
     flashLogId() {
-      return parseInt(this.$route.params.id)
+      return parseInt(this.$route.params.id);
     },
     importDisabled() {
       return (
@@ -329,286 +331,286 @@ export default {
           this.thresholdSecDiff ||
         this.blockData.block_data_flashlog_sec_diff === null ||
         this.blockData.block_data_match_percentage < this.thresholdMatches
-      )
+      );
     },
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     logDetails() {
       return (
-        this.$i18n.t('Flashlog') +
-        ' ' +
+        this.$i18n.t("Flashlog") +
+        " " +
         this.flashLogId +
-        ' - ' +
-        this.$i18n.t('Block') +
-        ' ' +
+        " - " +
+        this.$i18n.t("Block") +
+        " " +
         this.blockId
-      )
+      );
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     noMatches() {
       return this.errorMessage !== null
-        ? this.errorMessage.indexOf('no_matches') > -1
-        : false
+        ? this.errorMessage.indexOf("no_matches") > -1
+        : false;
     },
     pageTitle() {
       return (
         (!this.mobile
-          ? this.$i18n.t('Log_data') +
-            ' - ' +
-            (this.deviceName !== null ? this.deviceName + ' - ' : '')
-          : '') + this.logDetails
-      )
+          ? this.$i18n.t("Log_data") +
+            " - " +
+            (this.deviceName !== null ? this.deviceName + " - " : "")
+          : "") + this.logDetails
+      );
     },
     paginationText() {
       return (
-        this.$i18n.tc('Page', 1) +
-        ' ' +
+        this.$i18n.tc("Page", 1) +
+        " " +
         (this.blockDataIndex + 1) +
-        ' ' +
-        this.$i18n.t('of') +
-        ' ' +
+        " " +
+        this.$i18n.t("of") +
+        " " +
         (this.blockDataIndexMax + 1)
-      )
+      );
     },
     periods() {
       return [
-        { name: this.$i18n.tc('day', 1), minutes: 1440 },
-        { name: this.$i18n.t('week'), minutes: 10080 },
-        { name: this.$i18n.t('month'), minutes: 43200 },
-        { name: this.$i18n.t('year'), minutes: 525600 },
-      ]
+        { name: this.$i18n.tc("day", 1), minutes: 1440 },
+        { name: this.$i18n.t("week"), minutes: 10080 },
+        { name: this.$i18n.t("month"), minutes: 43200 },
+        { name: this.$i18n.t("year"), minutes: 525600 }
+      ];
     },
     smAndDown() {
-      return this.$vuetify.display.smAndDown
-    },
+      return this.$vuetify.display.smAndDown;
+    }
   },
   watch: {
     fillHoles() {
-      this.checkBlockData(true)
-    },
+      this.checkBlockData(true);
+    }
   },
   created() {
     this.readTaxonomy().then(() => {
-      this.checkBlockData()
-    })
+      this.checkBlockData();
+    });
   },
   methods: {
     async checkBlockData(changeIndex = false) {
-      this.clearMessages()
-      this.loading = true
+      this.clearMessages();
+      this.loading = true;
       try {
         const response = await Api.readRequest(
-          '/flashlogs/' +
+          "/flashlogs/" +
             this.flashLogId +
-            '?block_id=' +
+            "?block_id=" +
             this.blockId +
-            (changeIndex ? '&block_data_index=' + this.blockDataIndex : '') +
-            '&data_minutes=' +
+            (changeIndex ? "&block_data_index=" + this.blockDataIndex : "") +
+            "&data_minutes=" +
             this.currentMinutes
-        )
-        this.blockData = response.data
-        this.blockDataIndex = response.data.block_data_index
-        this.blockDataIndexMax = this.blockData.block_data_index_max
-        this.deviceName = response.data.device_name
+        );
+        this.blockData = response.data;
+        this.blockDataIndex = response.data.block_data_index;
+        this.blockDataIndexMax = this.blockData.block_data_index_max;
+        this.deviceName = response.data.device_name;
 
-        this.formatFlashlogData(this.blockData)
+        this.formatFlashlogData(this.blockData);
       } catch (error) {
-        this.loading = false
+        this.loading = false;
         if (error.response) {
-          console.log(error.response)
-          this.deviceName = error.response.data.device_name
-          this.errorMessage = this.$i18n.t(error.response.data.error)
+          console.log(error.response);
+          this.deviceName = error.response.data.device_name;
+          this.errorMessage = this.$i18n.t(error.response.data.error);
         } else {
-          console.log('Error: ', error)
-          this.errorMessage = this.$i18n.t('something_wrong')
+          console.log("Error: ", error);
+          this.errorMessage = this.$i18n.t("something_wrong");
         }
       }
     },
     async importBlockData() {
-      this.clearMessages()
-      this.showLoadingIcon = true
-      this.loading = true
+      this.clearMessages();
+      this.showLoadingIcon = true;
+      this.loading = true;
       try {
         const response = await Api.postRequest(
-          '/flashlogs/' + this.flashLogId + '?block_id=' + this.blockId
-        )
-        const importMessage = response.data
-        this.showLoadingIcon = false
-        this.loading = false
+          "/flashlogs/" + this.flashLogId + "?block_id=" + this.blockId
+        );
+        const importMessage = response.data;
+        this.showLoadingIcon = false;
+        this.loading = false;
         return this.$router.push({
-          name: 'import',
+          name: "import",
           params: {
-            importMessage,
-          },
-        })
+            importMessage
+          }
+        });
       } catch (error) {
-        this.showLoadingIcon = false
-        this.loading = false
+        this.showLoadingIcon = false;
+        this.loading = false;
         if (error.response) {
-          console.log(error.response)
-          this.errorMessage = this.$i18n.t(error.response.data.error)
+          console.log(error.response);
+          this.errorMessage = this.$i18n.t(error.response.data.error);
         } else {
-          console.log('Error: ', error)
-          this.errorMessage = this.$i18n.t('something_wrong')
+          console.log("Error: ", error);
+          this.errorMessage = this.$i18n.t("something_wrong");
         }
       }
     },
     changeBlockDataIndex(newIndex) {
-      this.blockDataIndex = newIndex
-      this.checkBlockData(true)
+      this.blockDataIndex = newIndex;
+      this.checkBlockData(true);
     },
     chartjsDataSeries(dataSet) {
       const data = {
         labels: [],
-        datasets: [],
-      }
+        datasets: []
+      };
 
       if (
-        typeof this.measurements[dataSet] !== 'undefined' &&
+        typeof this.measurements[dataSet] !== "undefined" &&
         this.blockData !== null
       ) {
-        this.measurements[dataSet].map((quantity, index) => {
+        this.measurements[dataSet].map(quantity => {
           if (
-            quantity.indexOf('time') === -1 &&
-            quantity.indexOf('minute') === -1 &&
-            quantity !== 'i'
+            quantity.indexOf("time") === -1 &&
+            quantity.indexOf("minute") === -1 &&
+            quantity !== "i"
           ) {
-            const mT = this.getSensorMeasurement(quantity)
+            const mT = this.getSensorMeasurement(quantity);
 
             if (mT === null || mT === undefined) {
-              console.log('mT not found ', quantity)
+              console.log("mT not found ", quantity);
             } else if (mT.show_in_charts === 1) {
-              const sensorName = this.$i18n.t(quantity)
+              const sensorName = this.$i18n.t(quantity);
               const sensorLabel =
                 sensorName +
-                (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
-                  ? ' (' + mT.unit + ')'
-                  : '')
+                (mT.unit !== "-" && mT.unit !== "" && mT.unit !== null
+                  ? " (" + mT.unit + ")"
+                  : "");
 
               data.datasets.push({
                 id: mT.id,
                 fill: false,
-                borderColor: '#' + mT.hex_color,
-                backgroundColor: '#' + mT.hex_color,
+                borderColor: "#" + mT.hex_color,
+                backgroundColor: "#" + mT.hex_color,
                 borderRadius: 2,
-                label: sensorLabel.replace(/^0/, ''),
+                label: sensorLabel.replace(/^0/, ""),
                 name: sensorName,
                 abbr: mT.abbreviation,
-                unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
+                unit: mT.unit !== "-" && mT.unit !== null ? mT.unit : "",
                 data: [],
                 hidden:
                   this.shownMeasurements[dataSet].indexOf(mT.abbreviation) ===
                   -1,
-                spanGaps: this.fillHoles,
-              })
+                spanGaps: this.fillHoles
+              });
             }
           }
-          return quantity
-        })
+          return quantity;
+        });
 
-        this.blockData[dataSet].map((measurement, index) => {
-          data.datasets.map((dataset, i) => {
-            const quantity = dataset.abbr
+        this.blockData[dataSet].map(measurement => {
+          data.datasets.map(dataset => {
+            const quantity = dataset.abbr;
             // if (
             //   measurement[quantity] !== null &&
             //   typeof measurement[quantity] === 'number'
             // ) {
             dataset.data.push({
               x: measurement.time,
-              y: measurement[quantity],
-            })
+              y: measurement[quantity]
+            });
             // }
-            return dataset
-          })
-          return measurement
-        })
+            return dataset;
+          });
+          return measurement;
+        });
       }
 
-      return data
+      return data;
     },
     checkBlockDataWithDelay(bool) {
       setTimeout(() => {
-        return this.checkBlockData(bool)
-      }, 200) // wait for user to read slider value
+        return this.checkBlockData(bool);
+      }, 200); // wait for user to read slider value
     },
     clearMessages() {
-      this.errorMessage = null
+      this.errorMessage = null;
     },
     confirmImportBlockData() {
       this.$refs.confirm
         .open(
-          this.$i18n.t('import_block_data_short'),
-          this.$i18n.t('commit_block_data') +
+          this.$i18n.t("import_block_data_short"),
+          this.$i18n.t("commit_block_data") +
             ' "' +
-            (this.deviceName !== null ? this.deviceName + ' - ' : '') +
+            (this.deviceName !== null ? this.deviceName + " - " : "") +
             this.logDetails +
             '"?',
           {
-            color: 'red',
+            color: "red"
           }
         )
-        .then((confirm) => {
-          this.importBlockData()
+        .then(() => {
+          this.importBlockData();
         })
-        .catch((reject) => {
-          return true
-        })
+        .catch(() => {
+          return true;
+        });
     },
     countMeasurements(dataRecords) {
-      return dataRecords.reduce((acc, d) => acc + Object.keys(d).length, 0)
+      return dataRecords.reduce((acc, d) => acc + Object.keys(d).length, 0);
     },
     formatFlashlogData(blockData) {
-      this.measurements = {}
+      this.measurements = {};
 
-      this.dataSets.map((dataSet) => {
+      this.dataSets.map(dataSet => {
         if (blockData[dataSet] !== undefined && blockData[dataSet].length > 0) {
           this.measurements[dataSet] = Object.keys(
             blockData[dataSet].reduce(function(result, obj) {
-              return Object.assign(result, obj)
+              return Object.assign(result, obj);
             }, {})
-          ).sort()
+          ).sort();
         }
-        return dataSet
-      })
+        return dataSet;
+      });
 
-      this.loading = false
+      this.loading = false;
     },
     getSensorMeasurement(abbr) {
       const smFilter = this.sensorMeasurementsList.filter(
-        (measurementType) => measurementType.abbreviation === abbr
-      )
-      return smFilter.length > 0 ? smFilter[0] : null
+        measurementType => measurementType.abbreviation === abbr
+      );
+      return smFilter.length > 0 ? smFilter[0] : null;
     },
     getString(date) {
-      return this.momentFormatUtcToLocal(date, this.dateTimeFormat)
+      return this.momentFormatUtcToLocal(date, this.dateTimeFormat);
     },
     nrOfMeasurementsText(dataSet) {
       return this.blockData !== null
-        ? ' (' +
-          this.$i18n.t('nr_of_measurements') +
-          ': ' +
+        ? " (" +
+          this.$i18n.t("nr_of_measurements") +
+          ": " +
           this.countMeasurements(this.blockData[dataSet]) + // or just nr of records? this.blockData[dataSet].length
-            ')'
-        : ''
+            ")"
+        : "";
     },
     setPeriodDataMinutes(newMinutes) {
       // calculate new block data index
-      const currentIndexPerc = this.blockDataIndex / this.blockDataIndexMax
+      const currentIndexPerc = this.blockDataIndex / this.blockDataIndexMax;
       const newMaxIndex =
-        (this.blockDataIndexMax * this.currentMinutes) / newMinutes
-      const newIndex = Math.floor(currentIndexPerc * newMaxIndex)
+        (this.blockDataIndexMax * this.currentMinutes) / newMinutes;
+      const newIndex = Math.floor(currentIndexPerc * newMaxIndex);
 
-      this.blockDataIndex = newIndex
-      this.currentMinutes = newMinutes
-      this.checkBlockData(true)
+      this.blockDataIndex = newIndex;
+      this.currentMinutes = newMinutes;
+      this.checkBlockData(true);
     },
     toggleMeasurement(abbr, hidden, dataSet) {
       // add measurement abbreviation to list of showMeasurements per dataset, if it was hidden when clicked
       if (hidden === true && !this.shownMeasurements[dataSet].includes(abbr)) {
-        this.shownMeasurements[dataSet].push(abbr)
+        this.shownMeasurements[dataSet].push(abbr);
         // otherwise remove it from that list
       } else if (
         hidden === false &&
@@ -617,11 +619,11 @@ export default {
         this.shownMeasurements[dataSet].splice(
           this.shownMeasurements[dataSet].indexOf(abbr),
           1
-        )
+        );
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

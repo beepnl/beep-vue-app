@@ -383,11 +383,12 @@ const translations = {
   /* usuario */
   Data_export: 'Exportación de datos',
   Export_your_data:
-    "Exportar todos los datos que se encuentran en su cuenta de BEEP y enviar un correo electrónico que contenga los datos como un archivo de Excel (OR download the Excel file via the 'Download CSV' button). El archivo de Excel tiene diferentes pestañas que contienen sus datos personales, colmena, ubicación y datos de inspección.",
+    "Exportar todos los datos que se encuentran en su cuenta de BEEP y enviar un correo electrónico que contenga los datos como un archivo de Excel (OR download the Excel file via the 'Download XLS' button). El archivo de Excel tiene diferentes pestañas que contienen sus datos personales, colmena, ubicación y datos de inspección.",
   Terms_of_use: 'Términos del servicio',
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -594,7 +595,7 @@ const translations = {
   the_field: 'el campo',
   is_required: 'is required',
   invalid_password:
-    "{'La clave debe contener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un número y un caracter especial ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'La clave debe contener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un número y un caracter especial ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: ' definición del sensor | definiciones del sensor',
   measurement: 'medición | mediciones',
   remove_device: 'remover dispositivo',
@@ -609,6 +610,8 @@ const translations = {
 
   sensordef_info:
     "Una definición de sensor es destinada a convertir un valor de sensor desde un valor sensor 'crudo' entrante'en un valor de acuerdo a la cantidad física y unidad ((e.g. p_v = 1098273 => peso_kg = 62,400 kg) o calibrar un sensor (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Lo anterior, puede ser realizado ajustando un 'compensar y un 'multiplicador. Los valores de ingreso y salida permanecen igual si se ha fijado la compensación en 0 y el multiplicador en 1. La app de la base BEEP (a partir del App Store) le proveerá definiciones correctas de los sensores en la instalación(configuración?) inicial de su base BEEP.",
+  sensordef_date_info:
+    'Esta calibración se aplica desde la fecha establecida hasta ahora (u otro valor de calibración establecido)',
   or: 'o',
   select_all_hives: 'Seleccionar todas las colmenas',
   select_all_editable_hives: 'Seleccionar todas las colmenas editables',
@@ -752,6 +755,7 @@ const translations = {
   drag_layers_info_text:
     'Arrastre capas desde el lado izquierdo a la posición deseada dentro de la colmena en el lado derecho. Elimine una capa de la colmena haciendo clic en ella y luego en el icono de la papelera roja. Dentro de la colmena, las capas también se pueden arrastrar para editar la posición, el color de la capa se puede editar haciendo clic en la capa.',
   New_hive: 'Nueva colmena',
+  New_beep_base: 'Nueva base BEEP',
   New_alertrule: 'Nueva regla de alerta',
   Add_alertrule: 'Agregar regla de alerta',
   Add_apiary: 'Agregar apiario',
@@ -997,6 +1001,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -1009,8 +1016,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1170,6 +1177,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

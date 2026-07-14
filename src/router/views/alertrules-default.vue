@@ -16,7 +16,9 @@
           color="disabled"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" start>mdi-content-copy</v-icon>
+        <v-icon v-if="!showLoadingIcon" color="black" start
+          >mdi-content-copy</v-icon
+        >
         {{
           $t('copy') +
             ' ' +
@@ -34,14 +36,13 @@
     </v-container>
 
     <v-container v-if="ready" class="back-content">
-      <v-row v-if="alertRulesDefault.length > 0" density="compact">
+      <v-row class="density" v-if="alertRulesDefault.length > 0">
         <v-scale-transition group>
           <v-col
             v-for="(alertRule, j) in alertRulesDefault"
             :key="j"
             cols="12"
-            class="alerts-item"
-            density="compact"
+            class="alerts-item density"
           >
             <v-card>
               <v-row class="ma-2 d-flex align-center">

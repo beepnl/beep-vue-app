@@ -2,15 +2,19 @@ import axios from 'axios'
 
 const instance = axios.create({
   baseURL:
-    process.env.VUE_APP_PENSOFT_API_URL ||
-    process.env.VUE_APP_PENSOFT_API_URL_FALLBACK,
+    import.meta.env.VITE_PENSOFT_API_URL ||
+    import.meta.env.VITE_SOFT_API_URL_FALLBACK,
 })
 
 // On 401 error, reset user and redirect to login
 const UNAUTHORIZED = 401
 instance.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  function onFulfilled(response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response
+  },
+  function onRejected(error) {
     console.log(error)
     const status = error.response ? error.response.status : 'No response'
     const originalRequest = error.config
@@ -29,11 +33,17 @@ instance.interceptors.response.use(
 
 // Dynamically add API token to requests
 // Dynamically add Accept-Language to requests
-instance.interceptors.request.use(function(config) {
-  config.headers.common['Content-Type'] = 'application/json'
-  // eslint-disable-next-line dot-notation
-  config.headers.common['token'] = 'token_hash'
-  return config
-})
+instance.interceptors.request.use(
+  function (config) {
+    instance.defaults.headers.common['Content-Type'] = 'application/json'
+
+    instance.defaults.headers.common['token'] = 'token_hash'
+    return config
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error)
+  }
+)
 
 export default instance

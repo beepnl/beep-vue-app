@@ -26,7 +26,6 @@
       <v-icon
         v-if="parseMode && parsedImages.length > 0"
         class="ml-1"
-        dark
         size="small"
         :color="checkAnswer ? 'red' : 'grey'"
         @click="showImages = !showImages"

@@ -3,19 +3,19 @@
     <h1
       v-if="
         activeApiary &&
-          typeof activeApiary.name !== 'undefined' &&
-          !activeApiary.owner
+        typeof activeApiary.name !== 'undefined' &&
+        !activeApiary.owner
       "
       class="unauthorized-title"
     >
       {{
         $t('sorry') +
-          ', ' +
-          $tc('location', 1) +
-          ' "' +
-          activeApiary.name +
-          '" ' +
-          $t('not_editable')
+        ', ' +
+        $tc('location', 1) +
+        ' "' +
+        activeApiary.name +
+        '" ' +
+        $t('not_editable')
       }}
     </h1>
 
@@ -29,7 +29,6 @@
         <v-spacer></v-spacer>
         <v-icon
           v-if="activeApiary.owner"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteApiary"
@@ -49,7 +48,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -57,9 +56,9 @@
       <v-container class="apiary-edit content-container">
         <v-row>
           <v-col cols="12">
-            <div class="text-overline mb-3">{{
-              $tc('Location', 1) + ' ' + $t('settings')
-            }}</div>
+            <div class="custom-text-overline mb-3">
+              {{ $tc('Location', 1) + ' ' + $t('settings') }}
+            </div>
             <div class="rounded-border">
               <v-row>
                 <v-col cols="12" sm="8" md="6" lg="5">
@@ -84,7 +83,6 @@
                     <v-sheet
                       v-if="activeApiary"
                       class="apiary-color cursor-pointer"
-                      dark
                       :color="
                         activeApiary.hex_color !== null
                           ? activeApiary.hex_color
@@ -96,13 +94,14 @@
 
                   <v-overlay
                     v-model="overlay"
+                    @click:outside="overlay = false"
                     class="align-center justify-center"
                   >
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       density="compact"
                       light
-                      flat
+                      variant="flat"
                     >
                       <div
                         class="hive-color-picker-title ml-1"
@@ -124,7 +123,7 @@
                       hide-canvas
                       :modes="['rgb']"
                       :mode="'rgb'"
-                      flat
+                      variant="flat"
                     >
                     </v-color-picker>
 
@@ -132,7 +131,7 @@
                       class="hive-color-picker-footer"
                       density="compact"
                       light
-                      flat
+                      variant="flat"
                     >
                       <v-spacer></v-spacer>
                       <v-icon
@@ -161,11 +160,11 @@
 
         <v-row>
           <v-col cols="12">
-            <div class="text-overline mb-3">
+            <div class="custom-text-overline mb-3">
               {{
                 $t('Place') + ' ' + $t('details') + ' (' + $t('optional') + ')'
-              }}</div
-            >
+              }}
+            </div>
             <div class="rounded-border">
               <v-row>
                 <v-col cols="12">
@@ -183,70 +182,36 @@
               <v-row>
                 <v-col cols="12" sm="4">
                   <div class="beep-label" v-text="`${$t('Country')}`"></div>
-                  <country-select
+                  <TreeselectVue3
                     v-if="activeApiary"
-                    v-model="activeApiary.country_code"
-                    :country="activeApiary.country_code.toUpperCase()"
-                    :usei18n="false"
-                    class="country-select"
-                    @input="setApiaryEdited(true)"
+                    v-model="countryCode"
+                    :options="treeselectCountries"
+                    @update:model-value="setApiaryEdited(true)"
                   />
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('latitude')}`"></div>
-                  <ElInputNumber
+                  <NumericInput
                     v-if="activeApiary"
-                    :model-value="
-                      activeApiary.coordinate_lat === null
-                        ? 0
-                        : activeApiary.coordinate_lat
-                    "
+                    :object="activeApiary"
+                    :property="'coordinate_lat'"
                     :min="-90"
                     :max="90"
                     :step="0.001"
-                    :precision="3"
-                    :step-strictly="true"
-                    @change="editApiary($event, 'lat')"
-                    @update:model-value="
-                      convertComma(
-                        $event,
-                        activeApiary,
-                        // eslint-disable-next-line vue/comma-dangle
-                        'lat',
-                        // eslint-disable-next-line vue/comma-dangle
-                        3
-                      ),
-                        setApiaryEdited(true)
-                    "
-                  ></ElInputNumber>
+                    @update-number="editApiary($event, 'lat')"
+                  ></NumericInput>
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <ElInputNumber
+                  <NumericInput
                     v-if="activeApiary"
-                    :model-value="
-                      activeApiary.coordinate_lon === null
-                        ? 0
-                        : activeApiary.coordinate_lon
-                    "
+                    :object="activeApiary"
+                    :property="'coordinate_lon'"
                     :min="-180"
                     :max="180"
                     :step="0.001"
-                    :precision="3"
-                    :step-strictly="true"
-                    @change="editApiary($event, 'lon')"
-                    @update:model-value="
-                      convertComma(
-                        $event,
-                        activeApiary,
-                        // eslint-disable-next-line vue/comma-dangle
-                        'lon',
-                        // eslint-disable-next-line vue/comma-dangle
-                        3
-                      ),
-                        setApiaryEdited(true)
-                    "
-                  ></ElInputNumber>
+                    @update-number="editApiary($event, 'lon')"
+                  ></NumericInput>
                 </v-col>
               </v-row>
               <v-row>
@@ -317,23 +282,24 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import { treeselectCountries } from '@assets/js/countries.js'
+import NumericInput from '@components/input-fields/numeric-input.vue'
+import { readApiariesAndGroups } from '@mixins/methodsMixin'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import { mapGetters } from 'vuex'
-import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
-import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     Confirm,
     Layout,
+    NumericInput,
     VueGoogleAutocomplete,
-    ElInputNumber,
   },
-  mixins: [convertComma, readApiariesAndGroups],
-  data: function() {
+  mixins: [readApiariesAndGroups, treeselectCountries],
+  data: function () {
     return {
       snackbar: {
         show: false,
@@ -359,7 +325,9 @@ export default {
     },
     colorPicker: {
       get() {
-        if (this.activeApiary && this.activeApiary.hex_color !== null) {
+        if (this.colorPickerValue !== '') {
+          return this.colorPickerValue
+        } else if (this.activeApiary && this.activeApiary.hex_color !== null) {
           return this.activeApiary.hex_color
         } else {
           return '#F8B133'
@@ -369,10 +337,22 @@ export default {
         this.colorPickerValue = value
       },
     },
+    countryCode: {
+      get() {
+        return this.activeApiary.country_code
+          ? this.activeApiary.country_code.toUpperCase()
+          : null
+      },
+      set(value) {
+        if (this.activeApiary) {
+          this.activeApiary.country_code = value
+        }
+      },
+    },
     locale() {
       return this.$i18n.locale
     },
-    requiredRule: function() {
+    requiredRule: function () {
       return [
         (v) =>
           !!v ||
@@ -492,10 +472,10 @@ export default {
           },
           warningMessage
         )
-        .then((confirm) => {
+        .then(() => {
           this.deleteApiary()
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -505,7 +485,7 @@ export default {
      * @param {Object} placeResultData PlaceResult object
      * @param {String} id Input container ID
      */
-    getAddressData: function(addressData, placeResultData, id) {
+    getAddressData: function (addressData, placeResultData) {
       // console.log('addressData ', addressData)
       // console.log('placeResultData ', placeResultData)
       // console.log('id ', id)
@@ -561,7 +541,6 @@ export default {
     padding-top: 12px;
   }
 
-  .country-select,
   .autocomplete-field {
     width: 100%;
     max-width: 100%;

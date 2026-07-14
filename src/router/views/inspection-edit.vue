@@ -8,32 +8,32 @@
     <h1 v-if="hiveNotEditable" class="unauthorized-title">
       {{
         $t('sorry') +
-          ', ' +
-          $tc('hive', 1) +
-          ' ' +
-          activeHive.name +
-          ' ' +
-          $t('not_editable')
+        ', ' +
+        $tc('hive', 1) +
+        ' ' +
+        activeHive.name +
+        ' ' +
+        $t('not_editable')
       }}
     </h1>
 
     <h1
       v-if="
         editMode &&
-          activeInspection &&
-          activeInspection.owner === false &&
-          activeHive.owner === false
+        activeInspection &&
+        activeInspection.owner === false &&
+        activeHive.owner === false
       "
       class="unauthorized-title"
     >
       {{
         $t('sorry') +
-          ', ' +
-          $tc('inspection', 1) +
-          ' ' +
-          inspectionId +
-          ' ' +
-          $t('not_editable')
+        ', ' +
+        $tc('inspection', 1) +
+        ' ' +
+        inspectionId +
+        ' ' +
+        $t('not_editable')
       }}
     </h1>
 
@@ -48,9 +48,9 @@
         <v-btn
           v-if="
             !uploadMode &&
-              selectedChecklist &&
-              selectedChecklist.owner &&
-              !mobile
+            selectedChecklist &&
+            selectedChecklist.owner &&
+            !mobile
           "
           class="mr-3"
           color="accent"
@@ -65,11 +65,11 @@
           class="save-button-mobile-wide mr-1"
           :disabled="
             !valid ||
-              (selectedHives && selectedHives.length === 0) ||
-              showLoadingIcon ||
-              forceInspectionDate ||
-              invalidDate ||
-              (activeInspection && activeInspection.date === null)
+            (selectedHives && selectedHives.length === 0) ||
+            showLoadingIcon ||
+            forceInspectionDate ||
+            invalidDate ||
+            (activeInspection && activeInspection.date === null)
           "
           @click.prevent="confirmSaveInspection"
         >
@@ -81,7 +81,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
         <v-btn
@@ -100,11 +100,11 @@
           class="save-button-mobile-wide mr-1"
           :disabled="
             !selectedChecklistSvg ||
-              showLoadingIcon ||
-              (uploadInspectionPayload &&
-                (uploadInspectionPayload.images.length < 1 ||
-                  typeof uploadInspectionPayload['data-user-locale'][0] !==
-                    'string'))
+            showLoadingIcon ||
+            (uploadInspectionPayload &&
+              (uploadInspectionPayload.images.length < 1 ||
+                typeof uploadInspectionPayload['data-user-locale'][0] !==
+                  'string'))
           "
           @click="uploadInspection"
         >
@@ -183,7 +183,7 @@
                   :check-answer="selectedHiveSetId === null"
                   :parsed-images="parsedImages['location']"
                 ></labelWithDescription>
-                <Treeselect
+                <TreeselectVue3
                   v-if="sortedHiveSets && sortedHiveSets.length > 0"
                   v-model="selectedHiveSetId"
                   :options="sortedHiveSets"
@@ -209,13 +209,11 @@
                   v-if="selectedHiveSet"
                   v-model="allHivesSelected"
                   color="accent"
-                  :label="
-                    `${
-                      selectedHiveSet.users
-                        ? $t('select_all_editable_hives')
-                        : $t('select_all_hives')
-                    }`
-                  "
+                  :label="`${
+                    selectedHiveSet.users
+                      ? $t('select_all_editable_hives')
+                      : $t('select_all_hives')
+                  }`"
                   :disabled="offlineMode"
                   hide-details
                 ></v-switch>
@@ -248,8 +246,8 @@
             <InspectModeSelector
               v-if="
                 !editMode &&
-                  (permissions.includes('test-offline-input') ||
-                    permissions.includes('offline-input'))
+                (permissions.includes('test-offline-input') ||
+                  permissions.includes('offline-input'))
               "
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
@@ -260,9 +258,7 @@
         <v-row class="mb-3 no-print">
           <v-col v-if="onlineMode" cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
-              <v-icon dark color="accent" class="mr-2"
-                >mdi-calendar-edit</v-icon
-              >
+              <v-icon color="accent" class="mr-2">mdi-calendar-edit</v-icon>
               <div class="inspection-date">
                 <div v-if="!parseMode" class="beep-label">
                   <span v-text="$t('Date_of_inspection')"></span>
@@ -300,7 +296,7 @@
                   :locale="locale"
                   :select-text="$t('ok')"
                   :cancel-text="$t('Cancel')"
-                  class=" text-accent"
+                  class="text-accent"
                   @update:model-value="datePickerIDUpdate"
                 />
               </div>
@@ -313,7 +309,7 @@
               class="beep-label mt-n3 mt-sm-0"
               v-text="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
             ></div>
-            <Treeselect
+            <TreeselectVue3
               v-if="checklists !== null && checklists.length > 0"
               v-model="selectedChecklistId"
               :options="checklists"
@@ -354,7 +350,7 @@
                 }}
               </em>
             </p>
-            <Treeselect
+            <TreeselectVue3
               v-model="checklistSvgId"
               :options="checklistSvgs"
               :normalizer="normalizerChecklistSvg"
@@ -382,8 +378,8 @@
             <InspectModeSelector
               v-if="
                 !editMode &&
-                  (permissions.includes('test-offline-input') ||
-                    permissions.includes('offline-input'))
+                (permissions.includes('test-offline-input') ||
+                  permissions.includes('offline-input'))
               "
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
@@ -405,22 +401,18 @@
             class="mt-3"
           >
             <v-card-title
-              :class="
-                `hive-inspect-card-title ${
-                  showCategoriesByIndex[index]
-                    ? 'hive-inspect-card-title--border-bottom'
-                    : ''
-                } cursor-pointer d-flex align-center justify-space-between`
-              "
+              :class="`hive-inspect-card-title ${
+                showCategoriesByIndex[index]
+                  ? 'hive-inspect-card-title--border-bottom'
+                  : ''
+              } cursor-pointer d-flex align-center justify-space-between`"
               @click="toggleCategory(index)"
             >
               <span>{{ getLabel(mainCategory) }}</span>
               <v-icon
-                :class="
-                  `float-right toggle-icon mdi ${
-                    showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
-                  }`
-                "
+                :class="`float-right toggle-icon mdi ${
+                  showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
+                }`"
               ></v-icon>
             </v-card-title>
 
@@ -456,19 +448,15 @@
           <!-- General inspection items -->
           <v-card class="mt-3">
             <v-card-title
-              :class="
-                `hive-inspect-card-title ${
-                  showGeneral ? 'hive-inspect-card-title--border-bottom' : ''
-                } d-flex align-center justify-space-between`
-              "
+              :class="`hive-inspect-card-title ${
+                showGeneral ? 'hive-inspect-card-title--border-bottom' : ''
+              } d-flex align-center justify-space-between`"
             >
               <span>{{ $t('overall') }}</span>
               <v-icon
-                :class="
-                  `float-right toggle-icon mdi ${
-                    showGeneral ? 'mdi-minus' : 'mdi-plus'
-                  }`
-                "
+                :class="`float-right toggle-icon mdi ${
+                  showGeneral ? 'mdi-minus' : 'mdi-plus'
+                }`"
                 @click="showGeneral = !showGeneral"
               ></v-icon>
             </v-card-title>
@@ -477,7 +465,7 @@
                 <v-row class="sub-inspection-wrapper my-0">
                   <v-col cols="12">
                     <div
-                      class="text-overline mb-2"
+                      class="custom-text-overline mb-2"
                       v-text="`${$t('positive_impression')}`"
                     ></div>
                     <div class="sub-inspection-details rounded-border">
@@ -550,7 +538,7 @@
                 <v-row class="sub-inspection-wrapper my-0">
                   <v-col cols="12">
                     <div
-                      class="text-overline mb-2"
+                      class="custom-text-overline mb-2"
                       v-text="`${$t('reminder')}`"
                     ></div>
                     <div class="sub-inspection-details rounded-border">
@@ -579,13 +567,13 @@
                                 :is-24="true"
                                 :teleport="true"
                                 :placeholder="$t('Set_notification_date')"
-                                class=" text-accent"
+                                class="text-accent"
                                 :locale="locale"
                                 :select-text="$t('ok')"
                                 :cancel-text="$t('Cancel')"
                                 @update:model-value="datePickerRDUpdate"
                               >
-                                <template #clear-icon="{ clear }">
+                                <template #clear-icon>
                                   <span
                                     class="description clear-icon mr-1"
                                     @click="clearDate"
@@ -669,7 +657,6 @@
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import _ from 'lodash'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
@@ -680,8 +667,8 @@ import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import OfflineInspection from '@components/offline-inspection.vue'
 import ParsedPages from '@components/parsed-pages.vue'
 import UploadInspection from '@components/upload-inspection.vue'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
+  appVersion,
   getLabel,
   parseDate,
   readApiariesAndGroups,
@@ -689,12 +676,15 @@ import {
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { datePickerText } from '@mixins/momentMixin'
+import { defineAsyncComponent } from 'vue'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ApiaryPreviewHiveSelector,
-    ChecklistFieldset,
+    ChecklistFieldset: defineAsyncComponent(
+      () => import('@components/checklist-fieldset.vue')
+    ), // needed to fix Vue recursive component error
     Confirm,
     InspectModeSelector,
     labelWithDescription,
@@ -704,9 +694,9 @@ export default {
     smileRating,
     UploadInspection,
     yesNoRating,
-    Treeselect,
   },
   mixins: [
+    appVersion,
     datePickerText,
     getLabel,
     parseDate,
@@ -714,7 +704,7 @@ export default {
     readApiariesAndGroupsIfNotPresent,
     readGeneralInspections,
   ],
-  data: function() {
+  data: function () {
     return {
       normalizerHiveSets(node) {
         return {
@@ -781,7 +771,6 @@ export default {
       },
       forceParseMode: false,
       booleanDefault: [1, 0],
-      appVersion: process.env.VUE_APP_VERSION,
       checklistSvgId: null,
       newSvgName: null,
       errorMessage: null,
@@ -887,9 +876,7 @@ export default {
       return this.inspectionId !== null
     },
     endOfToday() {
-      return this.$moment()
-        .endOf('day')
-        .format(this.dateFormat)
+      return this.$moment().endOf('day').format(this.dateFormat)
     },
     forceInspectionDate() {
       return (
@@ -1060,7 +1047,7 @@ export default {
         })
         const sortedTreeselectApiaries = treeselectApiaries
           .slice()
-          .sort(function(a, b) {
+          .sort(function (a, b) {
             if (a.name > b.name) {
               return 1
             }
@@ -1072,7 +1059,7 @@ export default {
 
         treeselectArray.push({
           treeselectId: -1,
-          name: 'DEBUG', // this.$i18n.tc('Location', 2),
+          name: this.$i18n.tc('Location', 2),
           children: sortedTreeselectApiaries,
         })
       }
@@ -1089,7 +1076,7 @@ export default {
         })
         const sortedTreeselectGroups = treeselectGroups
           .slice()
-          .sort(function(a, b) {
+          .sort(function (a, b) {
             if (a.name > b.name) {
               return 1
             }
@@ -1101,7 +1088,7 @@ export default {
 
         treeselectArray.push({
           treeselectId: -2,
-          name: 'DEBUG', // this.$i18n.tc('Group', 2),
+          name: this.$i18n.tc('Group', 2),
           children: sortedTreeselectGroups,
         })
       }
@@ -1497,7 +1484,7 @@ export default {
           this.prepParseMode()
         }, 500)
       } catch (error) {
-        let msg = ''
+        let msg
         this.errorMessage = this.$i18n.tc('Error', 1) + ': '
         if (error.response) {
           console.log('Error: ', error.response)
@@ -1532,10 +1519,10 @@ export default {
               color: 'red',
             }
           )
-          .then((confirm) => {
+          .then(() => {
             this.saveInspection()
           })
-          .catch((reject) => {
+          .catch(() => {
             return true
           })
       } else {
@@ -1548,7 +1535,7 @@ export default {
     datePickerRDUpdate(e) {
       this.reminderDate = e
     },
-    editChecklist(id) {
+    editChecklist() {
       if (this.selectedHiveSetId)
         this.activeInspection.hive_ids = this.selectedHives
       if (this.parseMode) {
@@ -1574,8 +1561,8 @@ export default {
           findApiary.length > 0
             ? '1' + findApiary[0].id.toString()
             : findGroup.length > 0
-            ? '2' + findGroup[0].id.toString()
-            : null
+              ? '2' + findGroup[0].id.toString()
+              : null
         return id
       } else {
         return null
@@ -1662,10 +1649,10 @@ export default {
               posAnswer.length > 1
                 ? null // if multiple checkboxes are parsed as true, do not fill in a value and let user check via red eye
                 : prop === 'impression'
-                ? checkboxIndex + 1
-                : checkboxIndex > -1
-                ? this.booleanDefault[checkboxIndex]
-                : null
+                  ? checkboxIndex + 1
+                  : checkboxIndex > -1
+                    ? this.booleanDefault[checkboxIndex]
+                    : null
           } else {
             if (prop.indexOf('date') === -1) {
               value = answer.value[0] === '' ? null : answer.value[0]
@@ -1767,10 +1754,10 @@ export default {
           null,
           true
         )
-        .then((confirm) => {
+        .then(() => {
           this.print()
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1870,7 +1857,7 @@ export default {
         this.selectHiveSet(this.selectedHiveSetId)
       }
     },
-    selectHiveSet(id, loc = false) {
+    selectHiveSet(id) {
       if (id) {
         const stringId = id.toString()
         this.isApiary = parseInt(stringId.substring(0, 1)) === 1
@@ -1917,7 +1904,16 @@ export default {
     },
     setActiveInspectionDate(setDate = null) {
       const date = setDate === null ? this.getNow() : setDate
+
+      if (
+        this.activeInspection &&
+        typeof this.activeInspection.created_at !== 'undefined'
+      ) {
+        this.activeInspection.created_at = date
+      }
+
       this.activeInspection.date = date
+
       this.$store.commit('inspections/setData', {
         prop: 'activeInspectionDate',
         value: date,
@@ -1973,11 +1969,11 @@ export default {
               color: 'red',
             }
           )
-          .then((confirm) => {
+          .then(() => {
             // do not change date when switching checklist for an existing (temp saved or regular) inspection
             this.getChecklistById(id, true)
           })
-          .catch((reject) => {
+          .catch(() => {
             return true
           })
       } else {

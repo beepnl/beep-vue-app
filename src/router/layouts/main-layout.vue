@@ -40,6 +40,7 @@
 
     <template v-slot:extension>
       <v-tabs
+        :model-value="activeTab.id"
         stacked
         density="compact"
         grow
@@ -51,6 +52,7 @@
         <v-tab
           v-for="(tab, i) in tabs"
           :key="i"
+          :model-value="tab.id"
           :to="{ name: tab.route }"
           :exact="tab.exact"
           @click="reloadData(tab.route)"
@@ -101,135 +103,160 @@
     <slot></slot>
   </v-main>
 
-  <!-- <PWAPrompt
+  <PWAPrompt
+    v-if="!appIsNative"
     :timesToShow="2"
+    :promptOnVisit="1"
     :copyTitle="$t('pwa_title')"
-    :copyBody="$t('pwa_body')"
-    :copyShareButtonLabel="$t('pwa_share_button_label')"
-    :copyAddHomeButtonLabel="$t('pwa_addhome_button_label')"
-    :copyClosePrompt="$t('Cancel')"
-  /> -->
+    :copyDescription="$t('pwa_body')"
+    :copyShareStep="$t('pwa_share_button_label')"
+    :copyAddToHomeScreenStep="$t('pwa_addhome_button_label')"
+    :appIconPath="assetsUrl + '/img/icons/icon_beep.png'"
+  />
 </template>
 
 <script>
-import LocaleChanger from '@components/locale-changer.vue'
-import { mapGetters } from 'vuex'
-import NavDrawer from '@components/nav-drawer.vue'
-import PlusMenu from '@components/plus-menu.vue'
+import LocaleChanger from "@components/locale-changer.vue";
+import NavDrawer from "@components/nav-drawer.vue";
+import PlusMenu from "@components/plus-menu.vue";
 import {
   checkAlerts,
+  nativeAppMethods,
   readApiariesAndGroups,
   readDevicesIfNotChecked,
-  readGeneralInspections,
-} from '@mixins/methodsMixin'
-// import PWAPrompt from 'vue2-ios-pwa-prompt'
+  readGeneralInspections
+} from "@mixins/methodsMixin";
+import { PWAPrompt } from "vue-ios-pwa-prompt";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     LocaleChanger,
     NavDrawer,
     PlusMenu,
-    // PWAPrompt,
+    PWAPrompt
   },
   mixins: [
     checkAlerts,
+    nativeAppMethods,
     readApiariesAndGroups,
     readDevicesIfNotChecked,
-    readGeneralInspections,
+    readGeneralInspections
   ],
   data: function() {
     return {
       drawer: false,
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
-    }
+        import.meta.env.VITE_ASSETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK
+    };
   },
   computed: {
-    ...mapGetters('alerts', ['alerts']),
-    ...mapGetters('devices', ['devices']),
-    currentRoute() {
-      return this.$route.name
+    ...mapGetters("alerts", ["alerts"]),
+    ...mapGetters("devices", ["devices"]),
+    activeTab() {
+      const activeTabs = this.tabs.filter(tab => tab.active);
+      return activeTabs.length > 0 ? activeTabs[0] : this.tabs[0];
     },
-    tabs: function() {
+    currentRoute() {
+      return this.$route.name;
+    },
+    tabs() {
       if (this.devices.length > 0) {
         return [
           {
-            title: this.$i18n.tc('Hive_short', 2),
-            icon: 'mdi-home-analytics',
-            route: 'home',
+            title: this.$i18n.tc("Hive_short", 2),
+            icon: "mdi-home-analytics",
+            route: "home",
             exact: true,
+            active: this.currentRoute === "home",
+            id: 0
           },
           {
-            title: this.$i18n.tc('Inspection', 2),
-            icon: 'mdi-file-document-edit-outline',
-            route: 'diary',
+            title: this.$i18n.tc("Inspection", 2),
+            icon: "mdi-file-document-edit-outline",
+            route: "diary",
             exact: false,
+            active: this.currentRoute === "diary",
+            id: 1
           },
           {
-            title: this.$i18n.t('data'),
-            icon: 'mdi-chart-line',
-            route: 'measurements',
+            title: this.$i18n.t("data"),
+            icon: "mdi-chart-line",
+            route: "measurements",
             exact: false,
+            active:
+              this.currentRoute === "measurements" ||
+              this.currentRoute === "measurements-id",
+            id: 2
           },
           {
-            title: this.$i18n.tc('Alert', 2),
-            icon: 'mdi-bell',
-            route: 'alerts',
+            title: this.$i18n.tc("Alert", 2),
+            icon: "mdi-bell",
+            route: "alerts",
             exact: false,
-          },
-        ]
+            active: this.currentRoute === "alerts",
+            id: 3
+          }
+        ];
       } else {
         return [
           {
-            title: this.$i18n.tc('Hive_short', 2),
-            icon: 'mdi-home-analytics',
-            route: 'home',
+            title: this.$i18n.tc("Hive_short", 2),
+            icon: "mdi-home-analytics",
+            route: "home",
             exact: true,
+            active: this.currentRoute === "home",
+            id: 0
           },
           {
-            title: this.$i18n.tc('Inspection', 2),
-            icon: 'mdi-file-document-edit-outline',
-            route: 'diary',
+            title: this.$i18n.tc("Inspection", 2),
+            icon: "mdi-file-document-edit-outline",
+            route: "diary",
             exact: false,
+            active: this.currentRoute === "diary",
+            id: 1
           },
           {
-            title: this.$i18n.t('data'),
-            icon: 'mdi-chart-line',
-            route: 'measurements',
+            title: this.$i18n.t("data"),
+            icon: "mdi-chart-line",
+            route: "measurements",
             exact: false,
-          },
-        ]
+            active:
+              this.currentRoute === "measurements" ||
+              this.currentRoute === "measurements-id",
+            id: 2
+          }
+        ];
       }
-    },
+    }
   },
   created() {
-    this.readDevicesIfNotChecked()
+    this.readDevicesIfNotChecked();
   },
   methods: {
     reloadData(route) {
-      if (route === 'alerts') {
-        this.checkAlertRulesAndAlerts()
-      } else if (route === 'diary') {
-        this.readGeneralInspections()
-      } else if (route === 'home') {
-        this.checkAlertRulesAndAlerts()
-        this.readApiariesAndGroups()
+      if (route === "alerts") {
+        this.checkAlertRulesAndAlerts();
+      } else if (route === "diary") {
+        this.readGeneralInspections();
+      } else if (route === "home") {
+        this.checkAlertRulesAndAlerts();
+        this.readApiariesAndGroups();
       }
     },
     clearHiveFilters() {
-      this.$store.commit('locations/clearFilters')
+      this.$store.commit("locations/clearFilters");
     },
     updateRoute(val) {
-      this.$router.push(val) // respond to tab swipes
-    },
-  },
-}
+      this.$router.push(val); // respond to tab swipes
+    }
+  }
+};
 </script>
 
 <style lang="scss">
 header.v-app-bar {
-  z-index: 2;
+  z-index: 1003 !important; // make sure v-overlay still works with expanded nav drawer
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }

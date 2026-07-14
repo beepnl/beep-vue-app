@@ -9,6 +9,7 @@
       accept="image/png, image/jpeg, image/bmp"
       :label="!!image ? '' : $t('Select_image')"
       prepend-icon="mdi-camera"
+      clear-icon="mdi-close"
       color="accent"
       :error-messages="errorMessage"
       :disabled="inputDisabled"
@@ -20,7 +21,7 @@
       <v-icon
         v-if="object[item.id] !== null"
         class="mt-n1 clear-icon"
-        right
+        end
         color="accent"
         @click="confirmDeleteImage(item.id)"
         >mdi-close</v-icon
@@ -31,6 +32,7 @@
           :src="imageLink"
           class="bg-grey-lighten-2 image-thumb"
           aspect-ratio="1"
+          cover
           @click="activeImage = thumbUrl"
         >
         </v-img>
@@ -51,29 +53,29 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import imageOverlay from '@components/image-overlay.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import Api from "@api/Api";
+import imageOverlay from "@components/image-overlay.vue";
 
 export default {
   components: {
     Confirm,
-    imageOverlay,
+    imageOverlay
   },
   props: {
     item: {
       type: Object,
-      required: true,
+      required: true
     },
     object: {
       type: Object,
-      required: true,
+      required: true
     },
     inputDisabled: {
       type: Boolean,
       default: false,
-      required: false,
-    },
+      required: false
+    }
   },
   data: () => ({
     // rules: [
@@ -83,124 +85,125 @@ export default {
     // ],
     image: null,
     activeImage: null,
-    errorMessage: '',
-    thumbUrl: '',
+    errorMessage: "",
+    thumbUrl: "",
     showLoading: false,
     baseApiUrl:
-      process.env.VUE_APP_BASE_API_URL ||
-      process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      import.meta.env.VITE_BASE_API_URL ||
+      import.meta.env.VITE_E_API_URL_FALLBACK
   }),
   computed: {
     fullUrl() {
-      return this.thumbUrl.indexOf('https://') > -1
+      return this.thumbUrl.indexOf("https://") > -1;
     },
     imageLink() {
-      return this.fullUrl ? this.thumbUrl : this.baseApiUrl + this.thumbUrl
-    },
+      return this.fullUrl ? this.thumbUrl : this.baseApiUrl + this.thumbUrl;
+    }
   },
   created() {
     if (this.object[this.item.id] !== null) {
-      this.thumbUrl = this.object[this.item.id]
+      this.thumbUrl = this.object[this.item.id];
     }
   },
   methods: {
     async deleteImage(id) {
       try {
-        const imageUrl = this.object[id]
+        const imageUrl = this.object[id];
         const data = {
-          image_url: imageUrl,
-        }
+          image_url: imageUrl
+        };
         // empty input field even if deleting image gives error
-        this.object[id] = null
-        this.thumbUrl = ''
-        this.image = null
-        const response = await Api.deleteRequest('/images', '', data)
+        this.object[id] = null;
+        this.thumbUrl = "";
+        this.image = null;
+        const response = await Api.deleteRequest("/images", "", data);
         if (!response) {
-          console.log('error')
+          console.log("error");
         }
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
+          console.log(error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
     async onUpload(e) {
-      const file = e
-      this.image = e
+      const file = e;
+      this.image = e;
 
-      if (typeof file !== 'undefined' && (file !== null) & !file.$error) {
-        this.showLoading = true
-        const userId = this.$store.getters['auth/userId']
+      if (typeof file !== "undefined" && (file !== null) & !file.$error) {
+        this.showLoading = true;
+        const userId = this.$store.getters["auth/userId"];
         const hiveId =
-          this.$store.getters['hives/activeHive'] !== null
-            ? this.$store.getters['hives/activeHive'].id
-            : ''
+          this.$store.getters["hives/activeHive"] !== null
+            ? this.$store.getters["hives/activeHive"].id
+            : "";
         const inspection =
-          this.$store.getters['inspections/selectedInspectionId'] !== null
-            ? this.$store.getters['inspections/selectedInspectionId']
-            : ''
+          this.$store.getters["inspections/selectedInspectionId"] !== null
+            ? this.$store.getters["inspections/selectedInspectionId"]
+            : "";
 
-        const formData = new FormData()
-        formData.append('file', file[0])
-        formData.append('user_id', userId)
-        formData.append('hive_id', hiveId)
-        formData.append('inspection', inspection)
-        formData.append('category_id', this.item.id)
+        const formData = new FormData();
 
-        const headers = { 'Content-Type': 'multipart/form-data; boundary=XXX' }
+        formData.append("file", file);
+        formData.append("user_id", userId);
+        formData.append("hive_id", hiveId);
+        formData.append("inspection", inspection);
+        formData.append("category_id", this.item.id);
 
-        this.errorMessage = ''
+        const headers = { "Content-Type": "multipart/form-data; boundary=XXX" };
+
+        this.errorMessage = "";
 
         try {
           const response = await Api.postRequestWithHeaders(
-            '/images',
+            "/images",
             formData,
             headers
-          )
+          );
           if (!response) {
-            console.log('error')
+            console.log("error");
           }
           if (
             response &&
-            typeof response.data !== 'undefined' &&
+            typeof response.data !== "undefined" &&
             response.data.thumb_url
           ) {
-            this.thumbUrl = response.data.thumb_url
-            this.object[this.item.id] = response.data.thumb_url
-            this.setInspectionEdited(true)
+            this.thumbUrl = response.data.thumb_url;
+            this.object[this.item.id] = response.data.thumb_url;
+            this.setInspectionEdited(true);
           }
-          this.showLoading = false
+          this.showLoading = false;
         } catch (error) {
-          this.showLoading = false
+          this.showLoading = false;
           if (error.response) {
-            console.log(error.response)
-            this.errorMessage = this.$i18n.t('something_wrong')
+            console.log(error.response);
+            this.errorMessage = this.$i18n.t("something_wrong");
           } else {
-            console.log('Error: ', error)
-            this.errorMessage = this.$i18n.t('something_wrong')
+            console.log("Error: ", error);
+            this.errorMessage = this.$i18n.t("something_wrong");
           }
         }
       }
     },
     confirmDeleteImage(id) {
       this.$refs.confirm
-        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_image') + '?', {
-          color: 'red',
+        .open(this.$i18n.t("Delete"), this.$i18n.t("remove_image") + "?", {
+          color: "red"
         })
-        .then((confirm) => {
-          this.deleteImage(id)
+        .then(() => {
+          this.deleteImage(id);
         })
-        .catch((reject) => {
-          return true
-        })
+        .catch(() => {
+          return true;
+        });
     },
     setInspectionEdited(bool) {
-      this.$store.commit('inspections/setInspectionEdited', bool)
-    },
-  },
-}
+      this.$store.commit("inspections/setInspectionEdited", bool);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

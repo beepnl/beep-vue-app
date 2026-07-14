@@ -369,10 +369,11 @@ const translations = {
   /* user */
   Data_export: 'Εξαγωγή δεδομένων',
   Export_your_data:
-    "Εξαγάγετε όλα τα δεδομένα που βρίσκονται στον λογαριασμό BEEP και στείλτε ένα email που περιέχει τα δεδομένα ως αρχείο Excel (OR download the Excel file via the 'Download CSV' button). Το αρχείο Excel έχει διαφορετικές καρτέλες που περιέχουν προσωπικά δεδομένα, δεδομένα κυψέλης, τοποθεσίας και επιθεώρησης.",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Εξαγάγετε όλα τα δεδομένα που βρίσκονται στον λογαριασμό BEEP και στείλτε ένα email που περιέχει τα δεδομένα ως αρχείο Excel (OR download the Excel file via the 'Download XLS' button). Το αρχείο Excel έχει διαφορετικές καρτέλες που περιέχουν προσωπικά δεδομένα, δεδομένα κυψέλης, τοποθεσίας και επιθεώρησης.",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -581,7 +582,7 @@ const translations = {
     ', που είναι συμβατά με τη νέα ευρωπαϊκή νομοθεσία περί απορρήτου',
   terms_of_use: 'όροι χρήσης',
   invalid_password:
-    "{'Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον 8 χαρακτήρες, ένα πεζό γράμμα, ένα κεφαλαίο γράμμα, έναν αριθμό και έναν ειδικό χαρακτήρα ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον 8 χαρακτήρες, ένα πεζό γράμμα, ένα κεφαλαίο γράμμα, έναν αριθμό και έναν ειδικό χαρακτήρα ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'ορισμός αισθητήρα | ορισμοί αισθητήρων',
   measurement: 'μέτρηση | μετρήσεις',
   remove_device: 'Αφαίρεση συσκευής',
@@ -596,6 +597,8 @@ const translations = {
     'Ένα μήνυμα με σύνδεσμο επαλήθευσης έχει σταλεί στη νέα σας διεύθυνση email. Κάντε κλικ στον σύνδεσμο στο email για να επιβεβαιώσετε τη νέα σας διεύθυνση email και να συνδεθείτε.',
   sensordef_info:
     'Ένας ορισμός αισθητήρα προορίζεται να μετατρέψει μια τιμή αισθητήρα από μια εισερχόμενη «ακατέργαστη» τιμή αισθητήρα σε μια τιμή σύμφωνα με μια φυσική ποσότητα και μονάδα (π.χ. w_v = 1098273 => βάρος_kg = 62.400 kg) ή να βαθμονομήσει έναν αισθητήρα (π.χ. t_0 = 15,3 ° C => t_0 = 15,8 ° C). Αυτό μπορεί να γίνει ορίζοντας ένα «offset» και έναν «πολλαπλασιαστή». Η τιμή εισόδου και εξόδου παραμένει η ίδια εάν έχει οριστεί η μετατόπιση «0» και ο πολλαπλασιαστής «1». Η εφαρμογή βάσης BEEP (από το App Store) θα σας παρέχει τους σωστούς ορισμούς αισθητήρων κατά την αρχική ρύθμιση της βάσης BEEP σας.',
+  sensordef_date_info:
+    'Αυτή η βαθμονόμηση ισχύει από την καθορισμένη ημερομηνία μέχρι τώρα (ή άλλη καθορισμένη τιμή βαθμονόμησης)',
   or: 'ή',
   select_all_hives: 'Επιλέξτε όλες τις κυψέλες',
   select_all_editable_hives: 'Επιλέξτε όλες τις επεξεργάσιμες κυψέλες',
@@ -738,6 +741,7 @@ const translations = {
   drag_layers_info_text:
     'Σύρετε τα στρώματα από την αριστερή πλευρά στην επιθυμητή θέση εντός της κυψέλης στη δεξιά πλευρά. Διαγράψτε ένα στρώμα από την κυψέλη κάνοντας κλικ σε αυτό και στη συνέχεια κάνοντας κλικ στο κόκκινο εικονίδιο κάδου. Μέσα στην κυψέλη, τα επίπεδα μπορούν επίσης να συρθούν για να επεξεργαστείτε τη θέση, το χρώμα του στρώματος μπορεί να επεξεργαστεί κάνοντας κλικ στο επίπεδο.',
   New_hive: 'Νέα κυψέλη',
+  New_beep_base: 'Νέα ζυγαριά BEEP',
   New_alertrule: 'Νέος κανόνας ειδοποίησης',
   Add_alertrule: 'Προσθήκη κανόνα ειδοποίησης',
   Add_apiary: 'Προσθήκη μελισσοκομείου',
@@ -984,6 +988,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -996,8 +1003,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1157,6 +1164,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

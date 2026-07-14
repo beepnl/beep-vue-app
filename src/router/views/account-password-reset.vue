@@ -8,10 +8,13 @@
     >
       <div v-if="passwordReset">
         <v-card-text v-if="errors.length === 0">
-          <v-alert text prominent density="compact" color="green">
-            {{ $t('password_recovery_reset_success') }}
+          <v-alert type="success" prominent density="compact" color="green">
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+            </template>
+            {{ $t("password_recovery_reset_success") }}
           </v-alert>
-          <a @click="login">{{ $t('go_to_dashboard') }}</a>
+          <a @click="login">{{ $t("go_to_dashboard") }}</a>
         </v-card-text>
         <v-card-text v-if="errors.length > 0">
           <v-alert
@@ -20,6 +23,8 @@
             type="error"
             prominent
             color="red"
+            density="compact"
+            class="mb-6"
           >
             <template v-slot:prepend>
               <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
@@ -29,11 +34,11 @@
               v-if="error.verifyLink"
               class="text-red alert-link"
               @click="sendEmailVerification"
-              >{{ $t('email_new_verification') }}</a
+              >{{ $t("email_new_verification") }}</a
             >
           </v-alert>
           <router-link :to="{ name: 'sign-up' }">
-            {{ $t('create_login_question') }}
+            {{ $t("create_login_question") }}
           </router-link>
         </v-card-text>
       </div>
@@ -44,7 +49,9 @@
             :key="error.name"
             type="error"
             prominent
+            density="compact"
             color="red"
+            class="mb-6"
           >
             <template v-slot:prepend>
               <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
@@ -56,7 +63,7 @@
                 class="text-red"
                 :to="{ name: 'password-forgot', query: { email: email } }"
               >
-                {{ $t('password_recovery_resend_mail') }}
+                {{ $t("password_recovery_resend_mail") }}
               </router-link>
             </span>
           </v-alert>
@@ -98,7 +105,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="text" type="submit">
-            {{ $t('password_recovery_reset_password') }}
+            {{ $t("password_recovery_reset_password") }}
           </v-btn>
         </v-card-actions>
 
@@ -107,7 +114,7 @@
           <router-link
             :to="{ name: 'password-forgot', query: { email: email } }"
           >
-            {{ $t('password_recovery_code_not_received') }}
+            {{ $t("password_recovery_code_not_received") }}
           </router-link>
           <v-spacer></v-spacer>
         </v-card-text>
@@ -117,28 +124,28 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Layout from '@/src/router/layouts/account-layout.vue'
+import Layout from "@/src/router/layouts/account-layout.vue";
+import Api from "@api/Api";
 
 export default {
   components: { Layout },
   props: {
     email: {
       type: String,
-      default: '',
+      default: ""
     },
     code: {
       type: String,
-      default: '',
-    },
+      default: ""
+    }
   },
   data() {
     return {
       resetPasswordRequest: {
-        email: this.email || '',
-        token: this.code || '',
-        password: '',
-        password_confirmation: '',
+        email: this.email || "",
+        token: this.code || "",
+        password: "",
+        password_confirmation: ""
       },
       valid: false,
       errors: [],
@@ -148,179 +155,179 @@ export default {
       fieldErrors: {
         email: false,
         password: false,
-        token: false,
-      },
-    }
+        token: false
+      }
+    };
   },
   computed: {
     emailRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('email_is_required'),
-        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
-      ]
+        v => !!v || this.$i18n.t("email_is_required"),
+        v => /.+@.+\..+/.test(v) || this.$i18n.t("no_valid_email")
+      ];
     },
     verificationCodeRules: function() {
       return [
-        (v) =>
+        v =>
           !!v ||
-          this.$i18n.t('the_field') +
+          this.$i18n.t("the_field") +
             ' "' +
-            this.$i18n.t('verification_code') +
+            this.$i18n.t("verification_code") +
             '" ' +
-            this.$i18n.t('is_required'),
-      ]
+            this.$i18n.t("is_required")
+      ];
     },
     passwordRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('password_is_required'),
-        (v) =>
+        v => !!v || this.$i18n.t("password_is_required"),
+        v =>
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
             v
-          ) || this.$i18n.t('invalid_password'),
-      ]
+          ) || this.$i18n.t("invalid_password")
+      ];
     },
     repeatPasswordRules: function() {
       return [
-        (v) =>
+        v =>
           !!v ||
-          this.$i18n.t('the_field') +
+          this.$i18n.t("the_field") +
             ' "' +
-            this.$i18n.t('confirm_new_password') +
+            this.$i18n.t("confirm_new_password") +
             '" ' +
-            this.$i18n.t('is_required'),
-        (v) =>
+            this.$i18n.t("is_required"),
+        v =>
           v === this.resetPasswordRequest.password ||
-          this.$i18n.t('no_password_match'),
-      ]
-    },
+          this.$i18n.t("no_password_match")
+      ];
+    }
   },
   methods: {
     async resetPassword() {
       if (this.$refs.form.validate()) {
-        this.clearErrors()
+        this.clearErrors();
         try {
           const response = await Api.postRequest(
-            '/user/reset',
+            "/user/reset",
             this.resetPasswordRequest
-          )
+          );
           if (response.data.data.api_token !== null) {
-            this.passwordReset = true
+            this.passwordReset = true;
           }
-          return response
+          return response;
         } catch (error) {
           if (error.response) {
-            console.log(error.response)
-            let verifyLink = false
-            let passwordForgotLink = false
+            console.log(error.response);
+            let verifyLink = false;
+            let passwordForgotLink = false;
 
-            let msg = ''
+            let msg;
 
-            if (typeof error.response.data.message !== 'undefined') {
-              msg = error.response.data.message
+            if (typeof error.response.data.message !== "undefined") {
+              msg = error.response.data.message;
             } else {
-              msg = error.response.data
+              msg = error.response.data;
             }
-            if (msg === 'invalid_user') {
-              this.fieldErrors.email = true
-              this.fieldErrors.password = true
-            } else if (msg === 'invalid_password') {
-              this.fieldErrors.password = true
-            } else if (msg === 'invalid_token') {
-              this.fieldErrors.token = true
-              passwordForgotLink = true
+            if (msg === "invalid_user") {
+              this.fieldErrors.email = true;
+              this.fieldErrors.password = true;
+            } else if (msg === "invalid_password") {
+              this.fieldErrors.password = true;
+            } else if (msg === "invalid_token") {
+              this.fieldErrors.token = true;
+              passwordForgotLink = true;
             }
-            if (msg === 'email_not_verified') {
-              verifyLink = true
+            if (msg === "email_not_verified") {
+              verifyLink = true;
             }
             this.errors.push({
               errorMessage: this.$i18n.t(msg),
               verifyLink,
-              passwordForgotLink,
-            })
+              passwordForgotLink
+            });
           } else {
             this.errors.push({
-              errorMessage: this.$i18n.tc('Error', 1),
-            })
+              errorMessage: this.$i18n.tc("Error", 1)
+            });
           }
         }
       }
     },
     async sendEmailVerification() {
       try {
-        const response = await Api.postRequest('/email/resend', {
-          email: this.email,
-        })
-        return response
+        const response = await Api.postRequest("/email/resend", {
+          email: this.email
+        });
+        return response;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
-          const msg = error.response.data.message
+          console.log(error.response);
+          const msg = error.response.data.message;
           this.errors.push({
-            errorMessage: this.$i18n.t(msg),
-          })
+            errorMessage: this.$i18n.t(msg)
+          });
         } else {
           this.errors.push({
-            errorMessage: this.$i18n.tc('Error', 1),
-          })
+            errorMessage: this.$i18n.tc("Error", 1)
+          });
         }
       }
     },
     login() {
-      this.clearErrors()
+      this.clearErrors();
       this.$store
-        .dispatch('auth/signIn', {
+        .dispatch("auth/signIn", {
           email: this.resetPasswordRequest.email,
-          password: this.resetPasswordRequest.password,
+          password: this.resetPasswordRequest.password
         })
-        .then((token) => {
-          this.$router.push({ name: 'home' })
-          this.clearResetPasswordRequest()
+        .then(() => {
+          this.$router.push({ name: "home" });
+          this.clearResetPasswordRequest();
         })
-        .catch((error) => {
-          this.tryingToLogIn = false
+        .catch(error => {
+          this.tryingToLogIn = false;
           if (error.response) {
-            console.log(error.response)
-            let verifyLink = false
-            let msg = ''
-            if (typeof error.response.data.message !== 'undefined') {
-              msg = error.response.data.message
+            console.log(error.response);
+            let verifyLink = false;
+            let msg;
+            if (typeof error.response.data.message !== "undefined") {
+              msg = error.response.data.message;
             } else {
-              msg = error.response.data
+              msg = error.response.data;
             }
-            if (msg === 'invalid_user') {
-              this.fieldErrors.email = true
-              this.fieldErrors.password = true
-            } else if (msg === 'invalid_password') {
-              this.fieldErrors.password = true
-            } else if (msg.indexOf('email') > -1) {
-              this.fieldErrors.email = true
+            if (msg === "invalid_user") {
+              this.fieldErrors.email = true;
+              this.fieldErrors.password = true;
+            } else if (msg === "invalid_password") {
+              this.fieldErrors.password = true;
+            } else if (msg.indexOf("email") > -1) {
+              this.fieldErrors.email = true;
             }
 
-            if (msg === 'email_not_verified') {
-              verifyLink = true
+            if (msg === "email_not_verified") {
+              verifyLink = true;
             }
             this.errors.push({
               errorMessage: this.$i18n.t(msg),
-              verifyLink,
-            })
+              verifyLink
+            });
           } else {
             this.errors.push({
-              errorMessage: this.$i18n.t('authentication_failed'),
-            })
+              errorMessage: this.$i18n.t("authentication_failed")
+            });
           }
-        })
+        });
     },
     clearErrors() {
-      this.errors = []
-      this.fieldErrors.email = false
-      this.fieldErrors.password = false
-      this.fieldErrors.token = false
+      this.errors = [];
+      this.fieldErrors.email = false;
+      this.fieldErrors.password = false;
+      this.fieldErrors.token = false;
     },
     clearResetPasswordRequest() {
-      this.resetPasswordRequest = {}
-    },
-  },
-}
+      this.resetPasswordRequest = {};
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

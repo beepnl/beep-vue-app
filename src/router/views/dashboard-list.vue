@@ -5,12 +5,12 @@
         <v-row class="filter-bar d-flex align-center">
           <v-card-actions
             class="mr-1 d-flex justify-end align-center"
-            style="width: 100%;"
+            style="width: 100%"
           >
             <v-btn
               :to="{ name: 'dashboard-create' }"
               color="black"
-              :small="mobile"
+              :size="mobile ? 'small' : 'default'"
               class="save-button-mobile-wide"
             >
               <v-icon start>mdi-plus</v-icon>
@@ -34,9 +34,9 @@
             v-if="!showDashboardPlaceholder"
             class="d-flex justify-start align-center"
           >
-            <div class="text-overline ">{{ $tc('Dashboard', 2) }}</div>
+            <div class="custom-text-overline">{{ $tc('Dashboard', 2) }}</div>
             <v-icon
-              class="icon-info cursor-pointer  ml-2"
+              class="icon-info cursor-pointer ml-2"
               :size="mobile ? 'x-small' : 'small'"
               :color="showExplanation ? 'accent' : 'grey'"
               @click="showExplanation = !showExplanation"
@@ -86,7 +86,7 @@
                       >
                         <v-icon class="mr-2" color="accent">mdi-link</v-icon>
                         <span
-                          class="text-overline"
+                          class="custom-text-overline"
                           v-text="dashboardGroup.code"
                         ></span>
                       </a>
@@ -117,7 +117,7 @@
                     </td>
                     <td>
                       <span
-                        class="text-overline"
+                        class="custom-text-overline single-line-height"
                         v-text="dashboardGroup.name"
                       ></span>
                     </td>
@@ -132,10 +132,9 @@
                           params: { id: dashboardGroup.code },
                         }"
                       >
-                        <v-icon dark color="accent">mdi-pencil</v-icon>
+                        <v-icon color="accent">mdi-pencil</v-icon>
                       </router-link>
                       <v-icon
-                        dark
                         color="red"
                         @click="confirmDeleteDashboard(dashboardGroup)"
                         >mdi-delete</v-icon
@@ -158,14 +157,14 @@
 // import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 // import HiveIcon from '@components/hive-icon.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   readDashboardGroups,
 } from '@mixins/methodsMixin'
-import Confirm from '@/src/components/confirm-dialog.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -179,18 +178,17 @@ export default {
     readApiariesAndGroupsIfNotPresent,
     readDashboardGroups,
   ],
-  data: function() {
+  data: function () {
     return {
       dashboardUrl:
-        process.env.VUE_APP_DASHBOARD_URL ||
-        process.env.VUE_APP_DASHBOARD_URL_FALLBACK,
+        import.meta.env.VITE_DASHBOARD_URL ||
+        import.meta.env.VITE_HBOARD_URL_FALLBACK,
       ready: false,
       errors: [],
       showLoadingIconById: [],
       showExplanation: false,
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+        import.meta.env.VITE_ETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK,
     }
   },
   computed: {
@@ -205,7 +203,7 @@ export default {
     sortedDashboardGroups() {
       const sortedDashboardGroups = this.dashboardGroups
         .slice()
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           return a.name !== null && b.name !== null
             ? a.name.localeCompare(b.name, undefined, {
                 numeric: true,

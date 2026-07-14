@@ -328,9 +328,10 @@ const translations = {
   Data_export: 'Data export',
   Export_your_data:
     'Export all data that is in your BEEP account and send an email containing the data as an Excel file OR download the Excel file here. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -513,7 +514,7 @@ const translations = {
   accept_policy_2: ', that are compatible with the new European privacy law',
   terms_of_use: 'terms of service',
   invalid_password:
-    "{'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'sensor definition | sensor definitions',
   measurement: 'measurement | measurements',
   remove_device: 'Remove device',
@@ -527,6 +528,8 @@ const translations = {
     'A message with a verification link has been sent to your new email address. Click the link in the email to confirm your new email address and log in.',
   sensordef_info:
     "A sensor definition is intended to convert a sensor value from an incoming 'raw' sensor value into a value according to a physical quantity and unit (e.g. w_v = 1098273 => weight_kg = 62,400 kg) or to calibrate a sensor (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). This can be done by setting an 'offset' and a 'multiplier'. The input and output value remains the same if offset '0' and multiplier '1' is set. The BEEP base app (from the App Store) will provide you with the right sensor definitions at the initial setup of your BEEP base.",
+  sensordef_date_info:
+    'This calibration is valid from the set date to now (or another set calibration value)',
   or: 'or',
   select_all_hives: 'Select all hives',
   select_all_editable_hives: 'Select all editable hives',
@@ -660,6 +663,7 @@ const translations = {
   drag_layers_info_text:
     'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive, layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
   New_hive: 'New hive',
+  New_beep_base: 'New BEEP base',
   New_alertrule: 'New alert rule',
   Add_alertrule: 'Add alert rule',
   Add_apiary: 'Add apiary',
@@ -904,6 +908,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -916,8 +923,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1077,6 +1084,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

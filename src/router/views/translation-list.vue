@@ -41,7 +41,7 @@
                 target="_blank"
                 class="ml-0 ml-sm-3 mb-3"
                 color="accent"
-                :small="smAndDown && !mobile"
+                :size="smAndDown && !mobile ? 'small' : 'default'"
               >
                 <span
                   v-text="
@@ -61,8 +61,8 @@
 </template>
 
 <script>
-import languages from '@assets/js/languages'
 import Layout from '@/src/router/layouts/back-layout.vue'
+import languages from '@assets/js/languages'
 
 export default {
   components: {

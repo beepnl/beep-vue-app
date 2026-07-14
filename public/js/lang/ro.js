@@ -384,10 +384,11 @@ const translations = {
   /* user */
   Data_export: 'Exportarea datelor',
   Export_your_data:
-    "Exportați toate datele din contul dvs. BEEP și trimiteți un e-mail care conține datele într-un fișier Excel (OR download the Excel file via the 'Download CSV' button). Fișierul va avea file diferite care conțin datele dvs. personale despre stup, locație și inspecție. ",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Exportați toate datele din contul dvs. BEEP și trimiteți un e-mail care conține datele într-un fișier Excel (OR download the Excel file via the 'Download XLS' button). Fișierul va avea file diferite care conțin datele dvs. personale despre stup, locație și inspecție. ",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -594,7 +595,7 @@ const translations = {
     ' termenii BEEP,  sunt compatibili cu noua lege Europeană privind confidențialitatea datelor.',
   terms_of_use: 'termenii serviciului',
   invalid_password:
-    "{'Parola trebuie să conțină cel puțin 8 caractere, o literă mică, o literă mare, un număr și un caracter special ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'Parola trebuie să conțină cel puțin 8 caractere, o literă mică, o literă mare, un număr și un caracter special ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'definirea senzorului| definirea senzorilor',
   measurement: 'măsurare| măsurători',
   remove_device: 'înlăturați dispozitiv',
@@ -609,6 +610,8 @@ const translations = {
     'Un mesaj nou cu un link de verificare a fost trimis la noua dvs. adresă de e-mail. Faceți clic pe linkul din e-mail pentru a vă confirma noua adresă de e-mail și pentru a vă autentifica',
   sensordef_info:
     'O definiție a senzorului este destinată să convertească o valoare a senzorului dintr-o valoare primară a senzorului „brut” într-o valoare în funcție de o cantitate fizică și o unitate (e.x. w_v = 1098273 => weight_kg = 62,400 kg) sau o calibrare a senzorului (e.x. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Acest lucru se poate face prin setarea unui „offset” și a unui „multiplicator”. Valoarea de intrare și ieșire rămâne aceeași dacă este setat decalajul „0” și multiplicatorul „1”. Aplicația  BEEP base (din App Store) vă va oferi definițiile corecte ale senzorilor la configurarea inițială a bazei dvs. BEEP. ',
+  sensordef_date_info:
+    'Această calibrare se aplică de la data setată până în prezent (sau o altă valoare de calibrare setată)',
   or: 'sau',
   select_all_hives: 'Selectați toți stupii',
   select_all_editable_hives: 'Selectați toate stupii personalizabili',
@@ -749,6 +752,7 @@ const translations = {
   drag_layers_info_text:
     'Trageți straturile din partea stângă în poziția dorită la stupul din partea dreaptă. Ștergeți un strat din stup făcând clic pe acesta și apoi făcând clic pe pictograma in forma unui coș roșu  . În interiorul stratului dintr-un stup se poate trage și pentru a edita pozițiaacestuia, de asemenea culoarea stratului poate fi editată făcând clic pe strat.',
   New_hive: 'Stup nou',
+  New_beep_base: 'Noua bază BEEP',
   New_alertrule: 'Regulă nouă pentru alertă',
   Add_alertrule: 'Adăugați o regulă de alertă',
   Add_apiary: 'Adăugați o stupină',
@@ -992,6 +996,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -1004,8 +1011,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1165,6 +1172,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

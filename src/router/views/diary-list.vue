@@ -20,11 +20,9 @@
               <v-text-field
                 v-model="diarySearch"
                 :label="`${$t('Search')}`"
-                :class="
-                  `${
-                    diarySearch !== null ? 'v-input--is-focused' : ''
-                  } beep-search-field`
-                "
+                :class="`${
+                  diarySearch !== null ? 'v-input--is-focused' : ''
+                } beep-search-field`"
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"
                 clearable
@@ -40,15 +38,13 @@
             <v-card-actions class="pl-0">
               <v-icon
                 v-if="groups.length > 0"
-                :class="
-                  `${
-                    filterByGroupStatus === 'off' ? 'color-grey-filter' : ''
-                  } ${
-                    filterByGroupStatus === 'owned'
-                      ? 'icon-apiary-owned'
-                      : 'icon-apiary-shared'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByGroupStatus === 'off' ? 'color-grey-filter' : ''
+                } ${
+                  filterByGroupStatus === 'owned'
+                    ? 'icon-apiary-owned'
+                    : 'icon-apiary-shared'
+                } mr-0 mr-sm-2`"
                 @click="toggleFilterByGroup"
               >
                 {{
@@ -58,57 +54,47 @@
                 }}
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByAttention ? 'text-red' : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByAttention ? 'text-red' : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByAttention = !filterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByReminder ? 'text-red' : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByReminder ? 'text-red' : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByReminder = !filterByReminder"
               >
                 mdi-calendar-clock
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(3)
-                      ? 'text-green'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(3)
+                    ? 'text-green'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByImpression = 3"
               >
                 mdi-emoticon-happy
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(2)
-                      ? 'text-orange'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(2)
+                    ? 'text-orange'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByImpression = 2"
               >
                 mdi-emoticon-neutral
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(1)
-                      ? 'text-red'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(1)
+                    ? 'text-red'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByImpression = 1"
               >
                 mdi-emoticon-sad
@@ -116,12 +102,12 @@
             </v-card-actions>
           </div>
           <v-card-actions v-if="!mobile && !smallScreen" class="mr-1">
-            <v-btn :to="{ name: 'inspect' }" medium color="black">
-              <v-icon start>mdi-plus</v-icon>
+            <v-btn :to="{ name: 'inspect' }" size="default" color="black">
+              <v-icon color="black" start>mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>
             <!-- <router-link v-if="mobile" :to="{ name: 'inspect' }">
-              <v-icon dark color="primary">mdi-plus-circle</v-icon></router-link
+              <v-icon color="primary">mdi-plus-circle</v-icon></router-link
             > -->
           </v-card-actions>
         </v-row>
@@ -140,10 +126,10 @@
         :items="filteredInspections"
         :min-item-size="90"
         :class="
-          'scroller pl-sm-6 px-2 pr-sm-0' +
-            (filteredInspections.length <= paginationItems
-              ? ' --single-page'
-              : '')
+          'px-2 scroller' +
+          (filteredInspections.length <= paginationItems
+            ? ' --single-page'
+            : '')
         "
       >
         <template v-slot="{ item, index, active }">
@@ -174,16 +160,10 @@
 </template>
 
 <script>
-import Api from '@api/Api'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import DiaryCard from '@components/diary-card.vue'
 import Layout from '@/src/router/layouts/main-layout.vue'
-import { mapGetters } from 'vuex'
-import {
-  momentFromNow,
-  momentify,
-  momentifyDayMonth,
-} from '@mixins/momentMixin'
+import Api from '@api/Api'
+import DiaryCard from '@components/diary-card.vue'
 import {
   checkAlerts,
   readApiariesAndGroups,
@@ -192,6 +172,12 @@ import {
   readGeneralInspectionsIfNotPresent,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
+import {
+  momentFromNow,
+  momentify,
+  momentifyDayMonth,
+} from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -210,7 +196,7 @@ export default {
     readGeneralInspectionsIfNotPresent,
     toggleFilterByGroup,
   ],
-  data: function() {
+  data: function () {
     return {
       ready: false,
     }
@@ -332,7 +318,7 @@ export default {
       }
     },
     filteredInspectionsWithUndefined() {
-      let textFilteredInspections = []
+      let textFilteredInspections
       if (this.diarySearch === null) {
         textFilteredInspections = this.inspectionsWithDatesAndHiveDetails
       } else {
@@ -377,7 +363,7 @@ export default {
 
       const propertyFilteredInspections = textFilteredInspections
         .slice()
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           return new Date(b.created_at) - new Date(a.created_at)
         })
         .filter((inspection) => {
@@ -514,10 +500,10 @@ export default {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.deleteInspection(inspection.id)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -527,11 +513,11 @@ export default {
 
 <style lang="scss" scoped>
 .diary-inspections-content {
-  margin-top: 158px;
+  margin-top: 170px;
   overflow: hidden;
-  max-height: calc(100vh - 158px); // to remove scroll bar
+  max-height: calc(100vh - 172px); // to remove scroll bar
   @include for-phone-only {
-    margin-top: 152px;
+    margin-top: 164px;
   }
 }
 
@@ -542,13 +528,14 @@ export default {
   @media (max-width: 909px) {
     max-width: 580px;
   }
-  &:first-child {
-    margin-top: 12px;
-  }
 }
 
 .scroller {
-  height: calc(100vh - 156px);
+  height: calc(100vh - 182px);
   width: 100%;
+  @include for-tablet-landscape-up {
+    padding-right: 32px !important;
+    padding-left: 32px !important;
+  }
 }
 </style>

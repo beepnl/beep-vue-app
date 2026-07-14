@@ -327,9 +327,10 @@ const translations = {
   Data_export: 'Export dat',
   Export_your_data:
     'Exportujte všechna data, která jsou na vašem BEEP účtu, a odešlete e-mail obsahující data ve formě Excel souboru NEBO si soubor Excel stáhněte zde. Soubor Excel má různé karty obsahující Vaše osobní data, údaje o úlech, umístění a kontrolách.',
-  Email_export: 'Poslat CSV e-mailem',
-  Download_csv: 'Stáhnout CSV',
+  Email_export: 'Poslat XLS e-mailem',
+  Download_xls: 'Stáhnout XLS',
   Open_csv: 'Otevřít CSV',
+  Open_xls: 'Otevřít XLS',
   Include_group_data: 'Přidat související data skupiny k exportu',
   Include_sensor_data: 'Přidat odkazy na soubory naměřených dat k exportu',
 
@@ -514,7 +515,7 @@ const translations = {
     ', které jsou kompatibilní s novým evropským právem na ochranu soukromí',
   terms_of_use: 'podmínky užití',
   invalid_password:
-    "{'Heslo musí obsahovat alespoň 8 znaků, jedno malé písmeno, jedno velké písmeno, jedno číslo a jeden speciální znak ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'Heslo musí obsahovat alespoň 8 znaků, jedno malé písmeno, jedno velké písmeno, jedno číslo a jeden speciální znak ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'definice senzoru | definice senzorů',
   measurement: 'měření | měření',
   remove_device: 'Odebrat zařízení',
@@ -528,6 +529,8 @@ const translations = {
     'Na vaši novou e-mailovou adresu byla odeslána zpráva s ověřovacím odkazem. Kliknutím na odkaz v e-mailu potvrďte svou novou e-mailovou adresu a přihlaste se.',
   sensordef_info:
     "Definice senzoru je určena k převodu hodnoty senzoru z příchozí „surové“ hodnoty senzoru na hodnotu podle fyzikální veličiny a jednotky (např. w_v = 1098273 => hmotnost_kg = 62 400 kg) nebo ke kalibraci senzoru (např. t_0 = 15,3 °C => t_0 = 15,8 °C). To lze provést nastavením „offsetu“ a „multiplikátoru“. Vstupní a výstupní hodnota zůstává stejná, pokud je nastaven offset '0' a multiplikátor '1'. Základní aplikace BEEP (z App Store) vám poskytne správné definice senzorů při počátečním nastavení vaší základny BEEP.",
+  sensordef_date_info:
+    'Tato kalibrace platí od nastaveného data doteď (nebo jiné nastavené kalibrační hodnoty)',
   or: 'nebo',
   select_all_hives: 'Vybrat všechny úly',
   select_all_editable_hives: 'Vybrat všechny upravitelné úly',
@@ -656,6 +659,7 @@ const translations = {
   drag_layers_info_text:
     'Přetáhněte vrstvy z levé strany do požadované pozice v úlu na pravé straně. Smažte vrstvu z úlu kliknutím na ni a poté kliknutím na ikonu červeného koše. V úlu lze vrstvy přetahovat a upravovat polohu, barvu vrstvy lze upravit kliknutím na vrstvu.',
   New_hive: 'Nový úl',
+  New_beep_base: 'Nová základna BEEP',
   New_alertrule: 'Nové pravidlo upozornění',
   Add_alertrule: 'Přidat pravidlo upozornění',
   Add_apiary: 'Přidat včelín',
@@ -901,6 +905,9 @@ const translations = {
   Hivetag_new_inspection: 'Vytvořte novou kontrolu',
   Hivetag_edit_hive: 'Upravit konfiguraci úlu',
   Hivetag_view_inspections: 'Zobrazit kontroly',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'Všechny identifikátory úlu se v současné době používají. Odeberte existující identifikátor úlu, abyste mohli přidat nový nebo jej upravit.',
 
@@ -913,8 +920,8 @@ const translations = {
   pwa_title: 'Použít BEEP jako aplikaci?',
   pwa_body:
     'Přidejte BEEP na domovskou obrazovku, abyste ji mohli používat jako webovou aplikaci a v režimu celé obrazovky. Po jednom přihlášení zůstanete přihlášeni.',
-  pwa_share_button_label: '1. Klepněte na ikonu sdílení na liště nabídky níže.',
-  pwa_addhome_button_label: "2. Klikněte na 'Přidat na domovovskou stránku'.",
+  pwa_share_button_label: '1. Klepněte na ikonu sdílení na liště nabídky níže',
+  pwa_addhome_button_label: "2. Klikněte na 'Přidat na domovovskou stránku'",
 
   Colony: 'Kolonie | Kolonie',
   Dashboard: 'Dashboard | Dashboards',
@@ -1068,6 +1075,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

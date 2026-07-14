@@ -15,9 +15,7 @@
             <v-btn
               v-for="period in periods"
               :key="period.interval"
-              :class="
-                `text-grey ${period.interval === interval ? 'text-accent' : ''}`
-              "
+              :class="`text-grey ${period.interval === interval ? 'text-accent' : ''}`"
               variant="text"
               @click="setPeriodInterval(period.interval)"
             >
@@ -30,7 +28,7 @@
               :disabled="interval === 'selection'"
               density="compact"
               hide-details
-              @change="loadData(false, false)"
+              @update:model-value="loadData(false, false)"
             ></v-switch>
           </v-row>
         </div>
@@ -39,9 +37,7 @@
             <v-btn
               v-for="period in periods.slice(0, -2)"
               :key="period.interval"
-              :class="
-                `text-grey ${period.interval === interval ? 'text-accent' : ''}`
-              "
+              :class="`text-grey ${period.interval === interval ? 'text-accent' : ''}`"
               size="small"
               variant="text"
               @click="setPeriodInterval(period.interval)"
@@ -58,11 +54,9 @@
               class="pa-0 d-flex justify-center"
             >
               <v-btn
-                :class="
-                  `text-grey ${
-                    period.interval === interval ? 'text-accent' : ''
-                  }`
-                "
+                :class="`text-grey ${
+                  period.interval === interval ? 'text-accent' : ''
+                }`"
                 size="small"
                 variant="text"
                 @click="setPeriodInterval(period.interval)"
@@ -79,7 +73,7 @@
                   :disabled="interval === 'selection'"
                   density="compact"
                   hide-details
-                  @change="loadData(false, false)"
+                  @update:model-value="loadData(false, false)"
                 ></v-switch>
               </div>
             </v-col>
@@ -111,7 +105,7 @@
       />
 
       <div v-if="mobile" class="float-right mr-n1">
-        <v-icon class="grey--text" @click="hideScrollBar = true">
+        <v-icon class="text-grey" @click="hideScrollBar = true">
           mdi-close
         </v-icon>
       </div>
@@ -121,7 +115,7 @@
       v-if="ready"
       :class="
         (devices.length > 0 ? 'measurements-content' : '') +
-          (touchDevice ? ' --touch-device' : '')
+        (touchDevice ? ' --touch-device' : '')
       "
     >
       <MeasurementsDateSelection
@@ -139,7 +133,7 @@
 
       <v-row class="my-0">
         <v-col class="d-flex justify-space-between" cols="12">
-          <Treeselect
+          <TreeselectVue3
             v-if="devices.length > 0"
             v-model="selectedDeviceId"
             class="mr-3"
@@ -195,21 +189,17 @@
                     half
                     :angle="0"
                   >
-                    <template v-slot="{ counterTick }">
+                    <template v-slot:default>
                       <v-sheet
-                        :class="
-                          `beep-icon beep-icon-${sensorData.name} --no-outline mt-3 mb-n1 mt-sm-1 mb-sm-n1`
-                        "
+                        :class="`beep-icon beep-icon-${sensorData.name} --no-outline mt-3 mb-n1 mt-sm-1 mb-sm-n1`"
                       ></v-sheet>
                       <div
-                        :style="
-                          `color: #242424;
+                        :style="`color: #242424;
                   font-size: ${mobile ? '14px' : '16px'}
-                  ;`
-                        "
+                  ;`"
                       >
-                        {{ counterTick.currentValue
-                        }}<span style="font-size: 0.75rem;">{{
+                        {{ sensorData.value
+                        }}<span style="font-size: 0.75rem">{{
                           SENSOR_UNITS[sensorData.name]
                         }}</span>
                       </div>
@@ -247,8 +237,8 @@
           <v-row
             v-if="
               measurementData !== null &&
-                measurementData.measurements &&
-                measurementData.measurements.length > 0
+              measurementData.measurements &&
+              measurementData.measurements.length > 0
             "
             class="charts mt-6 mb-2"
           >
@@ -264,12 +254,13 @@
                 <v-progress-circular size="50" color="primary" indeterminate />
               </div>
             </v-overlay>
+
             <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
               <div
                 v-if="selectedDevice"
                 :class="
-                  'text-overline text-center mt-0 mt-sm-3 ' +
-                    (someSensorsHaveInfo && chartCols !== 12 ? 'mb-8' : 'mb-3')
+                  'custom-text-overline text-center mt-0 mt-sm-3 ' +
+                  (someSensorsHaveInfo && chartCols !== 12 ? 'mb-8' : 'mb-3')
                 "
                 v-text="
                   !mobile
@@ -310,12 +301,10 @@
                 <div
                   v-if="index === 0"
                   :class="
-                    'text-overline text-center mt-0 mt-sm-3 ' +
-                      (someSensorsHaveInfo &&
-                      !hasInfo(sensor) &&
-                      chartCols !== 12
-                        ? 'mb-8'
-                        : 'mb-3')
+                    'custom-text-overline text-center mt-0 mt-sm-3 ' +
+                    (someSensorsHaveInfo && !hasInfo(sensor) && chartCols !== 12
+                      ? 'mb-8'
+                      : 'mb-3')
                   "
                   v-text="
                     measurementData.resolution
@@ -332,25 +321,24 @@
                   v-else-if="chartCols !== 12"
                   :class="
                     'header-filler ' +
-                      (someSensorsHaveInfo && !hasInfo(sensor)
-                        ? 'mt-3 mb-8'
-                        : 'my-3')
+                    (someSensorsHaveInfo && !hasInfo(sensor)
+                      ? 'mt-3 mb-8'
+                      : 'my-3')
                   "
                 ></div>
                 <div
                   v-if="hasInfo(sensor)"
                   :class="
                     'd-flex flex-column align-center' +
-                      (chartCols !== 12 ? ' mt-n3' : '')
+                    (chartCols !== 12 ? ' mt-n3 mb-6' : '')
                   "
                 >
                   <div class="d-flex justify-start align-center">
-                    <div class="overline text-center"
-                      >{{ $t(getSensorMeasurement(sensor).abbreviation) }}
+                    <div class="custom-text-overline text-center">
+                      {{ $t(getSensorMeasurement(sensor).abbreviation) }}
                     </div>
                     <v-icon
                       class="mdi mdi-information ml-1 cursor-pointer"
-                      dark
                       size="14"
                       :color="
                         sensorInfo.indexOf(sensor) > -1 ? 'accent' : 'grey'
@@ -361,7 +349,10 @@
 
                   <p
                     v-if="hasInfo(sensor) && sensorInfo.indexOf(sensor) > -1"
-                    class="mt-0 mb-1 d-flex font-italic"
+                    :class="
+                      'mt-0 mb-1 d-flex font-italic ' +
+                      (chartCols !== 12 ? 'mb-n5' : '')
+                    "
                   >
                     <span class="ml-1 color-accent">
                       <a
@@ -405,10 +396,10 @@
               ></div>
 
               <div
-                class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+                class="custom-text-overline mt-0 mt-sm-3 mb-3 text-center"
                 v-text="$t('Sound_measurements')"
               ></div>
-              <div>
+              <div class="pt-3">
                 <MeasurementsChartHeatmap
                   :data="measurementsForHeatmap"
                   :max-value="maxSoundSensorValue"
@@ -442,7 +433,7 @@
 
                 <div
                   v-if="index === 0"
-                  class="text-overline mt-n4 mt-sm-3 mb-3 text-center"
+                  class="custom-text-overline mt-n4 mt-sm-3 mb-3 text-center"
                   v-text="
                     $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
                   "
@@ -450,7 +441,10 @@
                 <div
                   v-else-if="chartCols !== 12"
                   :class="
-                    'header-filler ' + (someSensorsHaveInfo ? 'mt-6 mb-8' : '')
+                    'header-filler ' +
+                    (someSensorsHaveInfo && !hasInfo(sensor)
+                      ? 'mt-3 mb-8'
+                      : 'my-3')
                   "
                 ></div>
                 <div>
@@ -465,7 +459,12 @@
                     :high-value="debugChartBoundaries[sensor].high"
                     :low-value="debugChartBoundaries[sensor].low"
                     :min-value="debugChartBoundaries[sensor].min"
-                    :max-value="debugChartBoundaries[sensor].max"
+                    :max-value="
+                      maxMinSensorValue(
+                        sensor,
+                        debugChartBoundaries[sensor].max
+                      )
+                    "
                     @confirm-view-alert="confirmViewAlert($event)"
                     @confirm-view-inspection="
                       confirmViewInspection($event.id, $event.date)
@@ -506,7 +505,7 @@
           <div class="text-center">
             <img
               :src="assetsUrl + '/img/beep-base-small.jpg'"
-              style=" width: 100%;max-width: 500px;"
+              style="width: 100%; max-width: 500px"
             />
           </div>
           <div>{{ $t('beep_base_explanation') }}</div>
@@ -527,7 +526,6 @@ import Layout from '@/src/router/layouts/main-layout.vue'
 import Api from '@api/Api'
 import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
 import MeasurementsCard from '@components/measurements/measurements-card.vue'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   checkAlerts,
   readApiariesAndGroups,
@@ -535,6 +533,7 @@ import {
   readInspectionsForHiveId,
   readTaxonomy,
   sortedDevices,
+  touchDevice,
 } from '@mixins/methodsMixin'
 import {
   momentFormat,
@@ -555,7 +554,6 @@ export default {
     MeasurementsChartHeatmap,
     MeasurementsChartLine,
     MeasurementsDateSelection,
-    Treeselect,
   },
   mixins: [
     checkAlerts,
@@ -570,6 +568,7 @@ export default {
     sensorMixin,
     sortedDevices,
     timeZone,
+    touchDevice,
   ],
   data() {
     return {
@@ -601,8 +600,8 @@ export default {
       periodTitle: null,
       preselectedDeviceId: null,
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+        import.meta.env.VITE_ASSETS_URL ||
+        import.meta.env.VITE_ETS_URL_FALLBACK,
       dates: [],
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
@@ -874,10 +873,12 @@ export default {
       ]
     },
     periodEndString() {
-      return this.periodEnd.format(this.dateTimeFormat)
+      return this.periodEnd ? this.periodEnd.format(this.dateTimeFormat) : ''
     },
     periodStartString() {
-      return this.periodStart.format(this.dateTimeFormat)
+      return this.periodStart
+        ? this.periodStart.format(this.dateTimeFormat)
+        : ''
     },
     queriedChartCols() {
       const queriedValue = parseInt(this.$route.query.chartCols)
@@ -926,8 +927,8 @@ export default {
       return this.$vuetify.display.width < 1300
         ? 'md'
         : this.$vuetify.display.width > 1900
-        ? 'xl'
-        : 'lg'
+          ? 'xl'
+          : 'lg'
     },
     selectedDevice() {
       return (
@@ -974,7 +975,7 @@ export default {
     },
     sortedCurrentSoundSensors() {
       const sorted = Object.keys(this.currentSoundSensors)
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           const firstNumberA = parseInt(a.substring(0, a.indexOf('-')))
           const firstNumberB = parseInt(b.substring(0, b.indexOf('-')))
 
@@ -1002,9 +1003,6 @@ export default {
           )
         : []
     },
-    touchDevice() {
-      return window.matchMedia('(hover: none)').matches
-    },
   },
   created() {
     this.initLocale = this.userLocale
@@ -1020,53 +1018,60 @@ export default {
     }
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null
     this.stopTimer()
+
+    if (this.devices.length > 0) {
+      // improve app smoothness: if data tab has loaded before in the same session, only loadingData icon is needed instead of the overall loading icon
+      this.ready = true
+    }
+
     this.readTaxonomy().then(() => {
-      this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
+      this.readDevicesIfNotChecked()
         .then(() => {
-          this.readDevicesIfNotChecked()
-            .then(() => {
-              // if selected device id is saved in localStorage, and there is no preselected device id, use it
-              const storedDeviceId =
-                localStorage.beepSelectedDeviceId &&
-                !isNaN(parseInt(localStorage.beepSelectedDeviceId))
-                  ? parseInt(localStorage.beepSelectedDeviceId)
-                  : null
+          // improve app smoothness: not completely ready here, but the rest will be loading with the loadingData icon is shown instead of the overall loading icon
+          this.ready = true
 
-              if (
-                this.preselectedDeviceId === null &&
-                storedDeviceId &&
-                this.deviceExists(storedDeviceId)
-              ) {
-                this.selectedDeviceId = storedDeviceId
-              } else if (
-                this.preselectedDeviceId !== null &&
-                this.deviceExists(this.preselectedDeviceId)
-              ) {
-                this.selectedDeviceId = this.preselectedDeviceId
-              }
+          // if selected device id is saved in localStorage, and there is no preselected device id, use it
+          const storedDeviceId =
+            localStorage.beepSelectedDeviceId &&
+            !isNaN(parseInt(localStorage.beepSelectedDeviceId))
+              ? parseInt(localStorage.beepSelectedDeviceId)
+              : null
 
-              if (
-                this.queriedDate !== null &&
-                this.queriedDate.length === 10 &&
-                !isNaN(this.preselectedDeviceId)
-              ) {
-                this.selectDate(this.queriedDate)
-              } else if (this.devices.length > 0) {
-                if (this.queriedInterval !== undefined) {
-                  this.interval = this.queriedInterval
-                  this.timeIndex = this.queriedTimeIndex
-                  this.dates =
-                    this.queriedStart && this.queriedEnd
-                      ? [this.queriedStart, this.queriedEnd]
-                      : []
-                }
+          if (
+            this.preselectedDeviceId === null &&
+            storedDeviceId &&
+            this.deviceExists(storedDeviceId)
+          ) {
+            this.selectedDeviceId = storedDeviceId
+          } else if (
+            this.preselectedDeviceId !== null &&
+            this.deviceExists(this.preselectedDeviceId)
+          ) {
+            this.selectedDeviceId = this.preselectedDeviceId
+          }
 
-                this.setInitialDeviceIdAndLoadData()
-              }
-            })
-            .then(() => {
-              this.ready = true
-            })
+          if (
+            this.queriedDate !== null &&
+            this.queriedDate.length === 10 &&
+            !isNaN(this.preselectedDeviceId)
+          ) {
+            this.selectDate(this.queriedDate)
+          } else if (this.devices.length > 0) {
+            if (this.queriedInterval !== undefined) {
+              this.interval = this.queriedInterval
+              this.timeIndex = this.queriedTimeIndex
+              this.dates =
+                this.queriedStart && this.queriedEnd
+                  ? [this.queriedStart, this.queriedEnd]
+                  : []
+            }
+
+            this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
+            this.setInitialDeviceIdAndLoadData()
+          }
+        })
+        .then(() => {
+          this.ready = true
         })
     })
   },
@@ -1107,7 +1112,7 @@ export default {
           const self = this
           const sortedArray = this.currentLastSensorValues
             .slice()
-            .sort(function(a, b) {
+            .sort(function (a, b) {
               const compareA = self.$i18n.t(a.name)
               const compareB = self.$i18n.t(b.name)
               if (compareA < compareB) {
@@ -1299,7 +1304,7 @@ export default {
         datasets: [],
       }
       // const sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
-      quantities.map((quantity, index) => {
+      quantities.map((quantity) => {
         const mT = this.getSensorMeasurement(quantity)
 
         if (mT === null || mT === undefined) {
@@ -1350,7 +1355,7 @@ export default {
             this.relativeInterval
             // && index < this.measurementData.measurements.length - 3
           ) {
-            data.datasets.map((dataset, index) => {
+            data.datasets.map((dataset) => {
               const quantity = dataset.abbr
               // if (
               //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
@@ -1386,7 +1391,7 @@ export default {
           },
           alert.alert_rule_name + ' (' + alert.alert_function + ')'
         )
-        .then((confirm) => {
+        .then(() => {
           return this.$router.push({
             name: 'alerts',
             query: {
@@ -1394,7 +1399,7 @@ export default {
             },
           })
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1407,7 +1412,7 @@ export default {
             color: 'primary',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           const query = {
             search: 'id=' + inspectionId.toString(),
             interval: this.interval,
@@ -1427,7 +1432,7 @@ export default {
             query,
           })
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1450,7 +1455,7 @@ export default {
         measurementData.measurements &&
         measurementData.measurements.length > 0
       ) {
-        measurementData.measurements.sort(function(a, b) {
+        measurementData.measurements.sort(function (a, b) {
           if (a.time < b.time) {
             return -1
           }
@@ -1544,7 +1549,7 @@ export default {
         this.loadLastSensorValuesTimer()
       }
       this.sensorMeasurementRequest(this.interval)
-      if (this.showCardCompare) {
+      if (this.showCardCompare && this.$refs.cardCompare) {
         // trigger load compare data in child component whenever user is comparing data and a new data call is required
         // interval & timeIndex are passed on directly because the component props are passed on with a small delay so that does not work correctly
         this.$refs.cardCompare.loadCompareData(
@@ -1568,22 +1573,53 @@ export default {
         this.loadLastSensorValuesFunc()
       }
     },
+    maxMinSensorValue(quantity, hardcodedMinMax, returnMax = true) {
+      const mT = this.getSensorMeasurement(quantity)
+
+      if (
+        mT !== null &&
+        mT !== undefined &&
+        this.measurementData &&
+        this.measurementData.measurements &&
+        this.measurementData.measurements.length > 0
+      ) {
+        const allSensorValues = this.measurementData.measurements
+          .filter(
+            (measurement) =>
+              measurement[mT.abbreviation] !== undefined &&
+              measurement[mT.abbreviation] !== null
+          )
+          .map((measurement) => measurement[mT.abbreviation])
+
+        const result = returnMax
+          ? Math.max(...allSensorValues)
+          : Math.min(...allSensorValues) // if returnMax is false, return the minimum value instead
+
+        const margin = Math.abs(result) * 0.1
+
+        const newMinMax = Math.ceil(
+          returnMax ? result + margin : result - margin
+        )
+
+        if (returnMax) {
+          return newMinMax > hardcodedMinMax ? newMinMax : hardcodedMinMax
+        } else {
+          return newMinMax < hardcodedMinMax ? newMinMax : hardcodedMinMax
+        }
+      } else {
+        return hardcodedMinMax
+      }
+    },
     momentFromISO8601(date) {
       // automagically converted from utc time to users timezone because moment guesses (and then sets its) timezone in this view
       if (this.interval === 'hour') {
-        return this.$moment(date)
-          .locale(this.locale)
-          .format('LT')
+        return this.$moment(date).locale(this.locale).format('LT')
       } else if (this.interval === 'day' || this.interval === 'week') {
         const unit = this.locale === 'nl' ? 'u' : 'h'
         return (
-          this.$moment(date)
-            .locale(this.locale)
-            .format('ddd') +
+          this.$moment(date).locale(this.locale).format('ddd') +
           ' ' +
-          this.$moment(date)
-            .locale(this.locale)
-            .format('H') +
+          this.$moment(date).locale(this.locale).format('H') +
           unit
         )
       } else {
@@ -1615,6 +1651,14 @@ export default {
 
         this.selectedHiveId = hiveId
       }
+    },
+    runAtInterval(fn, interval) {
+      fn().finally(() => {
+        this.timer = setTimeout(
+          () => this.runAtInterval(fn, interval),
+          interval
+        )
+      })
     },
     selectDate(date) {
       const p = this.interval
@@ -1666,12 +1710,8 @@ export default {
         const ep = p
 
         if (!this.relativeInterval) {
-          this.periodStart = this.$moment()
-            .subtract(i, d)
-            .startOf(p)
-          this.periodEnd = this.$moment()
-            .subtract(i, d)
-            .endOf(ep)
+          this.periodStart = this.$moment().subtract(i, d).startOf(p)
+          this.periodEnd = this.$moment().subtract(i, d).endOf(ep)
         } else {
           this.periodStart = this.$moment().subtract(i + 1, d)
           this.periodEnd = this.$moment().subtract(i, d)
@@ -1708,10 +1748,10 @@ export default {
               color: 'primary',
             }
           )
-          .then((confirm) => {
+          .then(() => {
             this.zoomTo(period, date)
           })
-          .catch((reject) => {
+          .catch(() => {
             return true
           })
       } else {
@@ -1730,7 +1770,7 @@ export default {
       this.loadData()
       return true
     },
-    setPeriodInterval(interval, modulonr) {
+    setPeriodInterval(interval) {
       const prevInterval = this.interval
       this.interval = interval
       if (interval === 'selection' && this.dates.length === 0) {
@@ -1764,10 +1804,11 @@ export default {
     },
     startTimer() {
       this.stopTimer()
-      this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000)
+      this.runAtInterval(this.loadLastSensorValuesFunc, 60 * 1000)
     },
     stopTimer() {
       if (this.timer > 0) {
+        clearTimeout(this.timer)
         clearInterval(this.timer)
         this.timer = 0
       }
@@ -1857,9 +1898,9 @@ export default {
   max-width: 300px;
 }
 
-.sticky-header {
+.sticky-header.v-app-bar {
   top: 148px !important;
-  z-index: 1 !important;
+  z-index: 1001 !important;
   background-color: $color-orange-light !important;
   border-bottom: 1px solid $color-orange-border;
   @include for-tablet-landscape-up {

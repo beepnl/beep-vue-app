@@ -4,7 +4,7 @@
       v-for="(hive, j) in hives"
       :key="j"
       :class="
-        `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+        `hive-icon hive-icon-preview d-flex flex-column justify-center align-center text-white text--small mr-1 ${
           hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
         } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
       "
@@ -25,7 +25,7 @@
         >
         </v-sheet>
       </div>
-      <span class="hive-caption text-caption">
+      <span class="hive-caption text-body-small">
         {{ hive.prefix }} {{ j + hive.offset }}
       </span>
     </v-sheet>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
+import { getMaxFramecount, orderedLayers } from "@mixins/methodsMixin";
 
 export default {
   mixins: [getMaxFramecount, orderedLayers],
@@ -41,39 +41,34 @@ export default {
     newHive: {
       type: Object,
       default: null,
-      required: true,
+      required: true
     },
     numberOfHives: {
       type: Number,
       default: 1,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
-    hasQueenExcluder(hive) {
-      return this.newHive.layers.some(
-        (layer) => layer.type === 'queen_excluder'
-      )
-    },
     hives() {
-      const array = []
+      const array = [];
       for (let n = 0; n < this.numberOfHives; n++) {
-        array.push(this.newHive)
+        array.push(this.newHive);
       }
-      return array
-    },
+      return array;
+    }
   },
   methods: {
     hasLayer(hive, type) {
-      return hive.layers.some((layer) => layer.type === type)
+      return hive.layers.some(layer => layer.type === type);
     },
     hiveWidth: function(hive) {
       return hive.layers.length > 0
         ? this.getMaxFramecount(hive.layers) * 6
-        : 16
-    },
-  },
-}
+        : 16;
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -138,20 +133,20 @@ export default {
   justify-content: flex-end;
   &::after {
     margin-right: -16px;
-    font-family: 'Material Design Icons';
+    font-family: "Material Design Icons";
     font-size: 18px;
     color: $color-grey;
-    content: '\F004E';
+    content: "\F004E";
   }
 }
 .feeding_box-layer {
   justify-content: center;
   &::after {
     margin-top: -16px;
-    font-family: 'Material Design Icons';
+    font-family: "Material Design Icons";
     font-size: 18px;
     color: $color-grey;
-    content: '\F0046';
+    content: "\F0046";
   }
 }
 .hive-caption {

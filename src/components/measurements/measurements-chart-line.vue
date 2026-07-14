@@ -1,31 +1,32 @@
 <template>
-  <LineChart
-    ref="line"
-    :chart-options="chartOptions"
-    :chart-data="chartData"
-    :chart-id="chartId"
-    :plugins="plugins"
-    :class="'chartjs-wrapper' + (size === 'large' ? '--large' : '')"
-  />
+  <div class="chartjs-wrapper">
+    <LineChart
+      ref="line"
+      :options="chartOptions"
+      :data="chartData"
+      :chart-id="chartId"
+      :class="'chartjs-wrapper' + (size === 'large' ? '--large' : '')"
+    />
+  </div>
 </template>
 
 <script>
-import { Line as LineChart } from 'vue-chartjs'
+import { lightenColor, touchDevice } from '@mixins/methodsMixin'
 import {
   Chart as ChartJS,
   Filler,
+  Legend,
+  LinearScale,
   LineController,
   LineElement,
   PointElement,
-  LinearScale,
   TimeSeriesScale,
-  Legend,
   Tooltip,
 } from 'chart.js'
 import 'chartjs-adapter-moment'
-import ChartDataLabels from 'chartjs-plugin-datalabels'
 import annotationPlugin from 'chartjs-plugin-annotation'
-import { lightenColor } from '@mixins/methodsMixin'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { Line as LineChart } from 'vue-chartjs'
 
 ChartJS.register(
   Filler,
@@ -42,7 +43,7 @@ ChartJS.register(
 
 export default {
   components: { LineChart },
-  mixins: [lightenColor],
+  mixins: [lightenColor, touchDevice],
   props: {
     chartData: {
       type: Object,
@@ -175,21 +176,21 @@ export default {
               weight: isLine ? 600 : 400,
             },
           },
-          enter({ chart, element }, event) {
+          enter({ chart, element }) {
             if (!alwaysShowLabel) {
               element.label.options.display = true
             }
             self.hoverAlert = true
             return true
           },
-          leave({ chart, element }, event) {
+          leave({ chart, element }) {
             if (!alwaysShowLabel) {
               element.label.options.display = false
             }
             self.hoverAlert = false
             return true
           },
-          click({ chart, element }, event) {
+          click({}) {
             // only fire this if chart line is not hovered (because then zoom action takes prevalence)
             if (!self.hoverLine) {
               self.confirmViewAlert(alert)
@@ -266,6 +267,7 @@ export default {
         scales: {
           x: {
             type: 'time',
+            axis: 'x',
             display: true,
             min: self.startTime,
             max: self.endTime,
@@ -289,6 +291,8 @@ export default {
             },
           },
           y: {
+            type: 'linear',
+            axis: 'y',
             min: this.minValue !== null ? this.correctedMinValue : null,
             max: this.maxValue !== null ? this.correctedMaxValue : null,
             ticks: {
@@ -300,9 +304,6 @@ export default {
             grid: {
               color: self.gridColor,
             },
-          },
-          title: {
-            display: false,
           },
         },
         elements: {
@@ -336,7 +337,7 @@ export default {
           self.location === 'flashlog'
             ? self.pluginsNoAnnotation
             : self.pluginsDefault,
-        onClick: function(event, chartElement) {
+        onClick: function (event, chartElement) {
           if (chartElement.length > 0) {
             const item = chartElement[0]
             self.setPeriodToDate(item.element.$context.raw.x)
@@ -357,8 +358,8 @@ export default {
                 ? 'zoom-out'
                 : 'zoom-in'
               : self.hoverInspection === 0 && !self.hoverAlert
-              ? 'default'
-              : 'pointer'
+                ? 'default'
+                : 'pointer'
           }
         },
       }
@@ -468,10 +469,10 @@ export default {
           font: {
             size: this.mobile ? this.fontSizeMob : this.fontSize,
           },
-          formatter: function(value, context) {
+          formatter: function (value, context) {
             return value.y.toFixed(1) + ' ' + context.dataset.unit
           },
-          display: function(context) {
+          display: function (context) {
             let isFinalValue = false
             // check if datapoint has value, whether all datapoints after that are null
             // in that case current datapoint is the final value and should be displayed as a datalabel
@@ -505,14 +506,14 @@ export default {
             },
           },
           onClick: self.legendClickHandler,
-          onHover: function(e, legendItem, legend) {
+          onHover: function (e) {
             if (self.multipleLines) {
               if (e.native.target.style !== undefined) {
                 e.native.target.style.cursor = 'pointer'
               }
             }
           },
-          onLeave: function(e, legendItem, legend) {
+          onLeave: function (e) {
             if (e.native.target.style !== undefined) {
               e.native.target.style.cursor = 'default'
             }
@@ -530,12 +531,12 @@ export default {
             weight: 'bold',
           },
           callbacks: {
-            labelTextColor: function(context) {
+            labelTextColor: function (context) {
               return self.multipleLines
                 ? self.lightenColor(context.dataset.backgroundColor, -12, 1)
                 : '#242424'
             },
-            label: function(context) {
+            label: function (context) {
               const name = context.dataset.name || ''
               const unit = context.dataset.unit || ''
               let label = ''
@@ -555,9 +556,6 @@ export default {
       const plugins = { ...this.pluginsDefault }
       delete plugins.annotation
       return plugins
-    },
-    touchDevice() {
-      return window.matchMedia('(hover: none)').matches
     },
   },
   watch: {

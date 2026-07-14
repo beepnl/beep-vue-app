@@ -20,14 +20,14 @@
             :size="mobile ? 'large' : 'default'"
             :class="
               'mr-1 apiary-tab-icon' +
-                (tab.index === activeTab ? '' : ' --inactive')
+              (tab.index === activeTab ? '' : ' --inactive')
             "
             >{{ tab.icon }}</v-icon
           ><span
             v-if="tab.title"
             :class="
               'apiary-tab-title' +
-                (tab.index === activeTab ? '' : ' --inactive')
+              (tab.index === activeTab ? '' : ' --inactive')
             "
             v-text="smallScreen ? tab.title_mobile : tab.title"
           ></span>
@@ -46,13 +46,12 @@
             >
               <v-spacer></v-spacer>
               <div class="d-flex align-center">
-                <span class="text-overline mr-3 d-flex align-center"
+                <span class="custom-text-overline mr-3 d-flex align-center"
                   >{{ $t('start_here') + ' '
                   }}<v-icon class="bounce">mdi-arrow-right</v-icon></span
                 >
                 <v-icon
-                  x-large
-                  dark
+                  size="x-large"
                   color="accent"
                   class="next"
                   @click="activeTab += 1"
@@ -64,9 +63,9 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-overline mb-4">{{
-                  $t('new_apiary_explanation')
-                }}</div>
+                <div class="custom-text-overline mb-4">
+                  {{ $t('new_apiary_explanation') }}
+                </div>
                 <v-img
                   class="align-center"
                   max-height="70vh"
@@ -85,16 +84,14 @@
               class="d-flex justify-space-between align-center chevron-wrapper"
             >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="prev"
                 @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="next"
                 @click="activeTab += 1"
@@ -105,9 +102,9 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-overline mb-4">{{
-                  $tc('Location', 1) + ' ' + $t('settings')
-                }}</div>
+                <div class="custom-text-overline mb-4">
+                  {{ $tc('Location', 1) + ' ' + $t('settings') }}
+                </div>
                 <div class="rounded-border">
                   <v-row class="my-0">
                     <v-col cols="12" sm="6" md="4">
@@ -131,7 +128,6 @@
                         <v-sheet
                           v-if="newHive"
                           class="apiary-color cursor-pointer"
-                          dark
                           :color="newHive.hex_color"
                           @click="overlay = !overlay"
                         ></v-sheet>
@@ -139,6 +135,7 @@
 
                       <v-overlay
                         v-model="overlay"
+                        @click:outside="cancelColorPicker"
                         class="align-center justify-center"
                       >
                         <v-toolbar
@@ -209,16 +206,14 @@
               class="d-flex justify-space-between align-center chevron-wrapper"
             >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="prev"
                 @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="next"
                 @click="activeTab += 1"
@@ -229,16 +224,16 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-overline mb-4">
+                <div class="custom-text-overline mb-4">
                   {{
                     $t('Place') +
-                      ' ' +
-                      $t('details') +
-                      ' (' +
-                      $t('optional') +
-                      ')'
-                  }}</div
-                >
+                    ' ' +
+                    $t('details') +
+                    ' (' +
+                    $t('optional') +
+                    ')'
+                  }}
+                </div>
                 <div class="rounded-border">
                   <v-row class="my-0">
                     <v-col cols="12">
@@ -256,12 +251,10 @@
                   <v-row>
                     <v-col cols="12" sm="4">
                       <div class="beep-label" v-text="`${$t('Country')}`"></div>
-                      <country-select
+                      <TreeselectVue3
                         v-if="newHive"
-                        v-model="newHive.country_code"
-                        :country="newHive.country_code.toUpperCase()"
-                        :usei18n="false"
-                        class="country-select"
+                        v-model="countryCode"
+                        :options="treeselectCountries"
                         @update:model-value="setApiaryEdited(true)"
                       />
                     </v-col>
@@ -270,40 +263,30 @@
                         class="beep-label"
                         v-text="`${$t('latitude')}`"
                       ></div>
-                      <ElInputNumber
+                      <NumericInput
                         v-if="newHive"
-                        :model-value="newHive.lat"
+                        :object="newHive"
+                        :property="'lat'"
                         :min="-90"
                         :max="90"
                         :step="0.001"
-                        :precision="3"
-                        :step-strictly="true"
-                        @change="editApiary($event, 'lat')"
-                        @update:model-value="
-                          convertComma($event, newHive, 'lat', 3),
-                            setApiaryEdited(true)
-                        "
-                      ></ElInputNumber>
+                        @update-number="editApiary($event, 'lat')"
+                      ></NumericInput>
                     </v-col>
                     <v-col cols="6" sm="4">
                       <div
                         class="beep-label"
                         v-text="`${$t('Longitude')}`"
                       ></div>
-                      <ElInputNumber
+                      <NumericInput
                         v-if="newHive"
-                        :model-value="newHive.lon"
+                        :object="newHive"
+                        :property="'lon'"
                         :min="-180"
                         :max="180"
                         :step="0.001"
-                        :precision="3"
-                        :step-strictly="true"
-                        @change="editApiary($event, 'lon')"
-                        @update:model-value="
-                          convertComma($event, newHive, 'lon', 3),
-                            setApiaryEdited(true)
-                        "
-                      ></ElInputNumber>
+                        @update-number="editApiary($event, 'lon')"
+                      ></NumericInput>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -368,16 +351,14 @@
               class="d-flex justify-space-between align-center chevron-wrapper"
             >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="prev"
                 @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
               <v-icon
-                x-large
-                dark
+                size="x-large"
                 color="accent"
                 class="next"
                 @click="activeTab += 1"
@@ -395,7 +376,7 @@
             <div
               class="d-flex align-center justify-space-between align-center chevron-wrapper"
             >
-              <v-icon x-large dark color="accent" @click="activeTab -= 1"
+              <v-icon size="x-large" color="accent" @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
               <v-btn
@@ -412,7 +393,9 @@
                   color="disabled"
                   indeterminate
                 />
-                <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
+                <v-icon v-if="!showLoadingIcon" start color="black"
+                  >mdi-check</v-icon
+                >
                 {{ $t('save') }}
               </v-btn>
             </div>
@@ -420,9 +403,9 @@
           <v-container>
             <v-row>
               <v-col cols="12">
-                <div class="text-overline mb-4">{{
-                  $tc('Location', 1) + ' ' + $tc('hive', 2)
-                }}</div>
+                <div class="custom-text-overline mb-4">
+                  {{ $tc('Location', 1) + ' ' + $tc('hive', 2) }}
+                </div>
                 <div class="rounded-border">
                   <v-row class="my-0">
                     <v-col cols="12" md="3">
@@ -430,15 +413,15 @@
                         class="beep-label"
                         v-text="`${$t('Hive_amount')}`"
                       ></div>
-                      <ElInputNumber
-                        v-if="newHive"
-                        v-model="newHive.hive_amount"
+                      <NumericInput
+                        :use-v-model="true"
+                        :object="newHive"
+                        :property="'hive_amount'"
                         :min="0"
                         :max="50"
-                        :precision="0"
                         :step-strictly="true"
-                        @update:model-value="setApiaryEdited(true)"
-                      ></ElInputNumber>
+                        @set-edited="setApiaryEdited(true)"
+                      ></NumericInput>
                     </v-col>
 
                     <v-col cols="6" md="4">
@@ -449,7 +432,6 @@
                       <v-text-field
                         v-if="newHive"
                         v-model="newHive.prefix"
-                        :height="36"
                         class="beep-text-field"
                         variant="outlined"
                         density="compact"
@@ -464,12 +446,13 @@
                           class="beep-label"
                           v-text="`${$t('Hive_number_offset')}`"
                         ></div>
-                        <ElInputNumber
-                          v-if="newHive"
-                          v-model="newHive.offset"
-                          :precision="0"
-                          @update:model-value="setApiaryEdited(true)"
-                        ></ElInputNumber>
+                        <NumericInput
+                          :use-v-model="true"
+                          :object="newHive"
+                          :property="'offset'"
+                          :step-strictly="true"
+                          @set-edited="setApiaryEdited(true)"
+                        ></NumericInput>
                       </div>
                     </v-col>
 
@@ -506,19 +489,19 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import ApiaryPreview from '@components/apiary-preview.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import HiveEditDetails from '@components/hive-edit-details.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
+import { treeselectCountries } from '@assets/js/countries.js'
+import ApiaryPreview from '@components/apiary-preview.vue'
+import HiveEditDetails from '@components/hive-edit-details.vue'
+import NumericInput from '@components/input-fields/numeric-input.vue'
 import {
-  convertComma,
   readApiaries,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
-import { ElInputNumber } from 'element-plus'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -526,11 +509,15 @@ export default {
     Confirm,
     HiveEditDetails,
     Layout,
+    NumericInput,
     VueGoogleAutocomplete,
-    ElInputNumber,
   },
-  mixins: [convertComma, readApiaries, readApiariesAndGroupsIfNotPresent],
-  data: function() {
+  mixins: [
+    readApiaries,
+    readApiariesAndGroupsIfNotPresent,
+    treeselectCountries,
+  ],
+  data: function () {
     return {
       snackbar: {
         show: false,
@@ -550,15 +537,17 @@ export default {
       valid: false,
       showLoadingIcon: false,
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+        import.meta.env.VITE_ASSETS_URL ||
+        import.meta.env.VITE_ETS_URL_FALLBACK,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries', 'apiaryEdited', 'groups']),
     colorPicker: {
       get() {
-        if (this.newHive) {
+        if (this.colorPickerValue !== '') {
+          return this.colorPickerValue
+        } else if (this.newHive) {
           return this.newHive.hex_color
         } else {
           return '#F8B133'
@@ -566,6 +555,18 @@ export default {
       },
       set(value) {
         this.colorPickerValue = value
+      },
+    },
+    countryCode: {
+      get() {
+        return this.newHive.country_code
+          ? this.newHive.country_code.toUpperCase()
+          : null
+      },
+      set(value) {
+        if (this.newHive) {
+          this.newHive.country_code = value
+        }
       },
     },
     locale() {
@@ -577,7 +578,7 @@ export default {
     smallScreen() {
       return this.$vuetify.display.width < 751
     },
-    requiredRule: function() {
+    requiredRule: function () {
       return [
         (v) =>
           !!v ||
@@ -588,7 +589,7 @@ export default {
             this.$i18n.t('is_required'),
       ]
     },
-    tabs: function() {
+    tabs: function () {
       return [
         {
           index: 0,
@@ -640,13 +641,13 @@ export default {
         frames: 10,
         offset: 1,
         prefix: this.$i18n.tc('Hive_short', 1),
-        country_code: this.locale,
+        country_code: null,
         city: '',
         postal_code: '',
         street: '',
         street_no: '',
-        lat: 52,
-        lon: 5,
+        lat: null,
+        lon: null,
         bb_width_cm: null,
         bb_depth_cm: null,
         bb_height_cm: null,
@@ -724,7 +725,7 @@ export default {
      * @param {Object} placeResultData PlaceResult object
      * @param {String} id Input container ID
      */
-    getAddressData: function(addressData, placeResultData, id) {
+    getAddressData: function (addressData, placeResultData) {
       const countryCode = placeResultData.address_components.filter(
         (addressComponent) => {
           return addressComponent.types.includes('country')
@@ -821,7 +822,6 @@ export default {
     border: 1px solid rgba(0, 0, 0, 0.3) !important;
   }
 
-  .country-select,
   .autocomplete-field {
     width: 100%;
     max-width: 100%;

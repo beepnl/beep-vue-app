@@ -7,6 +7,14 @@
       :class="(mobile ? 'bee--mobile' : '') + (darkMode ? ' bee--light' : '')"
     ></div>
   </div>
+  <div
+    class="d-flex justify-space-between align-center dashboard-controls ma-2"
+  >
+    <v-spacer />
+    <div class="d-flex justify-end align-center">
+      <LocaleChanger></LocaleChanger>
+    </div>
+  </div>
   <v-card
     class="account-card d-flex flex-column align-center rounded-border"
     variant="flat"
@@ -30,13 +38,13 @@
           class="dashboard-logo ml-n1"
           :src="
             assetsUrl +
-              '/img/beep-icon-logo' +
-              (darkMode ? '-white-text' : '') +
-              '.svg'
+            '/img/beep-icon-logo' +
+            (darkMode ? '-white-text' : '') +
+            '.svg'
           "
       /></a>
       <div
-        class="text-overline dashboard-title roboto-condensed font-weight-light"
+        class="text-display-small custom-text-overline roboto-condensed font-weight-light"
         v-text="$tc('Dashboard', 1)"
       ></div>
     </div>
@@ -46,7 +54,12 @@
 </template>
 
 <script>
+import LocaleChanger from '@components/locale-changer.vue'
+
 export default {
+  components: {
+    LocaleChanger,
+  },
   props: {
     title: {
       type: String,
@@ -67,8 +80,8 @@ export default {
   data() {
     return {
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+        import.meta.env.VITE_ASSETS_URL ||
+        import.meta.env.VITE_ETS_URL_FALLBACK,
       nrOfBees: 4,
       darkMode: false,
     }
@@ -131,40 +144,52 @@ export default {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-image: url($ASSETS+'/img/icons/icn_bee_dark.svg');
+  background-image: url('@public/img/icons/icn_bee_dark.svg');
   &.bee--light {
-    background-image: url($ASSETS+'/img/icons/icn_bee.svg');
+    background-image: url('@public/img/icons/icn_bee.svg');
   }
 }
 #bee1 {
-  animation: beeAnimation1 11s linear infinite, rotateBee1 11s linear infinite;
+  animation:
+    beeAnimation1 11s linear infinite,
+    rotateBee1 11s linear infinite;
   &.bee--mobile {
-    animation: beeAnimation1 5s linear infinite, rotateBee1 5s linear infinite;
+    animation:
+      beeAnimation1 5s linear infinite,
+      rotateBee1 5s linear infinite;
   }
 }
 #bee2 {
   width: 27px;
   height: 27px;
-  animation: beeAnimation2 8s linear infinite,
+  animation:
+    beeAnimation2 8s linear infinite,
     rotateBee2 8s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
   &.bee--mobile {
-    animation: beeAnimation2 3s linear infinite,
+    animation:
+      beeAnimation2 3s linear infinite,
       rotateBee2 3s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
   }
 }
 #bee3 {
   width: 16px;
   height: 16px;
-  animation: beeAnimation3 12s linear infinite, rotateBee3 4s linear infinite;
+  animation:
+    beeAnimation3 12s linear infinite,
+    rotateBee3 4s linear infinite;
   &.bee--mobile {
-    animation: beeAnimation3 6s linear infinite, rotateBee3 2s linear infinite;
+    animation:
+      beeAnimation3 6s linear infinite,
+      rotateBee3 2s linear infinite;
   }
 }
 #bee4 {
-  animation: beeAnimation4 10s linear infinite,
+  animation:
+    beeAnimation4 10s linear infinite,
     rotateBee4 5s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
   &.bee--mobile {
-    animation: beeAnimation4 4s linear infinite,
+    animation:
+      beeAnimation4 4s linear infinite,
       rotateBee4 2s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
   }
 }

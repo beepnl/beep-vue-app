@@ -1,29 +1,30 @@
 <template>
-  <BarChart
-    ref="Bar"
-    :chart-options="chartOptions"
-    :chart-data="chartData"
-    :chart-id="chartId"
-    :plugins="plugins"
-    :class="'chartjs-wrapper' + (size === 'large' ? '--large' : '')"
-  />
+  <div class="chartjs-wrapper">
+    <BarChart
+      ref="Bar"
+      :options="chartOptions"
+      :data="chartData"
+      :chart-id="chartId"
+      :class="'chartjs-wrapper' + (size === 'large' ? '--large' : '')"
+    />
+  </div>
 </template>
 
 <script>
-import { Bar as BarChart } from 'vue-chartjs'
+import { lightenColor, touchDevice } from '@mixins/methodsMixin'
 import {
-  Chart as ChartJS,
   BarElement,
-  PointElement,
-  LinearScale,
   CategoryScale,
-  TimeSeriesScale,
+  Chart as ChartJS,
   Legend,
+  LinearScale,
+  PointElement,
+  TimeSeriesScale,
   Tooltip,
 } from 'chart.js'
 import 'chartjs-adapter-moment'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-import { lightenColor } from '@mixins/methodsMixin'
+import { Bar as BarChart } from 'vue-chartjs'
 
 ChartJS.register(
   BarElement,
@@ -38,7 +39,7 @@ ChartJS.register(
 
 export default {
   components: { BarChart },
-  mixins: [lightenColor],
+  mixins: [lightenColor, touchDevice],
   props: {
     chartData: {
       type: Object,
@@ -68,10 +69,6 @@ export default {
       type: String,
       default: 'default',
     },
-    plugins: {
-      type: Object,
-      default: () => {},
-    },
   },
   data() {
     return {
@@ -100,6 +97,9 @@ export default {
         events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
         scales: {
           x: {
+            type: 'time',
+            axis: 'x',
+            display: true,
             title: {
               display: true,
               // text:
@@ -113,15 +113,14 @@ export default {
             // },
           },
           y: {
+            type: 'linear',
+            axis: 'y',
             ticks: {
               color: '#242424',
               font: {
                 size: this.mobile ? this.fontSizeMob : this.fontSize,
               },
             },
-          },
-          title: {
-            display: false,
           },
         },
         animation: {
@@ -172,12 +171,12 @@ export default {
           font: {
             size: this.mobile ? this.fontSizeMob : this.fontSize,
           },
-          formatter: function(value, context) {
+          formatter: function (value, context) {
             return value.y !== null && value.y !== undefined
               ? value.y.toFixed(1) + ' ' + context.dataset.unit
               : '-'
           },
-          display: function(context) {
+          display: function (context) {
             let isFinalValue = false
             // check if datapoint has value, whether all datapoints after that are null
             // in that case current datapoint is the final value and should be displayed as a datalabel
@@ -205,14 +204,14 @@ export default {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
             },
           },
-          onHover: function(e, legendItem, legend) {
+          onHover: function (e) {
             if (this.multipleBars) {
               if (e.native.target.style !== undefined) {
                 e.native.target.style.cursor = 'pointer'
               }
             }
           },
-          onLeave: function(e, legendItem, legend) {
+          onLeave: function (e) {
             if (e.native.target.style !== undefined) {
               e.native.target.style.cursor = 'default'
             }
@@ -230,12 +229,12 @@ export default {
             weight: 'bold',
           },
           callbacks: {
-            labelTextColor: function(context) {
+            labelTextColor: function (context) {
               return self.multipleBars
                 ? self.lightenColor(context.dataset.backgroundColor, -12, 1)
                 : '#242424'
             },
-            label: function(context) {
+            label: function (context) {
               const name = context.dataset.name || ''
               const unit = context.dataset.unit || ''
               let label = ''
@@ -248,9 +247,6 @@ export default {
           },
         },
       }
-    },
-    touchDevice() {
-      return window.matchMedia('(hover: none)').matches
     },
   },
   watch: {

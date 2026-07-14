@@ -1,5 +1,9 @@
 <template>
-  <v-overlay v-model="overlay" class="align-center justify-center">
+  <v-overlay
+    v-model="overlay"
+    @click:outside="closeOverlay"
+    class="align-center justify-center"
+  >
     <div style="border-radius: 4px">
       <v-container class="select-hives-container">
         <v-row>
@@ -7,12 +11,12 @@
             <div
               :class="
                 'd-flex justify-space-between align-center ' +
-                  (mobile ? 'flex-column-reverse mb-1' : 'mb-3')
+                (mobile ? 'flex-column-reverse mb-1' : 'mb-3')
               "
             >
               <div
-                class="text-overline d-flex mr-3 consent-text-overline"
-                style="width: 100%;"
+                class="custom-text-overline d-flex mr-3 consent-custom-text-overline"
+                style="width: 100%"
                 v-text="
                   compareMode
                     ? $t('Select_hives_for_compare')
@@ -32,7 +36,7 @@
                       : selectHives()
                   "
                 >
-                  <v-icon start>mdi-check</v-icon>
+                  <v-icon color="black" start>mdi-check</v-icon>
                   {{ researchMode ? $t('save') : $t('ok') }}</v-btn
                 >
                 <v-btn class="ml-3" color="red" @click="closeOverlay">{{
@@ -41,7 +45,7 @@
               </div>
             </div>
             <div class="rounded-border apiary-wrapper">
-              <div style="height: 100%;">
+              <div style="height: 100%">
                 <div
                   class="d-flex justify-space-between align-center mb-3 mb-sm-4"
                 >
@@ -60,38 +64,32 @@
                     hide-details
                   />
                 </div>
-                <div style="height: 100%;">
+                <div style="height: 100%">
                   <div class="scroller">
                     <div v-for="(hiveSet, i) in sortedHiveSets" :key="i">
                       <div
                         class="hive-set-title d-flex flex-row justify-flex-start align-center"
-                        :style="
-                          `color: ${
-                            hiveSet.hex_color ? hiveSet.hex_color : ''
-                          }; border-color: ${
-                            hiveSet.hex_color ? hiveSet.hex_color : ''
-                          };`
-                        "
+                        :style="`color: ${
+                          hiveSet.hex_color ? hiveSet.hex_color : ''
+                        }; border-color: ${
+                          hiveSet.hex_color ? hiveSet.hex_color : ''
+                        };`"
                       >
                         <v-icon
                           v-if="hiveSet.users && hiveSet.users.length"
                           class="icon-apiary-shared ml-1 mr-2 my-0"
-                          :style="
-                            `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
-                          "
+                          :style="`background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`"
                         >
                           mdi-account-multiple
                         </v-icon>
                         <v-icon
                           v-else
                           class="icon-apiary-owned ml-1 mr-2 my-0"
-                          :style="
-                            `background-color: ${
-                              hiveSet.hex_color ? hiveSet.hex_color : ''
-                            }; border-color: ${
-                              hiveSet.hex_color ? hiveSet.hex_color : ''
-                            };`
-                          "
+                          :style="`background-color: ${
+                            hiveSet.hex_color ? hiveSet.hex_color : ''
+                          }; border-color: ${
+                            hiveSet.hex_color ? hiveSet.hex_color : ''
+                          };`"
                         >
                           mdi-home-analytics
                         </v-icon>
@@ -151,7 +149,7 @@ export default {
     },
   },
   emits: ['close-overlay', 'submit-consent-toggle', 'select-hives'],
-  data: function() {
+  data: function () {
     return {
       selectedHiveIds: [],
       overlay: true,
@@ -194,7 +192,7 @@ export default {
       const sortedHiveSets = this.hiveSets
         .slice()
         .filter((hiveSet) => hiveSet.hives.length > 0)
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           if (a.name > b.name) {
             return 1
           }
@@ -203,7 +201,7 @@ export default {
           }
           return 0
         })
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           if ('type' in b) {
             return 1
           }
@@ -295,7 +293,7 @@ export default {
   }
 }
 
-.consent-text-overline {
+.consent-custom-text-overline {
   line-height: 1.5rem;
   @include for-phone-only {
     margin-bottom: 2px;

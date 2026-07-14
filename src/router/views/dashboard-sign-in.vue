@@ -34,7 +34,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :disabled="!validCode" text type="submit">{{
+          <v-btn :disabled="!validCode" variant="text" type="submit">{{
             $t('login')
           }}</v-btn>
         </v-card-actions>
@@ -101,7 +101,7 @@ export default {
         this.darkMode = localStorage.beepdashboardDarkMode === 'true'
       }
       this.themeName = this.darkMode ? 'beepDarkTheme' : 'beepLightTheme'
-      this.$vuetify.theme.global.name = this.themeName
+      this.$vuetify.theme.change(this.themeName)
     },
     login() {
       if (this.$refs.form.validate()) {

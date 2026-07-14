@@ -2,16 +2,19 @@
   <Layout :title="$t('create_login')">
     <v-form ref="form" v-model="valid" @submit.prevent="createAccount">
       <v-card-text v-if="registered">
-        <v-alert text prominent density="compact" color="green">
+        <v-alert type="success" prominent density="compact" color="green">
+          <template v-slot:prepend>
+            <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+          </template>
           {{
             resentVerification
-              ? $t('email_verification_resent')
-              : $t('email_verification_sent')
+              ? $t("email_verification_resent")
+              : $t("email_verification_sent")
           }}
         </v-alert>
-        <p>{{ $t('succesfully_registered') }}</p>
+        <p>{{ $t("succesfully_registered") }}</p>
         <a @click="resendEmailVerification">{{
-          $t('email_new_verification')
+          $t("email_new_verification")
         }}</a>
       </v-card-text>
       <v-card-text v-if="!registered">
@@ -20,7 +23,9 @@
           :key="error.name"
           type="error"
           prominent
+          density="compact"
           color="red"
+          class="mb-6"
         >
           <template v-slot:prepend>
             <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
@@ -66,11 +71,11 @@
         >
           <template v-slot:label
             ><span class="checkbox-label"
-              >{{ $t('accept_policy_1')
+              >{{ $t("accept_policy_1")
               }}<a :href="$t('policy_url')" target="_blank" @click.stop>{{
-                $t('terms_of_use')
+                $t("terms_of_use")
               }}</a
-              >{{ $t('accept_policy_2') }}
+              >{{ $t("accept_policy_2") }}
             </span></template
           >
         </v-checkbox>
@@ -79,14 +84,14 @@
       <v-card-actions v-if="!registered">
         <v-spacer></v-spacer>
         <v-btn variant="text" type="submit" :disabled="disabled">{{
-          $t('create_login_summary')
+          $t("create_login_summary")
         }}</v-btn>
       </v-card-actions>
 
       <v-divider class="mx-3"></v-divider>
       <v-card-text>
         <router-link :to="{ name: 'sign-in' }">
-          {{ !registered ? $t('already_registered') : $t('already_verified') }}
+          {{ !registered ? $t("already_registered") : $t("already_verified") }}
         </router-link>
         <v-spacer></v-spacer>
       </v-card-text>
@@ -95,17 +100,17 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Layout from '@/src/router/layouts/account-layout.vue'
+import Layout from "@/src/router/layouts/account-layout.vue";
+import Api from "@api/Api";
 
 export default {
   components: { Layout },
   data() {
     return {
       name: null,
-      email: '',
-      password: '',
-      passwordConfirmation: '',
+      email: "",
+      password: "",
+      passwordConfirmation: "",
       policyAccepted: false,
       valid: false,
       errors: [],
@@ -114,11 +119,11 @@ export default {
       registered: false,
       fieldErrors: {
         email: false,
-        password: false,
+        password: false
       },
       disabled: false,
-      resentVerification: false,
-    }
+      resentVerification: false
+    };
   },
   computed: {
     credentials() {
@@ -129,83 +134,83 @@ export default {
           password: this.password,
           password_confirmation: this.passwordConfirmation,
           policy_accepted: this.policyAccepted
-            ? this.$i18n.t('policy_version')
-            : '',
-        }
+            ? this.$i18n.t("policy_version")
+            : ""
+        };
       } else {
         return {
           email: this.email,
           password: this.password,
           password_confirmation: this.passwordConfirmation,
           policy_accepted: this.policyAccepted
-            ? this.$i18n.t('policy_version')
-            : '',
-        }
+            ? this.$i18n.t("policy_version")
+            : ""
+        };
       }
     },
     emailRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('email_is_required'),
-        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
-      ]
+        v => !!v || this.$i18n.t("email_is_required"),
+        v => /.+@.+\..+/.test(v) || this.$i18n.t("no_valid_email")
+      ];
     },
     passwordRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('password_is_required'),
-        (v) =>
+        v => !!v || this.$i18n.t("password_is_required"),
+        v =>
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
             v
-          ) || this.$i18n.t('invalid_password'),
-      ]
+          ) || this.$i18n.t("invalid_password")
+      ];
     },
     repeatPasswordRules() {
       if (!this.passwordConfirmation) {
         return [
-          this.$i18n.t('the_field') +
+          this.$i18n.t("the_field") +
             ' "' +
-            this.$i18n.t('confirm_password') +
+            this.$i18n.t("confirm_password") +
             '" ' +
-            this.$i18n.t('is_required'),
-        ]
+            this.$i18n.t("is_required")
+        ];
       } else if (this.passwordConfirmation !== this.password) {
-        return [this.$i18n.t('no_password_match')]
+        return [this.$i18n.t("no_password_match")];
       } else {
-        return []
+        return [];
       }
     },
     termsRules: function() {
-      return [(v) => !!v || this.$i18n.t('policy_accepted_is_required')]
-    },
+      return [v => !!v || this.$i18n.t("policy_accepted_is_required")];
+    }
   },
   methods: {
     async createAccount() {
       if (this.$refs.form.validate()) {
-        this.clearErrors()
-        this.disabled = true
+        this.clearErrors();
+        this.disabled = true;
         try {
-          const response = await Api.postRequest('/register', this.credentials)
-          this.registered = true
-          return response
+          const response = await Api.postRequest("/register", this.credentials);
+          this.registered = true;
+          return response;
         } catch (error) {
-          this.disabled = false
+          this.disabled = false;
           if (error.response) {
-            console.log(error.response)
-            const msg = error.response.data.message
-            if (msg === 'invalid_user') {
-              this.fieldErrors.email = true
-              this.fieldErrors.password = true
-            } else if (msg === 'invalid_password') {
-              this.fieldErrors.password = true
-            } else if (msg.indexOf('email') > -1) {
-              this.fieldErrors.email = true
+            console.log(error.response);
+            const msg = error.response.data.message;
+            if (msg === "invalid_user") {
+              this.fieldErrors.email = true;
+              this.fieldErrors.password = true;
+            } else if (msg === "invalid_password") {
+              this.fieldErrors.password = true;
+            } else if (msg.indexOf("email") > -1) {
+              this.fieldErrors.email = true;
             }
             this.errors.push({
-              errorMessage: this.$i18n.t(msg),
-            })
+              errorMessage: this.$i18n.t(msg)
+            });
           } else {
             this.errors.push({
-              errorMessage: this.$i18n.tc('Error', 1),
-            })
+              errorMessage: this.$i18n.tc("Error", 1)
+            });
           }
         }
       }
@@ -213,31 +218,31 @@ export default {
     async resendEmailVerification() {
       try {
         const response = await Api.postRequest(
-          '/email/resend',
+          "/email/resend",
           this.credentials
-        )
-        this.resentVerification = true
-        return response
+        );
+        this.resentVerification = true;
+        return response;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
-          const msg = error.response.data.message
+          console.log(error.response);
+          const msg = error.response.data.message;
           this.errors.push({
-            errorMessage: this.$i18n.t(msg),
-          })
+            errorMessage: this.$i18n.t(msg)
+          });
         } else {
           this.errors.push({
-            errorMessage: this.$i18n.tc('Error', 1),
-          })
+            errorMessage: this.$i18n.tc("Error", 1)
+          });
         }
       }
     },
     clearErrors() {
-      this.errors = []
-      this.fieldErrors.email = false
-      this.fieldErrors.password = false
-      this.resentVerification = false
-    },
-  },
-}
+      this.errors = [];
+      this.fieldErrors.email = false;
+      this.fieldErrors.password = false;
+      this.resentVerification = false;
+    }
+  }
+};
 </script>

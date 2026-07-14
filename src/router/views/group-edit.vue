@@ -1,7 +1,7 @@
 <!-- eslint-disable camelcase -->
 <template>
   <Layout :title="getTitle()">
-    <v-form ref="form" v-model="valid" @submit.prevent="saveGroup">
+    <v-form ref="form" @submit.prevent="saveGroup">
       <v-toolbar v-if="activeGroup" class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
@@ -17,7 +17,6 @@
         </v-btn>
         <v-icon
           v-if="activeGroup && !createMode && !tabletLandscapeUp"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteOrDetachGroup"
@@ -28,7 +27,7 @@
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
-          :disabled="!valid || showLoadingIcon"
+          :disabled="showLoadingIcon"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -38,7 +37,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -83,16 +82,16 @@
         <v-row
           v-if="
             (showGroupDetails && activeGroup && createMode) ||
-              (showGroupDetails &&
-                activeGroup &&
-                !createMode &&
-                (activeGroup.creator || activeGroup.admin))
+            (showGroupDetails &&
+              activeGroup &&
+              !createMode &&
+              (activeGroup.creator || activeGroup.admin))
           "
         >
           <v-col cols="12">
-            <div class="text-overline mb-3">{{
-              $tc('Group', 1) + ' ' + $t('settings')
-            }}</div>
+            <div class="custom-text-overline mb-3">
+              {{ $tc('Group', 1) + ' ' + $t('settings') }}
+            </div>
             <div class="rounded-border">
               <v-row>
                 <v-col cols="12" sm="8" md="6" lg="5">
@@ -138,7 +137,6 @@
                     <v-sheet
                       v-if="activeGroup"
                       class="group-color"
-                      dark
                       :color="activeGroup.hex_color"
                       @click="overlay = !overlay"
                     ></v-sheet>
@@ -146,6 +144,7 @@
 
                   <v-overlay
                     v-model="overlay"
+                    @click:outside="overlay = false"
                     class="align-center justify-center"
                   >
                     <v-toolbar
@@ -201,20 +200,22 @@
         <v-row
           v-if="
             (showGroupDetails && activeGroup && createMode) ||
-              (showGroupDetails &&
-                activeGroup &&
-                !createMode &&
-                (activeGroup.creator || activeGroup.admin))
+            (showGroupDetails &&
+              activeGroup &&
+              !createMode &&
+              (activeGroup.creator || activeGroup.admin))
           "
         >
           <v-col cols="12">
             <div class="d-flex justify-space-between">
-              <div class="text-overline mb-3">{{
-                $tc('Member', activeGroup.users.length) +
+              <div class="custom-text-overline mb-3">
+                {{
+                  $tc('Member', activeGroup.users.length) +
                   ' (' +
                   activeGroup.users.length +
                   ')'
-              }}</div>
+                }}
+              </div>
               <v-spacer></v-spacer>
               <v-btn color="accent" @click="addGroupUser">
                 <v-icon color="accent" start>mdi-plus</v-icon>
@@ -226,9 +227,7 @@
                 <template v-slot>
                   <thead>
                     <tr>
-                      <th class="text-left">
-                        #
-                      </th>
+                      <th class="text-left"> # </th>
                       <th class="text-left">
                         {{ $t('Name') }}
                       </th>
@@ -277,17 +276,17 @@
                         <span
                           v-if="
                             user.declined !== undefined &&
-                              user.declined === null &&
-                              user.invited !== undefined &&
-                              user.invited !== null
+                            user.declined === null &&
+                            user.invited !== undefined &&
+                            user.invited !== null
                           "
                           >{{ momentify(user.invited, true) }}</span
                         >
                         <span
                           v-else-if="
                             user.declined !== undefined &&
-                              user.declined !== null &&
-                              !user.creator
+                            user.declined !== null &&
+                            !user.creator
                           "
                           >{{ $t('group_declined') }}</span
                         >
@@ -312,7 +311,6 @@
                       <td class="text-center">
                         <v-icon
                           v-if="!user.creator"
-                          dark
                           color="red"
                           @click="deleteGroupUser(index)"
                           >mdi-delete</v-icon
@@ -328,17 +326,17 @@
 
         <v-row v-if="showGroupDetails && activeGroup">
           <v-col cols="12">
-            <div class="text-overline mb-3">{{
-              $t('My_shared') + ' ' + $tc('hive', 2)
-            }}</div>
+            <div class="custom-text-overline mb-3">
+              {{ $t('My_shared') + ' ' + $tc('hive', 2) }}
+            </div>
             <div class="rounded-border">
               <div
                 v-if="showApiaryPlaceholder"
                 class="apiary-placeholder d-flex flex-column align-start"
               >
-                <div class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4">{{
-                  $t('no_apiaries_yet')
-                }}</div>
+                <div class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4">
+                  {{ $t('no_apiaries_yet') }}
+                </div>
 
                 <router-link
                   class="apiary-placeholder-item mb-3"
@@ -346,43 +344,37 @@
                     name: `apiary-create`,
                   }"
                 >
-                  <div class="color-accent"
-                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
-                    >{{ $t('Add_apiary') }}</div
-                  >
+                  <div class="color-accent">
+                    <v-icon color="accent" start>mdi-plus-circle</v-icon
+                    >{{ $t('Add_apiary') }}
+                  </div>
                 </router-link>
               </div>
               <div v-if="!showApiaryPlaceholder">
                 <div
                   class="beep-label mt-1 mb-3 mb-sm-4"
                   v-text="
-                    `${$t('Select') +
-                      ' ' +
-                      $tc('hive', 2) +
-                      ' ' +
-                      $t('to_share')}`
+                    `${
+                      $t('Select') + ' ' + $tc('hive', 2) + ' ' + $t('to_share')
+                    }`
                   "
                 ></div>
                 <div v-for="(apiary, i) in filteredApiaries" :key="i">
                   <div
                     class="hive-set-title d-flex flex-row justify-flex-start align-center"
-                    :style="
-                      `color: ${
-                        apiary.hex_color ? apiary.hex_color : ''
-                      }; border-color: ${
-                        apiary.hex_color ? apiary.hex_color : ''
-                      };`
-                    "
+                    :style="`color: ${
+                      apiary.hex_color ? apiary.hex_color : ''
+                    }; border-color: ${
+                      apiary.hex_color ? apiary.hex_color : ''
+                    };`"
                   >
                     <v-icon
                       class="icon-apiary-owned ml-1 mr-2 my-0"
-                      :style="
-                        `background-color: ${
-                          apiary.hex_color ? apiary.hex_color : ''
-                        }; border-color: ${
-                          apiary.hex_color ? apiary.hex_color : ''
-                        };`
-                      "
+                      :style="`background-color: ${
+                        apiary.hex_color ? apiary.hex_color : ''
+                      }; border-color: ${
+                        apiary.hex_color ? apiary.hex_color : ''
+                      };`"
                     >
                       mdi-home-analytics
                     </v-icon>
@@ -420,13 +412,13 @@
 import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm-dialog.vue'
-import { mapGetters } from 'vuex'
 import Layout from '@layouts/back-layout.vue'
-import { momentify } from '@mixins/momentMixin'
 import {
   readApiariesAndGroupsIfNotPresent,
   readGroups,
 } from '@mixins/methodsMixin'
+import { momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -435,7 +427,7 @@ export default {
     Layout,
   },
   mixins: [momentify, readApiariesAndGroupsIfNotPresent, readGroups],
-  data: function() {
+  data: function () {
     return {
       snackbar: {
         show: false,
@@ -449,7 +441,6 @@ export default {
       ],
       colorPickerValue: '',
       activeGroup: null,
-      valid: false,
       showLoadingIcon: false,
       newGroupNumber: 1,
       overlay: false,
@@ -475,7 +466,9 @@ export default {
     },
     colorPicker: {
       get() {
-        if (this.activeGroup) {
+        if (this.colorPickerValue !== '') {
+          return this.colorPickerValue
+        } else if (this.activeGroup) {
           return this.activeGroup.hex_color
         } else {
           return '#F8B133'
@@ -488,7 +481,7 @@ export default {
     filteredApiaries() {
       const sortedAndFilledApiaries = this.apiaries
         .slice()
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           if (a.name > b.name) {
             return 1
           }
@@ -503,7 +496,7 @@ export default {
     mobile() {
       return this.$vuetify.display.xs
     },
-    requiredRule: function() {
+    requiredRule: function () {
       return [
         (v) =>
           !!v ||
@@ -522,7 +515,7 @@ export default {
     },
   },
   created() {
-    this.readApiariesAndGroupsIfNotPresent().then((response) => {
+    this.readApiariesAndGroupsIfNotPresent().then(() => {
       // If Group-create route is used, make empty Group object
       if (this.createMode) {
         if (this.groups.length > 0) {
@@ -585,7 +578,10 @@ export default {
             this.$i18n.tc('Error', 1) + ': ' + response.data.errors.token
           this.showGroupDetails = false
         } else if (!response) {
-          this.$router.push({ name: '404', query: { resource: 'Invitation' } })
+          this.$router.push({
+            name: '404',
+            query: { resource: 'Invitation' },
+          })
         }
         return true
       } catch (error) {
@@ -594,37 +590,35 @@ export default {
       }
     },
     async createGroup() {
-      if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
-        try {
-          const response = await Api.postRequest('/groups', this.activeGroup)
-          if (!response) {
-            this.errorMessage =
-              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-            this.showLoadingIcon = false
-          }
-          setTimeout(() => {
-            return this.readGroups().then(() => {
-              this.$store.commit('locations/setData', {
-                prop: 'hiveSearch',
-                value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
-              })
-              this.$router.push({
-                name: 'home',
-              })
+      this.showLoadingIcon = true
+      try {
+        const response = await Api.postRequest('/groups', this.activeGroup)
+        if (!response) {
+          this.errorMessage =
+            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+          this.showLoadingIcon = false
+        }
+        setTimeout(() => {
+          return this.readGroups().then(() => {
+            this.$store.commit('locations/setData', {
+              prop: 'hiveSearch',
+              value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
             })
-          }, 50) // wait for API to update groups
-        } catch (error) {
-          if (error.response) {
-            const msg = error.response.data.error
-            this.errorMessage = msg
-            this.showLoadingIcon = false
-            console.log(error.response)
-          } else {
-            this.errorMessage = this.$i18n.t('empty_fields')
-            this.showLoadingIcon = false
-            console.log('Error: ', error)
-          }
+            this.$router.push({
+              name: 'home',
+            })
+          })
+        }, 50) // wait for API to update groups
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.error
+          this.errorMessage = msg
+          this.showLoadingIcon = false
+          console.log(error.response)
+        } else {
+          this.errorMessage = this.$i18n.t('empty_fields')
+          this.showLoadingIcon = false
+          console.log('Error: ', error)
         }
       }
     },
@@ -693,9 +687,9 @@ export default {
           this.$router.push({ name: '404', query: { resource: 'group' } })
         }
         const group = response.data
-        // eslint-disable-next-line camelcase
+
         const hivesSelected = []
-        // eslint-disable-next-line camelcase
+
         const hivesEditable = []
         if (typeof group.hives !== 'undefined' && group.hives.length > 0) {
           group.hives.map((hive) => {
@@ -706,9 +700,9 @@ export default {
             return hive
           })
         }
-        // eslint-disable-next-line camelcase
+
         group.hives_selected = hivesSelected
-        // eslint-disable-next-line camelcase
+
         group.hives_editable = hivesEditable
         const usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
         usersWithDeleteProp.map((user) => {
@@ -729,51 +723,49 @@ export default {
       }
     },
     async updateGroup() {
-      if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
-        const group = {
-          description: this.activeGroup.description,
-          hex_color: this.activeGroup.hex_color,
-          hives_editable: this.activeGroup.hives_editable,
-          hives_selected: this.activeGroup.hives_selected,
-          name: this.activeGroup.name,
-          users: this.activeGroup.users,
+      this.showLoadingIcon = true
+      const group = {
+        description: this.activeGroup.description,
+        hex_color: this.activeGroup.hex_color,
+        hives_editable: this.activeGroup.hives_editable,
+        hives_selected: this.activeGroup.hives_selected,
+        name: this.activeGroup.name,
+        users: this.activeGroup.users,
+      }
+      try {
+        const response = await Api.updateRequest(
+          '/groups/',
+          this.activeGroup.id,
+          group
+        )
+        if (!response) {
+          this.errorMessage =
+            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
         }
-        try {
-          const response = await Api.updateRequest(
-            '/groups/',
-            this.activeGroup.id,
-            group
-          )
-          if (!response) {
-            this.errorMessage =
-              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-          }
-          this.successMessage = response.data.message
-          this.showSuccessMessage = true
-          setTimeout(() => {
-            return this.readGroups().then(() => {
-              this.$store.commit('locations/setData', {
-                prop: 'hiveSearch',
-                value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
-              })
-              this.showLoadingIcon = false
-              this.$router.push({
-                name: 'home',
-              })
+        this.successMessage = response.data.message
+        this.showSuccessMessage = true
+        setTimeout(() => {
+          return this.readGroups().then(() => {
+            this.$store.commit('locations/setData', {
+              prop: 'hiveSearch',
+              value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
             })
-          }, 800) // wait for API to update groups and for user to read success message
-        } catch (error) {
-          if (error.response) {
-            const msg = error.response.data.error
-            this.errorMessage = msg
             this.showLoadingIcon = false
-            console.log(error.response)
-          } else {
-            this.errorMessage = this.$i18n.t('empty_fields')
-            this.showLoadingIcon = false
-            console.log('Error: ', error)
-          }
+            this.$router.push({
+              name: 'home',
+            })
+          })
+        }, 800) // wait for API to update groups and for user to read success message
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.error
+          this.errorMessage = msg
+          this.showLoadingIcon = false
+          console.log(error.response)
+        } else {
+          this.errorMessage = this.$i18n.t('empty_fields')
+          this.showLoadingIcon = false
+          console.log('Error: ', error)
         }
       }
     },
@@ -796,14 +788,14 @@ export default {
         .open(title, message, {
           color: 'red',
         })
-        .then((confirm) => {
+        .then(() => {
           if (this.activeGroup.creator) {
             this.deleteGroup()
           } else {
             this.detachGroup()
           }
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -881,7 +873,7 @@ export default {
       this.$store.commit('groups/setGroupEdited', bool)
     },
     updateGroupProperties(event, property) {
-      let value = null
+      let value
       if (event === null) {
         value = null
       } else if (event.target !== undefined) {

@@ -10,8 +10,7 @@
       "
       class="unauthorized-title"
       v-text="unauthorizedText"
-    >
-    </h1>
+    ></h1>
 
     <v-form ref="form" v-model="valid">
       <v-toolbar
@@ -28,7 +27,6 @@
         <v-spacer></v-spacer>
         <v-icon
           v-if="activeHive.owner && !queenEditMode"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteHive"
@@ -56,8 +54,8 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
-          {{ $t('save') }}
+          <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
+          {{ $t("save") }}
         </v-btn>
       </v-toolbar>
 
@@ -78,17 +76,17 @@
             "
             cols="12"
           >
-            <p class="text-red mt-3"
-              >{{ $t('no_apiaries_yet') }}
+            <p class="text-red mt-3">
+              {{ $t("no_apiaries_yet") }}
               <router-link
                 :to="{
-                  name: `apiary-create`,
+                  name: `apiary-create`
                 }"
               >
-                <div class="color-accent"
-                  ><v-icon color="accent" start>mdi-plus-circle</v-icon
-                  >{{ $t('first_create_apiary') }}</div
-                >
+                <div class="color-accent">
+                  <v-icon color="accent" start>mdi-plus-circle</v-icon
+                  >{{ $t("first_create_apiary") }}
+                </div>
               </router-link>
             </p>
           </v-col>
@@ -116,7 +114,7 @@
                 "
                 v-text="$tc('Location', 1) + '*'"
               ></div>
-              <Treeselect
+              <TreeselectVue3
                 v-if="
                   activeHive &&
                     (activeHive.owner || hiveCreateMode) &&
@@ -141,14 +139,15 @@
               <div
                 v-if="isNaN(activeHive.location_id)"
                 class="v-text-field__details mt-1"
-                ><div class="v-messages theme--light text-error" role="alert"
-                  ><div class="v-messages__wrapper"
-                    ><div class="v-messages__message">{{
-                      $t('this_field') + ' ' + $t('is_required')
-                    }}</div></div
-                  ></div
-                ></div
               >
+                <div class="v-messages theme--light text-error" role="alert">
+                  <div class="v-messages__wrapper">
+                    <div class="v-messages__message">
+                      {{ $t("this_field") + " " + $t("is_required") }}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </v-col>
 
@@ -160,10 +159,12 @@
           >
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
-              <ElInputNumber
-                :model-value="activeHive.order === null ? 0 : activeHive.order"
-                @update:model-value="updateOrder($event)"
-              ></ElInputNumber>
+              <NumericInput
+                :object="activeHive"
+                :property="'order'"
+                :step-strictly="true"
+                @update-number="updateOrder($event)"
+              ></NumericInput>
             </div>
           </v-col>
         </v-row>
@@ -183,7 +184,7 @@
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="accent" variant="text" @click="snackbar.show = false">
-        {{ $t('Close') }}
+        {{ $t("Close") }}
       </v-btn>
     </v-snackbar>
 
@@ -192,32 +193,30 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
-import Confirm from '@/src/components/confirm-dialog.vue'
-import HiveEditDetails from '@components/hive-edit-details.vue'
-import { mapGetters } from 'vuex'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import QueenEditDetails from '@components/queen-edit-details.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import Api from "@api/Api";
+import HiveEditDetails from "@components/hive-edit-details.vue";
+import NumericInput from "@components/input-fields/numeric-input.vue";
+import QueenEditDetails from "@components/queen-edit-details.vue";
 import {
   checkAlerts,
   getMaxFramecount,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readDevices,
-  readGeneralInspections,
-} from '@mixins/methodsMixin'
-import { timeZone } from '@mixins/momentMixin'
-import { ElInputNumber } from 'element-plus'
+  readGeneralInspections
+} from "@mixins/methodsMixin";
+import { timeZone } from "@mixins/momentMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Confirm,
     HiveEditDetails,
     Layout,
-    QueenEditDetails,
-    Treeselect,
-    ElInputNumber,
+    NumericInput,
+    QueenEditDetails
   },
   mixins: [
     checkAlerts,
@@ -226,20 +225,20 @@ export default {
     readApiariesAndGroupsIfNotPresent,
     readDevices,
     readGeneralInspections,
-    timeZone,
+    timeZone
   ],
   data: function() {
     return {
       snackbar: {
         show: false,
         timeout: 2000,
-        text: 'notification',
+        text: "notification"
       },
       normalizerApiary(node) {
         return {
           id: node.id,
-          label: node.name,
-        }
+          label: node.name
+        };
       },
       activeHive: null,
       emptyQueen: {
@@ -249,101 +248,101 @@ export default {
         created_at: null,
         description: null,
         fertilized: null,
-        name: null,
+        name: null
       },
       valid: false,
       showLoadingIcon: false,
       newHiveNumber: 1,
-      newHiveLocation: null,
-    }
+      newHiveLocation: null
+    };
   },
   computed: {
-    ...mapGetters('hives', ['hiveEdited']),
-    ...mapGetters('locations', ['apiaries', 'groups']),
+    ...mapGetters("hives", ["hiveEdited"]),
+    ...mapGetters("locations", ["apiaries", "groups"]),
     hiveCreateMode() {
-      return this.$route.name === 'hive-create'
+      return this.$route.name === "hive-create";
     },
     id() {
-      return parseInt(this.$route.params.id)
+      return parseInt(this.$route.params.id);
     },
     locationId() {
-      return parseInt(this.$route.query.locationId) || null
+      return parseInt(this.$route.query.locationId) || null;
     },
     queenEditMode() {
-      return this.$route.name === 'queen-edit' || this.$route.query.queenEdit
+      return this.$route.name === "queen-edit" || this.$route.query.queenEdit;
     },
     requiredRule: function() {
       return [
-        (v) =>
+        v =>
           !!v ||
-          this.$i18n.t('the_field') +
+          this.$i18n.t("the_field") +
             ' "' +
-            this.$i18n.t('Name') +
+            this.$i18n.t("Name") +
             '" ' +
-            this.$i18n.t('is_required'),
-      ]
+            this.$i18n.t("is_required")
+      ];
     },
     singleLocationArray() {
-      return this.activeHive !== null ? [this.activeHive.location] : []
+      return this.activeHive !== null ? [this.activeHive.location] : [];
     },
     sortedApiaries() {
       const sortedApiaries = this.apiaries.slice().sort(function(a, b) {
         if (a.name > b.name) {
-          return 1
+          return 1;
         }
         if (b.name > a.name) {
-          return -1
+          return -1;
         }
-        return 0
-      })
-      return sortedApiaries
+        return 0;
+      });
+      return sortedApiaries;
     },
     unauthorizedText() {
       if (this.queenEditMode) {
         return (
-          this.$i18n.t('sorry') +
-          ', ' +
-          this.$i18n.t('queen') +
-          ' ' +
-          this.$i18n.t('not_editable')
-        )
+          this.$i18n.t("sorry") +
+          ", " +
+          this.$i18n.t("queen") +
+          " " +
+          this.$i18n.t("not_editable")
+        );
       } else {
         return (
-          this.$i18n.t('sorry') +
-          ', ' +
-          this.$i18n.tc('hive', 1) +
+          this.$i18n.t("sorry") +
+          ", " +
+          this.$i18n.tc("hive", 1) +
           ' "' +
           this.activeHive.name +
           '" ' +
-          this.$i18n.t('not_editable')
-        )
+          this.$i18n.t("not_editable")
+        );
       }
-    },
+    }
   },
   created() {
     // If hive-create route is used, make empty hive object
     if (this.hiveCreateMode) {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
-        let selectedLocationId = null
+        let selectedLocationId = null;
         if (this.apiaries.length > 0) {
-          let selectedApiary = this.sortedApiaries[0]
-          selectedLocationId = selectedApiary.id
-          this.newHiveLocation = null
+          let selectedApiary = this.sortedApiaries[0];
+          selectedLocationId = selectedApiary.id;
+          this.newHiveLocation = null;
           if (this.locationId !== null) {
-            selectedLocationId = this.locationId
-            selectedApiary = this.apiaries.filter((apiary) => {
-              return apiary.id === this.locationId
-            })[0]
-            this.newHiveLocation = selectedApiary.name
+            selectedLocationId = this.locationId;
+            selectedApiary = this.apiaries.filter(apiary => {
+              return apiary.id === this.locationId;
+            })[0];
+            this.newHiveLocation = selectedApiary.name;
           }
-          this.newHiveNumber = selectedApiary.hives.length + 1
+          this.newHiveNumber = selectedApiary.hives.length + 1;
         }
         this.activeHive = {
           location_id: selectedLocationId,
           location: this.newHiveLocation,
           hive_type_id: null,
-          color: '#F8B133',
-          name: this.$i18n.tc('Hive', 1) + ' ' + this.newHiveNumber,
+          color: "#F8B133",
+          name: this.$i18n.tc("Hive", 1) + " " + this.newHiveNumber,
           bb_width_cm: null,
           bb_depth_cm: null,
           bb_height_cm: null,
@@ -352,237 +351,237 @@ export default {
           order: this.newHiveNumber,
           layers: [
             {
-              color: '#F8B133',
-              type: 'honey',
+              color: "#F8B133",
+              type: "honey",
               order: 3,
               framecount: 10,
-              key: 3,
+              key: 3
             },
             {
-              color: '#F8B133',
-              type: 'brood',
+              color: "#F8B133",
+              type: "brood",
               order: 2,
               framecount: 10,
-              key: 2,
+              key: 2
             },
             {
-              color: '#F8B133',
-              type: 'brood',
+              color: "#F8B133",
+              type: "brood",
               order: 1,
               framecount: 10,
-              key: 1,
-            },
+              key: 1
+            }
           ],
-          queen: this.emptyQueen,
-        }
-      })
+          queen: this.emptyQueen
+        };
+      });
       // Else retrieve to-be-edited hive
     } else {
       this.readHive().then(() => {
         if (this.activeHive.owner) {
-          this.readApiariesAndGroupsIfNotPresent()
+          this.readApiariesAndGroupsIfNotPresent();
         }
-      })
+      });
     }
   },
   methods: {
     async createHive() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
+        this.showLoadingIcon = true;
         try {
-          const response = await Api.postRequest('/hives', this.activeHive)
+          const response = await Api.postRequest("/hives", this.activeHive);
           if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
-            this.showLoadingIcon = false
+            this.snackbar.text = this.$i18n.t("not_saved_error");
+            this.snackbar.show = true;
+            this.showLoadingIcon = false;
           }
           setTimeout(() => {
-            const location = response.data.hives[0].location
+            const location = response.data.hives[0].location;
             return this.readApiariesAndGroups().then(() => {
-              this.$store.commit('locations/setData', {
-                prop: 'hiveFilterByGroup',
-                value: 'off',
-              })
-              this.$store.commit('locations/setData', {
-                prop: 'hiveSearch',
-                value: location, // set search term via store instead of query to overrule possible stored search terms
-              })
+              this.$store.commit("locations/setData", {
+                prop: "hiveFilterByGroup",
+                value: "off"
+              });
+              this.$store.commit("locations/setData", {
+                prop: "hiveSearch",
+                value: location // set search term via store instead of query to overrule possible stored search terms
+              });
               this.$router.push({
-                name: 'home',
-              })
-            })
-          }, 50) // wait for API to update locations/hives
+                name: "home"
+              });
+            });
+          }, 50); // wait for API to update locations/hives
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
-            const msg = error.response.data.message
-            this.snackbar.text = msg
+            console.log("Error: ", error.response);
+            const msg = error.response.data.message;
+            this.snackbar.text = msg;
           } else {
-            console.log('Error: ', error)
-            this.snackbar.text = this.$i18n.t('something_wrong')
+            console.log("Error: ", error);
+            this.snackbar.text = this.$i18n.t("something_wrong");
           }
-          this.snackbar.show = true
-          this.showLoadingIcon = false
+          this.snackbar.show = true;
+          this.showLoadingIcon = false;
         }
       }
     },
     async deleteHive() {
       try {
-        const response = await Api.deleteRequest('/hives/', this.activeHive.id)
+        const response = await Api.deleteRequest("/hives/", this.activeHive.id);
         if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
+          this.snackbar.text = this.$i18n.t("something_wrong");
+          this.snackbar.show = true;
         }
         setTimeout(() => {
           return this.readApiariesAndGroups().then(() => {
-            this.readGeneralInspections() // update inspections to exclude those from deleted hive
-            this.readDevices() // update devices to remove deleted hives coupled to devices
-            this.checkAlertRules() // update alert rules if present (or not checked yet)
-            this.this.$store.commit('locations/setData', {
-              prop: 'hiveFilterByGroup',
-              value: 'off',
-            })
-            this.$store.commit('locations/setData', {
-              prop: 'hiveSearch',
-              value: this.activeHive.location, // set search term via store instead of query to overrule possible stored search terms
-            })
+            this.readGeneralInspections(); // update inspections to exclude those from deleted hive
+            this.readDevices(); // update devices to remove deleted hives coupled to devices
+            this.checkAlertRules(); // update alert rules if present (or not checked yet)
+            this.this.$store.commit("locations/setData", {
+              prop: "hiveFilterByGroup",
+              value: "off"
+            });
+            this.$store.commit("locations/setData", {
+              prop: "hiveSearch",
+              value: this.activeHive.location // set search term via store instead of query to overrule possible stored search terms
+            });
             this.$router.push({
-              name: 'home',
-            })
-          })
-        }, 50) // wait for API to update locations/hives
+              name: "home"
+            });
+          });
+        }, 50); // wait for API to update locations/hives
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
-          const msg = error.response.data.message
-          this.snackbar.text = msg
+          console.log("Error: ", error.response);
+          const msg = error.response.data.message;
+          this.snackbar.text = msg;
         } else {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('something_wrong')
+          console.log("Error: ", error);
+          this.snackbar.text = this.$i18n.t("something_wrong");
         }
-        this.snackbar.show = true
+        this.snackbar.show = true;
       }
     },
     async readHive() {
       try {
-        const response = await Api.readRequest('/hives/', this.id)
+        const response = await Api.readRequest("/hives/", this.id);
         if (response.data.length === 0) {
-          this.$router.push({ name: '404', query: { resource: 'hive' } })
+          this.$router.push({ name: "404", query: { resource: "hive" } });
         }
-        const hive = response.data.hives[0]
+        const hive = response.data.hives[0];
         if (hive.queen && hive.queen.color && hive.queen.color !== null) {
-          this.queenHasColor = true
+          this.queenHasColor = true;
         } else if (hive.queen === null) {
-          hive.queen = this.emptyQueen
+          hive.queen = this.emptyQueen;
         }
-        this.activeHive = hive
-        this.setHiveEdited(false)
-        return true
+        this.activeHive = hive;
+        this.setHiveEdited(false);
+        return true;
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
+          console.log(error.response);
           if (error.response.status === 404) {
-            this.$router.push({ name: '404', query: { resource: 'hive' } })
+            this.$router.push({ name: "404", query: { resource: "hive" } });
           }
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
     async updateHive() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
-        this.activeHive.frames = this.getMaxFramecount(this.activeHive.layers)
+        this.showLoadingIcon = true;
+        this.activeHive.frames = this.getMaxFramecount(this.activeHive.layers);
         try {
           const response = await Api.updateRequest(
-            '/hives/',
-            this.activeHive.id + '?timezone=' + this.timeZone,
+            "/hives/",
+            this.activeHive.id + "?timezone=" + this.timeZone,
             this.activeHive
-          )
+          );
           if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
+            this.snackbar.text = this.$i18n.t("not_saved_error");
+            this.snackbar.show = true;
           }
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
-              this.readGeneralInspections() // retrieve hive action inspections
-              this.readDevices() // update devices to reflect updated hive names for example
+              this.readGeneralInspections(); // retrieve hive action inspections
+              this.readDevices(); // update devices to reflect updated hive names for example
               this.$router.push({
-                name: 'home',
-              })
-            })
-          }, 50) // wait for API to update locations/hives
+                name: "home"
+              });
+            });
+          }, 50); // wait for API to update locations/hives
         } catch (error) {
-          console.log('update hive', error)
+          console.log("update hive", error);
           if (error.response) {
-            console.log('Error: ', error.response)
-            const msg = error.response.data.message
-            this.snackbar.text = msg
+            console.log("Error: ", error.response);
+            const msg = error.response.data.message;
+            this.snackbar.text = msg;
           } else {
-            console.log('Error: ', error)
-            this.snackbar.text = this.$i18n.t('something_wrong')
+            console.log("Error: ", error);
+            this.snackbar.text = this.$i18n.t("something_wrong");
           }
-          this.snackbar.show = true
+          this.snackbar.show = true;
         }
       }
     },
     confirmDeleteHive() {
       this.$refs.confirm
         .open(
-          this.$i18n.t('remove_hive'),
-          this.$i18n.t('remove_hive') + ' "' + this.activeHive.name + '"?',
+          this.$i18n.t("remove_hive"),
+          this.$i18n.t("remove_hive") + ' "' + this.activeHive.name + '"?',
           {
-            color: 'red',
+            color: "red"
           }
         )
-        .then((confirm) => {
-          this.deleteHive()
+        .then(() => {
+          this.deleteHive();
         })
-        .catch((reject) => {
-          return true
-        })
+        .catch(() => {
+          return true;
+        });
     },
     getTitle() {
       if (this.hiveCreateMode) {
-        return this.$i18n.t('New_hive')
+        return this.$i18n.t("New_hive");
       } else if (this.queenEditMode && this.activeHive !== null) {
-        const queenName = this.activeHive.queen.name || ''
+        const queenName = this.activeHive.queen.name || "";
         return (
-          this.$i18n.t('Edit_queen') +
-          ' ' +
+          this.$i18n.t("Edit_queen") +
+          " " +
           queenName +
-          ' - ' +
+          " - " +
           this.activeHive.name
-        )
+        );
       } else if (this.activeHive !== null) {
-        return this.$i18n.t('Edit_hive')
+        return this.$i18n.t("Edit_hive");
       } else {
-        return this.$i18n.t('edit') + '...'
+        return this.$i18n.t("edit") + "...";
       }
     },
     saveHive() {
       if (this.hiveCreateMode) {
-        this.createHive()
+        this.createHive();
       } else {
-        this.updateHive()
+        this.updateHive();
       }
     },
     setHiveEdited(bool) {
-      this.$store.commit('hives/setHiveEdited', bool)
+      this.$store.commit("hives/setHiveEdited", bool);
     },
     updateOrder(value) {
-      this.activeHive.order = value
-      this.setHiveEdited(true)
+      this.activeHive.order = value;
+      this.setHiveEdited(true);
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
-        value = value.substring(0, maxLength)
-        this.activeHive[property] = value
+        value = value.substring(0, maxLength);
+        this.activeHive[property] = value;
       }
-      this.setHiveEdited(true)
-    },
-  },
-}
+      this.setHiveEdited(true);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

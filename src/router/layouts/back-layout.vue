@@ -1,7 +1,5 @@
 <template>
   <v-app-bar
-    app
-    light
     background-color="#000"
     color="primary"
     density="compact"
@@ -43,104 +41,104 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import NavDrawer from '@components/nav-drawer.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
-import LocaleChanger from '@components/locale-changer.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import LocaleChanger from "@components/locale-changer.vue";
+import NavDrawer from "@components/nav-drawer.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Confirm,
     LocaleChanger,
-    NavDrawer,
+    NavDrawer
   },
   props: {
     title: {
       type: String,
-      default: 'Back',
+      default: "Back"
     },
     dismissChanges: {
       type: Boolean,
       default: false,
-      required: false,
+      required: false
     },
     edited: {
       type: Boolean,
-      default: false,
+      default: false
     },
     warningMessage: {
       type: String,
-      default: '',
-      required: false,
+      default: "",
+      required: false
     },
     query: {
       type: Object,
       default: null,
-      required: false,
-    },
+      required: false
+    }
   },
   data: function() {
     return {
-      drawer: false,
-    }
+      drawer: false
+    };
   },
   computed: {
-    ...mapGetters('alerts', ['alertRuleEdited']),
-    ...mapGetters('groups', ['groupEdited', 'dashboardEdited']),
-    ...mapGetters('hives', ['hiveEdited']),
-    ...mapGetters('inspections', ['inspectionEdited']),
-    ...mapGetters('locations', ['apiaryEdited']),
+    ...mapGetters("alerts", ["alertRuleEdited"]),
+    ...mapGetters("groups", ["groupEdited", "dashboardEdited"]),
+    ...mapGetters("hives", ["hiveEdited"]),
+    ...mapGetters("inspections", ["inspectionEdited"]),
+    ...mapGetters("locations", ["apiaryEdited"])
   },
   methods: {
     back: function() {
       // remove hive_index query if it was present for the previous route, to prevent endless redirect loop
-      if (localStorage.beepPreviousQueryHiveIndex !== 'undefined') {
+      if (localStorage.beepPreviousQueryHiveIndex !== "undefined") {
         this.$router.push({
-          name: localStorage.beepPreviousRoute,
-        })
+          name: localStorage.beepPreviousRoute
+        });
       } else {
         if (
           !this.dismissChanges &&
-          (((this.$route.name === 'apiary-create' ||
-            this.$route.name === 'apiary-edit' ||
-            this.$route.name === 'apiary-management') &&
+          (((this.$route.name === "apiary-create" ||
+            this.$route.name === "apiary-edit" ||
+            this.$route.name === "apiary-management") &&
             this.apiaryEdited) ||
-            ((this.$route.name === 'group-create' ||
-              this.$route.name === 'group-edit') &&
+            ((this.$route.name === "group-create" ||
+              this.$route.name === "group-edit") &&
               this.groupEdited) ||
-            (this.$route.name === 'hive-edit' && this.hiveEdited) ||
-            (this.$route.name === 'inspect' && this.inspectionEdited) ||
-            (this.$route.name === 'alertrule-edit' && this.alertRuleEdited) ||
-            ((this.$route.name === 'checklist' ||
-              this.$route.name === 'research' ||
-              this.$route.name === 'devices') &&
+            (this.$route.name === "hive-edit" && this.hiveEdited) ||
+            (this.$route.name === "inspect" && this.inspectionEdited) ||
+            (this.$route.name === "alertrule-edit" && this.alertRuleEdited) ||
+            ((this.$route.name === "checklist" ||
+              this.$route.name === "research" ||
+              this.$route.name === "devices") &&
               this.edited) ||
-            ((this.$route.name === 'dashboard-create' ||
-              this.$route.name === 'dashboard-edit') &&
+            ((this.$route.name === "dashboard-create" ||
+              this.$route.name === "dashboard-edit") &&
               this.dashboardEdited))
         ) {
           this.$refs.confirm
             .open(
-              this.$i18n.t('unsaved_changes'),
-              this.$i18n.t('save_changes'),
+              this.$i18n.t("unsaved_changes"),
+              this.$i18n.t("save_changes"),
               {
-                color: 'red',
+                color: "red"
               },
               this.warningMessage
             )
-            .then((confirm) => {
-              this.navigateBackIntuitively()
+            .then(() => {
+              this.navigateBackIntuitively();
             })
-            .catch((reject) => {
-              return true
-            })
-        } else if (this.$route.name === 'hive-inspections') {
+            .catch(() => {
+              return true;
+            });
+        } else if (this.$route.name === "hive-inspections") {
           this.$router.push({
             name: localStorage.beepPreviousTab,
-            query: this.query, // forward query if present
-          })
+            query: this.query // forward query if present
+          });
         } else {
-          this.navigateBackIntuitively()
+          this.navigateBackIntuitively();
         }
       }
     },
@@ -151,19 +149,20 @@ export default {
         localStorage.beepPreviousTab !== undefined
       ) {
         this.$router.push({
-          name: localStorage.beepPreviousTab,
-        })
+          name: localStorage.beepPreviousTab
+        });
       } else {
         // if in deeper nested page (with depth 2 or more, or undefined), go back to previous page
-        this.$router.go(-1)
+        this.$router.go(-1);
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style lang="scss">
 header.v-app-bar {
+  z-index: 1003 !important; // make sure v-overlay still works with expanded nav drawer
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }

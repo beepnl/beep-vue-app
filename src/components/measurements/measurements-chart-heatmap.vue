@@ -35,7 +35,7 @@
                     scaleMax - labelIndex > minLabelDistance &&
                       index === indexLabels[labelIndex]
                   "
-                  :key="'li-' + labelIndex"
+                  :key="'lie-' + labelIndex"
                   v-text="labelIndex"
                 >
                 </span>
@@ -71,7 +71,7 @@
                     {{
                       h % moduloNumber === 0
                         ? momentFromISO8601(measurementTime.time)
-                        : ''
+                        : ""
                     }}
                   </span>
                 </div>
@@ -84,9 +84,9 @@
               :key="'alert' + a"
               class="tr--heatmap"
             >
-              <td class="td--heatmap-label --alert">{{
-                alert.alert_rule_name
-              }}</td>
+              <td class="td--heatmap-label --alert">
+                {{ alert.alert_rule_name }}
+              </td>
 
               <template
                 v-for="(measurement, ai) in data"
@@ -189,238 +189,247 @@ export default {
     data: {
       type: Array,
       default: () => [],
-      required: true,
+      required: true
     },
     alertsForCharts: {
       type: Array,
       default: () => [],
-      required: false,
+      required: false
     },
     inspectionsForCharts: {
       type: Array,
       default: () => [],
-      required: false,
+      required: false
     },
     maxValue: {
       type: Number,
       default: 1,
-      required: true,
+      required: true
     },
     yAxis: {
       type: Object,
       default: () => {},
-      required: true,
+      required: true
     },
     moduloNumber: {
       type: Number,
       default: 1,
-      required: true,
+      required: true
     },
     interval: {
       type: String,
-      default: 'day',
-      required: true,
-    },
+      default: "day",
+      required: true
+    }
   },
   emits: [
-    'confirm-view-alert',
-    'confirm-view-inspection',
-    'set-period-to-date',
+    "confirm-view-alert",
+    "confirm-view-inspection",
+    "set-period-to-date"
   ],
   data() {
     return {
       showAutoScale: false,
-      fixedHeatmapMax: parseInt(process.env.VUE_APP_HEATMAP_MAX) || 500,
+      fixedHeatmapMax: parseInt(import.meta.env.VITE_HEATMAP_MAX) || 500,
       maxIndex: 150,
-      minLabelDistance: 50,
-    }
+      minLabelDistance: 50
+    };
   },
   computed: {
     alertsForChartsMerged() {
-      const mergedAlerts = []
+      const mergedAlerts = [];
 
       // create an array with one alert for each alert_rule_id that is present in the current alertsForCharts
       // for each alert with the same alert_rule_id, add closest start and end indexes as sets to the indexes prop
       // now the alerts have been merged such that all alerts with the same alert_rule_id are shown on the same row, instead of a separate row for each separate alert
-      this.alertsForCharts.map((alert, index) => {
+      this.alertsForCharts.map(alert => {
         const alertInfo = {
           id: alert.id,
           alert_function: alert.alert_function,
           closestIndexEnd: alert.closestIndexEnd,
-          closestIndexStart: alert.closestIndexStart,
-        }
+          closestIndexStart: alert.closestIndexStart
+        };
         const mergedAlert = mergedAlerts.filter(
-          (mergedAlert) => mergedAlert.alert_rule_id === alert.alert_rule_id
-        )
+          mergedAlert => mergedAlert.alert_rule_id === alert.alert_rule_id
+        );
         if (mergedAlert.length > 0) {
-          mergedAlert[0].indexes.push(alertInfo)
+          mergedAlert[0].indexes.push(alertInfo);
         } else {
-          alert.indexes = [alertInfo]
-          mergedAlerts.push(alert)
+          alert.indexes = [alertInfo];
+          mergedAlerts.push(alert);
         }
-        return true
-      })
+        return true;
+      });
 
-      return mergedAlerts
+      return mergedAlerts;
     },
     indexLabels() {
-      const maxIndex = this.maxIndex
+      const maxIndex = this.maxIndex;
       const indexes = {
         1: 0,
         10: this.getIndexByValue(10),
         100: this.getIndexByValue(100),
-        1000: this.getIndexByValue(1000),
-      }
-      indexes[maxIndex] = parseInt(this.scaleMax.toFixed(0))
+        1000: this.getIndexByValue(1000)
+      };
+      indexes[maxIndex] = parseInt(this.scaleMax.toFixed(0));
       if (!this.showAutoScale) {
-        indexes[250] = this.getIndexByValue(250)
+        indexes[250] = this.getIndexByValue(250);
       }
-      return indexes
+      return indexes;
     },
     indexesWithLabel() {
-      return Object.keys(this.indexLabels)
+      return Object.keys(this.indexLabels);
     },
     inspectionIndexes() {
       if (this.inspectionsForCharts.length > 0) {
-        return this.inspectionsForCharts.map((inspection) => {
-          return inspection.closestIndex
-        })
+        return this.inspectionsForCharts.map(inspection => {
+          return inspection.closestIndex;
+        });
       } else {
-        return []
+        return [];
       }
     },
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     logMax() {
-      return Math.log(this.scaleMax)
+      return Math.log(this.scaleMax);
     },
     scaleMax() {
-      return this.showAutoScale ? this.maxValue : this.fixedHeatmapMax
-    },
+      return this.showAutoScale ? this.maxValue : this.fixedHeatmapMax;
+    }
   },
   methods: {
     calculateHeatmapColor(value, isIndex = false) {
-      let logValue = 0
+      let logValue = 0;
 
       if (isIndex) {
-        value = this.getValueByIndex(value)
+        value = this.getValueByIndex(value);
       }
 
       if (value !== 0) {
-        logValue = Math.log(value)
+        logValue = Math.log(value);
       }
 
       if (logValue > this.logMax) {
         // cap color to max color
-        logValue = this.logMax
+        logValue = this.logMax;
       }
 
-      return value !== null && value !== 0
-        ? 'hsl(' +
+      if (value === 0) {
+        // because it's impossible to divide 0 by something, give a 0 value a 0.01 value instead, so it comes out as blue color
+        // and only null values come out as white color
+        logValue = 0.01;
+      }
+
+      const result =
+        value !== null
+          ? "hsl(" +
             (235 + (logValue / this.logMax) * -235).toFixed(0) +
-            ', 100%, 50%)'
-        : 'hsl(360, 100%, 100%)'
+            ", 100%, 50%)"
+          : "hsl(360, 100%, 100%)";
+
+      return result;
     },
     displayValue(input) {
       return input !== undefined
         ? Math.round(input) !== input
           ? input.toFixed(2)
           : input
-        : '-'
+        : "-";
     },
     findAlertInfo(mergedAlert, index) {
       return mergedAlert.indexes.filter(
-        (indexSet) =>
+        indexSet =>
           index >= indexSet.closestIndexStart &&
           index <= indexSet.closestIndexEnd
-      )[0]
+      )[0];
     },
     getAlertColor(mergedAlert, index) {
       if (this.isAlertIndex(mergedAlert, index)) {
-        return 'rgba(255, 0, 29, 0.15)'
+        return "rgba(255, 0, 29, 0.15)";
       } else {
-        return 'transparent'
+        return "transparent";
       }
     },
     getIndexByValue(value) {
-      return parseInt((Math.log(value) / this.logMax) * this.maxIndex)
+      return parseInt((Math.log(value) / this.logMax) * this.maxIndex);
     },
     getValueByIndex(index) {
-      return Math.exp((index / this.maxIndex) * this.logMax)
+      return Math.exp((index / this.maxIndex) * this.logMax);
     },
     getInspectionByIndex(index) {
       return this.inspectionsForCharts.find(
-        (inspection) => inspection.closestIndex === index
-      )
+        inspection => inspection.closestIndex === index
+      );
     },
     isAlertIndex(mergedAlert, index) {
       // is there a set of start and end alert indexes within which the current index falls
       return (
         mergedAlert.indexes.filter(
-          (indexSet) =>
+          indexSet =>
             index >= indexSet.closestIndexStart &&
             index <= indexSet.closestIndexEnd
         ).length > 0
-      )
+      );
     },
     momentAll(date) {
       return this.$moment(date)
         .locale(this.locale)
-        .format('llll')
+        .format("llll");
     },
     momentFromISO8601(date) {
-      if (this.interval === 'hour') {
+      if (this.interval === "hour") {
         return this.$moment(date)
           .locale(this.locale)
-          .format('LT')
-      } else if (this.interval === 'day' || this.interval === 'week') {
-        const unit = this.locale === 'nl' ? 'u' : 'h'
+          .format("LT");
+      } else if (this.interval === "day" || this.interval === "week") {
+        const unit = this.locale === "nl" ? "u" : "h";
         return (
           this.$moment(date)
             .locale(this.locale)
-            .format('ddd') +
-          ' ' +
+            .format("ddd") +
+          " " +
           this.$moment(date)
             .locale(this.locale)
-            .format('H') +
+            .format("H") +
           unit
-        )
+        );
       } else {
-        const currentYear = this.$moment(date).format('YYYY')
-        const currentYearEn = ', ' + currentYear
-        const currentYearEsPt = ' de ' + currentYear
-        const currentYearNl = '. ' + currentYear
+        const currentYear = this.$moment(date).format("YYYY");
+        const currentYearEn = ", " + currentYear;
+        const currentYearEsPt = " de " + currentYear;
+        const currentYearNl = ". " + currentYear;
         return this.$moment(date)
           .locale(this.locale)
-          .format('ll')
-          .replace(currentYearNl, '')
-          .replace(currentYearEn, '')
-          .replace(currentYearEsPt, '')
-          .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
+          .format("ll")
+          .replace(currentYearNl, "")
+          .replace(currentYearEn, "")
+          .replace(currentYearEsPt, "")
+          .replace(" " + currentYear, ""); // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
     },
     setPeriodToDate(date) {
-      this.$emit('set-period-to-date', date)
+      this.$emit("set-period-to-date", date);
     },
     confirmViewAlert(mergedAlert, index) {
       if (this.isAlertIndex(mergedAlert, index)) {
-        const alertId = this.findAlertInfo(mergedAlert, index).id
+        const alertId = this.findAlertInfo(mergedAlert, index).id;
         const alert = this.alertsForCharts.filter(
-          (alert) => alert.id === alertId
-        )[0]
-        this.$emit('confirm-view-alert', alert)
+          alert => alert.id === alertId
+        )[0];
+        this.$emit("confirm-view-alert", alert);
       }
     },
     confirmViewInspection(index) {
-      const inspection = this.getInspectionByIndex(index)
-      this.$emit('confirm-view-inspection', {
+      const inspection = this.getInspectionByIndex(index);
+      this.$emit("confirm-view-inspection", {
         id: inspection.id,
-        date: inspection.date,
-      })
-    },
-  },
-}
+        date: inspection.date
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss">
@@ -507,7 +516,7 @@ export default {
         position: absolute;
         top: 100%;
         left: 50%;
-        content: ' ';
+        content: " ";
       }
     }
   }

@@ -3,7 +3,7 @@
   <v-row v-if="ready" class="hive-edit-details-wrapper">
     <v-col cols="12">
       <div
-        class="text-overline mb-3"
+        class="custom-text-overline mb-3"
         v-text="`${$tc('Hive', 1) + ' ' + $t('configuration')}`"
       ></div>
 
@@ -20,7 +20,6 @@
                 ></div>
                 <v-sheet
                   class="hive-color cursor-pointer"
-                  dark
                   :color="hive.color !== null ? hive.color : '#F8B133'"
                   @click="openColorPicker"
                 ></v-sheet>
@@ -28,6 +27,7 @@
 
               <v-col cols="12" md="5">
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
+                <!-- this number element can't be replaced by numeric input as it has to use model-value which can't be adjusted as a prop in another component -->
                 <ElInputNumber
                   v-if="hive && hive.layers"
                   :model-value="
@@ -100,7 +100,7 @@
             <v-row class="my-0">
               <v-col cols="12" sm="7" md="12">
                 <div class="beep-label" v-text="`${$t('Hive_type')}*`"></div>
-                <Treeselect
+                <TreeselectVue3
                   :model-value="hive.hive_type_id"
                   :options="treeselectHiveTypes"
                   :disable-branch-nodes="true"
@@ -133,23 +133,15 @@
                           class="beep-label"
                           v-text="`${$t(bbDimension)}`"
                         ></div>
-                        <ElInputNumber
-                          :model-value="
-                            hive[bbDimension]
-                              ? parseFloat(hive[bbDimension])
-                              : 0
-                          "
+                        <NumericInput
+                          :object="hive"
+                          :property="bbDimension"
                           :min="0"
                           :max="100"
                           :step="0.1"
-                          :precision="1"
-                          @change="updateHive($event.toString(), bbDimension)"
-                          @update:model-value="
-                            convertComma($event, hive, bbDimension, 1),
-                              setHiveEdited(true),
-                              setApiaryEdited(true)
-                          "
-                        ></ElInputNumber>
+                          :disabled="hive.layers.length === 0"
+                          @update-number="updateHive($event, bbDimension)"
+                        ></NumericInput>
                       </div>
                     </v-col>
 
@@ -163,23 +155,15 @@
                           class="beep-label"
                           v-text="`${$t(frDimension)}`"
                         ></div>
-                        <ElInputNumber
-                          :model-value="
-                            hive[frDimension]
-                              ? parseFloat(hive[frDimension])
-                              : 0
-                          "
+                        <NumericInput
+                          :object="hive"
+                          :property="frDimension"
                           :min="0"
                           :max="100"
                           :step="0.1"
-                          :precision="1"
-                          @change="updateHive($event.toString(), frDimension)"
-                          @update:model-value="
-                            convertComma($event, hive, frDimension, 1),
-                              setHiveEdited(true),
-                              setApiaryEdited(true)
-                          "
-                        ></ElInputNumber>
+                          :disabled="hive.layers.length === 0"
+                          @update-number="updateHive($event, frDimension)"
+                        ></NumericInput>
                       </div>
                     </v-col>
                   </v-row>
@@ -194,188 +178,185 @@
 </template>
 
 <script>
-import HiveFactory from '@components/hive-factory.vue'
-import { mapGetters } from 'vuex'
-import {
-  convertComma,
-  getMaxFramecount,
-  readTaxonomy,
-} from '@mixins/methodsMixin'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
-import { ElInputNumber } from 'element-plus'
+import HiveFactory from "@components/hive-factory.vue";
+import NumericInput from "@components/input-fields/numeric-input.vue";
+import { getMaxFramecount, readTaxonomy } from "@mixins/methodsMixin";
+import { ElInputNumber } from "element-plus";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     HiveFactory,
-    Treeselect,
-    ElInputNumber,
+    NumericInput,
+    ElInputNumber
   },
-  mixins: [convertComma, getMaxFramecount, readTaxonomy],
+  mixins: [getMaxFramecount, readTaxonomy],
   props: {
     hive: {
       type: Object,
       default: null,
-      required: true,
-    },
+      required: true
+    }
   },
   data: function() {
     return {
       swatchesHive: [
-        ['#e9eae1', '#EAD49E', '#F8B133'],
-        ['#2dbde5', '#094da0', '#27820e'],
-        ['#ffe900', '#d80d0d', '#754B1F'],
+        ["#e9eae1", "#EAD49E", "#F8B133"],
+        ["#2dbde5", "#094da0", "#27820e"],
+        ["#ffe900", "#d80d0d", "#754B1F"]
       ],
-      bbDimensions: ['bb_width_cm', 'bb_height_cm', 'bb_depth_cm'],
-      frDimensions: ['fr_width_cm', 'fr_height_cm'],
+      bbDimensions: ["bb_width_cm", "bb_height_cm", "bb_depth_cm"],
+      frDimensions: ["fr_width_cm", "fr_height_cm"],
       overlay: false,
       colorPreview: false,
-      colorPickerValue: '',
+      colorPickerValue: "",
       ready: false,
-      defaultFrameCount: 10,
-    }
+      defaultFrameCount: 10
+    };
   },
   computed: {
-    ...mapGetters('taxonomy', ['hiveDimensionsList', 'hiveTypesList']),
+    ...mapGetters("taxonomy", ["hiveDimensionsList", "hiveTypesList"]),
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     colorPicker: {
       get() {
-        if (this.hive) {
-          return this.hive.color !== null ? this.hive.color : '#F8B133'
+        if (this.colorPickerValue !== "") {
+          return this.colorPickerValue;
+        } else if (this.hive) {
+          return this.hive.color !== null ? this.hive.color : "#F8B133";
         } else {
-          return ''
+          return "";
         }
       },
       set(value) {
-        this.colorPreview = true
-        this.colorPickerValue = value
-      },
+        this.colorPreview = true;
+        this.colorPickerValue = value;
+      }
     },
     treeselectHiveTypes() {
       if (this.hiveTypesList.length) {
-        const locale = this.selectLocale(this.hiveTypesList)
+        const locale = this.selectLocale(this.hiveTypesList);
         const hiveTypePerGroup = JSON.parse(JSON.stringify(this.hiveTypesList)) // clone without v-bind to avoid vuex warning when mutating
           .reduce(function(r, a) {
-            r[a.group[locale]] = r[a.group[locale]] || []
-            r[a.group[locale]].push(a)
-            return r
-          }, {})
+            r[a.group[locale]] = r[a.group[locale]] || [];
+            r[a.group[locale]].push(a);
+            return r;
+          }, {});
         const sortedGroups = Object.keys(hiveTypePerGroup)
           .slice()
           .sort(function(a, b) {
             if (a < b) {
-              return -1
+              return -1;
             }
             if (a > b) {
-              return 1
+              return 1;
             }
-            return 0
-          })
-        const treeselectArray = []
+            return 0;
+          });
+        const treeselectArray = [];
         sortedGroups.forEach((sortedGroup, index) => {
           const sortedGroupObject = {
             id: -(index + 1),
             label: sortedGroup,
-            children: hiveTypePerGroup[sortedGroup],
-          }
-          treeselectArray.push(sortedGroupObject)
-        })
-        treeselectArray.map((groupObject) => {
-          groupObject.children.map((child) => {
-            child.label = child.trans[locale]
-            return child
-          })
+            children: hiveTypePerGroup[sortedGroup]
+          };
+          treeselectArray.push(sortedGroupObject);
+        });
+        treeselectArray.map(groupObject => {
+          groupObject.children.map(child => {
+            child.label = child.trans[locale];
+            return child;
+          });
           const sortedTreeselectArray = groupObject.children
             .slice()
             .sort(function(a, b) {
               if (a.label < b.label) {
-                return -1
+                return -1;
               }
               if (a.label > b.label) {
-                return 1
+                return 1;
               }
-              return 0
-            })
-          groupObject.children = sortedTreeselectArray
-          return groupObject
-        })
-        return treeselectArray
+              return 0;
+            });
+          groupObject.children = sortedTreeselectArray;
+          return groupObject;
+        });
+        return treeselectArray;
       } else {
-        return []
+        return [];
       }
-    },
+    }
   },
   created() {
     this.readTaxonomy().then(() => {
-      this.ready = true
-    })
+      this.ready = true;
+    });
   },
   methods: {
     cancelColorPicker() {
-      this.colorPreview = false
-      this.overlay = false
+      this.colorPreview = false;
+      this.overlay = false;
     },
     openColorPicker() {
-      this.overlay = true
+      this.overlay = true;
     },
     selectLocale(array) {
       if (array.length) {
-        const locale = this.$i18n.locale
+        const locale = this.$i18n.locale;
         if (array[0].trans[locale] === undefined) {
-          return 'en'
+          return "en";
         } else {
-          return locale
+          return locale;
         }
       } else {
-        return 'en'
+        return "en";
       }
     },
     setApiaryEdited(bool) {
-      this.$store.commit('locations/setApiaryEdited', bool)
+      this.$store.commit("locations/setApiaryEdited", bool);
     },
     setHiveEdited(bool) {
-      this.$store.commit('hives/setHiveEdited', bool)
+      this.$store.commit("hives/setHiveEdited", bool);
     },
     updateHive(event, property) {
-      // console.log(event)
-      let value = null
+      let value;
       if (event === null) {
-        value = null
+        value = null; // 0 ?
       } else if (event.target !== undefined) {
-        value = event.target.value
+        value = event.target.value;
       } else {
-        value = event
+        value = event;
       }
-      this.hive[property] = value
-      this.hive.frames = this.getMaxFramecount(this.hive.layers)
-      this.setHiveEdited(true)
-      this.setApiaryEdited(true)
+      this.hive[property] = value;
+      this.hive.frames = this.getMaxFramecount(this.hive.layers);
+      this.setHiveEdited(true);
+      this.setApiaryEdited(true);
     },
     updateHiveLayers(value, property) {
-      this.hive.layers.forEach((layer) => {
-        layer[property] = value
-      })
-      this.hive.frames = this.getMaxFramecount(this.hive.layers)
-      this.setHiveEdited(true)
-      this.setApiaryEdited(true)
-      if (property === 'color') {
-        this.hive[property] = value
-        this.cancelColorPicker()
+      this.hive.layers.forEach(layer => {
+        layer[property] = value;
+      });
+      this.hive.frames = this.getMaxFramecount(this.hive.layers);
+      this.setHiveEdited(true);
+      this.setApiaryEdited(true);
+      if (property === "color") {
+        this.hive[property] = value;
+        this.cancelColorPicker();
       }
     },
     updateHiveType(event) {
       if (event === undefined) {
-        event = 63 // Default to custom hive
+        event = 63; // Default to custom hive
       }
-      this.updateHive(event, 'hive_type_id')
+      this.updateHive(event, "hive_type_id");
 
       const hiveTypeIndex = this.hiveTypesList.findIndex(
-        (hiveType) => hiveType.id === event
-      )
-      const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name
+        hiveType => hiveType.id === event
+      );
+      const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name;
 
-      let hiveDimensions = null
+      let hiveDimensions;
       if (
         this.hiveDimensionsList &&
         this.hiveDimensionsList[hiveTypeName] !== undefined
@@ -395,25 +376,25 @@ export default {
           ),
           fr_height_cm: parseFloat(
             this.hiveDimensionsList[hiveTypeName].fr_height_cm
-          ),
-        }
+          )
+        };
       } else {
         hiveDimensions = {
           bb_width_cm: 0,
           bb_depth_cm: 0,
           bb_height_cm: 0,
           fr_width_cm: 0,
-          fr_height_cm: 0,
-        }
+          fr_height_cm: 0
+        };
       }
-      let i = 0
+      let i = 0;
       for (i in hiveDimensions) {
-        this.updateHive(hiveDimensions[i], i)
-        i++
+        this.updateHive(hiveDimensions[i], i);
+        i++;
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style lang="scss">

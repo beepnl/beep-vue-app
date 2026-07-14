@@ -101,8 +101,8 @@
                     <div
                       class="d-flex flex-no-wrap justify-flex-start align-center"
                     >
-                      <div class="mr-1 my-0">
-                        <v-icon class="text-red">
+                      <div class="mr-1 my-0 ml-n1">
+                        <v-icon class="text-red" size="24">
                           mdi-clipboard-alert-outline
                         </v-icon>
                       </div>
@@ -128,21 +128,24 @@
                     <div
                       class="d-flex flex-no-wrap justify-flex-start align-center"
                     >
-                      <div class="mr-1 my-0">
+                      <div class="mr-1 my-0 ml-n1">
                         <v-icon
                           v-if="inspection.impression === 1"
+                          size="24"
                           class="text-red"
                         >
                           mdi-emoticon-sad
                         </v-icon>
                         <v-icon
                           v-if="inspection.impression === 3"
+                          size="24"
                           class="text-green"
                         >
                           mdi-emoticon-happy
                         </v-icon>
                         <v-icon
                           v-if="inspection.impression === 2"
+                          size="24"
                           class="text-orange"
                         >
                           mdi-emoticon-neutral
@@ -205,9 +208,10 @@
                     <div
                       class="d-flex flex-no-wrap justify-flex-start align-center"
                     >
-                      <div class="mr-1 my-0">
+                      <div class="mr-1 my-0 ml-n1">
                         <v-icon
                           v-if="inspection.reminder_date"
+                          size="24"
                           :class="
                             `${
                               $moment(
@@ -223,6 +227,7 @@
                         </v-icon>
                         <v-icon
                           v-if="!inspection.reminder_date"
+                          size="24"
                           class="color-grey"
                         >
                           mdi-calendar-clock

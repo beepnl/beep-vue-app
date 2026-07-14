@@ -3,47 +3,68 @@
   <v-menu location="end top">
     <template v-slot:activator="{ props }">
       <v-card
-        :class="
-          `hive-card d-flex flex-column justify-end align-start ${
-            xsView ? 'xs-view' : ''
-          }`
-        "
-        :style="
-          `border-color: ${
-            hiveSet.hex_color
-              ? hiveSet.hex_color + ' !important'
-              : '#F8B133 !important'
-          };`
-        "
+        :class="`hive-card d-flex flex-column justify-end align-start ${
+          xsView ? 'xs-view' : ''
+        }`"
+        :style="`border-color: ${
+          xsView
+            ? 'transparent'
+            : hiveSet.hex_color
+              ? hiveSet.hex_color
+              : '#F8B133'
+        } !important;`"
       >
         <v-row
           v-if="!xsView"
           class="ml-0 mt-0 mb-3 d-flex justify-space-between align-start"
-          style="width: 100%;"
+          style="width: 100%"
         >
           <v-col cols="11" class="pa-0">
             <h4
               v-if="mView"
               class="hive-name truncate-md mb-3"
-              style="max-width: 120px;"
+              style="max-width: 120px"
               v-text="hive.name"
             >
             </h4>
             <div v-if="xlView" class="d-flex flex-row">
-              <h4 class="hive-name truncate-md mb-3" style="max-width: 250px;">
+              <h4
+                v-if="hiveTitle.length <= 14 || menuItemsPresent"
+                class="hive-name truncate-md mb-3"
+                style="max-width: 250px"
+              >
                 {{ hive.name }}
                 <span
-                  v-if="hiveSet.users && hiveSet.users.length"
-                  class="caption hive-name-caption"
+                  v-if="hiveSetIsGroup"
+                  class="text-body-small hive-name-caption"
                   v-text="` (${hive.location})`"
                 >
                 </span>
               </h4>
+
+              <v-tooltip v-else location="bottom" max-width="60%">
+                <template v-slot:activator="{ props }">
+                  <h4
+                    v-bind="props"
+                    class="hive-name truncate-md mb-3"
+                    style="max-width: 250px"
+                  >
+                    {{ hive.name }}
+                    <span
+                      v-if="hiveSetIsGroup"
+                      class="text-body-small hive-name-caption"
+                      v-text="` (${hive.location})`"
+                    >
+                    </span>
+                  </h4>
+                </template>
+                <span v-text="hiveTitle"> </span>
+              </v-tooltip>
             </div>
           </v-col>
           <v-col cols="1" class="pa-0">
-            <div class="d-flex justify-end">
-              <v-icon small class="color-black mr-n2 mt-0" v-bind="props"
+            <div v-if="menuItemsPresent" class="d-flex justify-end">
+              <v-icon size="small" class="color-black mr-n2 mt-0" v-bind="props"
                 >mdi-dots-vertical</v-icon
               >
             </div>
@@ -56,11 +77,9 @@
           <div class="hive-icon-wrapper d-flex flex-column align-center">
             <div
               v-if="xsView"
-              :class="
-                `d-flex flex-row justify-center text-red xs-view-alert ${
-                  hasLayer('queen_excluder') ? 'mr-1' : ''
-                }`
-              "
+              :class="`d-flex flex-row justify-center text-red xs-view-alert ${
+                hasLayer('queen_excluder') ? 'mr-1' : ''
+              }`"
             >
               <router-link
                 :to="{
@@ -91,9 +110,7 @@
                   >
                     <v-icon color="red" size="24">mdi-bell</v-icon>
                   </v-badge>
-                  <v-icon v-else size="24" color="red">
-                    mdi-bell
-                  </v-icon>
+                  <v-icon v-else size="24" color="red"> mdi-bell </v-icon>
                   <v-tooltip activator="parent" location="bottom">
                     {{ alertRuleNamesText }}
                   </v-tooltip>
@@ -127,9 +144,7 @@
                     >
                       <v-icon color="red" size="24">mdi-bell</v-icon>
                     </v-badge>
-                    <v-icon v-else color="red" size="24">
-                      mdi-bell
-                    </v-icon>
+                    <v-icon v-else color="red" size="24"> mdi-bell </v-icon>
                     <v-tooltip activator="parent" location="bottom">
                       {{ alertRuleNamesText }}
                     </v-tooltip>
@@ -139,12 +154,12 @@
               <span
                 v-if="xlView"
                 class="truncate-md"
-                style="max-width: 224px;"
+                style="max-width: 224px"
                 v-text="alertRuleNamesText"
               ></span>
             </div>
             <div
-              v-if="hive.sensors.length !== 0"
+              v-if="hiveHasSensor"
               class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
             >
               <router-link
@@ -169,7 +184,7 @@
             >
               <div class="mr-2 my-0">
                 <router-link
-                  v-if="hive.editable || hive.owner"
+                  v-if="hiveEditable"
                   :to="{
                     name: `queen-edit`,
                     params: { id: hive.id },
@@ -177,23 +192,21 @@
                   }"
                 >
                   <v-sheet
-                    :class="
-                      `beep-icon beep-icon-queen  ${
-                        darkIconColor(hive.queen.color) ? 'dark' : ''
-                      }`
-                    "
+                    :class="`beep-icon beep-icon-queen  ${
+                      darkIconColor(hive.queen.color) ? 'dark' : ''
+                    }`"
                     :color="hive.queen.color"
+                    :style="`border-color: ${hive.queen.color};`"
                   >
                   </v-sheet>
                 </router-link>
                 <v-sheet
                   v-else
-                  :class="
-                    `beep-icon beep-icon-queen  ${
-                      darkIconColor(hive.queen.color) ? 'dark' : ''
-                    }`
-                  "
+                  :class="`beep-icon beep-icon-queen  ${
+                    darkIconColor(hive.queen.color) ? 'dark' : ''
+                  }`"
                   :color="hive.queen.color"
+                  :style="`border-color: ${hive.queen.color};`"
                 >
                 </v-sheet>
               </div>
@@ -209,7 +222,7 @@
               <div class="mr-2 my-0">
                 <router-link :to="inspectLink(true)">
                   <v-icon
-                    v-if="hive.last_inspection_date === null"
+                    v-if="hiveEditable && !hiveHasInspection"
                     class="color-grey"
                     size="24"
                   >
@@ -242,9 +255,7 @@
                   </v-icon>
                   <div
                     v-if="
-                      !hive.impression &&
-                        !hive.attention &&
-                        hive.last_inspection_date
+                      !hive.impression && !hive.attention && hiveHasInspection
                     "
                     class="my-0"
                   >
@@ -253,13 +264,9 @@
                 </router-link>
               </div>
               <span
-                v-if="xlView"
-                :class="
-                  `${
-                    hive.last_inspection_date !== null ? '' : 'color-grey'
-                  } mr-2 last-visit`
-                "
-                v-text="lastVisit(hive)"
+                v-if="xlView && hiveEditable"
+                :class="`${hiveHasInspection ? '' : 'color-grey'} mr-2 last-visit`"
+                v-text="lastVisit"
               >
               </span>
             </div>
@@ -279,7 +286,7 @@
               >
                 <span
                   class="truncate-md"
-                  style="max-width: 224px;"
+                  style="max-width: 224px"
                   v-text="hive.notes"
                 >
                 </span>
@@ -295,7 +302,7 @@
                 v-if="
                   hive.notes && (mobile || hive.notes.length <= 33) && xlView
                 "
-                style="max-width: 224px;"
+                style="max-width: 224px"
                 v-text="hive.notes"
               >
               </span>
@@ -316,13 +323,11 @@
                   <v-icon
                     v-if="hive.reminder_date"
                     size="24"
-                    :class="
-                      `${
-                        $moment(hive.reminder_date).isBefore()
-                          ? 'text-red'
-                          : 'text-green'
-                      }`
-                    "
+                    :class="`${
+                      $moment(hive.reminder_date).isBefore()
+                        ? 'text-red'
+                        : 'text-green'
+                    }`"
                   >
                     mdi-calendar-clock
                   </v-icon>
@@ -337,27 +342,25 @@
               </div>
               <span
                 v-if="hive.reminder_date"
-                :class="
-                  `to-do-date ${
-                    $moment(hive.reminder_date).isBefore()
-                      ? 'text-red'
-                      : 'text-green'
-                  } mr-2`
-                "
+                :class="`to-do-date ${
+                  $moment(hive.reminder_date).isBefore()
+                    ? 'text-red'
+                    : 'text-green'
+                } mr-2`"
                 v-text="hive.reminder_date_day_month"
               >
               </span>
               <div
                 v-if="
                   !mobile &&
-                    hive.reminder &&
-                    hive.reminder.length > 25 &&
-                    xlView
+                  hive.reminder &&
+                  hive.reminder.length > 25 &&
+                  xlView
                 "
               >
                 <span
                   class="truncate-md"
-                  style="max-width: 164px;"
+                  style="max-width: 164px"
                   v-text="hive.reminder"
                 >
                 </span>
@@ -372,11 +375,11 @@
               <span
                 v-if="
                   hive.reminder &&
-                    (mobile || hive.reminder.length <= 25) &&
-                    xlView
+                  (mobile || hive.reminder.length <= 25) &&
+                  xlView
                 "
                 class="truncate-md"
-                style="max-width: 164px;"
+                style="max-width: 164px"
                 v-text="hive.reminder"
               >
               </span>
@@ -388,25 +391,21 @@
 
     <v-list class="hive-menu-list">
       <v-list-item>
-        <v-list-item-title class="text-h6">
+        <v-list-item-title class="text-headline-small">
           {{ hive.name }}
         </v-list-item-title>
       </v-list-item>
 
       <v-list-item
-        v-if="hive.editable || hive.owner"
+        v-if="hiveEditable"
         class="text-black"
         :to="inspectLink(false)"
         :prepend-icon="'mdi-file-document-edit-outline'"
-        :title="
-          hive.last_inspection_date !== null
-            ? $t('New_inspection')
-            : $t('no_inspections')
-        "
+        :title="hiveHasInspection ? $t('New_inspection') : $t('no_inspections')"
       >
       </v-list-item>
       <v-list-item
-        v-if="hive.last_inspection_date !== null"
+        v-if="hiveHasInspection"
         class="text-black"
         :to="{
           name: 'hive-inspections',
@@ -428,7 +427,7 @@
       >
       </v-list-item>
       <v-list-item
-        v-if="hive.sensors.length !== 0"
+        v-if="hiveHasSensor"
         class="text-black"
         :to="{
           name: 'measurements-id',
@@ -443,10 +442,10 @@
         </template>
       </v-list-item>
 
-      <v-divider v-if="hive.editable || hive.owner" class="my-1"></v-divider>
+      <v-divider v-if="hiveEditable" class="my-1"></v-divider>
 
       <v-list-item
-        v-if="hive.editable || hive.owner"
+        v-if="hiveEditable"
         class="text-black"
         :to="{
           name: `hive-edit`,
@@ -458,7 +457,7 @@
       </v-list-item>
 
       <v-list-item
-        v-if="hive.editable || hive.owner"
+        v-if="hiveEditable"
         class="text-black"
         :to="{
           name: `queen-edit`,
@@ -492,8 +491,8 @@
 </template>
 
 <script>
-import { darkIconMixin } from '@mixins/darkIconMixin'
 import HiveIcon from '@components/hive-icon.vue'
+import { darkIconMixin } from '@mixins/darkIconMixin'
 
 export default {
   components: {
@@ -545,14 +544,47 @@ export default {
           alert.alert_rule_name !== null
             ? alert.alert_rule_name
             : alert.alert_function !== null
-            ? alert.alert_function
-            : this.$i18n.t('Unknown')
+              ? alert.alert_function
+              : this.$i18n.t('Unknown')
         if (uniqueAlertRuleNames.indexOf(alertName) === -1) {
           uniqueAlertRuleNames.push(alertName)
         }
         return true
       })
       return uniqueAlertRuleNames.join(', ')
+    },
+    hiveEditable() {
+      return this.hive.editable || this.hive.owner
+    },
+    hiveHasInspection() {
+      return this.hive.last_inspection_date !== null
+    },
+    hiveHasSensor() {
+      return this.hive.sensors && this.hive.sensors.length > 0
+    },
+    hiveTitle() {
+      return (
+        this.hive.name +
+        (this.hiveSetIsGroup ? ' (' + this.hive.location + ')' : '')
+      )
+    },
+    hiveSetIsGroup() {
+      return this.hiveSet.users && this.hiveSet.users.length
+    },
+    lastVisit() {
+      if (this.hiveHasInspection) {
+        return this.hive.last_inspection_date_moment_from_now
+      } else {
+        return this.$i18n.t('no_inspections')
+      }
+    },
+    menuItemsPresent() {
+      return (
+        this.hiveEditable ||
+        this.hiveHasInspection ||
+        this.hiveHasSensor ||
+        this.alerts.length > 0
+      )
     },
     mobile() {
       return this.$vuetify.display.xs
@@ -566,7 +598,7 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     inspectLink(linkToInspections) {
-      if (this.hive.last_inspection_date !== null && linkToInspections) {
+      if (this.hiveHasInspection && linkToInspections) {
         if (!this.hive.attention && !this.hive.impression) {
           return {
             name: 'hive-inspections',
@@ -580,7 +612,7 @@ export default {
           }
         }
       } else {
-        if (this.hiveSet.users) {
+        if (this.hiveSetIsGroup) {
           return {
             name: 'inspect',
             query: { hiveId: this.hive.id, groupId: this.hiveSet.id },
@@ -593,12 +625,11 @@ export default {
         }
       }
     },
-    lastVisit(hive) {
-      if (hive.last_inspection_date !== null) {
-        return hive.last_inspection_date_moment_from_now
-      } else {
-        return this.$i18n.t('no_inspections')
-      }
+    showHiveMenu(e, hideHiveName = false) {
+      this.x = e.clientX
+      this.y = e.clientY
+      this.showMenu = true
+      this.hideHiveName = hideHiveName
     },
   },
 }

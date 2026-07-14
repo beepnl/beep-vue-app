@@ -26,7 +26,7 @@
             >
               {{
                 'mdi-phone-rotate-' +
-                  (!landscapeMode ? 'landscape' : 'portrait')
+                (!landscapeMode ? 'landscape' : 'portrait')
               }}
             </v-icon>
             <v-icon
@@ -55,9 +55,9 @@
                   class="dashboard-logo"
                   :src="
                     assetsUrl +
-                      '/img/dashboard/beep-icon-logo' +
-                      (darkMode ? '-white-text' : '') +
-                      '.svg'
+                    '/img/dashboard/beep-icon-logo' +
+                    (darkMode ? '-white-text' : '') +
+                    '.svg'
                   "
                 />
               </div>
@@ -65,7 +65,7 @@
               <div
                 :class="
                   'dashboard-title --header font-weight-light overline' +
-                    (!landscapeMode ? ' --portrait' : '')
+                  (!landscapeMode ? ' --portrait' : '')
                 "
                 v-text="
                   ready
@@ -85,7 +85,7 @@
                 contained
                 :scrim="darkMode ? 'black' : 'white'"
                 z-index="3"
-                class="d-flex align-center justify-center "
+                class="d-flex align-center justify-center"
               >
                 <div class="loading">
                   <v-progress-circular
@@ -117,9 +117,9 @@
                     ref="mapP"
                     :class="
                       'map ' +
-                        (ready && coordinatesPresent
-                          ? '--portrait'
-                          : ready
+                      (ready && coordinatesPresent
+                        ? '--portrait'
+                        : ready
                           ? '--hide'
                           : '--loading')
                     "
@@ -135,7 +135,7 @@
                   <div
                     :class="
                       'd-flex flex-column align-center hives-wrapper ' +
-                        (landscapeMode ? '--landscape' : '--portrait')
+                      (landscapeMode ? '--landscape' : '--portrait')
                     "
                   >
                     <div
@@ -159,31 +159,31 @@
                 <DashboardSection
                   v-if="
                     ready &&
-                      selectedHive &&
-                      (showInspections || selectedLocationName)
+                    selectedHive &&
+                    (showInspections || selectedLocationName)
                   "
                   :title="$tc('Inspection', 1)"
                   :landscape-mode="landscapeMode"
                 >
                   <div
                     v-if="!landscapeMode && showInspections"
-                    style="width: 100%;"
+                    style="width: 100%"
                   >
                     <span
                       class="dashboard-title mb-2"
                       v-text="
                         $t('Last_check') +
-                          ': ' +
-                          momentFromNow(selectedHive.last_inspection_date)
+                        ': ' +
+                        momentFromNow(selectedHive.last_inspection_date)
                       "
                     ></span>
                   </div>
                   <div
                     :class="
                       'dashboard-inspection dashboard-text-small ' +
-                        (landscapeMode
-                          ? '--landscape'
-                          : '--portrait round-border ma-6 mt-3 pa-6')
+                      (landscapeMode
+                        ? '--landscape'
+                        : '--portrait round-border ma-6 mt-3 pa-6')
                     "
                   >
                     <v-row v-if="landscapeMode" class="dashboard-sticky-row">
@@ -203,9 +203,9 @@
                           ref="mapL"
                           :class="
                             'mt-2 map ' +
-                              (ready && coordinatesPresent
-                                ? '--landscape'
-                                : ready
+                            (ready && coordinatesPresent
+                              ? '--landscape'
+                              : ready
                                 ? '--hide'
                                 : '--loading')
                           "
@@ -213,7 +213,9 @@
                         </div>
                       </v-col>
                       <v-col
-                        v-if="showInspections"
+                        v-if="
+                          showInspections && selectedHive.last_inspection_date
+                        "
                         :cols="colsProp"
                         sm="5"
                         class="hive-prop i-col pa-3 pl-0"
@@ -298,7 +300,7 @@
                       selectedHive &&
                       selectedHiveMeta.sensors &&
                       selectedHiveMeta.sensors.length !== 0) ||
-                      showNoHivesWithDataPlaceholder
+                    showNoHivesWithDataPlaceholder
                   "
                   :title="$tc('Measurement', 2)"
                   :landscape-mode="landscapeMode"
@@ -315,7 +317,7 @@
                     v-else-if="measurementData === null && loadingData"
                     :class="
                       'd-flex align-center justify-center dashboard-loading ' +
-                        (landscapeMode ? '--landscape' : '')
+                      (landscapeMode ? '--landscape' : '')
                     "
                     cols="12"
                   >
@@ -336,9 +338,8 @@
                     <v-col
                       v-if="
                         measurementData !== null &&
-                          sensorSet.values.length > 0 &&
-                          chartjsDataSeries(sensorSet.values).datasets.length >
-                            0
+                        sensorSet.values.length > 0 &&
+                        chartjsDataSeries(sensorSet.values).datasets.length > 0
                       "
                       :key="'sensor' + index"
                       cols="12"
@@ -353,7 +354,7 @@
                       <div
                         :class="
                           'chart-wrapper ' +
-                            (!landscapeMode ? '--portrait' : '')
+                          (!landscapeMode ? '--portrait' : '')
                         "
                       >
                         <div :class="!landscapeMode ? 'chart-left' : ''">
@@ -371,7 +372,7 @@
                         <div
                           :class="
                             'd-flex flex-wrap mx-sm-3 mt-2 ' +
-                              (!landscapeMode ? 'chart-right' : '')
+                            (!landscapeMode ? 'chart-right' : '')
                           "
                         >
                           <template
@@ -385,12 +386,12 @@
                                 class="example-img"
                                 :src="
                                   assetsUrl +
-                                    '/img/dashboard/chart_' +
-                                    sensorSet.name +
-                                    '_' +
-                                    (i + 1) +
-                                    (darkMode ? '_dark' : '') +
-                                    '.svg'
+                                  '/img/dashboard/chart_' +
+                                  sensorSet.name +
+                                  '_' +
+                                  (i + 1) +
+                                  (darkMode ? '_dark' : '') +
+                                  '.svg'
                                 "
                               />
                               <span
@@ -421,16 +422,16 @@
 
 <script>
 // import Api from '@api/Api'
+import languages from '@assets/js/languages'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm-dialog.vue'
 import DashboardSection from '@components/dashboard-section.vue'
-import languages from '@assets/js/languages'
 import LocaleChanger from '@components/locale-changer.vue'
 import MeasurementsChartLine from '@components/measurements/measurements-chart-line.vue'
-import { mapGetters } from 'vuex'
 import { readDashboard } from '@mixins/methodsMixin'
 import { momentFromNow, timeZone } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -441,12 +442,12 @@ export default {
     MeasurementsChartLine,
   },
   mixins: [momentFromNow, readDashboard, sensorMixin, timeZone],
-  data: function() {
+  data: function () {
     return {
       languages: languages.languageArray,
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+        import.meta.env.VITE_ASSETS_URL ||
+        import.meta.env.VITE_ASSETS_URL_FALLBACK,
       ready: false,
       map: null,
       marker: null,
@@ -519,8 +520,8 @@ export default {
       return this.screenSize >= 1630 && requiredWidthLarge <= apiaryWidth
         ? 'large'
         : requiredWidthMedium <= apiaryWidth
-        ? 'medium'
-        : null
+          ? 'medium'
+          : null
     },
     lat() {
       return this.selectedHive !== null ? this.selectedHive.lat : null
@@ -582,8 +583,7 @@ export default {
     },
     svgMarker() {
       return {
-        path:
-          'M12,3L2,12H5V20H19V12H22M9,18H7V12H9M13,18H11V10H13M17,18H15V14H17',
+        path: 'M12,3L2,12H5V20H19V12H22M9,18H7V12H9M13,18H11V10H13M17,18H15V14H17',
         fillColor: '#f29100',
         fillOpacity: 0.9,
         strokeWeight: 0,
@@ -596,12 +596,12 @@ export default {
       const perc = this.tvAndUp
         ? 0.33
         : this.desktopAndUp
-        ? 0.38
-        : this.tabletLandscapeAndUp
-        ? 0.4
-        : this.screenSize >= 600
-        ? 0.44
-        : 0.8
+          ? 0.38
+          : this.tabletLandscapeAndUp
+            ? 0.4
+            : this.screenSize >= 600
+              ? 0.44
+              : 0.8
       return this.screenSize * perc
     },
     tabletLandscapeAndUp() {
@@ -665,9 +665,9 @@ export default {
             quantity === 'temperature'
               ? this.$i18n.t('outsideTemperature')
               : this.measurementData.sensorDefinitions[quantity] &&
-                this.measurementData.sensorDefinitions[quantity].name !== null
-              ? this.measurementData.sensorDefinitions[quantity].name
-              : this.$i18n.t(quantity)
+                  this.measurementData.sensorDefinitions[quantity].name !== null
+                ? this.measurementData.sensorDefinitions[quantity].name
+                : this.$i18n.t(quantity)
           const sensorLabel =
             sensorName +
             (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
@@ -903,7 +903,7 @@ export default {
       this.darkMode = bool
       localStorage.beepdashboardDarkMode = bool
       this.themeName = bool ? 'beepDarkTheme' : 'beepLightTheme'
-      this.$vuetify.theme.global.name = this.themeName
+      this.$vuetify.theme.change(this.themeName)
     },
     toggleHiveTimer(bool) {
       localStorage.beepdashboardHiveTimerPaused = bool

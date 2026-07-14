@@ -1,54 +1,78 @@
-a {
-  color: $color-accent;
-  text-decoration: none;
-}
+// =============================================================================
+// typography.scss — Font families, text utilities, label styles
+//
+// @layer base: foundational type rules that Vuetify and our overrides build on.
+// =============================================================================
+@use 'tokens' as *;
 
-.beep-label {
-  margin-bottom: 4px;
-  font-family: 'Roboto', sans-serif !important;
-  font-size: 0.75rem !important;
-  font-weight: 400;
-  line-height: 1rem;
-  color: $color-grey-dark;
-  letter-spacing: 0.0333333333em !important;
-}
-
-.font-small {
-  font-size: 0.75rem !important;
-}
-.font-xsmall {
-  font-size: 0.65rem !important;
-}
-
-.info-text {
-  margin-bottom: 4px;
-  margin-top: -4px;
-  font-size: 0.75rem !important;
-  line-height: 1.5;
-}
-
-.name-label {
-  width: 100%;
-  overflow: hidden;
-  font-size: 0.75rem !important;
-  font-weight: 600;
-  line-height: 24px !important;
-  color: $color-grey;
-  text-overflow: ellipsis;
-  letter-spacing: 0.0333333333em !important;
-  white-space: nowrap;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  @include for-phone-only {
-    font-size: 0.7rem !important;
+@layer base {
+  a {
+    color: $color-accent;
+    text-decoration: none;
   }
-}
 
-.roboto-condensed {
-  font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
-}
+  .beep-label {
+    margin-bottom: 4px;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 0.75rem !important;
+    font-weight: 400;
+    line-height: 1rem;
+    color: $color-grey-dark;
+    letter-spacing: 0.0333333333em !important;
+  }
 
-.unauthorized-title {
-  padding-top: 40px;
-  text-align: center;
+  .custom-text-overline {
+    font-size: 0.75rem !important;
+    line-height: 2rem;
+    font-weight: 500;
+    letter-spacing: 0.1666666667em !important;
+    font-family: 'Roboto', sans-serif !important;
+    text-transform: uppercase !important;
+  }
+
+  .font-small {
+    font-size: 0.75rem !important;
+  }
+  .font-xsmall {
+    font-size: 0.65rem !important;
+  }
+
+  .info-text {
+    margin-bottom: 4px;
+    margin-top: -4px;
+    font-size: 0.75rem !important;
+    line-height: 1.5;
+  }
+
+  .name-label {
+    width: 100%;
+    overflow: hidden;
+    font-size: 0.75rem !important;
+    font-weight: 600;
+    line-height: 24px !important;
+    color: $color-grey;
+    text-overflow: ellipsis;
+    letter-spacing: 0.0333333333em !important;
+    white-space: nowrap;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    @include for-phone-only {
+      font-size: 0.7rem !important;
+    }
+  }
+
+  .roboto-condensed {
+    font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
+  }
+
+  .single-line-height {
+    line-height: 1rem !important;
+    white-space: break-spaces;
+    word-break: break-word;
+  }
+
+  .unauthorized-title {
+    padding-top: 40px;
+    text-align: center;
+  }
 }

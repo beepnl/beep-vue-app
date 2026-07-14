@@ -404,10 +404,11 @@ const translations = {
   /* user */
   Data_export: 'Vie tiedot',
   Export_your_data:
-    "Vie kaikki BEEP-tililläsi olevat tiedot ja lähetä Excel-tiedostona sähköpostissa (OR download the Excel file via the 'Download CSV' button). Excel-tiedostossa on oma välilehti henkilökohtaisille, pesän, tarhapaikan ja tarkastusten tiedoille.",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Vie kaikki BEEP-tililläsi olevat tiedot ja lähetä Excel-tiedostona sähköpostissa (OR download the Excel file via the 'Download XLS' button). Excel-tiedostossa on oma välilehti henkilökohtaisille, pesän, tarhapaikan ja tarkastusten tiedoille.",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -623,7 +624,7 @@ const translations = {
     ', jotka ovat sopusoinnussa uuden eurooppalaisen yksityisyydensuojalain kanssa',
   terms_of_use: 'käyttöehdot',
   invalid_password:
-    "{'Salasanassa on oltava vähintään 8 merkkiä, yksi pieni kirjain, yksi iso kirjain, yksi numero ja yksi erikoismerkki ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'Salasanassa on oltava vähintään 8 merkkiä, yksi pieni kirjain, yksi iso kirjain, yksi numero ja yksi erikoismerkki ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'anturin määritelmä | anturin määritelmät',
   measurement: 'mittaus | mittaukset',
   remove_device: 'Poista laite',
@@ -637,6 +638,8 @@ const translations = {
     'Vahvistuslinkillä varustettu viesti on lähetetty uuteen sähköpostiosoitteeseesi. Napsauta sähköpostissa olevaa linkkiä vahvistaaksesi uuden sähköpostiosoitteesi ja kirjautuaksesi sisään.',
   sensordef_info:
     "Anturimäärityksen tarkoituksena on muuntaa anturin arvo saapuvasta \"raaka\" anturiarvosta arvoksi fyysisen määrän ja yksikön mukaan (esim. W_v = 1098273 => paino_kg = 62400 kg) tai kalibroida anturi (esim. T_0 = 15,3 ° C => t_0 = 15,8 ° C). Tämä voidaan tehdä asettamalla 'offset' ja 'kerroin'. Tulo- ja lähtöarvo pysyvät samana, jos offset '0' ja kerroin '1' on asetettu. BEEP-perussovellus (App Storesta) tarjoaa oikeat anturimääritykset BEEP-tukiaseman alkuasetuksissa.",
+  sensordef_date_info:
+    'Tämä kalibrointi on voimassa asetetusta päivämäärästä tähän asti (tai muuhun asetettuun kalibrointiarvoon)',
   or: 'tai',
   select_all_hives: 'Valitse kaikki pesät',
   select_all_editable_hives: 'Valitse kaikki muokattavat pesät',
@@ -781,6 +784,7 @@ const translations = {
   drag_layers_info_text:
     'Vedä kerrokset vasemmalta puolelta haluttuun kohtaan pesässä oikealla puolella. Poista taso pesästä napsauttamalla sitä ja sitten punaista roskakorikuvaketta. Pesässä voi myös vetää kerroksia sijainnin muokkaamiseksi, kerroksen väriä voi muokata napsauttamalla kerrosta.',
   New_hive: 'Uusi pesä',
+  New_beep_base: 'Uusi BEEP-alusta',
   New_alertrule: 'Uusi hälytyssääntö',
   Add_alertrule: 'Lisää hälytyssääntö',
   Add_apiary: 'Lisää mehiläistarha',
@@ -1024,6 +1028,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -1036,8 +1043,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1199,6 +1206,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

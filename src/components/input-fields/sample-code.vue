@@ -14,7 +14,7 @@
     </v-alert>
     <v-btn
       v-if="object[item.id] === null || object[item.id] === undefined"
-      class="mt-1"
+      class="beep-input-button mt-1"
       color="accent"
       :disabled="showLoadingIcon || bulkInspection"
       @click.prevent="requestSampleCode"
@@ -44,7 +44,7 @@
           color="disabled"
           indeterminate
         />
-        <v-tooltip v-if="!showLoadingIcon" bottom>
+        <v-tooltip v-if="!showLoadingIcon" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn
               v-if="object[item.id] !== null"

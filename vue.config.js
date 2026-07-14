@@ -1,6 +1,6 @@
 // const fs = require('fs')
 const appConfig = require('./public/manifest')
-process.env.VUE_APP_VERSION = require('./package.json').version
+import.meta.env.VITE_VERSION = require('./package.json').version
 
 /** @type import('@vue/cli-service').ProjectOptions */
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
     // outside of tests.
     config.performance.hints(
       process.env.NODE_ENV === 'production' &&
-        !process.env.VUE_APP_TEST &&
+        !import.meta.env.VITE_TEST &&
         'warning'
     )
   },
@@ -32,7 +32,7 @@ module.exports = {
     sourceMap: false,
     loaderOptions: {
       scss: {
-        prependData: `$ASSETS: '${process.env.VUE_APP_ASSETS_URL}'; @import "~@assets/css/mixins.scss"; @import "~@assets/css/variables.scss"; @import "~@assets/css/vuetify.scss"; @import "~@assets/css/main.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/vendors.scss"; @import "~@assets/css/print.scss";`,
+        prependData: `$ASSETS: '${import.meta.env.VITE_ASSETS_URL}'; @import "~@assets/css/mixins.scss"; @import "~@assets/css/variables.scss"; @import "~@assets/css/vuetify.scss"; @import "~@assets/css/main.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/vendors.scss"; @import "~@assets/css/print.scss";`,
       },
     },
   },

@@ -1,19 +1,109 @@
 <template>
   <Layout :title="$t('Whats_new')">
     <v-container>
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.1.0 (18-02-2025) - Current
-        version</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.1.9 (19-05-2026) - Current version
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li>TODO-VUE3</li>
+          <li>Upgraded "behind the scenes" to Vue 3 + Vite</li>
+          <li>Improved navigation menu structure</li>
+          <li>
+            <router-link :to="{ name: 'measurements' }">Data</router-link>:
+            coloured zones in "Device info" charts to show whether battery
+            voltage, signal strength and signal noise values are OK (green zone)
+            or too low (red zone)
+          </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.23 (17-02-2025)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.31 (28-04-2026)
+      </div>
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            Add language switcher to sign in page (and other account management
+            pages)
+          </li>
+        </ul>
+      </div>
+
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.30 (21-04-2026)
+      </div>
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'hivetags' }">Hive tags:</router-link>
+            change Dutch translation of "hive tag" to "kastlabel"
+          </li>
+        </ul>
+      </div>
+
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.29 (23-03-2025)
+      </div>
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'inspect' }">Inspect:</router-link>
+            Liebefeld method - show frames fieldsets in correct numerical order
+          </li>
+        </ul>
+      </div>
+
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.28 (15-09-2025)
+      </div>
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.27 (31-03-2025)
+      </div>
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'devices' }">Devices</router-link>: sensor
+            definitions 'Updated At' field is now editable
+          </li>
+        </ul>
+      </div>
+
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.26 (24-03-2025)
+      </div>
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.25 (17-03-2025)
+      </div>
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.24 (10-03-2025)
+      </div>
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Russian (Русский) language has been added</li>
+        </ul>
+      </div>
+
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.23 (17-02-2025)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Ukrainian (Українська) language has been added</li>
@@ -21,9 +111,9 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.22 (14-01-2025)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.22 (14-01-2025)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Faster loading times for Hives overview & Data tab</li>
@@ -33,56 +123,55 @@
             clicking the
             <v-icon class="inline-icon" color="accent">mdi-star-outline</v-icon>
             icon. Favorite apiaries/groups will appear at the top of the list
-            and will be loaded with priority.</li
-          >
+            and will be loaded with priority.
+          </li>
           <li>
             <router-link :to="{ name: 'import' }">Import</router-link>: several
             improvements (only for users with a BEEP base), such as:
             <ul>
-              <li
-                >Show RTC badge next to BEEP base name if it has an rtc
-                clock</li
-              >
+              <li>
+                Show RTC badge next to BEEP base name if it has an rtc clock
+              </li>
               <li>Bugfixes: small fixes for issues received as feedback</li>
             </ul>
           </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.21 (30-09-2024)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.21 (30-09-2024)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.20 (12-08-2024)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.20 (12-08-2024)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.19 (03-06-2024)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.19 (03-06-2024)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.18 (21-05-2024)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.18 (21-05-2024)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>
-            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            <router-link :to="{ name: 'measurements' }">Data:</router-link>
             sound heatmap colors on logarithmic scale + fixed maximum (switch to
             autoscale maximum via the
             <v-icon class="inline-icon">mdi-magnify</v-icon> icon)
@@ -91,78 +180,45 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.1.0 (13-11-2023)</div
-      >
-      <div class="rounded-border mb-4">
-        <ul>
-          <li>Upgraded behind the scenes to Vue 3</li>
-          <li>Small improvements</li>
-        </ul>
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.17 (08-02-2024)
       </div>
-
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.19 (03-06-2024)</div
-      >
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.18 (21-05-2024)</div
-      >
-      <div class="rounded-border mb-4">
-        <ul>
-          <li>
-            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
-            sound heatmap colors on logarithmic scale + fixed maximum (switch to
-            autoscale maximum via magnify icon)
-          </li>
-          <li>Small improvements</li>
-        </ul>
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.16 (21-11-2023)
       </div>
-
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.17 (08-02-2024)</div
-      >
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.16 (21-11-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.15 (14-11-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.15 (14-11-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.14 (31-08-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.14 (31-08-2023)</div
-      >
-      <div class="rounded-border mb-4">
-        <ul>
-          <li>Small improvements</li>
-        </ul>
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.13 (21-08-2023)
       </div>
-
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.13 (21-08-2023)</div
-      >
       <div class="rounded-border mb-4">
         <ul>
           <li>
@@ -172,9 +228,9 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.12 (15-08-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.12 (15-08-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Czech (Čeština) language has been added</li>
@@ -182,225 +238,223 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.11 (13-07-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.11 (13-07-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.10 (06-07-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.10 (06-07-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Small improvements</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.9 (29-06-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.9 (29-06-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>
-            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            <router-link :to="{ name: 'measurements' }">Data:</router-link>
             seamless charts loading due to resolved plugin issue
           </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.8 (15-06-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.8 (15-06-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.7 (08-06-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.7 (08-06-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>
-            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            <router-link :to="{ name: 'measurements' }">Data:</router-link>
             fix for issue where sound data was not shown for some devices
           </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.6 (06-06-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.6 (06-06-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.5 (01-06-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.5 (01-06-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.4 (30-05-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.4 (30-05-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.3 (25-05-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.3 (25-05-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.2 (11-04-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.2 (11-04-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.1 (06-04-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>4.0.1 (06-04-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline text-primary mb-1"
-        ><span class="lowercase">v</span>4.0.0 (31-03-2023) - Release v4</div
-      >
+      <div class="custom-text-overline text-primary mb-1">
+        <span class="lowercase">v</span>4.0.0 (31-03-2023) - Release v4
+      </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <ul>
-          <li
-            ><router-link :to="{ name: 'inspect' }">Inspect:</router-link>
+          <li>
+            <router-link :to="{ name: 'inspect' }">Inspect:</router-link>
             Offline data entry: with this brand new BEEP feature users can
             select a (customised) checklist, print is, enter the observations
             and actions with a pen in the apiary and upload the data by scanning
             the paper with their phone. The last step is to verify the data.
           </li>
-          <li
-            >BEEP dashboard: users can choose specific apiaries, hives and
+          <li>
+            BEEP dashboard: users can choose specific apiaries, hives and
             timeframes to show on a dashboard. The dashboard is accessible via a
-            link which can be share publicly with others.</li
-          >
-          <li
-            >These features are available on request (info@beep.nl) until
-            released more widely.</li
-          >
+            link which can be share publicly with others.
+          </li>
+          <li>
+            These features are available on request (info@beep.nl) until
+            released more widely.
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
       <div v-if="dutch" class="rounded-border primary-border mb-4">
         <ul>
-          <li
-            ><router-link :to="{ name: 'inspect' }">Inspectie:</router-link>
+          <li>
+            <router-link :to="{ name: 'inspect' }">Inspectie:</router-link>
             Offline gegevensinvoer: met deze gloednieuwe BEEP-functie kunnen
             gebruikers een (aangepaste) checklist selecteren, afdrukken, de
             observaties en acties invoeren met een pen in de bijenstal en de
             gegevens uploaden door het papier met hun telefoon te scannen. De
             laatste stap is het verifiëren van de gegevens.
           </li>
-          <li
-            >BEEP-dashboard: gebruikers kunnen specifieke bijenstallen, kasten
-            en tijdschema's kiezen om op een dashboard te tonen. Het dashboard
-            is toegankelijk via een link die openbaar kan worden gedeeld met
+          <li>
+            BEEP-dashboard: gebruikers kunnen specifieke bijenstallen, kasten en
+            tijdschema's kiezen om op een dashboard te tonen. Het dashboard is
+            toegankelijk via een link die openbaar kan worden gedeeld met
             anderen.
           </li>
-          <li
-            >Deze functies zijn op aanvraag beschikbaar (info@beep.nl) totdat
-            deze op grotere schaal worden vrijgegeven.</li
-          >
-          <li
-            >Bugfixes: kleine verbeteringen en oplossingen voor problemen die we
-            van gebruikers terugkregen</li
-          >
+          <li>
+            Deze functies zijn op aanvraag beschikbaar (info@beep.nl) totdat
+            deze op grotere schaal worden vrijgegeven.
+          </li>
+          <li>
+            Bugfixes: kleine verbeteringen en oplossingen voor problemen die we
+            van gebruikers terugkregen
+          </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.2.0 (09-03-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.2.0 (09-03-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            ><router-link :to="{ name: 'export' }">Data export:</router-link>
+          <li>
+            <router-link :to="{ name: 'export' }">Data export:</router-link>
             Excel export has been updated with several options:
             <ul>
               <li>add collaboration group data to export file</li>
-              <li
-                >add (file links to) measurement data and weather data to export
-                file</li
-              >
-              <li
-                >download export file directly (in addition to the email
-                option)</li
-              >
+              <li>
+                add (file links to) measurement data and weather data to export
+                file
+              </li>
+              <li>
+                download export file directly (in addition to the email option)
+              </li>
             </ul>
           </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.1.1 (20-02-2023)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.1.1 (20-02-2023)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            ><router-link :to="{ name: 'research' }">Research:</router-link>
+          <li>
+            <router-link :to="{ name: 'research' }">Research:</router-link>
             option to (de)select individual hives for consent
           </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.1 (07-11-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.1 (07-11-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Inspections overview per hive<sup>*</sup> is now paginated. This
-            has several advantages:
+          <li>
+            Inspections overview per hive<sup>*</sup> is now paginated. This has
+            several advantages:
             <ul>
-              <li
-                >Quicker loading & better overview: max 5 inspections per
-                page</li
-              >
-              <li
-                >More compact: fewer rows of checklist items visible (only those
-                used in the max 5 inspections that are being shown)</li
-              >
-              <li
-                >Please note: for searching press enter or click the
+              <li>
+                Quicker loading & better overview: max 5 inspections per page
+              </li>
+              <li>
+                More compact: fewer rows of checklist items visible (only those
+                used in the max 5 inspections that are being shown)
+              </li>
+              <li>
+                Please note: for searching press enter or click the
                 <v-icon class="inline-icon">mdi-magnify</v-icon>icon (i.e. no
                 more 'searching as you type', as search is now paginated as
                 well). Search for dates in YYYY-MM-DD format (i.e. "2022-11-07"
-                instead of "7 nov 2022").</li
-              >
+                instead of "7 nov 2022").
+              </li>
             </ul>
             <span style="margin-top: 3px;"
               ><sup>*</sup>Table containing inspection data per hive, accessible
@@ -412,40 +466,40 @@
               overview → 'View inspection')</span
             >
           </li>
-          <li
-            >For iOS devices: when app is opened via the browser a popup will be
+          <li>
+            For iOS devices: when app is opened via the browser a popup will be
             displayed, explaining how to add the app to your homescreen for
-            quicker access & staying signed in</li
-          >
+            quicker access & staying signed in
+          </li>
           <li>Back navigation more intuitive</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.106 (04-10-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.106 (04-10-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.104 (26-09-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.104 (26-09-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Data:
+          <li>
+            Data:
             <router-link :to="{ name: 'measurements' }">
               several improvements</router-link
             >, such as:
             <ul>
-              <li
-                >Show alerts on charts as vertical lines (or if the alert was
+              <li>
+                Show alerts on charts as vertical lines (or if the alert was
                 triggered for a longer duration: as a period marked in red) &
-                view alert when the alert line / marked period is clicked</li
-              >
+                view alert when the alert line / marked period is clicked
+              </li>
               <li>Updated charts layout</li>
             </ul>
           </li>
@@ -453,143 +507,141 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.101 (01-08-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.101 (01-08-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Inspect:
+          <li>
+            Inspect:
             <router-link :to="{ name: 'inspect' }"
               >remember last selected checklist when creating a new
               inspection</router-link
-            ></li
-          >
+            >
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.100 (24-06-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.100 (24-06-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            ><router-link :to="{ name: 'hivetags' }">Hive tags:</router-link>
-            you can now stick downloadable "hive tags" (QR codes) to your hives
-            to set up actions that will will be performed as soon as you scan
-            the hive tag with your smartphone. For example: if you scan a hive
-            tag, a new inspection will be automatically created.</li
-          >
+          <li>
+            <router-link :to="{ name: 'hivetags' }">Hive tags:</router-link> you
+            can now stick downloadable "hive tags" (QR codes) to your hives to
+            set up actions that will will be performed as soon as you scan the
+            hive tag with your smartphone. For example: if you scan a hive tag,
+            a new inspection will be automatically created.
+          </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.99 (23-06-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.99 (23-06-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            ><router-link :to="{ name: 'checklists' }">Checklists:</router-link>
+          <li>
+            <router-link :to="{ name: 'checklists' }">Checklists:</router-link>
             create your own checklist (from scratch or start with a duplicate)
           </li>
-          <li
-            ><router-link :to="{ name: 'alerts' }">Alerts:</router-link> option
+          <li>
+            <router-link :to="{ name: 'alerts' }">Alerts:</router-link> option
             to delete only selected alerts, multiple at once
           </li>
-          <li>Queen: option to leave birth date field blank </li>
-          <li
-            >Rename 'Alert settings' page title to
-            <router-link :to="{ name: 'alertrules' }">
-              Alert rules</router-link
-            ></li
-          >
-          <li
-            >Bugfixes: small fixes for issues received as feedback + improve
-            menu translations</li
-          >
+          <li>Queen: option to leave birth date field blank</li>
+          <li>
+            Rename 'Alert settings' page title to
+            <router-link :to="{ name: 'alertrules' }"> Alert rules</router-link>
+          </li>
+          <li>
+            Bugfixes: small fixes for issues received as feedback + improve menu
+            translations
+          </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.98 (12-05-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.98 (12-05-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.97 (10-05-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.97 (10-05-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Greek (Ελληνικά) language has been added</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.96 (10-05-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.96 (10-05-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.95 (09-05-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.95 (09-05-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Data:
+          <li>
+            Data:
             <router-link :to="{ name: 'measurements' }">
               several improvements</router-link
             >, such as:
             <ul>
-              <li
-                >Show inspections on charts as vertical lines & view inspection
-                when line is clicked</li
-              >
+              <li>
+                Show inspections on charts as vertical lines & view inspection
+                when line is clicked
+              </li>
               <li>Enable simple on/off toggle when chart has multiple lines</li>
-              <li
-                >Enable url queries for interval, timeIndex, date, start, end,
-                relativeInterval & chartCols</li
-              >
-              <li
-                >Show sticky date selection header when scrolling down to view
-                charts</li
-              >
-              <li
-                >Intuitive period browsing: jump to/from the middle of the
-                previous interval when selecting a new interval</li
-              >
+              <li>
+                Enable url queries for interval, timeIndex, date, start, end,
+                relativeInterval & chartCols
+              </li>
+              <li>
+                Show sticky date selection header when scrolling down to view
+                charts
+              </li>
+              <li>
+                Intuitive period browsing: jump to/from the middle of the
+                previous interval when selecting a new interval
+              </li>
             </ul>
           </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.94 (02-05-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.94 (02-05-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Norsk bockmål language has been added</li>
-          <li
-            >Inspect:
+          <li>
+            Inspect:
             <router-link :to="{ name: 'inspect' }"
               >remember new inspection data while editing checklist</router-link
-            ></li
-          >
+            >
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.92 (28-04-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.92 (28-04-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Minor improvements</li>
@@ -597,9 +649,9 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.90 (24-03-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.90 (24-03-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>
@@ -609,19 +661,18 @@
               base)</router-link
             >, such as:
             <ul>
-              <li
-                >Option to export block data as a .csv file or in JSON
-                format</li
-              >
+              <li>
+                Option to export block data as a .csv file or in JSON format
+              </li>
               <li>Bugfixes: small fixes for issues received as feedback</li>
             </ul>
           </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.88 (07-03-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.88 (07-03-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>
@@ -630,9 +681,9 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.87 (22-02-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.87 (22-02-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>
@@ -642,30 +693,30 @@
               base)</router-link
             >, such as:
             <ul>
-              <li
-                >Option to undo imported block data ('undo import' button is
+              <li>
+                Option to undo imported block data ('undo import' button is
                 shown in table (result of 'check log data'), for each block that
                 has been imported). This removes imported data from the
-                database, for that particular block.</li
-              >
-              <li
-                >Option to 'view data' for each block, even if no matches are
-                present</li
-              >
+                database, for that particular block.
+              </li>
+              <li>
+                Option to 'view data' for each block, even if no matches are
+                present
+              </li>
               <li>Show all blocks at once instead of paginated per 5</li>
-              <li
-                >Table tweaks: show 'BEEP base memory emptied' instead of 'Time
-                logged' and add 'Data imported' to block data table</li
-              >
+              <li>
+                Table tweaks: show 'BEEP base memory emptied' instead of 'Time
+                logged' and add 'Data imported' to block data table
+              </li>
               <li>In flashlog vs. database comparison view: add pagination</li>
             </ul>
           </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.86 (22-02-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.86 (22-02-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>Minor improvements</li>
@@ -673,55 +724,55 @@
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.82 (08-02-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.82 (08-02-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Hives:
+          <li>
+            Hives:
             <router-link :to="{ name: 'home' }">
               show when your BEEP base / device sent its last data</router-link
             >
             in<v-icon class="inline-icon">mdi-size-xl</v-icon>view. Only for
-            users with a BEEP base or other device.</li
-          >
+            users with a BEEP base or other device.
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.80 (27-01-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.80 (27-01-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Import:
+          <li>
+            Import:
             <router-link :to="{ name: 'import' }">
               supplement measurement data with log data downloaded from the
               internal BEEP base memory.</router-link
             >
-            Only for users with a BEEP base.</li
-          >
+            Only for users with a BEEP base.
+          </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>3.0.79 (27-01-2022)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>3.0.79 (27-01-2022)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Data:
+          <li>
+            Data:
             <router-link :to="{ name: 'measurements' }">
               option to select a custom period when viewing your
               data.</router-link
             >
             You can select your own start and end date via the 'selection'
-            button in the light yellow top bar.</li
-          >
-          <li
-            >Data:
+            button in the light yellow top bar.
+          </li>
+          <li>
+            Data:
             <router-link :to="{ name: 'measurements' }">
               option to enable relative data period.</router-link
             >
@@ -731,38 +782,38 @@
             together with the 'week' interval, this results in viewing data from
             the last 7 days (Tuesday (last week) to Tuesday (today)), whereas
             'Relative' disabled would show data from a default week, Monday to
-            Sunday.</li
-          >
-          <li
-            >Data:
+            Sunday.
+          </li>
+          <li>
+            Data:
             <router-link :to="{ name: 'measurements' }">
               ability to zoom in via data charts.</router-link
             >
             When clicking a data point on a chart, a pop up screen appears
             asking whether you would like to zoom in on the data of that
             particular day or hour (depending on which level you are). When
-            clicking 'OK', the data is then reloaded for that day or hour.</li
-          >
-          <li
-            >Alerts:
+            clicking 'OK', the data is then reloaded for that day or hour.
+          </li>
+          <li>
+            Alerts:
             <router-link :to="{ name: 'alertrule-create' }">
               option to create alert rules for non-default
               measurements.</router-link
             >
             At the 'Measurement' input field you can now switch on 'Show all' to
-            view and select all (non-weather) measurements.</li
-          >
-          <li
-            >Collaborate: option to decline a collaboration group invitation
-            when viewing the invite in the BEEP app. Group admins will be able
-            to see this in the collaboration group overview.</li
-          >
+            view and select all (non-weather) measurements.
+          </li>
+          <li>
+            Collaborate: option to decline a collaboration group invitation when
+            viewing the invite in the BEEP app. Group admins will be able to see
+            this in the collaboration group overview.
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1 text-primary"
-        ><span class="lowercase">v</span>
+      <div class="custom-text-overline mb-1 text-primary">
+        <span class="lowercase">v</span>
         <span v-if="dutch">3.0.73 (13-12-2021) - Release v3</span>
         <span v-if="!dutch">3.0.73 (13-12-2021) - Release v3</span>
       </div>
@@ -771,7 +822,7 @@
           <a
             href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000696834-beep-app-v3/"
             target="_blank"
-            ><v-icon class="support-icon" small color="accent"
+            ><v-icon class="support-icon" size="small" color="accent"
               >mdi-arrow-right</v-icon
             >
             To view the BEEP support article on app v3 (including screenshots)
@@ -785,14 +836,14 @@
               Overview of all hives per apiary and collaboration group</strong
             >
             <ul>
-              <li
-                >Searchable: by hive / apiary / collaboration group / queen
-                name, location (address, country code), latest inspection
-                (notes, reminder text, reminder date, time ago), hive type, hive
-                id (adding 'id=', f.e.: 'id=99') and (queen) bee race.</li
-              >
-              <li
-                >Filterable: by
+              <li>
+                Searchable: by hive / apiary / collaboration group / queen name,
+                location (address, country code), latest inspection (notes,
+                reminder text, reminder date, time ago), hive type, hive id
+                (adding 'id=', f.e.: 'id=99') and (queen) bee race.
+              </li>
+              <li>
+                Filterable: by
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
@@ -832,10 +883,10 @@
                 Please note: depending on screen size some filters may not be
                 visible in order to save space. Filters will be remembered
                 throughout a browsing session. Clicking the BEEP logo at the top
-                left of the screen will clear all filters.</li
-              >
-              <li
-                >Different views:
+                left of the screen will clear all filters.
+              </li>
+              <li>
+                Different views:
                 <v-icon class="inline-icon">mdi-size-xs</v-icon> (hive +
                 <v-icon size="small" class="text-red inline-icon"
                   >mdi-clipboard-alert-outline</v-icon
@@ -850,19 +901,19 @@
                 <v-icon class="inline-icon">mdi-size-xl</v-icon> (hive + all
                 icons + text).
               </li>
-              <li
-                >Hive menu: click on a hive to edit it, edit the queen, create
-                an inspection or view inspections. This menu can also be opened
-                via the
+              <li>
+                Hive menu: click on a hive to edit it, edit the queen, create an
+                inspection or view inspections. This menu can also be opened via
+                the
                 <v-icon size="small" class="inline-icon"
                   >mdi-dots-vertical</v-icon
                 >
                 icon on each hive card in the
                 <v-icon class="inline-icon">mdi-size-m</v-icon> and
-                <v-icon class="inline-icon">mdi-size-xl</v-icon> view.</li
-              >
-              <li
-                >Collaboration groups: are shown in the
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> view.
+              </li>
+              <li>
+                Collaboration groups: are shown in the
                 <router-link :to="{ name: 'home' }">Hives</router-link>
                 overview. By clicking the
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
@@ -872,22 +923,22 @@
                 <em>only</em> collaboration groups will be shown (filter button
                 only visible if you are a member of any collaboration group). Or
                 start a new collaboration group via the 'Quick action menu' (see
-                below).</li
-              >
-              <li
-                >Apiary / collaboration group menu: click on the
+                below).
+              </li>
+              <li>
+                Apiary / collaboration group menu: click on the
                 <v-icon size="small" class="color-grey-light inline-icon"
                   >mdi-cog</v-icon
                 >
                 icon next to the apiary / collaboration group name to edit
                 apiary or collaboration group properties (f.e. sharing hives),
                 create a bulk inspection or view inspections. And for apiary
-                menu only: to add a new hive or move hives (see below).</li
-              >
-              <li
-                >Move hives: move multiple hives to another apiary at once by
-                selecting 'Move hives' from the apiary menu (see above).</li
-              >
+                menu only: to add a new hive or move hives (see below).
+              </li>
+              <li>
+                Move hives: move multiple hives to another apiary at once by
+                selecting 'Move hives' from the apiary menu (see above).
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -896,49 +947,49 @@
               Create / edit hive</strong
             >
             <ul>
-              <li
-                >New layer types: feeding box (will automatically be placed on
-                top) and queen excluder.</li
-              >
-              <li
-                >Add new hive layers: by dragging them from the left stack to
-                the desired location in the hive.</li
-              >
-              <li
-                >Change layer order: by drag- and dropping within the hive.</li
-              >
+              <li>
+                New layer types: feeding box (will automatically be placed on
+                top) and queen excluder.
+              </li>
+              <li>
+                Add new hive layers: by dragging them from the left stack to the
+                desired location in the hive.
+              </li>
+              <li>
+                Change layer order: by drag- and dropping within the hive.
+              </li>
               <li>Change individual layer color: by clicking the layer.</li>
-              <li
-                >Delete layer: by clicking the layer and then clicking the
+              <li>
+                Delete layer: by clicking the layer and then clicking the
                 <v-icon size="small" class="text-red inline-icon"
                   >mdi-delete</v-icon
                 >
-                icon.</li
-              >
-              <li
-                >Edit hive: hives can be edited by clicking the hive in the
+                icon.
+              </li>
+              <li>
+                Edit hive: hives can be edited by clicking the hive in the
                 <router-link :to="{ name: 'home' }">Hives</router-link> overview
                 which opens the hive menu → 'Edit hive'. Please note: only owned
                 hives and shared hives that are provided editing rights are
-                editable.</li
-              >
-              <li
-                >Edit queen: queens can be edited separately by clicking the
+                editable.
+              </li>
+              <li>
+                Edit queen: queens can be edited separately by clicking the
                 <v-sheet
                   class="beep-icon beep-icon-queen"
                   color="#4A90E2"
                 ></v-sheet>
                 icon (for <v-icon class="inline-icon">mdi-size-m</v-icon> and
                 <v-icon class="inline-icon">mdi-size-xl</v-icon> views) or by
-                selecting 'Edit queen' from the hive menu (see above).</li
-              >
-              <li
-                >Share hive:
+                selecting 'Edit queen' from the hive menu (see above).
+              </li>
+              <li>
+                Share hive:
                 <ul>
-                  <li
-                    >Either start a new collaboration group via the 'Quick
-                    action menu' (see below) -> 'New collaboration group'.</li
-                  >
+                  <li>
+                    Either start a new collaboration group via the 'Quick action
+                    menu' (see below) -> 'New collaboration group'.
+                  </li>
                   <li>
                     Or share a hive with an existing collaboration group (if you
                     have any) via the menu of that particular group.
@@ -953,24 +1004,24 @@
                       >mdi-cog</v-icon
                     >
                     icon next to the collaboration group name -> 'Edit
-                    collaboration group' to share your hive.</li
-                  >
+                    collaboration group' to share your hive.
+                  </li>
                 </ul>
               </li>
-              <li
-                >Move hive:
+              <li>
+                Move hive:
                 <ul>
-                  <li
-                    >Move multiple hives to another apiary at once by selecting
+                  <li>
+                    Move multiple hives to another apiary at once by selecting
                     'Move hives' from the apiary menu (see 'Apiary /
-                    collaboration group menu' above).</li
-                  >
-                  <li
-                    >For a single hive: change the apiary and/or order within an
+                    collaboration group menu' above).
+                  </li>
+                  <li>
+                    For a single hive: change the apiary and/or order within an
                     apiary by editing your hive (see 'Edit hive' above). Please
                     note that hives without a specified order number will always
-                    be shown last.</li
-                  >
+                    be shown last.
+                  </li>
                 </ul>
               </li>
             </ul>
@@ -982,13 +1033,13 @@
               impression, attention needed, notes and reminder)</strong
             >
             <ul>
-              <li
-                >Searchable: by date, time ago, hive / apiary / collaboration
+              <li>
+                Searchable: by date, time ago, hive / apiary / collaboration
                 group name, notes, reminder text, reminder date and inspection
-                id (adding 'id=', f.e.: 'id=99').</li
-              >
-              <li
-                >Filterable: by
+                id (adding 'id=', f.e.: 'id=99').
+              </li>
+              <li>
+                Filterable: by
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
@@ -1020,14 +1071,14 @@
                 Please note: filters will be remembered throughout a browsing
                 session.
               </li>
-              <li
-                >Inspection menu: click on an inspection to view it (in detail),
-                to edit or delete it.</li
-              >
-              <li
-                >Hive actions (changes in hive configuration) are saved as
-                inspections and shown here as well.</li
-              >
+              <li>
+                Inspection menu: click on an inspection to view it (in detail),
+                to edit or delete it.
+              </li>
+              <li>
+                Hive actions (changes in hive configuration) are saved as
+                inspections and shown here as well.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1042,12 +1093,12 @@
             <router-link :to="{ name: 'diary' }">Inspections</router-link>
             overview → 'View inspection'.
             <ul>
-              <li
-                >Searchable: by date, notes, reminder text, reminder date and
-                inspection id (adding 'id=', f.e.: 'id=99').</li
-              >
-              <li
-                >Filterable: by
+              <li>
+                Searchable: by date, notes, reminder text, reminder date and
+                inspection id (adding 'id=', f.e.: 'id=99').
+              </li>
+              <li>
+                Filterable: by
                 <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
                 attention needed,
                 <v-icon class="inline-icon">mdi-calendar-clock</v-icon> reminder
@@ -1070,13 +1121,13 @@
               New inspection</strong
             >
             <ul>
-              <li
-                >Bulk inspection: inspect multiple hives per apiary /
+              <li>
+                Bulk inspection: inspect multiple hives per apiary /
                 collaboration group at once by selecting the hives you want to
                 include. The inspection will be saved for each hive
                 individually, such that it can later be retrieved (and edited /
-                deleted) per hive.</li
-              >
+                deleted) per hive.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1086,12 +1137,12 @@
               present)</strong
             >
             <ul>
-              <li
-                >Heat map: if sound data is present this will be displayed in a
+              <li>
+                Heat map: if sound data is present this will be displayed in a
                 heat map. The more often sound in a certain frequency bandwidth
                 has been recorded, the warmer the color of the corresponding
-                data point.</li
-              >
+                data point.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1107,12 +1158,12 @@
             <router-link :to="{ name: 'home' }">Hives</router-link>
             overview, you can choose to receive them via email as well.
             <ul>
-              <li
-                >Searchable: by date, time ago, hive / apiary / collaboration
-                group name, alert rule name, function and value.</li
-              >
-              <li
-                ><router-link :to="{ name: 'alertrules' }"
+              <li>
+                Searchable: by date, time ago, hive / apiary / collaboration
+                group name, alert rule name, function and value.
+              </li>
+              <li>
+                <router-link :to="{ name: 'alertrules' }"
                   >Alert rules</router-link
                 >
                 - To get you started there are a few
@@ -1124,14 +1175,13 @@
                   >create and edit your own alert rules</router-link
                 >. Both can be added via the 'Add alert rule' button. They can
                 be (de)activated via the alert rule overview table or the
-                'Alerts enabled' / 'Alerts disabled' switch at the top
-                right.</li
-              >
-              <li
-                >Alert menu: click on an alert item to edit alert rule, view the
+                'Alerts enabled' / 'Alerts disabled' switch at the top right.
+              </li>
+              <li>
+                Alert menu: click on an alert item to edit alert rule, view the
                 associated data, deactivate the alert for the concerned hive, or
-                delete the alert.</li
-              >
+                delete the alert.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1145,28 +1195,27 @@
             the measurement data are met. For example, a sudden drop in weight
             because of swarming.
             <ul>
-              <li
-                >Summary at the top 'translates' the rule into plain
-                language.</li
-              >
-              <li
-                >By default, an alert rule will apply to all months, hours of
-                day and hives (that are connected to a device). The alert rule
-                can be deactivated for specified months, hours and hives (see
-                bottom section).</li
-              >
-              <li
-                ><router-link :to="{ name: 'alertrules-default' }"
+              <li>
+                Summary at the top 'translates' the rule into plain language.
+              </li>
+              <li>
+                By default, an alert rule will apply to all months, hours of day
+                and hives (that are connected to a device). The alert rule can
+                be deactivated for specified months, hours and hives (see bottom
+                section).
+              </li>
+              <li>
+                <router-link :to="{ name: 'alertrules-default' }"
                   >Default alert rules</router-link
                 >
                 - To get you started there are a few default alert rules you can
                 be selected and copied to your own set of rules here. After
                 copying, they can be edited to adapt them to your own needs, if
-                desired.</li
-              >
+                desired.
+              </li>
             </ul>
             <a :href="$t('alerts_support_url')" target="_blank"
-              ><v-icon class="support-icon" small color="accent"
+              ><v-icon class="support-icon" size="small" color="accent"
                 >mdi-arrow-right</v-icon
               >
               BEEP support article on setting alerts</a
@@ -1175,8 +1224,8 @@
           <li class="new-block">
             <strong>Where to find? - Menu changes</strong>
             <ul>
-              <li
-                ><strong>Quick action menu</strong> - Create a new inspection,
+              <li>
+                <strong>Quick action menu</strong> - Create a new inspection,
                 new hive, new apiary, new collaboration group or new alert rule
                 by clicking the
                 <v-icon class="color-black inline-icon"
@@ -1184,24 +1233,24 @@
                 >
                 button centered at the top of the
                 <router-link :to="{ name: 'home' }">home</router-link>
-                navigation bar.</li
-              >
-              <li
-                ><router-link :to="{ name: 'home' }">Hives</router-link>,
+                navigation bar.
+              </li>
+              <li>
+                <router-link :to="{ name: 'home' }">Hives</router-link>,
                 <router-link :to="{ name: 'diary' }">Inspections</router-link>,
                 <router-link :to="{ name: 'measurements' }">Data</router-link>
                 and
                 <router-link :to="{ name: 'alerts' }">Alerts</router-link> tabs
                 are always visible in the top bar of the
-                <router-link :to="{ name: 'home' }">home</router-link> page.</li
-              >
-              <li
-                ><router-link :to="{ name: 'home' }">Hives</router-link> tab
+                <router-link :to="{ name: 'home' }">home</router-link> page.
+              </li>
+              <li>
+                <router-link :to="{ name: 'home' }">Hives</router-link> tab
                 combines former Apiaries page and former Hives page in a single
-                overview.</li
-              >
-              <li
-                ><strong>Collaboration groups</strong> are now directly visible
+                overview.
+              </li>
+              <li>
+                <strong>Collaboration groups</strong> are now directly visible
                 in the
                 <router-link :to="{ name: 'home' }">Hives</router-link>
                 overview. Via the collaboration group filter (<v-icon
@@ -1210,10 +1259,10 @@
                 >
                 icon) collaboration groups will be shown exclusively (first in
                 row after search field, only visible if you are a member of any
-                collaboration group).</li
-              >
-              <li
-                ><router-link :to="{ name: 'devices' }">Devices</router-link>,
+                collaboration group).
+              </li>
+              <li>
+                <router-link :to="{ name: 'devices' }">Devices</router-link>,
                 <router-link :to="{ name: 'export' }">Data export</router-link>,
                 <router-link :to="{ name: 'research' }">Research</router-link>,
                 <a
@@ -1226,10 +1275,10 @@
                 >
                 have been moved to the
                 <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
-                at the top right of the screen.</li
-              >
-              <li
-                >New in the
+                at the top right of the screen.
+              </li>
+              <li>
+                New in the
                 <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
                 (top right):
                 <router-link :to="{ name: 'alertrules' }"
@@ -1238,8 +1287,8 @@
                 and
                 <router-link :to="{ name: 'checklists' }"
                   >Checklist templates</router-link
-                >.</li
-              >
+                >.
+              </li>
             </ul>
           </li>
         </ul>
@@ -1250,7 +1299,7 @@
           <a
             href="https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000696834-beep-app-v3/"
             target="_blank"
-            ><v-icon class="support-icon" small color="accent"
+            ><v-icon class="support-icon" size="small" color="accent"
               >mdi-arrow-right</v-icon
             >
             Bekijk het BEEP support artikel over app v3 (inclusief screenshots)
@@ -1270,8 +1319,8 @@
                 naam, locatie (adres, landcode), laatste inspectie (notitie,
                 herinnering, herinneringsdatum, tijd geleden), kasttype, kast id
                 (door 'id=' toe te voegen, bijv: 'id=99') en bijenras (als
-                gespecificeerd bij de moer, in het Engels).</li
-              >
+                gespecificeerd bij de moer, in het Engels).
+              </li>
               <li>
                 Filterbaar: op
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
@@ -1312,11 +1361,10 @@
                 N.B. afhankelijk van schermgrootte zullen sommige filters niet
                 zichtbaar zijn om ruimte te besparen. Filters worden onthouden
                 gedurende de browsersessie. Door te klikken op het BEEP logo in
-                de linkerbovenhoek van het scherm worden alle filters
-                gewist.</li
-              >
-              <li
-                >Verschillende layouts:
+                de linkerbovenhoek van het scherm worden alle filters gewist.
+              </li>
+              <li>
+                Verschillende layouts:
                 <v-icon class="inline-icon">mdi-size-xs</v-icon> (kast +
                 <v-icon size="small" class="text-red inline-icon"
                   >mdi-clipboard-alert-outline</v-icon
@@ -1331,18 +1379,18 @@
                 <v-icon class="inline-icon">mdi-size-xl</v-icon> (kast + alle
                 iconen + tekst).
               </li>
-              <li
-                >Kast menu: klik op een kast om deze aan te passen, de moer een
+              <li>
+                Kast menu: klik op een kast om deze aan te passen, de moer een
                 te passen een inspectie te maken of inspecties te bekijken. Dit
                 menu kan ook geopend worden d.m.v. het
                 <v-icon size="small" class="inline-icon"
                   >mdi-dots-vertical</v-icon
                 >
                 icoon in de <v-icon class="inline-icon">mdi-size-m</v-icon> en
-                <v-icon class="inline-icon">mdi-size-xl</v-icon> layout.</li
-              >
-              <li
-                >Samenwerkingsgroepen: worden getoond in het
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> layout.
+              </li>
+              <li>
+                Samenwerkingsgroepen: worden getoond in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
                 overzicht. Klik eenmaal op de
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
@@ -1352,23 +1400,23 @@
                 <em>alleen</em> jouw samenwerkingsgroepen te tonen (de
                 samenwerkingsgroepsfilter is alleen zichtbaar als je lid bent
                 van tenminste één samenwerkingsgroep). Of start een nieuwe
-                samenwerkingsgroep via het 'Snelle actie menu' (zie onder).</li
-              >
-              <li
-                >Bijenstand / samenwerkingsgroep menu: klik op het
+                samenwerkingsgroep via het 'Snelle actie menu' (zie onder).
+              </li>
+              <li>
+                Bijenstand / samenwerkingsgroep menu: klik op het
                 <v-icon size="small" class="color-grey-light inline-icon"
                   >mdi-cog</v-icon
                 >
                 icoon naast de bijenstand / samenwerkingsgroep naam om deze aan
                 te passen, een bulk inspectie te maken of inspecties te
                 bekijken. En alleen voor het bijenstand menu: voeg een nieuwe
-                kast toe of verplaats kasten (zie onder).</li
-              >
-              <li
-                >Verplaats bijenkasten: verplaats meerdere kasten in één keer
+                kast toe of verplaats kasten (zie onder).
+              </li>
+              <li>
+                Verplaats bijenkasten: verplaats meerdere kasten in één keer
                 naar een andere bijenstand door 'Verplaats bijenkasten' te
-                selecteren in het bijenstand menu (zie boven).</li
-              >
+                selecteren in het bijenstand menu (zie boven).
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1377,40 +1425,38 @@
               Maak een nieuwe kast / pas een kast aan</strong
             >
             <ul>
-              <li
-                >Nieuwe kamertypes: voederbak (wordt automatisch bovenop de kast
-                geplaatst) en koninginnerooster.</li
-              >
-              <li
-                >Voeg nieuwe kamers toe: door een kamer van de linkerkant naar
-                de gewenste locatie in de kast te slepen.</li
-              >
-              <li
-                >Verander kamervolgorde: door kamers binnen de kast te
-                verslepen.</li
-              >
-              <li
-                >Pas individuele kamerkleur aan: door op een kamer te
-                klikken.</li
-              >
+              <li>
+                Nieuwe kamertypes: voederbak (wordt automatisch bovenop de kast
+                geplaatst) en koninginnerooster.
+              </li>
+              <li>
+                Voeg nieuwe kamers toe: door een kamer van de linkerkant naar de
+                gewenste locatie in de kast te slepen.
+              </li>
+              <li>
+                Verander kamervolgorde: door kamers binnen de kast te verslepen.
+              </li>
+              <li>
+                Pas individuele kamerkleur aan: door op een kamer te klikken.
+              </li>
               <li>
                 Verwijder kamer: door te klikken op de kamer en vervolgens op
                 het
                 <v-icon size="small" class="text-red inline-icon"
                   >mdi-delete</v-icon
                 >
-                icoon te klikken.</li
-              >
+                icoon te klikken.
+              </li>
               <li>
                 Pas kast aan: bijenkasten kunnen aangepast worden door op de
                 kast te klikken in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
                 overzicht wat het kast menu opent → 'Aanpassen kast'. N.B.
                 alleen eigen kasten en gedeelde kasten met aanpasrechten zijn
-                aanpasbaar.</li
-              >
-              <li
-                >Pas moer aan: moeren kunnen afzonderlijk aangepast worden door
+                aanpasbaar.
+              </li>
+              <li>
+                Pas moer aan: moeren kunnen afzonderlijk aangepast worden door
                 op het
                 <v-sheet
                   class="beep-icon beep-icon-queen"
@@ -1419,17 +1465,17 @@
                 icoon te klikken (in de
                 <v-icon class="inline-icon">mdi-size-m</v-icon> en
                 <v-icon class="inline-icon">mdi-size-xl</v-icon> layout) of door
-                'Aanpassen moer' te selecteren in het kast menu (zie boven).</li
-              >
-              <li
-                >Deel kast:
+                'Aanpassen moer' te selecteren in het kast menu (zie boven).
+              </li>
+              <li>
+                Deel kast:
                 <ul>
-                  <li
-                    >Start een nieuwe samenwerkingsgroep via het 'Snelle actie
-                    menu' (zie onder).</li
-                  >
-                  <li
-                    >Of deel een kast met een bestaande samenwerkingsgroep via
+                  <li>
+                    Start een nieuwe samenwerkingsgroep via het 'Snelle actie
+                    menu' (zie onder).
+                  </li>
+                  <li>
+                    Of deel een kast met een bestaande samenwerkingsgroep via
                     het menu van de betreffende groep. Samenwerkingsgroepen
                     worden getoond in het
                     <router-link :to="{ name: 'home' }">Kasten</router-link>
@@ -1443,25 +1489,25 @@
                       >mdi-cog</v-icon
                     >
                     icoon naast de samenwerkingsgroepsnaam -> 'Aanpassen
-                    samenwerkingsgroep' om je kast te delen.</li
-                  >
+                    samenwerkingsgroep' om je kast te delen.
+                  </li>
                 </ul>
               </li>
-              <li
-                >Verplaats kast:
+              <li>
+                Verplaats kast:
                 <ul>
-                  <li
-                    >Verplaats meerdere kasten in één keer naar een andere
+                  <li>
+                    Verplaats meerdere kasten in één keer naar een andere
                     bijenstand door 'Verplaats bijenkasten' te selecteren in het
                     bijenstand menu (zie 'Bijenstand / samenwerkingsgroep menu'
-                    boven).</li
-                  >
-                  <li
-                    >Voor een enkele kast: verander de bijenstand en/of volgorde
+                    boven).
+                  </li>
+                  <li>
+                    Voor een enkele kast: verander de bijenstand en/of volgorde
                     binnen de bijenstand door de kast aan te passen (zie 'Pas
                     kast aan' boven). N.B. kasten zonder een gespecificeerde
-                    volgorde zullen als laatste getoond worden.</li
-                  >
+                    volgorde zullen als laatste getoond worden.
+                  </li>
                 </ul>
               </li>
             </ul>
@@ -1473,11 +1519,11 @@
               aandacht nodig, notitie en herinnering)</strong
             >
             <ul>
-              <li
-                >Zoekbaar: op datum, tijd geleden, bijenkast / bijenstand /
+              <li>
+                Zoekbaar: op datum, tijd geleden, bijenkast / bijenstand /
                 samenwerkingsgroep naam, notitie, herinnering, herinneringsdatum
-                en inspectie id (door 'id=' toe te voegen, bijv: 'id=99').</li
-              >
+                en inspectie id (door 'id=' toe te voegen, bijv: 'id=99').
+              </li>
               <li>
                 Filterbaar: op
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
@@ -1512,15 +1558,14 @@
                 slecht).<br />
                 N.B. Filters worden onthouden gedurende de browsersessie.
               </li>
-              <li
-                >Inspectie menu: klik op een inspectie om deze te bekijken (in
-                detail), aan te passen of te verwijderen.</li
-              >
-              <li
-                >Kast handelingen (aanpassingen van de kastconfiguratie) worden
-                opgeslagen als een inspectie en ook getoond in dit
-                overzicht.</li
-              >
+              <li>
+                Inspectie menu: klik op een inspectie om deze te bekijken (in
+                detail), aan te passen of te verwijderen.
+              </li>
+              <li>
+                Kast handelingen (aanpassingen van de kastconfiguratie) worden
+                opgeslagen als een inspectie en ook getoond in dit overzicht.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1537,10 +1582,10 @@
             <ul>
               <li>
                 Zoekbaar: op datum, notitie, herinnering, herinneringsdatum en
-                inspectie id (door 'id=' toe te voegen, bijv: 'id=99').</li
-              >
-              <li
-                >Filterbaar: op
+                inspectie id (door 'id=' toe te voegen, bijv: 'id=99').
+              </li>
+              <li>
+                Filterbaar: op
                 <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
                 aandacht nodig,
                 <v-icon class="inline-icon">mdi-calendar-clock</v-icon>
@@ -1564,13 +1609,13 @@
               Nieuwe inspectie</strong
             >
             <ul>
-              <li
-                >Bulk inspectie: inspecteer meerdere kasten per bijenstand /
+              <li>
+                Bulk inspectie: inspecteer meerdere kasten per bijenstand /
                 samenwerkingsgroep in één keer door de kasten te selecteren die
                 je mee wilt nemen in je inspectie. Per kast wordt de inspectie
                 apart opgeslagen, zodat deze later per kast terug te vinden (en
-                aanpasbaar / verwijderbaar) is.</li
-              >
+                aanpasbaar / verwijderbaar) is.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1580,12 +1625,12 @@
               meetsysteem aanwezig is)</strong
             >
             <ul>
-              <li
-                >Heat map: als er geluidsdata aanwezig is zal dit getoond worden
+              <li>
+                Heat map: als er geluidsdata aanwezig is zal dit getoond worden
                 in een z.g.n. <i>heat map</i>. Hoe vaker geluid in een bepaalde
                 frequentie bandbreedte gemeten is, hoe warmer de kleur van het
-                corresponderende datapunt.</li
-              >
+                corresponderende datapunt.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1604,11 +1649,10 @@
             <ul>
               <li>
                 Zoekbaar: op datum, tijd geleden, bijenkast / bijenstand /
-                samenwerkingsgroep naam, notificatie naam, functie en
-                waarde.</li
-              >
-              <li
-                ><router-link :to="{ name: 'alertrules' }"
+                samenwerkingsgroep naam, notificatie naam, functie en waarde.
+              </li>
+              <li>
+                <router-link :to="{ name: 'alertrules' }"
                   >Notificatie-instellingen</router-link
                 >
                 - Om je op weg te helpen zijn er een aantal
@@ -1623,14 +1667,14 @@
                 notificatie-instelling' knop. Ze kunnen ge(de)activeerd worden
                 via de tabel met notificatie-instellingen of de 'Notificaties
                 ingeschakeld' / 'Notificaties uitgeschakeld' schuifknop
-                rechtsboven.</li
-              >
-              <li
-                >Notificatie menu: klik op een notificatie om de
+                rechtsboven.
+              </li>
+              <li>
+                Notificatie menu: klik op een notificatie om de
                 notificatie-instelling aan te passen, de bijbehorende metingen
                 te bekijken, de notificatie te deactiveren voor de betreffende
-                kast, of de notificatie te verwijderen.</li
-              >
+                kast, of de notificatie te verwijderen.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -1644,28 +1688,28 @@
             meetgegevens aan bepaalde voorwaarden voldoen. Bijvoorbeeld een
             plotselinge gewichtsafname vanwege een zwerm.
             <ul>
-              <li
-                >De samenvatting bovenaan 'vertaalt' de instelling naar gewone
-                taal.</li
-              >
-              <li
-                >De instelling is standaard van toepassing op alle maanden, uren
+              <li>
+                De samenvatting bovenaan 'vertaalt' de instelling naar gewone
+                taal.
+              </li>
+              <li>
+                De instelling is standaard van toepassing op alle maanden, uren
                 van de dag en kasten (die verbonden zijn met een meetsysteem).
                 Je kan deze deactiveren voor bepaalde maanden, uren en kasten
-                (zie de laatste sectie van het formulier).</li
-              >
-              <li
-                ><router-link :to="{ name: 'alertrules-default' }"
+                (zie de laatste sectie van het formulier).
+              </li>
+              <li>
+                <router-link :to="{ name: 'alertrules-default' }"
                   >Standaard notificatie-instellingen</router-link
                 >
                 - Om je op weg te helpen zijn er een aantal
                 standaardinstellingen die je hier kan selecteren en kopiëren
                 naar je eigen notificatie-instellingen. Nadat ze gekopieerd
-                zijn, kunnen ze naar eigen behoefte aangepast worden.</li
-              >
+                zijn, kunnen ze naar eigen behoefte aangepast worden.
+              </li>
             </ul>
             <a :href="$t('alerts_support_url')" target="_blank"
-              ><v-icon class="support-icon" small color="accent"
+              ><v-icon class="support-icon" size="small" color="accent"
                 >mdi-arrow-right</v-icon
               >
               BEEP support artikel over het instellen van alerts</a
@@ -1674,8 +1718,8 @@
           <li class="new-block">
             <strong>Waar is alles te vinden? - Menu aanpassingen</strong>
             <ul>
-              <li
-                ><strong>Snelle actie menu</strong> - Maak direct een nieuwe
+              <li>
+                <strong>Snelle actie menu</strong> - Maak direct een nieuwe
                 inspectie, nieuwe kast, nieuwe bijenstand, nieuwe
                 samenwerkingsgroep of nieuwe notificatie-instelling door op de
                 <v-icon class="color-black inline-icon"
@@ -1683,25 +1727,25 @@
                 >
                 knop te klikken midden bovenaan de
                 <router-link :to="{ name: 'home' }">home</router-link>
-                navigatiebalk.</li
-              >
-              <li
-                ><router-link :to="{ name: 'home' }">Kasten</router-link>,
+                navigatiebalk.
+              </li>
+              <li>
+                <router-link :to="{ name: 'home' }">Kasten</router-link>,
                 <router-link :to="{ name: 'diary' }">Inspecties</router-link>,
                 <router-link :to="{ name: 'measurements' }">Data</router-link>
                 en
                 <router-link :to="{ name: 'alerts' }">Notificaties</router-link>
                 tabs zijn altijd zichtbaar in de bovenste balk van de
                 <router-link :to="{ name: 'home' }">home</router-link>
-                pagina.</li
-              >
-              <li
-                ><router-link :to="{ name: 'home' }">Kasten</router-link> tab
+                pagina.
+              </li>
+              <li>
+                <router-link :to="{ name: 'home' }">Kasten</router-link> tab
                 combineert de voormalige 'Bijenstanden' en 'Bijenkasten'
-                pagina's in één overzicht.</li
-              >
-              <li
-                ><strong>Samenwerkingsgroepen</strong> zijn nu direct zichtbaar
+                pagina's in één overzicht.
+              </li>
+              <li>
+                <strong>Samenwerkingsgroepen</strong> zijn nu direct zichtbaar
                 in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
                 overzicht. Via de samenwerkingsgroepsfilter (<v-icon
@@ -1710,11 +1754,10 @@
                 >
                 icoon) kunnen samenwerkingsgroepen exclusief getoond worden
                 (eerste in de rij na het zoekveld, alleen zichtbaar als je lid
-                bent van tenminste één samenwerkingsgroep).</li
-              >
-              <li
-                ><router-link :to="{ name: 'devices' }"
-                  >Meetsystemen</router-link
+                bent van tenminste één samenwerkingsgroep).
+              </li>
+              <li>
+                <router-link :to="{ name: 'devices' }">Meetsystemen</router-link
                 >,
                 <router-link :to="{ name: 'export' }"
                   >Data exporteren</router-link
@@ -1728,10 +1771,10 @@
                 <a href="https://beep.nl/" target="_blank">BEEP website</a>
                 zijn verhuisd naar het
                 <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
-                rechtsboven.</li
-              >
-              <li
-                >Nieuw in het
+                rechtsboven.
+              </li>
+              <li>
+                Nieuw in het
                 <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
                 (rechtsboven):
                 <router-link :to="{ name: 'alertrules' }"
@@ -1740,171 +1783,170 @@
                 en
                 <router-link :to="{ name: 'checklists' }"
                   >Kastkaart templates</router-link
-                >.</li
-              >
+                >.
+              </li>
             </ul>
           </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>2.2.1 (15-07-2020)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>2.2.1 (15-07-2020)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Hive change log: every hive configuration change, or relocation is
+          <li>
+            Hive change log: every hive configuration change, or relocation is
             filed as a new inspection, so you can keep track of your historic
-            changes</li
-          >
-          <li
-            >Inspection sample code: added (lab) sample code generator as an
+            changes
+          </li>
+          <li>
+            Inspection sample code: added (lab) sample code generator as an
             inspection item. It generates a unique sample code that can be put
-            on a sample for the lab to register research results</li
-          >
-          <li
-            >Inspection Liebefeld: Added honey super input fields to Liebefeld
-            colony size calculation</li
-          >
-          <li
-            >Data export:
+            on a sample for the lab to register research results
+          </li>
+          <li>
+            Inspection Liebefeld: Added honey super input fields to Liebefeld
+            colony size calculation
+          </li>
+          <li>
+            Data export:
             <router-link :to="{ name: 'export' }">
               ability to also export data of collaboration group hives with
               measurement systems</router-link
-            ></li
-          >
-          <li
-            >Data export:
+            >
+          </li>
+          <li>
+            Data export:
             <router-link :to="{ name: 'export' }">
               bugfix that prevented from exporting CSV data files from selected
               dates and measurement systems</router-link
-            ></li
-          >
-          <li
-            >BEEP base: support for new iOS and Android app output to configure
-            your BEEP base with the native apps</li
-          >
+            >
+          </li>
+          <li>
+            BEEP base: support for new iOS and Android app output to configure
+            your BEEP base with the native apps
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>2.2.0 (25-02-2020)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>2.2.0 (25-02-2020)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Create new Apiary wizard, leading you through all the steps in
-            ordered sequence</li
-          >
-          <li
-            >New fields in Apiaries and Hives e.g. roofed, hive layer/frame
-            dimensions, queen notes, etc.</li
-          >
-          <li
-            >Research:
+          <li>
+            Create new Apiary wizard, leading you through all the steps in
+            ordered sequence
+          </li>
+          <li>
+            New fields in Apiaries and Hives e.g. roofed, hive layer/frame
+            dimensions, queen notes, etc.
+          </li>
+          <li>
+            Research:
             <router-link :to="{ name: 'research' }">
               ability to consent to sharing your data with research</router-link
-            ></li
-          >
+            >
+          </li>
           <!-- <li>Photos: ability to add images to inspections<a ng-click="switchMenu($event, true, '/images')">and view all images</a></li> -->
-          <li
-            >Helpdesk: search the knowledge base for help, or file a support
-            ticket directly from the app</li
-          >
-          <li
-            >Weather:
+          <li>
+            Helpdesk: search the knowledge base for help, or file a support
+            ticket directly from the app
+          </li>
+          <li>
+            Weather:
             <router-link :to="{ name: 'measurements' }">
               See apiary weather info (if lat/lon coordinates have been filled
               and you have installed a BEEP base) powered by Darksky
               API</router-link
-            ></li
-          >
-          <li
-            >Export:
+            >
+          </li>
+          <li>
+            Export:
             <router-link :to="{ name: 'export' }">
               export and download sensor measurements to a CSV file if you have
               installed a BEEP base</router-link
-            ></li
-          >
-          <li
-            >{{ $t('Whats_new') }}: this in-app overview of new features with
-            links to the features themselves</li
-          >
+            >
+          </li>
+          <li>
+            {{ $t("Whats_new") }}: this in-app overview of new features with
+            links to the features themselves
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>2.1.0 (29-05-2019)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>2.1.0 (29-05-2019)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Collaborate:
+          <li>
+            Collaborate:
             <router-link :to="{ name: 'group-create' }">
               ability to share hives, inspections and measurements with other
               BEEP users</router-link
-            ></li
-          >
+            >
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>2.0.3 (30-04-2019)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>2.0.3 (30-04-2019)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Measurements: ability to input both
+          <li>
+            Measurements: ability to input both
             <a href="https://thethingsnetwork.org" target="_blank">TTN</a> and
             <a href="https://www.simpoint.com/lora/" target="_blank"
               >Simpoint</a
             >
-            LoRa data to the API</li
-          >
+            LoRa data to the API
+          </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>2.0.2 (13-12-2018)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>2.0.2 (13-12-2018)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Measurements:
+          <li>
+            Measurements:
             <router-link :to="{ name: 'devices' }">
               ability to add new sensors for using API data input</router-link
-            ></li
-          >
-          <li
-            >Measurements: connect sensor to hive, show last measurement in
-            gauge</li
-          >
+            >
+          </li>
+          <li>
+            Measurements: connect sensor to hive, show last measurement in gauge
+          </li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>2.0.1 (10-07-2018)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>2.0.1 (10-07-2018)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li
-            >Usability:
+          <li>
+            Usability:
             <router-link :to="{ name: 'home' }"
               >Apiary and hive overview improved</router-link
-            ></li
-          >
+            >
+          </li>
           <li>Inspection: Dynamic inspection list</li>
           <li>Inspection: Create your own inspection list and order</li>
           <li>Measurements: Automatic measurement view improvement</li>
         </ul>
       </div>
 
-      <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>1.1.1 (05-09-2017)</div
-      >
+      <div class="custom-text-overline mb-1">
+        <span class="lowercase">v</span>1.1.1 (05-09-2017)
+      </div>
       <div class="rounded-border mb-4">
         <ul>
           <li>First official BEEP app release</li>
@@ -1915,18 +1957,18 @@
 </template>
 
 <script>
-import Layout from '@/src/router/layouts/back-layout.vue'
+import Layout from "@/src/router/layouts/back-layout.vue";
 
 export default {
   components: {
-    Layout,
+    Layout
   },
   computed: {
     dutch() {
-      return this.$i18n.locale === 'nl'
-    },
-  },
-}
+      return this.$i18n.locale === "nl";
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

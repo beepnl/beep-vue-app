@@ -1,6 +1,14 @@
 import Api from '@api/Api'
 import { mapGetters } from 'vuex'
 
+export const appVersion = {
+  data() {
+    return {
+      appVersion: PKG.version,
+    }
+  },
+}
+
 export const checkAlerts = {
   computed: {
     ...mapGetters('alerts', [
@@ -261,46 +269,6 @@ export const readHiveTags = {
   },
 }
 
-export const convertComma = {
-  // method for el-input-number with 1 or more decimals
-  methods: {
-    convertComma(event, object, property, precision = 1) {
-      // console.log('convert comma', event)
-      const value = event
-      // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
-      if (value.toString().indexOf(',') > -1) {
-        if (
-          precision <= 1 &&
-          value.length > value.toString().indexOf(',') + precision
-        ) {
-          this.convert(value, object, property)
-        } else if (precision > 1) {
-          // wait for user to stop typing if precision > 1
-          setTimeout(() => {
-            this.convert(value, object, property)
-          }, 1200)
-        }
-      }
-    },
-    convert(value, object, property) {
-      console.log(value, ' convert')
-      value = parseFloat(value.toString().replace(',', '.'))
-      object[property] = value
-      this.checkProperty(value, object, property)
-    },
-    checkProperty(value, object, property) {
-      // always include both lat & lon even when editing only one of them, only for existing apiary (that has id)
-      if (object.id !== undefined && property === 'lat') {
-        object.coordinate_lat = value
-        object.lon = object.coordinate_lon
-      } else if (object.id !== undefined && property === 'lon') {
-        object.coordinate_lon = value
-        object.lat = object.coordinate_lat
-      }
-    },
-  },
-}
-
 export const deleteDashboard = {
   methods: {
     async deleteDashboard(dashboardGroup) {
@@ -342,10 +310,10 @@ export const deleteDashboard = {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.deleteDashboard(dashboard)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -404,10 +372,10 @@ export const deleteHiveTag = {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.deleteHiveTag(hiveTag)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -420,11 +388,11 @@ export const getLabel = {
       return item === undefined
         ? 'unknown'
         : item.trans !== undefined &&
-          item.trans !== null &&
-          (item.trans[this.$i18n.locale] !== undefined ||
-            item.trans.en !== undefined)
-        ? item.trans[this.$i18n.locale] || item.trans.en
-        : item.name
+            item.trans !== null &&
+            (item.trans[this.$i18n.locale] !== undefined ||
+              item.trans.en !== undefined)
+          ? item.trans[this.$i18n.locale] || item.trans.en
+          : item.name
     },
   },
 }
@@ -448,13 +416,36 @@ export const lightenColor = {
   },
 }
 
+export const nativeAppMethods = {
+  computed: {
+    appIsNative() {
+      return window.ReactNativeWebview !== undefined
+    },
+  },
+  methods: {
+    constructMessageParams(action, params) {
+      const message = {
+        action,
+        params,
+      }
+      return JSON.stringify(message)
+    },
+    postNativeAppMessage(action, params) {
+      if (this.appIsNative) {
+        const message = this.constructMessageParams(action, params)
+        window.ReactNativeWebView.postMessage(message)
+      }
+    },
+  },
+}
+
 export const orderedLayers = {
   methods: {
-    orderedLayers: function(hive) {
+    orderedLayers: function (hive) {
       // change sorting if hive was created in app v2 to make sure it is being displayed correctly in v3 (honey layers on top of brood layers)
       const v2hive = hive.layers.filter((layer) => layer.order === 0).length > 0 // only v2 hives have at least one layer with order number 0
       if (v2hive) {
-        return hive.layers.slice().sort(function(a, b) {
+        return hive.layers.slice().sort(function (a, b) {
           if (a.type === 'honey' && b.type === 'brood') {
             return -1
           }
@@ -470,7 +461,7 @@ export const orderedLayers = {
           return 0
         })
       } else {
-        return hive.layers.slice().sort(function(a, b) {
+        return hive.layers.slice().sort(function (a, b) {
           if (a.type === 'feeding_box') {
             return -1
           }
@@ -957,7 +948,7 @@ export const sortedDevices = {
           uniqueApiaries.push(item)
         }
       }
-      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
+      uniqueApiaries = uniqueApiaries.slice().sort(function (a, b) {
         if (a.label < b.label) {
           return -1
         }
@@ -1012,7 +1003,7 @@ export const sortedDevices = {
         return true
       })
       uniqueApiaries.map((apiary) => {
-        const sortedChildren = apiary.children.slice().sort(function(a, b) {
+        const sortedChildren = apiary.children.slice().sort(function (a, b) {
           if (a.label < b.label) {
             return -1
           }
@@ -1043,6 +1034,17 @@ export const toggleFilterByGroup = {
           this.filterByGroupStatus = 'off'
           break
       }
+    },
+  },
+}
+
+export const touchDevice = {
+  computed: {
+    touchDevice() {
+      return (
+        navigator.maxTouchPoints > 0 &&
+        window.matchMedia('(pointer: coarse)').matches
+      )
     },
   },
 }

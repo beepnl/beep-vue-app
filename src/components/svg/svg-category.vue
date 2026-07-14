@@ -19,15 +19,15 @@
 
 <script>
 import svgDivider from '@/src/components/svg/svg-divider.vue'
-import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
+import svgFieldset from '@components/svg/svg-fieldset.vue'
 import svgHeader from '@components/svg/svg-header.vue'
-import { svgComputed, svgData } from '@mixins/svgMixin'
 import { getLabel } from '@mixins/methodsMixin'
+import { svgComputed, svgData } from '@mixins/svgMixin'
 
 export default {
   components: {
-    svgDivider,
     svgFieldset,
+    svgDivider,
     svgHeader,
   },
   mixins: [getLabel, svgComputed, svgData],

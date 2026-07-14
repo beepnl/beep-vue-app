@@ -5,7 +5,6 @@
         <v-spacer></v-spacer>
         <v-icon
           v-if="!alertruleCreateMode"
-          dark
           class="mr-2"
           color="red"
           @click="confirmDeleteAlertRule"
@@ -27,20 +26,20 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
-          {{ $t('save') }}
+          <v-icon v-if="!showLoadingIcon" color="black" start>mdi-check</v-icon>
+          {{ $t("save") }}
         </v-btn>
       </v-toolbar>
 
       <v-container class="content-container">
         <div
-          class="text-overline mb-2"
+          class="custom-text-overline mb-2"
           v-text="$t('Alertrule_summary_title')"
         ></div>
         <em
           v-if="activeAlertRule && !activeAlertRule.active"
           class="text-red"
-          >{{ $t('alertrule_not_active') }}</em
+          >{{ $t("alertrule_not_active") }}</em
         >
         <v-alert
           v-if="activeAlertRule"
@@ -54,7 +53,7 @@
         </v-alert>
 
         <div
-          class="text-overline mb-2"
+          class="custom-text-overline mb-2"
           v-text="$t('Alertrule_settings_title')"
         ></div>
         <div v-if="activeAlertRule" class="alertrule-card rounded-border mb-8">
@@ -131,7 +130,7 @@
                 v-model="activeAlertRule.calculation_minutes"
                 :items="calculationMinutes"
                 :item-title="
-                  (item) => momentHumanizeHours(item.label, true, true)
+                  item => momentHumanizeHours(item.label, true, true)
                 "
                 item-value="label"
                 :placeholder="$t('Select') + '...'"
@@ -188,7 +187,7 @@
                 v-if="measurement.data_source_type !== 'db_influx'"
                 class="font-small mt-6px"
               >
-                <span>{{ $t('Explanation') + ': ' }}</span>
+                <span>{{ $t("Explanation") + ": " }}</span>
                 <span class="font-small color-accent">
                   <a :href="measurement.data_repository_url" target="_blank">{{
                     measurement.data_repository_url
@@ -271,28 +270,25 @@
                   :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                   v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
                 ></div>
-                <ElInputNumber
-                  v-model="activeAlertRule.threshold_value"
+                <NumericInput
+                  :use-v-model="true"
+                  :object="activeAlertRule"
+                  :property="'threshold_value'"
                   :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
-                  :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
-                  :step-strictly="true"
-                  @change="setAlertRuleEdited(true)"
-                  @update:model-value="
-                    convertComma($event, activeAlertRule, 'threshold_value', 1),
-                      setAlertRuleEdited(true)
-                  "
-                ></ElInputNumber>
+                  @set-edited="setAlertRuleEdited(true)"
+                ></NumericInput>
                 <div
                   v-if="thresholdValueIsNaN"
                   class="v-text-field__details mt-1"
-                  ><div class="v-messages theme--light text-error" role="alert"
-                    ><div class="v-messages__wrapper"
-                      ><div class="v-messages__message">{{
-                        $t('this_field') + ' ' + $t('is_required')
-                      }}</div></div
-                    ></div
-                  ></div
                 >
+                  <div class="v-messages theme--light text-error" role="alert">
+                    <div class="v-messages__wrapper">
+                      <div class="v-messages__message">
+                        {{ $t("this_field") + " " + $t("is_required") }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!-- <span class="ml-1 mt-6">{{ measurementUnit }}</span> -->
             </v-col>
@@ -300,7 +296,7 @@
         </div>
 
         <div
-          class="text-overline mb-2"
+          class="custom-text-overline mb-2"
           v-text="$t('Alertrule_exclude_title')"
         ></div>
         <div v-if="activeAlertRule" class="alertrule-card rounded-border">
@@ -315,7 +311,7 @@
                   hide-details
                 ></v-switch>
               </div>
-              <Treeselect
+              <TreeselectVue3
                 :model-value="activeAlertRule.exclude_months"
                 class="color-red"
                 :options="months"
@@ -323,7 +319,7 @@
                 :no-results-text="`${$t('no_results')}`"
                 :multiple="true"
                 @update:model-value="
-                  ;(activeAlertRule.exclude_months = $event),
+                  (activeAlertRule.exclude_months = $event),
                     setAlertRuleEdited(true)
                 "
               />
@@ -339,7 +335,7 @@
                   hide-details
                 ></v-switch>
               </div>
-              <Treeselect
+              <TreeselectVue3
                 v-model="activeAlertRule.exclude_hours"
                 class="color-red"
                 :options="hours"
@@ -367,7 +363,7 @@
                   hide-details
                 ></v-switch>
               </div>
-              <Treeselect
+              <TreeselectVue3
                 v-model="activeAlertRule.exclude_hive_ids"
                 class="color-red"
                 :options="devicesOptions"
@@ -397,7 +393,7 @@
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="accent " variant="text" @click="snackbar.show = false">
-        {{ $t('Close') }}
+        {{ $t("Close") }}
       </v-btn>
     </v-snackbar>
 
@@ -406,55 +402,51 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
-import Confirm from '@/src/components/confirm-dialog.vue'
-import { mapGetters } from 'vuex'
-import Layout from '@/src/router/layouts/back-layout.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import Api from "@api/Api";
+import NumericInput from "@components/input-fields/numeric-input.vue";
 import {
-  convertComma,
   readAlertRules,
   readDevicesIfNotChecked,
   readTaxonomy,
-  sortedDevices,
-} from '@mixins/methodsMixin'
-import { momentHumanizeHours } from '@mixins/momentMixin'
-import { ElInputNumber } from 'element-plus'
+  sortedDevices
+} from "@mixins/methodsMixin";
+import { momentHumanizeHours } from "@mixins/momentMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Confirm,
     Layout,
-    Treeselect,
-    ElInputNumber,
+    NumericInput
   },
   mixins: [
-    convertComma,
     momentHumanizeHours,
     readAlertRules,
     readDevicesIfNotChecked,
     readTaxonomy,
-    sortedDevices,
+    sortedDevices
   ],
   data: function() {
     return {
       snackbar: {
         show: false,
         timeout: 2000,
-        text: 'notification',
+        text: "notification"
       },
       activeAlertRule: null,
       valid: false,
       showLoadingIcon: false,
       newAlertRuleNumber: 1,
       newAlertRuleLocation: null,
-      showAllMeasurements: false,
-    }
+      showAllMeasurements: false
+    };
   },
   computed: {
-    ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
-    ...mapGetters('devices', ['devices']),
-    ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
+    ...mapGetters("alerts", ["alertRules", "alertRuleEdited"]),
+    ...mapGetters("devices", ["devices"]),
+    ...mapGetters("taxonomy", ["alertRulesList", "sensorMeasurementsList"]),
     // alertOnOccurencesItems() {
     //   const occArray = []
     //   for (var i = 1; i < 11; i++) {
@@ -469,192 +461,192 @@ export default {
     //   return occArray
     // },
     alertruleCreateMode() {
-      return this.$route.name === 'alertrule-create'
+      return this.$route.name === "alertrule-create";
     },
     allDevicesSelected: {
       get() {
         return (
           this.activeAlertRule.exclude_hive_ids.length ===
           this.numberOfSortedDevices
-        )
+        );
       },
       set(value) {
         if (value === false) {
-          this.activeAlertRule.exclude_hive_ids = []
+          this.activeAlertRule.exclude_hive_ids = [];
         } else {
-          this.activeAlertRule.exclude_hive_ids = []
-          this.devicesOptions.map((apiary) => {
-            apiary.children.map((device) => {
-              this.activeAlertRule.exclude_hive_ids.push(device.id)
-              return true
-            })
-            return true
-          })
+          this.activeAlertRule.exclude_hive_ids = [];
+          this.devicesOptions.map(apiary => {
+            apiary.children.map(device => {
+              this.activeAlertRule.exclude_hive_ids.push(device.id);
+              return true;
+            });
+            return true;
+          });
         }
-      },
+      }
     },
     allHoursSelected: {
       get() {
-        return this.activeAlertRule.exclude_hours.length === 24
+        return this.activeAlertRule.exclude_hours.length === 24;
       },
       set(value) {
         if (value === false) {
-          this.activeAlertRule.exclude_hours = []
+          this.activeAlertRule.exclude_hours = [];
         } else {
           this.activeAlertRule.exclude_hours = this.hours.map(
-            (month) => month.id
-          )
+            month => month.id
+          );
         }
-      },
+      }
     },
     allMonthsSelected: {
       get() {
-        return this.activeAlertRule.exclude_months.length === 12
+        return this.activeAlertRule.exclude_months.length === 12;
       },
       set(value) {
         if (value === false) {
-          this.activeAlertRule.exclude_months = []
+          this.activeAlertRule.exclude_months = [];
         } else {
           this.activeAlertRule.exclude_months = this.months.map(
-            (month) => month.id
-          )
+            month => month.id
+          );
         }
-      },
+      }
     },
     allSensorMeasurements() {
       let measurementTypes = JSON.parse(
         JSON.stringify(this.sensorMeasurementsList)
-      ) // clone without v-bind to avoid vuex warning when mutating
+      ); // clone without v-bind to avoid vuex warning when mutating
 
       // check if measurement type is NOT a weather measurement and if translation exists, otherwise don't display the measurement type
       measurementTypes = measurementTypes.filter(
-        (measurementType) =>
+        measurementType =>
           measurementType.weather === 0 &&
           this.$i18n.te(measurementType.abbreviation) === true
-      )
+      );
 
       // add translation as label property
-      measurementTypes.map((measurementType) => {
-        measurementType.label = this.$i18n.t(measurementType.abbreviation)
-        return measurementType
-      })
+      measurementTypes.map(measurementType => {
+        measurementType.label = this.$i18n.t(measurementType.abbreviation);
+        return measurementType;
+      });
 
       // sort by label
       const sortedSMs = measurementTypes.slice().sort(function(a, b) {
         if (a.label.toLowerCase() > b.label.toLowerCase()) {
-          return 1
+          return 1;
         }
         if (b.label.toLowerCase() > a.label.toLowerCase()) {
-          return -1
+          return -1;
         }
-        return 0
-      })
-      return sortedSMs
+        return 0;
+      });
+      return sortedSMs;
     },
     calcPrefix() {
       const translateTerm = this.alertRulesList.calculations[
         this.activeAlertRule.calculation
-      ]
-      return this.$i18n.t(translateTerm) + ' ' + this.$i18n.t('of') + ' '
+      ];
+      return this.$i18n.t(translateTerm) + " " + this.$i18n.t("of") + " ";
     },
     calculationMinutes() {
-      return this.formatFromTaxonomyArray(this.alertRulesList.calc_minutes)
+      return this.formatFromTaxonomyArray(this.alertRulesList.calc_minutes);
     },
     calculations() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.calculations)
+      return this.formatFromTaxonomyObject(this.alertRulesList.calculations);
     },
     comparators() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.comparators)
+      return this.formatFromTaxonomyObject(this.alertRulesList.comparators);
     },
     comparisons() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.comparisons)
+      return this.formatFromTaxonomyObject(this.alertRulesList.comparisons);
     },
     devicesInterval() {
       if (this.numberOfSortedDevices !== null) {
-        let intervalArray = []
-        this.devices.map((device) => {
+        let intervalArray = [];
+        this.devices.map(device => {
           if (
             this.activeAlertRule.exclude_hive_ids.indexOf(device.hive_id) === -1
           ) {
             intervalArray.push(
               device.measurement_interval_min *
                 device.measurement_transmission_ratio
-            )
+            );
           }
-          return true
-        })
-        intervalArray = intervalArray.filter((e) => e !== 0)
+          return true;
+        });
+        intervalArray = intervalArray.filter(e => e !== 0);
         if (intervalArray.length > 0) {
           const minMaxArray = [
             Math.min(...intervalArray),
-            Math.max(...intervalArray),
-          ]
+            Math.max(...intervalArray)
+          ];
           if (minMaxArray[0] === minMaxArray[1]) {
-            return [minMaxArray[0]]
+            return [minMaxArray[0]];
           } else {
-            return minMaxArray
+            return minMaxArray;
           }
         } else {
-          return null
+          return null;
         }
       } else {
-        return null
+        return null;
       }
     },
     devicesOptions() {
-      return this.sortedDevices(true)
+      return this.sortedDevices(true);
     },
     hasNonOwnedDevices() {
-      return this.devices.filter((device) => !device.owner).length > 0
+      return this.devices.filter(device => !device.owner).length > 0;
     },
     hours() {
-      return this.formatFromTaxonomyArray(this.alertRulesList.exclude_hours)
+      return this.formatFromTaxonomyArray(this.alertRulesList.exclude_hours);
     },
     id() {
-      return parseInt(this.$route.params.id)
+      return parseInt(this.$route.params.id);
     },
     measurement() {
       return this.allSensorMeasurements.filter(
-        (measurement) => measurement.id === this.activeAlertRule.measurement_id
-      )[0]
+        measurement => measurement.id === this.activeAlertRule.measurement_id
+      )[0];
     },
     measurementUnit() {
-      return this.activeAlertRule.calculation === 'cnt'
-        ? this.$i18n.t('times')
+      return this.activeAlertRule.calculation === "cnt"
+        ? this.$i18n.t("times")
         : this.measurement !== undefined
         ? this.measurement.unit
-        : ''
+        : "";
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     months() {
-      const monthsArray = []
+      const monthsArray = [];
       for (let i = 1; i < 13; i++) {
         monthsArray.push({
           id: i,
-          label: this.$i18n.tm('monthsShort')[i - 1],
-        })
+          label: this.$i18n.tm("monthsShort")[i - 1]
+        });
       }
-      return monthsArray
+      return monthsArray;
     },
     numberOfIncludedDevices() {
       return (
         this.numberOfSortedDevices -
         this.activeAlertRule.exclude_hive_ids.length
-      )
+      );
     },
     numberOfSortedDevices() {
       return this.devicesOptions.reduce((acc, apiary) => {
-        acc += apiary.children.length
-        return acc
-      }, 0)
+        acc += apiary.children.length;
+        return acc;
+      }, 0);
     },
     requiredRule: function() {
       return [
-        (v) =>
-          !!v || this.$i18n.t('this_field') + ' ' + this.$i18n.t('is_required'),
-      ]
+        v =>
+          !!v || this.$i18n.t("this_field") + " " + this.$i18n.t("is_required")
+      ];
     },
     showCollabGroupWarning() {
       // show confirm popup with warning that alerts are sent for non-owned hives as well, but only when saving alert rule
@@ -663,416 +655,416 @@ export default {
       return (
         this.activeAlertRule.exclude_hive_ids.length === 0 &&
         this.hasNonOwnedDevices
-      )
+      );
     },
     defaultSensorMeasurements() {
       // check if measurement type is a default measurement type for creating alert rules
       return this.allSensorMeasurements.filter(
-        (measurementType) => measurementType.show_in_alerts
-      )
+        measurementType => measurementType.show_in_alerts
+      );
     },
     thresholdValueIsNaN() {
-      return isNaN(this.activeAlertRule.threshold_value)
+      return isNaN(this.activeAlertRule.threshold_value);
     },
     warningText() {
-      let warningText = this.$i18n.t('In_case_of_good_connection_warning')
+      let warningText = this.$i18n.t("In_case_of_good_connection_warning");
       if (
         this.devicesInterval !== null &&
-        this.activeAlertRule.comparison.includes('dif')
+        this.activeAlertRule.comparison.includes("dif")
       ) {
         const intervalWarning =
           this.devicesInterval.length > 1
-            ? this.$i18n.t('upload_interval_warning_interval_range') +
-              this.devicesInterval.join(' - ') +
-              ' ' +
-              this.$i18n.tc('minute', 2)
+            ? this.$i18n.t("upload_interval_warning_interval_range") +
+              this.devicesInterval.join(" - ") +
+              " " +
+              this.$i18n.tc("minute", 2)
             : this.$i18n.tc(
-                'upload_interval_warning_single_interval',
+                "upload_interval_warning_single_interval",
                 this.numberOfIncludedDevices
               ) +
-              ' ' +
+              " " +
               this.devicesInterval[0] +
-              ' ' +
-              this.$i18n.tc('minute', this.devicesInterval[0])
-        warningText += ' ' + intervalWarning
+              " " +
+              this.$i18n.tc("minute", this.devicesInterval[0]);
+        warningText += " " + intervalWarning;
       }
-      return warningText
-    },
+      return warningText;
+    }
   },
   created() {
-    this.readDevicesIfNotChecked()
+    this.readDevicesIfNotChecked();
     this.readAlertRulesIfNotPresent().then(() => {
       this.readTaxonomy().then(() => {
         // If alertrule-create route is used, make empty alertrule object
         if (this.alertruleCreateMode) {
           this.activeAlertRule = {
             name:
-              this.$i18n.tc('alertrule', 1) +
-              ' ' +
+              this.$i18n.tc("alertrule", 1) +
+              " " +
               (this.alertRules.length + 1),
-            description: '',
+            description: "",
             measurement_id: this.defaultSensorMeasurements[0].id,
-            calculation: 'ave',
+            calculation: "ave",
             calculation_minutes: 0,
-            comparator: '<',
-            comparison: 'val',
+            comparator: "<",
+            comparison: "val",
             threshold_value: 0,
             exclude_months: [],
             exclude_hours: [],
             exclude_hive_ids: [],
             active: 1,
-            alert_via_email: 0,
+            alert_via_email: 0
             // alert_on_occurences: 1,
-          }
+          };
           // Else retrieve to-be-edited alertrule
         } else {
-          this.setActiveAlertRule(this.id)
+          this.setActiveAlertRule(this.id);
         }
-      })
-    })
+      });
+    });
   },
   methods: {
     async createAlertRule() {
       if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
-        this.showLoadingIcon = true
+        this.showLoadingIcon = true;
         try {
           const response = await Api.postRequest(
-            '/alert-rules',
+            "/alert-rules",
             this.activeAlertRule
-          )
+          );
           if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
-            this.showLoadingIcon = false
+            this.snackbar.text = this.$i18n.t("not_saved_error");
+            this.snackbar.show = true;
+            this.showLoadingIcon = false;
           }
           setTimeout(() => {
             return this.readAlertRules().then(() => {
               this.$router.push({
-                name: 'alertrules',
-              })
-            })
-          }, 50) // wait for API to update alertrules
+                name: "alertrules"
+              });
+            });
+          }, 50); // wait for API to update alertrules
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
-            const msg = error.response.data.message
-            this.snackbar.text = msg
+            console.log("Error: ", error.response);
+            const msg = error.response.data.message;
+            this.snackbar.text = msg;
           } else {
-            console.log('Error: ', error)
-            this.snackbar.text = this.$i18n.t('something_wrong')
+            console.log("Error: ", error);
+            this.snackbar.text = this.$i18n.t("something_wrong");
           }
-          this.snackbar.show = true
-          this.showLoadingIcon = false
+          this.snackbar.show = true;
+          this.showLoadingIcon = false;
         }
       }
     },
     async deleteAlertRule() {
       try {
         const response = await Api.deleteRequest(
-          '/alert-rules/',
+          "/alert-rules/",
           this.activeAlertRule.id
-        )
+        );
         if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
+          this.snackbar.text = this.$i18n.t("something_wrong");
+          this.snackbar.show = true;
         }
         setTimeout(() => {
           return this.readAlertRules().then(() => {
-            this.nextRoute()
-          })
-        }, 50) // wait for API to update alertrules
+            this.nextRoute();
+          });
+        }, 50); // wait for API to update alertrules
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
-          const msg = error.response.data.message
-          this.snackbar.text = msg
+          console.log("Error: ", error.response);
+          const msg = error.response.data.message;
+          this.snackbar.text = msg;
         } else {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('something_wrong')
+          console.log("Error: ", error);
+          this.snackbar.text = this.$i18n.t("something_wrong");
         }
-        this.snackbar.show = true
+        this.snackbar.show = true;
       }
     },
     async readAlertRulesIfNotPresent() {
       if (this.alertRules.length === 0) {
         try {
-          const response = await Api.readRequest('/alert-rules')
-          this.$store.commit('alerts/setData', {
-            prop: 'alertRules',
-            value: response.data.alert_rules,
-          })
-          return true
+          const response = await Api.readRequest("/alert-rules");
+          this.$store.commit("alerts/setData", {
+            prop: "alertRules",
+            value: response.data.alert_rules
+          });
+          return true;
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
+            console.log("Error: ", error.response);
           } else {
-            console.log('Error: ', error)
+            console.log("Error: ", error);
           }
         }
       } else {
-        return true
+        return true;
       }
     },
     async updateAlertRule() {
       if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
-        this.showLoadingIcon = true
+        this.showLoadingIcon = true;
         try {
           const response = await Api.updateRequest(
-            '/alert-rules/',
+            "/alert-rules/",
             this.activeAlertRule.id,
             this.activeAlertRule
-          )
+          );
           if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
-            this.showLoadingIcon = false
+            this.snackbar.text = this.$i18n.t("not_saved_error");
+            this.snackbar.show = true;
+            this.showLoadingIcon = false;
           }
           setTimeout(() => {
             return this.readAlertRules().then(() => {
-              this.nextRoute()
-            })
-          }, 150) // wait for API to update alertrules
+              this.nextRoute();
+            });
+          }, 150); // wait for API to update alertrules
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
-            const msg = error.response.data.message
-            this.snackbar.text = msg
+            console.log("Error: ", error.response);
+            const msg = error.response.data.message;
+            this.snackbar.text = msg;
           } else {
-            console.log('Error: ', error)
-            this.snackbar.text = this.$i18n.t('something_wrong')
+            console.log("Error: ", error);
+            this.snackbar.text = this.$i18n.t("something_wrong");
           }
-          this.snackbar.show = true
-          this.showLoadingIcon = false
+          this.snackbar.show = true;
+          this.showLoadingIcon = false;
         }
       }
     },
     checkCalculation(calcMinValue) {
       if (calcMinValue === 0) {
-        this.activeAlertRule.calculation = 'ave'
+        this.activeAlertRule.calculation = "ave";
       }
     },
     nextRoute() {
-      if (localStorage.beepPreviousRoute === 'alerts') {
+      if (localStorage.beepPreviousRoute === "alerts") {
         this.$router.push({
-          name: 'alerts',
-        })
+          name: "alerts"
+        });
       } else {
         this.$router.push({
-          name: 'alertrules',
-        })
+          name: "alertrules"
+        });
       }
     },
     confirmCreateAlertRule() {
       if (this.showCollabGroupWarning) {
         this.$refs.confirm
           .open(
-            this.$i18n.t('create_alertrule'),
-            this.$i18n.t('Save_alertrule_ok'),
+            this.$i18n.t("create_alertrule"),
+            this.$i18n.t("Save_alertrule_ok"),
             {
-              color: 'red',
+              color: "red"
             },
-            this.$i18n.t('No_hives_excluded_warning')
+            this.$i18n.t("No_hives_excluded_warning")
           )
-          .then((confirm) => {
-            this.createAlertRule()
+          .then(() => {
+            this.createAlertRule();
           })
-          .catch((reject) => {
-            return true
-          })
+          .catch(() => {
+            return true;
+          });
       } else {
-        this.createAlertRule()
+        this.createAlertRule();
       }
     },
     confirmDeleteAlertRule() {
       this.$refs.confirm
         .open(
-          this.$i18n.t('delete_alertrule'),
-          this.$i18n.t('delete_alertrule') +
+          this.$i18n.t("delete_alertrule"),
+          this.$i18n.t("delete_alertrule") +
             ' "' +
             this.activeAlertRule.name +
             '"?',
           {
-            color: 'red',
+            color: "red"
           }
         )
-        .then((confirm) => {
-          this.deleteAlertRule()
+        .then(() => {
+          this.deleteAlertRule();
         })
-        .catch((reject) => {
-          return true
-        })
+        .catch(() => {
+          return true;
+        });
     },
     alertRuleSentence(alertRule) {
       const replaceWith = {
         calculation: this.$i18n.t(alertRule.calculation),
         comparison: this.comparisons
-          .filter((comparison) => comparison.short === alertRule.comparison)[0]
+          .filter(comparison => comparison.short === alertRule.comparison)[0]
           .full.toLowerCase(),
         measurement_quantity:
-          this.measurement !== undefined ? this.measurement.label : '-',
+          this.measurement !== undefined ? this.measurement.label : "-",
         measurement_unit: this.measurementUnit,
         comparator: this.comparators.filter(
-          (comparator) => comparator.short === alertRule.comparator
+          comparator => comparator.short === alertRule.comparator
         )[0].short,
         threshold_value: alertRule.threshold_value,
         calculation_minutes: this.momentHumanizeHours(
           alertRule.calculation_minutes,
           false,
           false
-        ),
-      }
+        )
+      };
 
       let replacedSentence = this.$i18n.t(
-        'alertrule_main_sentence',
+        "alertrule_main_sentence",
         replaceWith
-      )
+      );
 
       if (alertRule.active) {
         alertRule.alert_via_email
           ? (replacedSentence +=
-              this.$i18n.t('alertrule_active_email_sentence') + ' ')
+              this.$i18n.t("alertrule_active_email_sentence") + " ")
           : (replacedSentence +=
-              this.$i18n.t('alertrule_active_no_email_sentence') + ' ')
+              this.$i18n.t("alertrule_active_no_email_sentence") + " ");
       } else {
-        replacedSentence += '. '
+        replacedSentence += ". ";
       }
 
       if (
         alertRule.exclude_months !== null &&
         alertRule.exclude_months.length > 0
       ) {
-        const monthsArray = []
-        alertRule.exclude_months.map((month) => {
-          monthsArray.push(this.$i18n.tm('monthsFull')[month - 1])
-          return true
-        })
+        const monthsArray = [];
+        alertRule.exclude_months.map(month => {
+          monthsArray.push(this.$i18n.tm("monthsFull")[month - 1]);
+          return true;
+        });
 
-        replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence', {
-          exclude_months: monthsArray.join(', '),
-        })
+        replacedSentence += this.$i18n.t("alertrule_exclude_months_sentence", {
+          exclude_months: monthsArray.join(", ")
+        });
       }
 
       if (
         alertRule.exclude_hours !== null &&
         alertRule.exclude_hours.length > 0
       ) {
-        const hoursArray = []
-        alertRule.exclude_hours.map((hour) => {
-          hoursArray.push(this.alertRulesList.exclude_hours[hour])
-          return true
-        })
+        const hoursArray = [];
+        alertRule.exclude_hours.map(hour => {
+          hoursArray.push(this.alertRulesList.exclude_hours[hour]);
+          return true;
+        });
 
-        replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence', {
-          exclude_hours: hoursArray.join(', '),
-        })
+        replacedSentence += this.$i18n.t("alertrule_exclude_hours_sentence", {
+          exclude_hours: hoursArray.join(", ")
+        });
       }
 
       if (
         alertRule.exclude_hive_ids !== null &&
         alertRule.exclude_hive_ids.length > 0
       ) {
-        const hivesArray = []
-        alertRule.exclude_hive_ids.map((hiveId) => {
-          let hiveName = hiveId + ' (' + this.$i18n.t('unknown') + ')'
+        const hivesArray = [];
+        alertRule.exclude_hive_ids.map(hiveId => {
+          let hiveName = hiveId + " (" + this.$i18n.t("unknown") + ")";
           const filteredDevices = this.devices.filter(
-            (device) => device.hive_id === hiveId
-          )
+            device => device.hive_id === hiveId
+          );
           if (
             filteredDevices !== undefined &&
             filteredDevices.length > 0 &&
-            filteredDevices[0].hive_name !== ''
+            filteredDevices[0].hive_name !== ""
           ) {
-            hiveName = filteredDevices[0].hive_name
+            hiveName = filteredDevices[0].hive_name;
           }
-          hivesArray.push(hiveName)
-          return true
-        })
-        replacedSentence += this.$i18n.t('alertrule_exclude_hives_sentence', {
-          exclude_hive_ids: hivesArray.join(', '),
-        })
+          hivesArray.push(hiveName);
+          return true;
+        });
+        replacedSentence += this.$i18n.t("alertrule_exclude_hives_sentence", {
+          exclude_hive_ids: hivesArray.join(", ")
+        });
       }
 
-      return replacedSentence
+      return replacedSentence;
     },
     getComparisonText(item) {
-      return item.full + (item.short === 'abs_dif' ? '**' : '')
+      return item.full + (item.short === "abs_dif" ? "**" : "");
     },
     getText(item) {
-      return item.label + ' (' + item.abbreviation + ')'
+      return item.label + " (" + item.abbreviation + ")";
     },
     getTitle() {
       if (this.alertruleCreateMode) {
-        return this.$i18n.t('New_alertrule')
+        return this.$i18n.t("New_alertrule");
       } else if (this.activeAlertRule !== null) {
-        return this.$i18n.t('Edit_alertrule')
+        return this.$i18n.t("Edit_alertrule");
       } else {
-        return this.$i18n.t('edit') + '...'
+        return this.$i18n.t("edit") + "...";
       }
     },
     formatFromTaxonomyArray(array) {
-      const formattedArray = []
+      const formattedArray = [];
       array.map((value, index) => {
         formattedArray.push({
           id: index,
-          label: value,
-        })
-        return true
-      })
-      return formattedArray
+          label: value
+        });
+        return true;
+      });
+      return formattedArray;
     },
     formatFromTaxonomyObject(object) {
-      const formattedArray = []
+      const formattedArray = [];
       Object.entries(object).map(([key, value]) => {
         formattedArray.push({
           short: key,
-          full: this.$i18n.t(value),
-        })
-        return true
-      })
-      return formattedArray
+          full: this.$i18n.t(value)
+        });
+        return true;
+      });
+      return formattedArray;
     },
     saveAlertRule() {
       if (this.alertruleCreateMode) {
-        this.confirmCreateAlertRule()
+        this.confirmCreateAlertRule();
       } else {
-        this.updateAlertRule()
+        this.updateAlertRule();
       }
     },
     setActiveAlertRule(id) {
       this.activeAlertRule = {
-        ...this.alertRules.filter((alertRule) => alertRule.id === id)[0],
-      }
+        ...this.alertRules.filter(alertRule => alertRule.id === id)[0]
+      };
       if (this.activeAlertRule === undefined) {
         this.$router.push({
-          name: '404',
-          query: { resource: 'alertrule' },
-        })
+          name: "404",
+          query: { resource: "alertrule" }
+        });
       } else {
         if (
           !this.defaultSensorMeasurements.some(
-            (el) => el.id === this.activeAlertRule.measurement_id
+            el => el.id === this.activeAlertRule.measurement_id
           )
         ) {
-          this.showAllMeasurements = true
+          this.showAllMeasurements = true;
         }
       }
-      this.setAlertRuleEdited(false)
+      this.setAlertRuleEdited(false);
     },
     setAlertRuleEdited(bool) {
-      this.$store.commit('alerts/setData', {
-        prop: 'alertRuleEdited',
-        value: bool,
-      })
+      this.$store.commit("alerts/setData", {
+        prop: "alertRuleEdited",
+        value: bool
+      });
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
-        value = value.substring(0, maxLength)
-        this.activeAlertRule[property] = value
+        value = value.substring(0, maxLength);
+        this.activeAlertRule[property] = value;
       }
-      this.setAlertRuleEdited(true)
-    },
-  },
-}
+      this.setAlertRuleEdited(true);
+    }
+  }
+};
 </script>
 
 <style lang="scss">

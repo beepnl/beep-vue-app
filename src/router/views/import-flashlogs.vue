@@ -6,13 +6,13 @@
       class="save-bar save-bar--back"
       density="compact"
     >
-      <div class="d-flex justify-end align-center" style="width: 100%;">
+      <div class="d-flex justify-end align-center" style="width: 100%">
         <v-spacer></v-spacer>
         <div class="beep-label mr-2" v-text="$t('From_cache') + ': '"></div>
         <v-switch
           v-model="fromCache"
           class="pt-0 mt-0 mr-4"
-          style="max-width: 40px;"
+          style="max-width: 40px"
           hide-details
         ></v-switch>
         <div class="beep-label" v-text="$t('Nr_of_match_props') + ': '"></div>
@@ -20,7 +20,7 @@
           v-model="matchProps"
           color="accent"
           class="slider--default mt-5"
-          style="display: block !important; max-width: 200px;"
+          style="display: block !important; max-width: 200px"
           track-color="#b0b0b0"
           min="5"
           max="12"
@@ -61,7 +61,7 @@
         <v-col v-if="flashLogs.length > 0" cols="12">
           <div class="d-flex justify-space-between align-end">
             <div class="mb-2">
-              <div class="text-overline mt-0 mt-sm-3">
+              <div class="custom-text-overline mt-0 mt-sm-3">
                 {{ $t('Log_files') }}
                 <v-icon
                   class="ml-1 icon-info cursor-pointer"
@@ -88,7 +88,7 @@
               :headers="userIsAdmin ? logFileHeadersAdmin : logFileHeaders"
               :items="flashLogs"
               :items-per-page="itemsPerPage"
-              :item-class="rowClassLogFile"
+              :row-props="rowClassLogFile"
               :search="logSearch"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
@@ -268,7 +268,7 @@
           cols="12"
         >
           <div
-            class="text-overline mt-0 mt-sm-3 mb-3 d-flex justify-space-between align-center"
+            class="custom-text-overline mt-0 mt-sm-3 mb-3 d-flex justify-space-between align-center"
           >
             <span v-text="selectedFlashLogHeader"></span>
             <v-spacer />
@@ -414,12 +414,12 @@
           </div>
 
           <div class="rounded-border primary-border">
+            <!-- NB sort-desc is officially deprecated but it does not work without (or included in sort-by) and it does work as is + same for item-class (instead of the new row-props) -->
             <v-data-table
               :headers="logDataHeaders"
               :items="selectedFlashLog.log"
-              :item-class="rowClassLogData"
-              :sort-by="['missing_data']"
-              :sort-desc="[true]"
+              :sort-by="[{ key: 'missing_data', order: 'desc' }]"
+              :row-props="rowProps"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
               multi-sort
@@ -452,6 +452,7 @@
                   v-if="
                     item.matches !== undefined && item.block === matchesOverlay
                   "
+                  @click:outside="matchesOverlay = null"
                   class="align-center justify-center"
                 >
                   <v-toolbar
@@ -572,7 +573,7 @@
                 <v-tooltip
                   v-if="
                     selectedFlashLog !== null &&
-                      showExportLoadingById.indexOf('csv-' + item.block) === -1
+                    showExportLoadingById.indexOf('csv-' + item.block) === -1
                   "
                   open-delay="500"
                 >
@@ -599,7 +600,7 @@
                 <v-progress-circular
                   v-if="
                     selectedFlashLog !== null &&
-                      showExportLoadingById.indexOf('csv-' + item.block) > -1
+                    showExportLoadingById.indexOf('csv-' + item.block) > -1
                   "
                   class="mr-3"
                   size="19"
@@ -611,7 +612,7 @@
                 <v-tooltip
                   v-if="
                     selectedFlashLog !== null &&
-                      showExportLoadingById.indexOf('json-' + item.block) === -1
+                    showExportLoadingById.indexOf('json-' + item.block) === -1
                   "
                   open-delay="500"
                 >
@@ -637,7 +638,7 @@
                 <v-progress-circular
                   v-if="
                     selectedFlashLog !== null &&
-                      showExportLoadingById.indexOf('json-' + item.block) > -1
+                    showExportLoadingById.indexOf('json-' + item.block) > -1
                   "
                   class="ml-1"
                   size="19"
@@ -657,12 +658,12 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
+import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 import { momentDurationDays, momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -695,8 +696,8 @@ export default {
       fromCache: true,
       matchesOverlay: null,
       baseApiUrl:
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK,
+        import.meta.env.VITE_BASE_API_URL ||
+        import.meta.env.VITE_E_API_URL_FALLBACK,
       importMessageCopy: null,
       itemsPerPage: 5, // was 1 for smAndDown for Vuetify 2 but in 3 there is only the normal row view (instead of 1 row per column for mobile view)
     }
@@ -762,7 +763,11 @@ export default {
           title: this.$i18n.t('Interval') + ' (min)',
           key: 'interval_min',
         },
-        { title: this.$i18n.tc('Action', 2), sortable: false, key: 'actions' },
+        {
+          title: this.$i18n.tc('Action', 2),
+          sortable: false,
+          key: 'actions',
+        },
         { title: this.$i18n.t('Export'), sortable: false, key: 'export' },
       ]
     },
@@ -794,7 +799,11 @@ export default {
           title: this.$i18n.t('File_size'),
           key: 'bytes_received',
         },
-        { title: this.$i18n.tc('Action', 2), sortable: false, key: 'actions' },
+        {
+          title: this.$i18n.tc('Action', 2),
+          sortable: false,
+          key: 'actions',
+        },
       ]
     },
     logFileHeadersAdmin() {
@@ -1094,10 +1103,10 @@ export default {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.undoBlockImport(flashLogId, blockId)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1115,15 +1124,14 @@ export default {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.deleteFlashLog(flashLog.id)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
     clearMessages() {
-      // eslint-disable-next-line vue/no-mutating-props
       this.importMessageCopy = null
       this.undoMessage = null
       this.errorMessage = null
@@ -1219,17 +1227,20 @@ export default {
         this.checkFlashLog(flashLogId, true)
       }, 500)
     },
-    rowClassLogData(item) {
-      return item.matches === undefined
-        ? 'no-match-block'
-        : 'match-block ' +
-            (this.percentageNotInDB(item) < 50 ? 'text-green' : 'text-red')
-    },
     rowClassLogFile(item) {
       return this.selectedFlashLog !== null &&
         item.id === this.selectedFlashLog.flashlog_id
         ? 'flashlog-selected'
         : '' + (item.delete === true ? 'flashlog-delete' : '')
+    },
+    rowProps({ item }) {
+      return {
+        class:
+          item.matches === undefined
+            ? 'no-match-block'
+            : 'match-block ' +
+              (this.percentageNotInDB(item) < 50 ? 'text-green' : 'text-red'),
+      }
     },
     scrollTo(refName) {
       const element = this.$refs[refName]

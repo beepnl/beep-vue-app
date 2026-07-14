@@ -26,10 +26,10 @@
                 "
                 hide-details
                 class="pt-0"
-                @change="toggleAlerts"
+                @update:model-value="toggleAlerts"
               ></v-switch>
               <v-icon
-                class="icon-info cursor-pointer ml-2"
+                class="icon-info cursor-pointer ml-2 mb-0"
                 :size="mobile ? 'x-small' : 'small'"
                 :color="showExplanation ? 'accent' : 'grey'"
                 @click="showExplanation = !showExplanation"
@@ -43,8 +43,8 @@
                   class="save-button-mobile-wide"
                   v-bind="props"
                 >
-                  <v-icon start>mdi-plus</v-icon>
-                  {{ $t('Add_alertrule') }}
+                  <v-icon color="black" start>mdi-plus</v-icon>
+                  {{ $t("Add_alertrule") }}
                 </v-btn>
               </template>
               <v-list>
@@ -96,11 +96,11 @@
               <p :class="`beep-label mb-2 ${mobile ? 'mb-n2' : 'mt-n6'}`">
                 <em
                   >{{
-                    $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
+                    $t("alert_explanation_1") + " " + $t("alert_explanation_2")
                   }}
                   <a :href="$t('alerts_support_url')" target="_blank"
                     ><v-icon size="small" color="accent">mdi-arrow-right</v-icon
-                    >{{ $t('alerts_url_text') }}</a
+                    >{{ $t("alerts_url_text") }}</a
                   ></em
                 >
               </p>
@@ -120,7 +120,7 @@
                     v-bind="props"
                   >
                     <v-icon color="accent" start>mdi-plus</v-icon>
-                    {{ $t('Add_alertrule') }}
+                    {{ $t("Add_alertrule") }}
                   </v-btn>
                 </template>
                 <v-list>
@@ -143,19 +143,19 @@
                 <thead>
                   <tr>
                     <th class="text-left">
-                      {{ $t('Active') }}
+                      {{ $t("Active") }}
                     </th>
                     <th class="text-left">
-                      {{ mobile ? $t('email') : $t('Alert_via_email') }}
+                      {{ mobile ? $t("email") : $t("Alert_via_email") }}
                     </th>
                     <th class="text-left">
-                      {{ $t('Name') }}
+                      {{ $t("Name") }}
                     </th>
                     <th v-if="!mobile" class="text-left">
-                      {{ $t('Calculation_minutes_short') }}
+                      {{ $t("Calculation_minutes_short") }}
                     </th>
                     <th class="text-left">
-                      {{ $tc('Action', 2) }}
+                      {{ $tc("Action", 2) }}
                     </th>
                     <th></th>
                   </tr>
@@ -183,11 +183,10 @@
                             alertRule.id
                           ) === -1
                         "
-                        dark
                         :color="alertRule.active ? 'green' : 'red'"
                         @click="toggleAlertRule(alertRule, 'active')"
                         >{{
-                          alertRule.active ? 'mdi-check' : 'mdi-close'
+                          alertRule.active ? "mdi-check" : "mdi-close"
                         }}</v-icon
                       >
                     </td>
@@ -210,11 +209,10 @@
                             alertRule.id
                           ) === -1
                         "
-                        dark
                         :color="alertRule.alert_via_email ? 'green' : 'red'"
                         @click="toggleAlertRule(alertRule, 'alert_via_email')"
                         >{{
-                          alertRule.alert_via_email ? 'mdi-check' : 'mdi-close'
+                          alertRule.alert_via_email ? "mdi-check" : "mdi-close"
                         }}</v-icon
                       >
                     </td>
@@ -242,15 +240,14 @@
                       <router-link
                         :to="{
                           name: 'alertrule-edit',
-                          params: { id: alertRule.id },
+                          params: { id: alertRule.id }
                         }"
                       >
-                        <v-icon dark color="accent">mdi-pencil</v-icon>
+                        <v-icon color="accent">mdi-pencil</v-icon>
                       </router-link>
                     </td>
                     <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <v-icon
-                        dark
                         color="red"
                         @click="confirmDeleteAlertRule(alertRule, index)"
                         >mdi-delete</v-icon
@@ -270,17 +267,17 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import { readAlertRules } from '@mixins/methodsMixin'
-import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
-import { momentHumanizeHours } from '@mixins/momentMixin'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import Layout from "@/src/router/layouts/back-layout.vue";
+import Api from "@api/Api";
+import { readAlertRules } from "@mixins/methodsMixin";
+import { momentHumanizeHours } from "@mixins/momentMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Confirm,
-    Layout,
+    Layout
   },
   mixins: [momentHumanizeHours, readAlertRules],
   data: function() {
@@ -290,170 +287,169 @@ export default {
       showExplanation: false,
       showLoadingIconById: {
         active: [],
-        alert_via_email: [],
+        alert_via_email: []
       },
       assetsUrl:
-        process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
-    }
+        import.meta.env.VITE_ASSETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK
+    };
   },
   computed: {
-    ...mapGetters('alerts', ['alertRules']),
-    ...mapGetters('locations', ['apiaries', 'groups']),
+    ...mapGetters("alerts", ["alertRules"]),
+    ...mapGetters("locations", ["apiaries", "groups"]),
     alertsEnabled: {
       get() {
         if (this.alertRules.length > 0) {
           return (
-            this.alertRules.filter((alertRule) => alertRule.active === 1)
-              .length > 0
-          )
+            this.alertRules.filter(alertRule => alertRule.active === 1).length >
+            0
+          );
         } else {
-          return false
+          return false;
         }
       },
-      set(value) {
-        return null
-      },
+      set() {
+        return null;
+      }
     },
     buttonMenuItems() {
       return [
         {
-          icon: 'mdi-plus',
-          title: this.$i18n.t('New_alertrule'),
-          route: 'alertrule-create',
+          icon: "mdi-plus",
+          title: this.$i18n.t("New_alertrule"),
+          route: "alertrule-create"
         },
         {
-          icon: 'mdi-content-copy',
-          title: this.$i18n.t('Select_default_alertrule'),
-          route: 'alertrules-default',
-        },
-      ]
+          icon: "mdi-content-copy",
+          title: this.$i18n.t("Select_default_alertrule"),
+          route: "alertrules-default"
+        }
+      ];
     },
     mobile() {
-      return this.$vuetify.display.xs
+      return this.$vuetify.display.xs;
     },
     showAlertRulePlaceholder() {
-      return this.alertRules.length === 0
+      return this.alertRules.length === 0;
     },
     sortedAlertRules() {
       const sortedAlertRules = this.alertRules.slice().sort(function(a, b) {
         if (a.name.toLowerCase() > b.name.toLowerCase()) {
-          return 1
+          return 1;
         }
         if (b.name.toLowerCase() > a.name.toLowerCase()) {
-          return -1
+          return -1;
         }
-        return 0
-      })
-      return sortedAlertRules
-    },
+        return 0;
+      });
+      return sortedAlertRules;
+    }
   },
   created() {
     if (this.alertRules.length === 0) {
       this.readAlertRules().then(() => {
         if (this.alertRules.length === 0) {
-          this.showExplanation = true
+          this.showExplanation = true;
         }
-        this.ready = true
-      })
+        this.ready = true;
+      });
     } else {
-      this.ready = true
+      this.ready = true;
     }
   },
   methods: {
     async deleteAlertRule(id) {
-      console.log('Deleting alert rule ', id)
+      console.log("Deleting alert rule ", id);
       try {
-        const response = await Api.deleteRequest('/alert-rules/', id)
+        const response = await Api.deleteRequest("/alert-rules/", id);
         if (!response) {
-          console.log('Error')
+          console.log("Error");
         }
         // update alertRules in store
         this.readAlertRules().then(() => {
           if (this.alertRules.length === 0) {
-            this.showExplanation = true
+            this.showExplanation = true;
           }
-        })
+        });
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
     async toggleAlertRule(alertRule, property) {
-      this.showLoadingIconById[property].push(alertRule.id)
-      const alertRuleNew = { ...alertRule }
-      alertRuleNew[property] = !alertRuleNew[property] // NB yields vuex strict error but can be ignored here because the property value will be changed in the store directly after triggering this error
+      this.showLoadingIconById[property].push(alertRule.id);
+      const alertRuleNew = { ...alertRule };
+      alertRuleNew[property] = !alertRuleNew[property]; // NB yields vuex strict error but can be ignored here because the property value will be changed in the store directly after triggering this error
       try {
         const response = await Api.updateRequest(
-          '/alert-rules/',
+          "/alert-rules/",
           alertRule.id,
           alertRuleNew
-        )
+        );
         if (response) {
           this.readAlertRules().then(() => {
             this.showLoadingIconById[property].splice(
               this.showLoadingIconById[property].indexOf(alertRule.id),
               1
-            )
-          })
+            );
+          });
         }
       } catch (error) {
-        alertRule[property] = !alertRule[property]
+        alertRule[property] = !alertRule[property];
         this.showLoadingIconById[property].splice(
           this.showLoadingIconById[property].indexOf(alertRule.id),
           1
-        )
+        );
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log("Error: ", error.response);
         } else {
-          console.log('Error: ', error)
+          console.log("Error: ", error);
         }
       }
     },
-    confirmDeleteAlertRule(alertRule, index) {
+    confirmDeleteAlertRule(alertRule) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('delete_alertrule'),
-          this.$i18n.t('delete_alertrule') +
-            ' (' +
+          this.$i18n.t("delete_alertrule"),
+          this.$i18n.t("delete_alertrule") +
+            " (" +
             alertRule.name +
-            (alertRule.description ? ' - ' + alertRule.description : '') +
-            ')?',
+            (alertRule.description ? " - " + alertRule.description : "") +
+            ")?",
           {
-            color: 'red',
+            color: "red"
           }
         )
-        .then((confirm) => {
-          this.deleteAlertRule(alertRule.id)
+        .then(() => {
+          this.deleteAlertRule(alertRule.id);
         })
-        .catch((reject) => {
-          return true
-        })
+        .catch(() => {
+          return true;
+        });
     },
     toggleAlerts() {
       if (this.alertsEnabled) {
         // disable active alerts
-        this.alertRules.map((alertRule) => {
+        this.alertRules.map(alertRule => {
           if (alertRule.active) {
-            this.toggleAlertRule(alertRule, 'active')
+            this.toggleAlertRule(alertRule, "active");
           }
-          return alertRule
-        })
+          return alertRule;
+        });
       } else {
         // enable inactive alerts
-        this.alertRules.map((alertRule) => {
+        this.alertRules.map(alertRule => {
           if (!alertRule.active) {
-            this.toggleAlertRule(alertRule, 'active')
+            this.toggleAlertRule(alertRule, "active");
           }
-          return alertRule
-        })
+          return alertRule;
+        });
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>

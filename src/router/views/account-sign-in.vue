@@ -10,10 +10,10 @@
         <v-alert
           v-if="msg || resentVerification"
           type="success"
-          text
           prominent
           density="compact"
           color="green"
+          class="mb-3"
         >
           <template v-slot:prepend>
             <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
@@ -25,7 +25,9 @@
           :key="error.name"
           type="error"
           prominent
+          density="compact"
           color="red"
+          class="mb-6"
         >
           <template v-slot:prepend>
             <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
@@ -43,7 +45,7 @@
           :class="fieldErrors.email ? 'text-error' : ''"
           :label="`${$t('email')}`"
           type="email"
-          :rules="[(v) => !!v || signinRules.email_required]"
+          :rules="[() => !!v || signinRules.email_required]"
           autocomplete="on"
         ></v-text-field>
         <v-text-field
@@ -52,7 +54,7 @@
           :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show ? 'text' : 'password'"
           :label="`${$t('password')}`"
-          :rules="[(v) => !!v || signinRules.password_required]"
+          :rules="[() => !!v || signinRules.password_required]"
           autocomplete="off"
           @click:append="show = !show"
         ></v-text-field>
@@ -79,9 +81,9 @@
 </template>
 
 <script>
+import Layout from '@/src/router/layouts/account-layout.vue'
 import Api from '@api/Api'
 import languages from '@assets/js/languages'
-import Layout from '@/src/router/layouts/account-layout.vue'
 
 export default {
   components: { Layout },
@@ -112,7 +114,7 @@ export default {
     }
   },
   computed: {
-    signinRules: function() {
+    signinRules: function () {
       return {
         email_required: this.$i18n.t('email_is_required'),
         password_required: this.$i18n.t('password_is_required'),
@@ -120,8 +122,8 @@ export default {
     },
   },
   created() {
-    // if locale is saved in localStorage, use it
     if (localStorage.beepLocale) {
+      // else if locale is saved in localStorage, use it
       this.$i18n.locale = localStorage.beepLocale
     } else {
       this.$i18n.locale = languages.checkBrowserLanguage()
@@ -155,7 +157,7 @@ export default {
         this.clearErrors()
         this.$store
           .dispatch('auth/signIn', this.credentials)
-          .then((token) => {
+          .then(() => {
             this.$router.push(
               this.$route.query.redirectFrom || { name: 'home' }
             )
@@ -164,7 +166,7 @@ export default {
           .catch((error) => {
             if (error.response) {
               console.log(error.response)
-              let msg = ''
+              let msg
               if (
                 typeof error.response.data !== 'undefined' &&
                 typeof error.response.data.message !== 'undefined'

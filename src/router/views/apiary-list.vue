@@ -12,11 +12,9 @@
               <v-text-field
                 v-model="hiveSearch"
                 :label="`${$t('Search')}`"
-                :class="
-                  `${
-                    hiveSearch !== null ? 'v-input--is-focused' : ''
-                  } beep-search-field`
-                "
+                :class="`${
+                  hiveSearch !== null ? 'v-input--is-focused' : ''
+                } beep-search-field`"
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"
                 clearable
@@ -31,15 +29,13 @@
             <v-card-actions class="pl-0">
               <v-icon
                 v-if="groups.length > 0"
-                :class="
-                  `${
-                    filterByGroupStatus === 'off' ? 'color-grey-filter' : ''
-                  } ${
-                    filterByGroupStatus === 'owned'
-                      ? 'icon-apiary-owned'
-                      : 'icon-apiary-shared'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByGroupStatus === 'off' ? 'color-grey-filter' : ''
+                } ${
+                  filterByGroupStatus === 'owned'
+                    ? 'icon-apiary-owned'
+                    : 'icon-apiary-shared'
+                } mr-0 mr-sm-2`"
                 @click="toggleFilterByGroup"
               >
                 {{
@@ -49,58 +45,48 @@
                 }}
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByAttention ? 'text-red' : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByAttention ? 'text-red' : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByAttention = !filterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByReminder ? 'text-red' : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByReminder ? 'text-red' : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByReminder = !filterByReminder"
               >
                 mdi-calendar-clock
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(3)
-                      ? 'text-green'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(3)
+                    ? 'text-green'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByImpression = 3"
               >
                 mdi-emoticon-happy
               </v-icon>
               <v-icon
                 v-if="!tinyScreen"
-                :class="
-                  `${
-                    filterByImpression.includes(2)
-                      ? 'text-orange'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(2)
+                    ? 'text-orange'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByImpression = 2"
               >
                 mdi-emoticon-neutral
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(1)
-                      ? 'text-red'
-                      : 'color-grey-filter'
-                  } mr-0 mr-sm-2`
-                "
+                :class="`${
+                  filterByImpression.includes(1)
+                    ? 'text-red'
+                    : 'color-grey-filter'
+                } mr-0 mr-sm-2`"
                 @click="filterByImpression = 1"
               >
                 mdi-emoticon-sad
@@ -152,33 +138,27 @@
 
     <v-container>
       <v-row
+        class="density"
         v-for="invitation in invitations"
         :key="'Invitation ' + invitation.id"
-        :class="
-          `mx-n1 hive-set ${xsView ? 'xs-view' : ''} ${
-            showApiaryPlaceholder ? 'mt-2' : ''
-          }`
-        "
-        density="compact"
+        :class="`mx-n1 hive-set ${xsView ? 'xs-view' : ''} ${
+          showApiaryPlaceholder ? 'mt-2' : ''
+        }`"
       >
         <div
           class="hive-set-title mt-0 d-flex flex-row justify-space-between align-end"
         >
           <div
             class="d-flex flex-row justify-flex-start align-center"
-            :style="
-              `color: ${
-                invitation.color ? invitation.color : ''
-              }; border-color: ${invitation.color ? invitation.color : ''};`
-            "
+            :style="`color: ${
+              invitation.color ? invitation.color : ''
+            }; border-color: ${invitation.color ? invitation.color : ''};`"
           >
             <v-icon
               class="icon-apiary-shared ml-1 mr-2 my-0"
-              :style="
-                `background-color: ${
-                  invitation.color ? invitation.color : ''
-                }; border-color: ${invitation.color ? invitation.color : ''};`
-              "
+              :style="`background-color: ${
+                invitation.color ? invitation.color : ''
+              }; border-color: ${invitation.color ? invitation.color : ''};`"
             >
               mdi-account-multiple
             </v-icon>
@@ -218,7 +198,6 @@
             />
             <v-icon
               v-if="!showLoadingIcon(invitation.id, true) && mobile"
-              dark
               :disabled="invitationButtonsDisabled(invitation.id)"
               class="mb-1 mr-2"
               color="red"
@@ -259,7 +238,6 @@
             />
             <v-icon
               v-if="!showLoadingIcon(invitation.id, false) && mobile"
-              dark
               :disabled="invitationButtonsDisabled(invitation.id)"
               class="text-green mb-1"
               @click="
@@ -272,9 +250,7 @@
         </div>
         <div
           class="rounded-border invitation-wrapper ma-1"
-          :style="
-            `border-color: ${invitation.color ? invitation.color : '#F8B133'};`
-          "
+          :style="`border-color: ${invitation.color ? invitation.color : '#F8B133'};`"
         >
           <v-table density="compact">
             <template v-slot>
@@ -320,22 +296,20 @@
       </v-row>
 
       <v-row
+        class="density"
         v-for="hiveSet in filteredHiveSets"
         :key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
         :class="`mx-n1 hive-set ${xsView ? 'xs-view' : ''}`"
-        density="compact"
       >
         <div
           class="hive-set-title d-flex flex-row justify-flex-start align-center"
-          :style="
-            `color: ${
-              hiveSet.hex_color ? hiveSet.hex_color : ''
-            }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`
-          "
+          :style="`color: ${
+            hiveSet.hex_color ? hiveSet.hex_color : ''
+          }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`"
         >
           <div
             class="d-flex justify-space-between align-end"
-            style="width: 100%;"
+            style="width: 100%"
           >
             <div class="d-flex justify-start align-center">
               <div
@@ -347,22 +321,18 @@
                   <v-icon
                     v-if="hiveSet.users && hiveSet.users.length"
                     class="icon-apiary-shared ml-1 mr-2 my-0"
-                    :style="
-                      `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
-                    "
+                    :style="`background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`"
                   >
                     mdi-account-multiple
                   </v-icon>
                   <v-icon
                     v-else
                     class="icon-apiary-owned ml-1 mr-2 my-0"
-                    :style="
-                      `background-color: ${
-                        hiveSet.hex_color ? hiveSet.hex_color : ''
-                      }; border-color: ${
-                        hiveSet.hex_color ? hiveSet.hex_color : ''
-                      };`
-                    "
+                    :style="`background-color: ${
+                      hiveSet.hex_color ? hiveSet.hex_color : ''
+                    }; border-color: ${
+                      hiveSet.hex_color ? hiveSet.hex_color : ''
+                    };`"
                   >
                     mdi-home-analytics
                   </v-icon>
@@ -371,7 +341,7 @@
                 </div>
                 <div
                   v-if="xlView && hiveSet.users && hiveSet.users.length"
-                  class="caption hive-set-caption ml-2"
+                  class="text-body-small hive-set-caption ml-2"
                 >
                   {{
                     ` (${hiveSet.users.length} ${$tc(
@@ -471,15 +441,16 @@
             </div>
 
             <span class="text-right ml-2">
-              <v-tooltip v-if="showFavoriteIcon && !favHiveSet(hiveSet)" bottom>
+              <v-tooltip
+                v-if="showFavoriteIcon && !favHiveSet(hiveSet)"
+                location="bottom"
+              >
                 <template v-slot:activator="{ props }">
                   <v-icon
                     v-bind="props"
-                    :style="
-                      `color: ${
-                        hiveSet.hex_color ? hiveSet.hex_color : '#f29100'
-                      };`
-                    "
+                    :style="`color: ${
+                      hiveSet.hex_color ? hiveSet.hex_color : '#f29100'
+                    };`"
                     class="mr-1"
                     @click="toggleFavHiveSet(hiveSet)"
                     >mdi-star-outline</v-icon
@@ -489,36 +460,30 @@
               </v-tooltip>
               <v-icon
                 v-else-if="showFavoriteIcon"
-                :style="
-                  `color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`
-                "
+                :style="`color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`"
                 class="mr-1"
                 @click="toggleFavHiveSet(hiveSet)"
                 >mdi-star</v-icon
               >
 
               <v-icon
-                :style="
-                  `color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`
-                "
+                :style="`color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`"
                 @click="toggleHideHiveSet(hiveSet)"
                 >{{ hideHiveSet(hiveSet) ? 'mdi-plus' : 'mdi-minus' }}</v-icon
               >
             </span>
           </div>
         </div>
-        <v-slide-y-transition v-if="!hideHiveSet(hiveSet)" style="width: 100%;">
+        <v-slide-y-transition v-if="!hideHiveSet(hiveSet)" style="width: 100%">
           <div class="hive-item-transition-wrapper">
             <v-scale-transition group>
               <v-col
                 v-for="hive in sortedHives(hiveSet.hives)"
                 :key="'Hive ' + hive.id"
                 sm="auto"
-                :class="
-                  `hive-item ${xlView ? 'xl-view' : ''} ${
-                    xsView ? 'xs-view' : ''
-                  }`
-                "
+                :class="`hive-item ${xlView ? 'xl-view' : ''} ${
+                  xsView ? 'xs-view' : ''
+                }`"
               >
                 <HiveCard
                   :key="`${hive.id}`"
@@ -544,11 +509,9 @@
 
       <div
         v-if="showApiaryPlaceholder"
-        :class="
-          `apiary-placeholder d-flex align-center ${
-            invitations.length > 0 ? 'apiary-placeholder--with-invitations' : ''
-          }`
-        "
+        :class="`apiary-placeholder d-flex align-center ${
+          invitations.length > 0 ? 'apiary-placeholder--with-invitations' : ''
+        }`"
       >
         <v-container class="d-flex flex-column align-center">
           <v-img
@@ -565,35 +528,34 @@
               name: `apiary-create`,
             }"
           >
-            <div class="color-accent"
-              ><v-icon color="accent" size="large" start>mdi-plus-circle</v-icon
-              >{{ $t('Add_apiary') }}</div
-            >
+            <div class="color-accent">
+              <v-icon color="accent" size="large" start>mdi-plus-circle</v-icon
+              >{{ $t('Add_apiary') }}
+            </div>
           </router-link>
 
           <a
             class="apiary-placeholder-item mt-5"
             :href="
               'https://beepsupport.freshdesk.com/' +
-                (locale !== 'sv'
-                  ? locale + (locale === 'pt' ? '-PT' : '')
-                  : 'en') +
-                '/support/solutions'
+              (locale !== 'sv'
+                ? locale + (locale === 'pt' ? '-PT' : '')
+                : 'en') +
+              '/support/solutions'
             "
             target="_blank"
           >
-            <div class="color-accent"
-              ><v-icon color="accent" size="large" start
+            <div class="color-accent">
+              <v-icon color="accent" size="large" start
                 >mdi-comment-question-outline</v-icon
-              >{{ $t('need_help') }}</div
-            >
+              >{{ $t('need_help') }}
+            </div>
           </a>
         </v-container>
       </div>
       <v-row
         v-else-if="sortedHiveSets.length && !filteredHiveSets.length"
-        density="compact"
-        class="mx-n1 hive-set"
+        class="mx-n1 hive-set density"
       >
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
@@ -670,10 +632,11 @@ export default {
     readyWithAll: false,
     deviceIdArray: [],
     assetsUrl:
-      process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
-    alertTimer: 0,
+      import.meta.env.VITE_ASSETS_URL ||
+      import.meta.env.VITE_ASSETS_URL_FALLBACK,
+    alertsTimer: null,
     alertInterval: 120000,
-    deviceTimer: 0,
+    deviceTimer: null,
     deviceInterval: 600000,
     favApiaries: [],
     favGroups: [],
@@ -752,7 +715,7 @@ export default {
       },
     },
     filteredHiveSets() {
-      let textFilteredHiveSets = []
+      let textFilteredHiveSets
       if (this.hiveSearch === null) {
         textFilteredHiveSets = this.sortedHiveSets
       } else {
@@ -997,7 +960,7 @@ export default {
       const self = this
       const sortedHiveSets = this.hiveSets
         .slice()
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           if (a.name > b.name) {
             return 1
           }
@@ -1006,7 +969,7 @@ export default {
           }
           return 0
         })
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           if ('type' in b) {
             return 1
           }
@@ -1015,7 +978,7 @@ export default {
           }
           return 0
         })
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           const favA = self.favHiveSet(a) ? 1 : 0
           const favB = self.favHiveSet(b) ? 1 : 0
           if (favA > favB) {
@@ -1059,6 +1022,12 @@ export default {
     }
   },
   created() {
+    if (this.apiaries.length > 0 || this.groups.length > 0) {
+      // improve app smoothness: if hives tab has been loaded before in the same session, do not show loading icon but re-load rest in the background
+      this.ready = true
+      this.readyWithAll = true
+    }
+
     this.readSettingsIfNotPresent().then(() => {
       this.getHiveSets()
     })
@@ -1085,11 +1054,18 @@ export default {
     }
 
     this.readDevices().then(() => {
-      this.deviceTimer = setInterval(this.readDevices, this.deviceInterval)
+      setTimeout(
+        () =>
+          this.runAtInterval(this.readDevices, this.deviceInterval, 'device'),
+        this.deviceInterval
+      )
     })
 
     this.checkAlertRulesAndAlerts().then(() => {
-      this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
+      setTimeout(
+        () => this.runAtInterval(this.readAlerts, this.alertInterval, 'alerts'),
+        this.alertInterval
+      )
     })
   },
   beforeUnmount() {
@@ -1213,8 +1189,8 @@ export default {
         device === null
           ? null
           : isToday
-          ? this.momentFromNow(device.last_message_received, true)
-          : this.momentify(device.last_message_received, true)
+            ? this.momentFromNow(device.last_message_received, true)
+            : this.momentify(device.last_message_received, true)
     },
     alertsPerHive(hiveId) {
       return this.alerts.filter((alert) => alert.hive_id === hiveId)
@@ -1228,7 +1204,7 @@ export default {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.checkToken(
             invitation.token,
             invitation.id,
@@ -1236,7 +1212,7 @@ export default {
             true
           )
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1252,11 +1228,11 @@ export default {
           },
           warningMessage
         )
-        .then((confirm) => {
+        .then(() => {
           this.toggleFavHiveSet(hiveSet, true)
           this.deleteApiaryById(hiveSet.id)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1269,11 +1245,11 @@ export default {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.toggleFavHiveSet(hiveSet, true)
           this.deleteGroupById(hiveSet.id)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1282,11 +1258,11 @@ export default {
         .open(this.$i18n.t('Delete'), this.$i18n.t('Detach_from_group') + '?', {
           color: 'red',
         })
-        .then((confirm) => {
+        .then(() => {
           this.toggleFavHiveSet(hiveSet, true)
           this.detachGroupById(hiveSet.id)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1299,10 +1275,10 @@ export default {
             color: 'red',
           }
         )
-        .then((confirm) => {
+        .then(() => {
           this.deleteHiveById(hive.id)
         })
-        .catch((reject) => {
+        .catch(() => {
           return true
         })
     },
@@ -1328,10 +1304,12 @@ export default {
         : this.favGroups.includes(hiveSet.id)
     },
     favHiveSetText(hiveSet) {
-      return (
-        this.$i18n.t('Fav_' + (hiveSet.users ? 'group' : 'apiary') + '_exp') +
-        this.$i18n.t('Fav_exp')
-      )
+      const groupOrApiary = hiveSet.users
+        ? this.$i18n.tc('group_short', 1)
+        : this.$i18n.tc('location', 1)
+      return this.$i18n.t('Fav_exp', {
+        groupOrApiary,
+      })
     },
     findDeviceById(id) {
       return (
@@ -1364,9 +1342,6 @@ export default {
             }
           })
         })
-      } else {
-        this.ready = true
-        this.readyWithAll = true
       }
     },
     getArrayFromSettings(propName) {
@@ -1515,7 +1490,24 @@ export default {
         },
       ]
     },
-    setDiaryGroupFilterAndGo(searchTerm) {
+    runAtInterval(fn, interval, timername) {
+      fn().finally(() => {
+        if (timername === 'device') {
+          this.deviceTimer = setTimeout(
+            () => this.runAtInterval(fn, interval, 'device'),
+            interval
+          )
+        } else if (timername === 'alerts') {
+          this.alertsTimer = setTimeout(
+            () => this.runAtInterval(fn, interval, 'alerts'),
+            interval
+          )
+        } else {
+          console.log('unknown timer')
+        }
+      })
+    },
+    setDiaryGroupFilterAndGo() {
       this.$store.commit('inspections/setFilter', {
         filter: 'diaryFilterByGroup',
         value: 'off', // in case it was filtering by owned hives or group hives
@@ -1526,7 +1518,7 @@ export default {
       // })
     },
     sortedHives(hives) {
-      const sortedHives = hives.slice().sort(function(a, b) {
+      const sortedHives = hives.slice().sort(function (a, b) {
         // order = null comes last
         // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
         return (
@@ -1571,10 +1563,12 @@ export default {
       }
     },
     stopTimers() {
-      clearInterval(this.alertTimer)
-      this.alertTimer = 0
+      clearTimeout(this.alertsTimer)
+      clearInterval(this.alertsTimer)
+      this.alertsTimer = null
+      clearTimeout(this.deviceTimer)
       clearInterval(this.deviceTimer)
-      this.deviceTimer = 0
+      this.deviceTimer = null
     },
     toggleGrid(view) {
       if (view === 'xlView') {
@@ -1639,12 +1633,12 @@ export default {
 
 <style lang="scss" scoped>
 .apiary-placeholder {
-  margin-top: 120px;
+  margin-top: 160px;
   @include for-phone-only {
-    margin-top: 80px;
+    margin-top: 120px;
   }
   &.apiary-placeholder--with-invitations {
-    margin-top: 64px;
+    margin-top: 84px;
   }
   .apiary-placeholder-item {
     max-width: 250px;
@@ -1683,6 +1677,7 @@ export default {
     padding: 4px;
     &.xs-view {
       padding: 0 !important;
+      margin-left: -2px;
     }
     &.xl-view {
       @include for-phone-only {

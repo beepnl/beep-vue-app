@@ -35,34 +35,6 @@ $color-red-dark: #d80d0d;
 
 $color-inactive: rgba(0, 0, 0, 0.54);
 
-.color-primary {
-  color: $color-primary;
-}
-
-.color-accent {
-  color: $color-accent;
-}
-
-.color-grey {
-  color: $color-grey;
-}
-
-.color-grey-medium {
-  color: $color-grey-medium;
-}
-
-.color-grey-light {
-  color: $color-grey-light;
-}
-
-.color-grey-dark {
-  color: $color-grey-dark;
-}
-
-.color-black {
-  color: $color-black;
-}
-
 // spacing
 $gutter-x-small: 0.8rem;
 $gutter-small: 1.6rem;
@@ -70,3 +42,39 @@ $gutter: 2.4rem;
 $gutter-medium: 4.8rem;
 $gutter-large: 9.6rem;
 $gutter-x-large: 12rem;
+
+// --- Colour utility classes --------------------------------------------------
+// These produce real CSS, so they live in @layer base.
+@layer base {
+  .color-primary {
+    color: $color-primary;
+  }
+
+  .color-accent {
+    color: $color-accent;
+  }
+
+  .color-grey {
+    color: $color-grey;
+  }
+
+  .color-grey-medium {
+    color: $color-grey-medium;
+  }
+
+  .color-grey-light {
+    color: $color-grey-light;
+  }
+
+  .color-grey-filter {
+    color: $color-grey-filter !important;
+  }
+
+  .color-grey-dark {
+    color: $color-grey-dark;
+  }
+
+  .color-black {
+    color: $color-black;
+  }
+}

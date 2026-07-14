@@ -8,8 +8,11 @@
     >
       <div v-if="reminderSent">
         <v-card-text>
-          <v-alert text prominent density="compact" color="green">
-            {{ $t('password_recovery_reminder_success') }}
+          <v-alert type="success" prominent density="compact" color="green">
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+            </template>
+            {{ $t("password_recovery_reminder_success") }}
           </v-alert>
         </v-card-text>
         <v-divider class="mx-3"></v-divider>
@@ -17,7 +20,7 @@
           <router-link
             :to="{ name: 'password-forgot', query: { email: emailToSubmit } }"
           >
-            {{ $t('password_recovery_code_not_received') }}
+            {{ $t("password_recovery_code_not_received") }}
           </router-link>
         </v-card-text>
       </div>
@@ -27,9 +30,10 @@
             v-for="error in errors"
             :key="error.name"
             type="error"
-            text
             prominent
+            density="compact"
             color="red"
+            class="mb-6"
           >
             <template v-slot:prepend>
               <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
@@ -48,7 +52,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn variant="text" type="submit">{{
-            $t('password_recovery_send_mail')
+            $t("password_recovery_send_mail")
           }}</v-btn>
         </v-card-actions>
 
@@ -57,13 +61,13 @@
           <router-link
             :to="{ name: 'password-reset', query: { email: emailToSubmit } }"
           >
-            {{ $t('password_recovery_enter_code') }}
+            {{ $t("password_recovery_enter_code") }}
           </router-link>
           <v-spacer></v-spacer>
           <router-link
             :to="{ name: 'sign-in', query: { email: emailToSubmit } }"
           >
-            {{ $t('password_recovery_remembered') }}
+            {{ $t("password_recovery_remembered") }}
           </router-link>
         </v-card-text>
       </div>
@@ -72,73 +76,73 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Layout from '@/src/router/layouts/account-layout.vue'
+import Layout from "@/src/router/layouts/account-layout.vue";
+import Api from "@api/Api";
 
 export default {
   components: { Layout },
   props: {
     email: {
       type: String,
-      default: '',
-    },
+      default: ""
+    }
   },
   data() {
     return {
       valid: false,
       errors: [],
-      emailToSubmit: this.email || '',
+      emailToSubmit: this.email || "",
       reminderSent: false,
       fieldErrors: {
-        email: false,
-      },
-    }
+        email: false
+      }
+    };
   },
   computed: {
     hasErrors() {
-      return this.errors.length > 0
+      return this.errors.length > 0;
     },
     emailRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('email_is_required'),
-        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
-      ]
-    },
+        v => !!v || this.$i18n.t("email_is_required"),
+        v => /.+@.+\..+/.test(v) || this.$i18n.t("no_valid_email")
+      ];
+    }
   },
   methods: {
     async forgotPassword() {
       if (this.$refs.form.validate()) {
-        this.clearErrors()
+        this.clearErrors();
         try {
-          const response = await Api.postRequest('/user/reminder', {
-            email: this.emailToSubmit,
-          })
-          if (response.data.message === 'reminder_sent') {
-            this.reminderSent = true
+          const response = await Api.postRequest("/user/reminder", {
+            email: this.emailToSubmit
+          });
+          if (response.data.message === "reminder_sent") {
+            this.reminderSent = true;
           }
-          return response
+          return response;
         } catch (error) {
           if (error.response) {
-            console.log(error.response)
-            const msg = error.response.data.message
-            if (msg === 'invalid_user' || msg.indexOf('email') > -1) {
-              this.fieldErrors.email = true
+            console.log(error.response);
+            const msg = error.response.data.message;
+            if (msg === "invalid_user" || msg.indexOf("email") > -1) {
+              this.fieldErrors.email = true;
             }
             this.errors.push({
-              errorMessage: this.$i18n.t(msg),
-            })
+              errorMessage: this.$i18n.t(msg)
+            });
           } else {
             this.errors.push({
-              errorMessage: this.$i18n.tc('Error', 1),
-            })
+              errorMessage: this.$i18n.tc("Error", 1)
+            });
           }
         }
       }
     },
     clearErrors() {
-      this.errors = []
-      this.fieldErrors.email = false
-    },
-  },
-}
+      this.errors = [];
+      this.fieldErrors.email = false;
+    }
+  }
+};
 </script>

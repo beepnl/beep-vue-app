@@ -1,7 +1,10 @@
 <template>
   <Layout :title="`${$t('Data_export')}`">
     <v-container v-if="ready">
-      <div class="text-overline mt-3 mb-2" v-text="$t('Data_export')"></div>
+      <div
+        class="custom-text-overline mt-3 mb-2"
+        v-text="$t('Data_export')"
+      ></div>
       <div class="rounded-border mb-6">
         <v-row>
           <v-col cols="12">
@@ -26,7 +29,7 @@
           <v-col class="d-flex justify-space-between" cols="12">
             <v-spacer></v-spacer>
             <div
-              style="width: 100%;"
+              style="width: 100%"
               :class="'d-flex justify-end' + (mobile ? ' flex-column' : '')"
             >
               <v-btn
@@ -64,7 +67,7 @@
                 />
                 <v-icon v-if="!showDownloadLoadingIcon" start color="accent"
                   >mdi-download</v-icon
-                >{{ $t('Download_csv') }}</v-btn
+                >{{ $t('Download_xls') }}</v-btn
               >
               <v-btn
                 v-if="csvLink && browserDoesNotSupportDownloadTrick"
@@ -74,7 +77,7 @@
                 target="_blank"
               >
                 <v-icon start color="accent">mdi-export</v-icon
-                >{{ $t('Open_csv') }}</v-btn
+                >{{ $t('Open_xls') }}</v-btn
               >
             </div>
           </v-col>
@@ -118,7 +121,7 @@
         </v-row>
 
         <div
-          class="text-overline mb-2"
+          class="custom-text-overline mb-2"
           v-text="$tc('device', 1) + ' ' + $t('Data_export')"
         ></div>
         <div class="rounded-border">
@@ -130,7 +133,7 @@
           <v-row v-if="devices.length > 0">
             <v-col cols="12" md="8" lg="6">
               <div class="beep-label" v-text="`${$tc('device', 1)}`"></div>
-              <Treeselect
+              <TreeselectVue3
                 v-if="devices.length > 0"
                 v-model="selectedDeviceId"
                 :options="devicesOptions"
@@ -145,7 +148,9 @@
             </v-col>
             <v-col cols="12" sm="6" md="4" lg="3">
               <div class="d-flex justify-flex-start align-center">
-                <v-icon class="mt-4 mr-2" large>mdi-calendar-clock</v-icon>
+                <v-icon class="mt-4 mr-2" color="accent"
+                  >mdi-calendar-clock</v-icon
+                >
                 <div>
                   <div class="beep-label">
                     <span v-text="$t('period')"></span>
@@ -166,7 +171,7 @@
                     :locale="locale"
                     :select-text="$t('ok')"
                     :cancel-text="$t('Cancel')"
-                    class=" range-datepicker text-accent"
+                    class="range-datepicker text-accent"
                     @update:model-value="updateDates($event)"
                   />
                 </div>
@@ -180,16 +185,14 @@
                 class="beep-label"
                 v-text="`${$t('Sensor_measurements')}`"
               ></div>
-              <Treeselect
+              <TreeselectVue3
                 v-model="selectedMeasurementTypes"
                 :options="measurementTypes"
                 :normalizer="normalizerMeasurementTypes"
-                :placeholder="
-                  `${$t('Select')} ${$t(
-                    // eslint-disable-next-line vue/comma-dangle
-                    'Sensor_measurements'
-                  ).toLowerCase()}`
-                "
+                :placeholder="`${$t('Select')} ${$t(
+                  // eslint-disable-next-line vue/comma-dangle
+                  'Sensor_measurements'
+                ).toLowerCase()}`"
                 :no-results-text="`${$t('no_results')}`"
                 :max-height="mobile ? 120 : 180"
                 :multiple="true"
@@ -200,7 +203,7 @@
                 class="beep-label"
                 v-text="`${$t('CSV_export_separator')}`"
               ></div>
-              <Treeselect
+              <TreeselectVue3
                 v-model="selectedSeparator"
                 :options="separators"
                 :placeholder="`${$t('Select')} ${$t('CSV_export_separator')}`"
@@ -218,9 +221,9 @@
                 "
                 :disabled="
                   !dataAvailable ||
-                    dates[0] === dates[1] ||
-                    dates.length < 2 ||
-                    showDeviceDataLoadingIcon
+                  dates[0] === dates[1] ||
+                  dates.length < 2 ||
+                  showDeviceDataLoadingIcon
                 "
                 color="accent"
                 class="save-button-mobile-wide"
@@ -257,17 +260,15 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
 import { readDevicesIfNotChecked, sortedDevices } from '@mixins/methodsMixin'
 import { momentFormat } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Layout,
-    Treeselect,
   },
   mixins: [momentFormat, readDevicesIfNotChecked, sortedDevices],
   data() {
@@ -294,13 +295,8 @@ export default {
       selectedSeparator: ';',
       menu: false,
       dates: [
-        this.$moment()
-          .add(-1, 'weeks')
-          .toISOString()
-          .substr(0, 10),
-        this.$moment()
-          .toISOString()
-          .substr(0, 10),
+        this.$moment().add(-1, 'weeks').toISOString().substr(0, 10),
+        this.$moment().toISOString().substr(0, 10),
       ],
       measurementTypes: null,
       selectedMeasurementTypes: [],
@@ -312,8 +308,8 @@ export default {
       showDeviceDataLoadingIcon: false,
       ready: false,
       baseApiUrl:
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK,
+        import.meta.env.VITE_BASE_API_URL ||
+        import.meta.env.VITE_E_API_URL_FALLBACK,
       includeGroupData: false,
       includeSensorData: false,
       csvLink: null,
@@ -324,7 +320,7 @@ export default {
   computed: {
     ...mapGetters('devices', ['devices']),
     browser() {
-      const test = function(regexp) {
+      const test = function (regexp) {
         return regexp.test(window.navigator.userAgent)
       }
       switch (true) {
@@ -385,11 +381,11 @@ export default {
         ? (laterEndDate = false)
         : (laterEndDate = true)
       return [
-        (v) => laterEndDate || this.$i18n.t('later_end_start'), // don't allow start date later than end date
-        (v) =>
+        () => laterEndDate || this.$i18n.t('later_end_start'), // don't allow start date later than end date
+        () =>
           this.dates[0] !== this.dates[1] ||
           this.$i18n.t('different_end_start'), // don't allow end date identical to start date
-        (v) =>
+        () =>
           this.dates.length > 1 ||
           this.$i18n.t('end_date') + ' ' + this.$i18n.t('not_filled'), // don't allow start date only
       ]
@@ -513,9 +509,8 @@ export default {
             this.dates[1]
         )
         const rawMeasurementTypes = Object.values(response.data)
-        this.measurementTypes = this.generateMeasurementTypes(
-          rawMeasurementTypes
-        )
+        this.measurementTypes =
+          this.generateMeasurementTypes(rawMeasurementTypes)
         return true
       } catch (error) {
         this.measurementTypes = null
@@ -544,7 +539,7 @@ export default {
       )
       const measurementTypesWithLabel = rawMeasurementTypes
       measurementTypesWithLabel.map((measurementType) => {
-        let label = ''
+        let label
         const match = sortedSensorDefs.filter(
           (sensorDef) => sensorDef.output_abbr === measurementType.abbreviation
         )
@@ -558,7 +553,7 @@ export default {
       })
       const sortedMeasurementTypes = measurementTypesWithLabel
         .slice()
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           if (a.label.toLowerCase() > b.label.toLowerCase()) {
             return 1
           }
@@ -577,7 +572,7 @@ export default {
     },
     sortedSensorDefinitions(sensordefs) {
       // sort sensor_definitions: sort first by output_abbr then updated_at
-      const sortedSensorDefs = sensordefs.slice().sort(function(a, b) {
+      const sortedSensorDefs = sensordefs.slice().sort(function (a, b) {
         if (a.output_abbr > b.output_abbr) {
           return 1
         }

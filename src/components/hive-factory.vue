@@ -3,7 +3,7 @@
     <v-row class="hive-factory-wrapper my-0">
       <v-col cols="12" sm="10" md="12">
         <div class="beep-label">
-          {{ $t('drag_layers') }}
+          {{ $t("drag_layers") }}
           <v-icon
             class="ml-1 icon-info cursor-pointer"
             size="small"
@@ -14,7 +14,7 @@
         </div>
 
         <p v-if="showInfo" class="info-text mt-1">
-          <em>{{ $t('drag_layers_info_text') }} </em>
+          <em>{{ $t("drag_layers_info_text") }} </em>
         </p>
         <div
           :class="
@@ -29,13 +29,14 @@
               :group="{ name: 'layers', pull: 'clone', put: true }"
               :clone="cloneLayer"
               :sort="false"
+              item-key="key"
               class="d-flex flex-column justify-flex-start"
             >
               <template v-slot:item="{ element }">
                 <div
                   :key="element.key"
                   :class="[
-                    `draggable-layer-wrapper ${element.type}-layer-wrapper`,
+                    `draggable-layer-wrapper ${element.type}-layer-wrapper`
                   ]"
                   :width="`${hiveWidth(hive)}px`"
                 >
@@ -56,7 +57,7 @@
 
           <div class="d-flex justify-center" style="width: 100%;">
             <v-sheet
-              class="hive-icon d-flex flex-column justify-center align-center white--text text--small my-3"
+              class="hive-icon d-flex flex-column justify-center align-center text-white text--small my-3"
               height="auto"
             >
               <div
@@ -69,6 +70,7 @@
                   v-model="hiveLayers"
                   :group="{ name: 'layers', pull: 'sort' }"
                   delay="100"
+                  item-key="key"
                   delay-on-touch-only="true"
                 >
                   <template v-slot:item="{ element }">
@@ -138,51 +140,51 @@
 </template>
 
 <script>
-import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
-import draggable from 'vuedraggable'
-import Confirm from '@/src/components/confirm-dialog.vue'
+import Confirm from "@/src/components/confirm-dialog.vue";
+import { getMaxFramecount, orderedLayers } from "@mixins/methodsMixin";
+import draggable from "vuedraggable";
 
-let keyGlobal = 0
+let keyGlobal = 0;
 
 export default {
   components: {
     Confirm,
-    draggable,
+    draggable
   },
   mixins: [getMaxFramecount, orderedLayers],
   props: {
     colorPreview: {
       type: Boolean,
       default: false,
-      required: false,
+      required: false
     },
     colorPickerValue: {
       type: String,
-      default: '',
-      required: false,
+      default: "",
+      required: false
     },
     hive: {
       type: Object,
       default: null,
-      required: true,
-    },
+      required: true
+    }
   },
-  emits: ['update-defaultframecount'],
+  emits: ["update-defaultframecount"],
   data: function() {
     return {
       swatches: [
-        ['#e9eae1', '#EAD49E', '#F8B133'],
-        ['#2dbde5', '#094da0', '#27820e'],
-        ['#ffe900', '#d80d0d', '#754B1F'],
+        ["#E9EAE1", "#EAD49E", "#F8B133"],
+        ["#2DBDE5", "#094DA0", "#27820E"],
+        ["#FFE900", "#D80D0D", "#754B1F"]
       ],
       overlayLayerColor: false,
       currentLayer: null,
-      layerColorPickerValue: '',
+      layerColorPickerValue: "",
       layerColorPreview: false,
       showInfo: false,
-      fallbackColor: '#F8B133',
-      frameCount: 10,
-    }
+      fallbackColor: "#F8B133",
+      frameCount: 10
+    };
   },
   computed: {
     colorPicker: {
@@ -190,99 +192,106 @@ export default {
         if (this.currentLayer) {
           return this.currentLayer.color !== null
             ? this.currentLayer.color
-            : this.fallbackColor
+            : this.fallbackColor;
         } else {
-          return this.hive.color !== null ? this.hive.color : this.fallbackColor
+          return this.hive.color !== null
+            ? this.hive.color
+            : this.fallbackColor;
         }
       },
       set(value) {
-        this.layerColorPickerValue = value
-      },
+        if (this.currentLayer) {
+          this.layerColorPickerValue = value;
+          this.currentLayer.color = value;
+        } else {
+          this.hive.color = value;
+        }
+      }
     },
     hiveLayers: {
       get() {
-        return this.orderedLayers(this.hive)
+        return this.orderedLayers(this.hive);
       },
       set(layers) {
-        this.updateHiveLayerOrder(layers)
-      },
+        this.updateHiveLayerOrder(layers);
+      }
     },
     layersToAdd: {
       get() {
-        return this.generateLayersToAdd()
+        return this.generateLayersToAdd();
       },
       set(value) {
-        return value
-      },
+        return value;
+      }
     },
     mobile() {
-      return this.$vuetify.display.xs
-    },
+      return this.$vuetify.display.xs;
+    }
   },
   methods: {
     cancelColorPicker() {
-      this.overlayLayerColor = false
-      this.layerColorPreview = false
-      this.currentLayer = null
+      this.overlayLayerColor = false;
+      this.layerColorPreview = false;
+      this.currentLayer = null;
     },
     checkColor(layer) {
-      if (this.colorPickerValue !== '' && this.colorPreview) {
-        return this.colorPickerValue
+      if (this.colorPickerValue !== "" && this.colorPreview) {
+        return this.colorPickerValue;
       } else if (
         this.layerColorPreview &&
         ((layer.id && layer.id === this.currentLayer.id) ||
           (layer.key && layer.key === this.currentLayer.key))
       ) {
-        return this.layerColorPickerValue
+        return this.layerColorPickerValue;
       } else if (layer.color !== null && !this.colorPreview) {
-        return layer.color
+        return layer.color;
       } else if (this.hive.color !== null && !this.colorPreview) {
-        return this.hive.color
+        return this.hive.color;
       } else {
-        return this.fallbackColor
+        return this.fallbackColor;
       }
     },
-    cloneLayer({ key, order, color, type, framecount, newLayer }) {
+    cloneLayer({ order, color, type, framecount }) {
       return {
         key: keyGlobal--,
         order,
         type,
         color,
-        framecount,
-      }
+        framecount
+      };
     },
     deleteLayer() {
       this.$refs.confirm
-        .open(this.$i18n.t('Delete'), this.$i18n.t('delete_layer') + '?', {
-          color: 'red',
+        .open(this.$i18n.t("Delete"), this.$i18n.t("delete_layer") + "?", {
+          color: "red"
         })
-        .then((confirm) => {
-          const layerId = this.currentLayer.id || 0
-          const layerKey = this.currentLayer.key || 0
+        .then(() => {
+          const layerId = this.currentLayer.id || 0;
+          const layerKey = this.currentLayer.key || 0;
           const remainingLayers = this.hive.layers.filter(
-            (layer) => !(layer.id === layerId || layer.key === layerKey)
-          )
-          this.hive.layers = remainingLayers
+            layer => !(layer.id === layerId || layer.key === layerKey)
+          );
+          this.hive.layers = remainingLayers;
           this.hive.frames =
             remainingLayers.length > 0
               ? this.getMaxFramecount(this.hive.layers)
-              : this.frameCount
+              : this.frameCount;
           if (this.hive.layers.length === 1) {
-            this.frameCount = this.getMaxFramecount(this.hive.layers)
-            this.$emit('update-defaultframecount', this.frameCount)
+            this.frameCount = this.getMaxFramecount(this.hive.layers);
+            this.$emit("update-defaultframecount", this.frameCount);
           }
-          this.setHiveEdited(true)
-          this.setApiaryEdited(true)
+          this.setHiveEdited(true);
+          this.setApiaryEdited(true);
 
-          this.cancelColorPicker()
+          this.cancelColorPicker();
         })
-        .catch((reject) => {
-          return true
-        })
+        .catch(() => {
+          return true;
+        });
     },
     generateLayersToAdd: function() {
-      const arr = []
-      const layerType = ['honey', 'brood', 'feeding_box', 'queen_excluder']
+      const arr = [];
+      const layerType = ["honey", "brood", "feeding_box", "queen_excluder"];
       for (let n = 0; n < 4; n++) {
         arr[n] = {
           key: keyGlobal--,
@@ -293,75 +302,75 @@ export default {
             this.hive.layers.length > 0
               ? this.getMaxFramecount(this.hive.layers)
               : this.frameCount,
-          newLayer: true,
-        }
+          newLayer: true
+        };
       }
-      return arr
+      return arr;
     },
     hasLayer(type) {
-      return this.hive.layers.some((layer) => layer.type === type)
+      return this.hive.layers.some(layer => layer.type === type);
     },
     hiveWidth: function(hive) {
       if (this.mobile) {
         return hive.layers.length > 0
           ? this.getMaxFramecount(this.hive.layers) * 6
-          : this.frameCount * 6
+          : this.frameCount * 6;
       } else {
         return hive.layers.length > 0
           ? this.getMaxFramecount(this.hive.layers) * 7
-          : this.frameCount * 7
+          : this.frameCount * 7;
       }
     },
     layerTypeText(layer) {
-      return this.$i18n.tc('Hive_' + layer.type + '_layer', 1)
+      return this.$i18n.tc("Hive_" + layer.type + "_layer", 1);
     },
     openOverlay(layer) {
-      this.overlayLayerColor = true
-      this.currentLayer = layer
-      this.layerColorPreview = true
+      this.overlayLayerColor = true;
+      this.currentLayer = layer;
+      this.layerColorPreview = true;
       this.layerColorPickerValue =
-        layer.color !== null ? layer.color : this.fallbackColor
+        layer.color !== null ? layer.color : this.fallbackColor;
     },
     setApiaryEdited(bool) {
-      this.$store.commit('locations/setApiaryEdited', bool)
+      this.$store.commit("locations/setApiaryEdited", bool);
     },
     setHiveEdited(bool) {
-      this.$store.commit('hives/setHiveEdited', bool)
+      this.$store.commit("hives/setHiveEdited", bool);
     },
     updateHiveLayerColor() {
-      const layerId = this.currentLayer.id || 0
-      const layerKey = this.currentLayer.key || 0
+      const layerId = this.currentLayer.id || 0;
+      const layerKey = this.currentLayer.key || 0;
 
       const layerIndex = this.hive.layers.findIndex(
-        (layer) => layer.id === layerId || layer.key === layerKey
-      )
-      this.hive.layers[layerIndex].color = this.layerColorPickerValue
+        layer => layer.id === layerId || layer.key === layerKey
+      );
+      this.hive.layers[layerIndex].color = this.layerColorPickerValue;
       this.hive.frames =
         this.hive.layers.length > 0
           ? this.getMaxFramecount(this.hive.layers)
-          : this.frameCount
-      this.setHiveEdited(true)
-      this.setApiaryEdited(true)
+          : this.frameCount;
+      this.setHiveEdited(true);
+      this.setApiaryEdited(true);
 
-      this.cancelColorPicker()
+      this.cancelColorPicker();
     },
     updateHiveLayerOrder(layers) {
-      let i = layers.length
-      layers.map((layer) => {
-        layer.order = i
-        i--
-        return layer
-      })
-      this.hive.layers = layers
+      let i = layers.length;
+      layers.map(layer => {
+        layer.order = i;
+        i--;
+        return layer;
+      });
+      this.hive.layers = layers;
       this.hive.frames =
         this.hive.layers.length > 0
           ? this.getMaxFramecount(this.hive.layers)
-          : this.frameCount
-      this.setHiveEdited(true)
-      this.setApiaryEdited(true)
-    },
-  },
-}
+          : this.frameCount;
+      this.setHiveEdited(true);
+      this.setApiaryEdited(true);
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -422,20 +431,20 @@ export default {
   justify-content: flex-end;
   &::after {
     margin-right: -16px;
-    font-family: 'Material Design Icons';
+    font-family: "Material Design Icons";
     font-size: 18px;
     color: $color-grey;
-    content: '\F004E';
+    content: "\F004E";
   }
 }
 .feeding_box-layer {
   justify-content: center;
   &::after {
     margin-top: -16px;
-    font-family: 'Material Design Icons';
+    font-family: "Material Design Icons";
     font-size: 18px;
     color: $color-grey;
-    content: '\F0046';
+    content: "\F0046";
   }
 }
 
@@ -479,7 +488,7 @@ export default {
       display: block;
       width: 100%;
       height: 100%;
-      content: '';
+      content: "";
       background-color: red;
     }
   }
@@ -500,7 +509,7 @@ export default {
         display: block;
         width: 100%;
         height: 100%;
-        content: '';
+        content: "";
         background-color: rgba(0, 0, 0, 0.3);
       }
     }

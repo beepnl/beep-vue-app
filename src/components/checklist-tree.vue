@@ -46,87 +46,87 @@
 </template>
 
 <script>
-import { ElForm, ElFormItem, ElTree } from 'element-plus'
-import 'element-plus/es/components/tree/style/css'
+import { ElForm, ElFormItem, ElTree } from "element-plus";
+import "element-plus/es/components/tree/style/css";
 
 export default {
   components: {
     ElForm,
     ElFormItem,
-    ElTree,
+    ElTree
   },
   props: {
     disabled: {
       type: Boolean,
-      required: false,
+      required: false
     },
     items: {
       type: Array,
-      required: true,
+      required: true
     },
     selected: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
-  emits: ['update-categories'],
+  emits: ["update-categories"],
   data() {
     return {
       defaultProps: {
-        children: 'children',
-        label: 'text',
+        children: "children",
+        label: "text"
       },
-      filterText: '',
-      categoryIds: [],
-    }
+      filterText: "",
+      categoryIds: []
+    };
   },
   computed: {
     locale() {
-      return this.$i18n.locale
-    },
+      return this.$i18n.locale;
+    }
   },
   watch: {
     filterText(val) {
-      this.$refs.tree.filter(val)
-    },
+      this.$refs.tree.filter(val);
+    }
   },
   methods: {
     allowDrop(draggingNode, dropNode, type) {
       if (!this.disabled && draggingNode.parent.id === dropNode.parent.id) {
-        return type !== 'inner'
+        return type !== "inner";
       } else {
-        return false
+        return false;
       }
     },
     checkChildren(node, selected) {
-      node.children.map((child) => {
-        this.$refs.tree.setChecked(child.id, selected)
+      node.children.map(child => {
+        this.$refs.tree.setChecked(child.id, selected);
         if (child.children !== null) {
-          this.checkChildren(child, selected)
+          this.checkChildren(child, selected);
         }
-        return child
-      })
+        return child;
+      });
     },
     filterNode(value, data) {
-      if (!value) return true
-      return data.text.toLowerCase().indexOf(value.toLowerCase()) !== -1
+      if (!value) return true;
+      return data.text.toLowerCase().indexOf(value.toLowerCase()) !== -1;
     },
-    nodeDragStart(dragNode, event) {
+    nodeDragStart() {
       // get categoryIds array when dragging started
-      this.categoryIds = this.$refs.tree.getCheckedKeys()
+      this.categoryIds = this.$refs.tree.getCheckedKeys();
     },
-    nodeDrop(dragNode, dropNode, dropType, event) {
+    nodeDrop() {
       // select correct nodes (long version: set categoryIds array like when dragging started (if not, dragged node will be deselected), then automatically the order of ids in the array will correspond to new ('after drag') node order)
-      this.$refs.tree.setCheckedKeys(this.categoryIds)
+      this.$refs.tree.setCheckedKeys(this.categoryIds);
       // get re-ordered array of selected nodes (in correct 'after drop' order) and update it
-      this.categoryIds = this.$refs.tree.getCheckedKeys()
-      this.$emit('update-categories', this.categoryIds)
+      this.categoryIds = this.$refs.tree.getCheckedKeys();
+      this.$emit("update-categories", this.categoryIds);
     },
-    updateCategories(node, selected, subtree) {
-      this.checkChildren(node, selected)
-      this.categoryIds = this.$refs.tree.getCheckedKeys()
-      this.$emit('update-categories', this.categoryIds)
-    },
-  },
-}
+    updateCategories(node, selected) {
+      this.checkChildren(node, selected);
+      this.categoryIds = this.$refs.tree.getCheckedKeys();
+      this.$emit("update-categories", this.categoryIds);
+    }
+  }
+};
 </script>

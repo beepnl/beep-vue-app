@@ -46,7 +46,7 @@
         <v-sheet
           light
           :class="
-            `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+            `hive-icon hive-icon-preview d-flex flex-column justify-center align-center text-white text--small mr-1 ${
               hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
             } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''} ${
               dashboardMode ? ' --dashboard' : ''
@@ -90,7 +90,7 @@
           <span
             v-if="!dashboardMode"
             :style="`width: ${hiveWidth(hive) + 16}px;`"
-            class="hive-caption caption"
+            class="hive-caption text-body-small"
             >{{ hive.name }}</span
           >
         </v-sheet>

@@ -23,8 +23,8 @@
         v-if="btn.if"
         :class="
           'rounded-border primary-border mode-box mb-2 d-flex flex-column align-center cursor-pointer ' +
-            (showInfo.length === 0 ? 'justify-center ' : '') +
-            btn.class
+          (showInfo.length === 0 ? 'justify-center ' : '') +
+          btn.class
         "
         @click="setSelectedMode = btn.mode"
       >
@@ -35,7 +35,7 @@
           <span class="font-xsmall text-center"
             >{{ btn.text
             }}<v-icon
-              v-if="touchDevice"
+              v-if="touchDeviceOrMobile"
               class="ml-1 icon-info"
               size="small"
               color="accent"
@@ -45,7 +45,7 @@
           >
         </div>
         <span
-          v-if="touchDevice && showInfo.includes(btn.mode)"
+          v-if="touchDeviceOrMobile && showInfo.includes(btn.mode)"
           class="font-xsmall text-center mt-1"
           v-text="btn.tooltip"
         ></span>
@@ -69,7 +69,10 @@
 </template>
 
 <script>
+import { touchDevice } from '@mixins/methodsMixin'
+
 export default {
+  mixins: [touchDevice],
   props: {
     selectedMode: {
       type: String,
@@ -89,14 +92,15 @@ export default {
     },
     modeButtons() {
       return [
-        {
-          if: !this.uploadMode,
-          mode: 'Upload',
-          text: this.$i18n.t('Upload_inspection'),
-          tooltip: this.$i18n.t('Upload_inspection_exp'),
-          class: '',
-          icon: 'mdi-camera-plus',
-        },
+        // temp? disabled as Pensoft image parser is offline
+        // {
+        //   if: !this.uploadMode,
+        //   mode: 'Upload',
+        //   text: this.$i18n.t('Upload_inspection'),
+        //   tooltip: this.$i18n.t('Upload_inspection_exp'),
+        //   class: '',
+        //   icon: 'mdi-camera-plus',
+        // },
         {
           if: !this.onlineMode,
           mode: 'Online',
@@ -129,11 +133,8 @@ export default {
         this.$emit('set-selected-mode', value)
       },
     },
-    touchDevice() {
-      return (
-        window.matchMedia('(hover: none)').matches ||
-        this.$vuetify.display.mobile
-      )
+    touchDeviceOrMobile() {
+      return this.touchDevice || this.$vuetify.display.mobile
     },
     uploadMode() {
       return this.selectedMode === 'Upload'

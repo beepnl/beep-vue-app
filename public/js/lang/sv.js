@@ -102,9 +102,9 @@ const translations = {
   Cancel: 'Upphäv',
 
   /* login */
-  login_title: 'Login',
-  login: 'Login',
-  back_to_login: 'Tillbaka till login',
+  login_title: 'Inloggning',
+  login: 'Logga in',
+  back_to_login: 'Tillbaka till inloggning',
   forgot_password: 'Glömt lösenordet?',
 
   username: 'Användarnamn',
@@ -365,10 +365,11 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    "Exportera alla data som finns på ditt BEEP konto och skicka ett mail med en Excelfil som innehåller alla data (OR download the Excel file via the 'Download CSV' button). Excelfilen har olika flikar olika för typer av data (personuppgifter, kupa, plats, och inspektionsdata).",
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+    "Exportera alla data som finns på ditt BEEP konto och skicka ett mail med en Excelfil som innehåller alla data (OR download the Excel file via the 'Download XLS' button). Excelfilen har olika flikar olika för typer av data (personuppgifter, kupa, plats, och inspektionsdata).",
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -575,7 +576,7 @@ const translations = {
     ', som är I överensstämmelse med den nya Europeiska privacy law',
   terms_of_use: 'användarvillkor',
   invalid_password:
-    "{'Lösenord måste innehålla minst 8 tecken, en liten bokstav, en stor bokstav, en siffra och ett tecken t.ex. ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'Lösenord måste innehålla minst 8 tecken, en liten bokstav, en stor bokstav, en siffra och ett tecken t.ex. ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'givar definition | givar definitioner',
   measurement: 'mätvärde | mätvärden',
   remove_device: 'Ta bort enhet',
@@ -589,6 +590,8 @@ const translations = {
     'Ett meddelande med en verifikationslänk har skickats till din email. Klicka på länken I mailet för att bekräfta din email adress och logga in.',
   sensordef_info:
     "En givar definition har som mål att konvertera inkommande 'råa' givarvärde till ett värde och en enhet eller att kalibrera givaren. Detta kan göras genom att ställa in en òffset` och en `multiplier`. Indata och utdata förblir desamma om offset är 0 och multiplier är 1. BEEP base appen kommer att förse dig med korrekta givardefinitioner när du ställer in den för första gången.",
+  sensordef_date_info:
+    'Denna kalibrering gäller från det inställda datumet fram till nu (eller ett annat inställt kalibreringsvärde)',
   or: 'eller',
   select_all_hives: 'Välj samtliga kupor',
   select_all_editable_hives: 'Välj samtliga redigerbara kupor',
@@ -729,6 +732,7 @@ const translations = {
   drag_layers_info_text:
     'Dra lådor/lager från vänstra sidan till önskad position på den högra sidan. Radera en låda/lager från kupan genom att klicka på den och sen klicka på den röda ikonen. Även inom kupan kan lådor/lager dras till önskad position om man vill justera något. Färgen på era låda/lager kan redigeras genom att kicka på lådan.',
   New_hive: 'Ny kupa',
+  New_beep_base: 'Ny BEEP base',
   New_alertrule: 'Ny varningsregel',
   Add_alertrule: 'Lägg till varningsregel',
   Add_apiary: 'Lägg till bigård',
@@ -972,6 +976,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -984,8 +991,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1145,6 +1152,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

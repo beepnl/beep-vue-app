@@ -100,7 +100,7 @@ const translations = {
 
   /* login */
   login_title: 'Login',
-  login: 'Login',
+  login: 'anmelden',
   back_to_login: 'Zurück zum Login',
   forgot_password: 'Passwort vergessen?',
   username: 'Benutzername',
@@ -381,11 +381,12 @@ const translations = {
   /* user */
   Data_export: 'Daten Export',
   Export_your_data:
-    "Exportiere alle Daten aus Deinem Account per Email (Exceldatei) (OR download the Excel file via the 'Download CSV' button).",
+    "Exportiere alle Daten aus Deinem Account per Email (Exceldatei) (OR download the Excel file via the 'Download XLS' button).",
   Terms_of_use: 'Nutzungsbedingungen',
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Add collaboration group data to export',
   Include_sensor_data: 'Add measurement data file links to export',
 
@@ -606,7 +607,7 @@ const translations = {
     ', die mit dem neuen europäischen Datenschutzgesetz vereinbar sind',
   terms_of_use: 'Nutzungsbedingungen',
   invalid_password:
-    "{'Das Passwort muss mindestens 8 Zeichen enthalten, einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl und ein Sonderzeichen ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
+    'Das Passwort muss mindestens 8 Zeichen enthalten, einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl und ein Sonderzeichen ([]]{}()?-"!@#%&/,><\':;|_~`)',
   sensor_definition: 'Sensor Definition | Sensor Definitionen',
   measurement: 'Messung | Messungen',
   remove_device: 'Gerät entfernen',
@@ -620,6 +621,8 @@ const translations = {
     'Es wurde eine Nachricht mit einem Verifizierungslink an Deine neue E-Mail-Adresse gesendet. Klicke auf den Link in der E-Mail, um Deine neue E-Mail-Adresse zu bestätigen und dich anzumelden.',
   sensordef_info:
     "Eine Sensordefinition dient dazu, einen Sensorwert aus einem eingehenden 'rohen' Sensorwert in einen Wert gemäß einer physikalischen Größe und Einheit umzuwandeln (z.B. w_v = 1098273 => Gewicht_kg = 62.400 kg) oder einen Sensor zu kalibrieren (z.B. t_0 = 15,3 ° C => t_0 = 15,8 ° C). Dies kann durch die Einstellung eines 'Offsets' und eines 'Multiplikators' erfolgen. Der Ein- und Ausgangswert bleibt gleich, wenn Offset '0' und Multiplikator '1' eingestellt ist. Die BEEP-Base-App (aus dem App Store) liefert Ihnen bei der Ersteinrichtung Ihrer BEEP-Base die richtigen Sensor-Definitionen.",
+  sensordef_date_info:
+    'Diese Kalibrierung gilt vom eingestellten Datum bis jetzt (oder einem anderen eingestellten Kalibrierungswert)',
   or: 'oder',
   select_all_hives: 'Selektiere alle Beuten',
   select_all_editable_hives: 'Alle bearbeitbaren Beuten auswählen',
@@ -764,6 +767,7 @@ const translations = {
   drag_layers_info_text:
     'Ziehe die Elemente von der linken Seite an die gewünschte Position innerhalb der Beute auf der rechten Seite. Lösche eine Ebene aus der Beute, indem Du sie anklickst und dann auf das rote Mülltonnensymbol klickst. Innerhalb der Beute können Elemente auch gezogen werden, um die Position zu bearbeiten, die Farbe kann durch Klicken auf das Element bearbeitet werden.',
   New_hive: 'Neue Beute',
+  New_beep_base: 'Neue BEEP-Basis',
   New_alertrule: 'Neue Alarmregel',
   Add_alertrule: 'Füge eine Alarmregel hinzu',
   Add_apiary: 'Füge einen Bienenstand hinzu',
@@ -1009,6 +1013,9 @@ const translations = {
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
   Hivetag_view_inspections: 'View inspections',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000803807-qr-hive-tags',
+  Hivetags_url_text: 'Read the support article about hive tags',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
@@ -1021,8 +1028,8 @@ const translations = {
   pwa_title: 'Use BEEP as an app?',
   pwa_body:
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
-  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
-  pwa_addhome_button_label: "2. Tap 'Add to home'.",
+  pwa_share_button_label: "1. Tap the 'Share' icon",
+  pwa_addhome_button_label: "2. Tap 'Add to Home Screen'",
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard | Dashboards',
@@ -1182,6 +1189,10 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  /* below, please keep {groupOrApiary} as is, it will be replaced by either the translation for a single group_short or apiary */
+  Fav_exp:
+    'Favorite this {groupOrApiary} - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

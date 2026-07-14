@@ -1,3 +1,16 @@
+// =============================================================================
+// print.scss — Print styles and screen/print utility classes
+//
+// @layer overrides: our print rules sit above all Vuetify layers.
+//
+// Note: @page and bare @media print rules cannot be nested inside @layer in
+// all browsers yet, so they are declared at the top level — browsers that
+// support cascade layers still handle specificity correctly because @media
+// print already creates its own implicit scope.
+// =============================================================================
+@use 'tokens' as *;
+
+// Screen-only utility (no layer needed — simple display: none never conflicts)
 .print-only {
   display: none;
 }

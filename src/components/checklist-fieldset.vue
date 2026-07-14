@@ -9,8 +9,8 @@
               category.input !== 'options'))
       "
     >
-      <div class="text-overline mb-2"
-        >{{ getLabel(category) }}
+      <div class="custom-text-overline mb-2">
+        {{ getLabel(category) }}
         <a
           v-if="category.description !== null || category.source !== null"
           @click="showDescription = !showDescription"
@@ -116,71 +116,72 @@
 </template>
 
 <script>
-import ChecklistInput from '@components/checklist-input.vue'
-// import ChecklistFieldset from '@components/checklist-fieldset.vue'
-import TopPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
-import LiebefelderMethod from '@components/input-fields/liebefelder-method.vue'
-import { getLabel } from '@mixins/methodsMixin'
+import ChecklistInput from "@components/checklist-input.vue";
+import LiebefelderMethod from "@components/input-fields/liebefelder-method.vue";
+import TopPhotoAnalysis from "@components/input-fields/top-photo-analysis.vue";
+import { getLabel } from "@mixins/methodsMixin";
+import { defineAsyncComponent } from "vue";
 
 export default {
-  name: 'ChecklistFieldset',
+  name: "ChecklistFieldset",
   components: {
-    // ChecklistFieldset,
-    ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
+    ChecklistFieldset: defineAsyncComponent(() =>
+      import("@components/checklist-fieldset.vue")
+    ), // needed to fix Vue recursive component error
     ChecklistInput,
     LiebefelderMethod,
-    TopPhotoAnalysis,
+    TopPhotoAnalysis
   },
   mixins: [getLabel],
   props: {
     category: {
       type: Object,
       default: null,
-      required: true,
+      required: true
     },
     object: {
       type: Object,
       default: null,
-      required: true,
+      required: true
     },
     nested: {
       type: Boolean,
       required: false,
-      default: false,
+      default: false
     },
     parseMode: {
       type: Boolean,
       required: false,
-      default: false,
-    },
+      default: false
+    }
   },
   data: function() {
     return {
-      showDescription: false,
-    }
+      showDescription: false
+    };
   },
   computed: {
     locale() {
-      return this.$i18n.locale
+      return this.$i18n.locale;
     },
     mobile() {
-      return this.$vuetify.display.xs
-    },
+      return this.$vuetify.display.xs;
+    }
   },
   methods: {
     itemFullWidth(item) {
-      return this.nested || item.input === 'label' || item.input === 'text'
+      return this.nested || item.input === "label" || item.input === "text";
     },
     showNestedFieldset(item) {
       return (
-        (item.input === 'boolean' ||
-          item.input === 'boolean_yes_red' ||
-          item.input === 'list_item') &&
+        (item.input === "boolean" ||
+          item.input === "boolean_yes_red" ||
+          item.input === "list_item") &&
         (this.object[item.id] === 1 || this.parseMode)
-      )
-    },
-  },
-}
+      );
+    }
+  }
+};
 </script>
 
 <style lang="scss"></style>

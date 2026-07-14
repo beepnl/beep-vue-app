@@ -347,9 +347,10 @@ const translations = {
   Data_export: 'Data exporteren',
   Export_your_data:
     'Exporteer alle data die is opgeslagen in je BEEP account en verstuur deze in een e-mail met als bijlage een Excel (.xslx) bestand OF download dit bestand hier. Het bestand heeft meerdere tabbladen met daarop je persoonlijke-, bijenstand-, kast- en inspectiegegevens.',
-  Email_export: 'Email CSV',
-  Download_csv: 'Download CSV',
+  Email_export: 'Email XLS',
+  Download_xls: 'Download XLS',
   Open_csv: 'Open CSV',
+  Open_xls: 'Open XLS',
   Include_group_data: 'Voeg samenwerkingsgroepsdata toe aan export',
   Include_sensor_data:
     'Voeg links naar bestanden met sensordata toe aan export',
@@ -540,7 +541,7 @@ const translations = {
   accept_policy_2: ', die in lijn zijn met de nieuwe Europese privacywetgeving',
   terms_of_use: 'servicevoorwaarden',
   invalid_password:
-    "{'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken ([]]{}()?-\"!@#%&/,><':;|_~`) bevatten'}",
+    'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken ([]\{\}()?-"!\@#%&/,><\':;\|_~`) bevatten',
   sensor_definition: 'sensor definitie | sensor definities',
   measurement: 'meting | metingen',
   remove_device: 'Verwijder meetsysteem',
@@ -553,7 +554,9 @@ const translations = {
   new_email_verification_sent:
     'Er is een bericht met een validatie-link naar je nieuwe e-mail adres gestuurd. Klik op de link in de e-mail om je nieuwe e-mail adres te bevestigen en opnieuw in te loggen.',
   sensordef_info:
-    "Een sensordefinitie is bedoeld om de sensorwaarde van een inkomende 'ruwe' sensorwaarde om te zetten in een waarde volgens een grootheid en eenheid (bijv. w_v = 1098273 => weight_kg = 62,400 kg) of om een sensor te calibreren (bijv. t_0 = 15.3 °C => t_0 = 15.8 °C). Dit kan worden gedaan door een 'offset' en een 'multiplier' in te stellen. De in- en uitgaande waarde blijft gelijk als als offset '0' en als multiplier '1' wordt ingesteld. De BEEP base app (uit de App Store) zal deze correct voor je instellen als je de BEEP base voor het eerst configureert.",
+    "Een sensordefinitie is bedoeld om de sensorwaarde van een inkomende 'ruwe' sensorwaarde om te zetten in een waarde volgens een grootheid en eenheid (bijv. w_v = 1098273 => weight_kg = 62,400 kg) of om een sensor te kalibreren (bijv. t_0 = 15.3 °C => t_0 = 15.8 °C). Dit kan worden gedaan door een 'offset' en een 'multiplier' in te stellen. De in- en uitgaande waarde blijft gelijk als als offset '0' en als multiplier '1' wordt ingesteld. De BEEP base app (uit de App Store) zal deze correct voor je instellen als je de BEEP base voor het eerst configureert.",
+  sensordef_date_info:
+    'Deze kalibratie geldt vanaf de ingestelde datum tot nu (of een andere ingestelde kalibratiewaarde)',
   or: 'of',
   select_all_hives: 'Selecteer alle bijenkasten',
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
@@ -695,6 +698,7 @@ const translations = {
   drag_layers_info_text:
     'Versleep kamers van links naar de gewenste positie in de kast aan de rechterkant. Verwijder een kamer uit de kast door erop te klikken en dan op het prullenbakicoon te klikken. Binnen de kast kunnen kamers ook versleept worden om de positie te wijzigen, en de kleur kan aangepast worden door erop te klikken.',
   New_hive: 'Nieuwe kast',
+  New_beep_base: 'Nieuw BEEP base',
   New_alertrule: 'Nieuwe notificatie-instelling',
   Add_alertrule: 'Toevoegen notificatie-instelling',
   Add_apiary: 'Toevoegen bijenstand',
@@ -901,36 +905,39 @@ const translations = {
   Edit_checklist: 'Aanpassen kastkaart',
   Edit_devices: 'Aanpassen meetsystemen',
   Edit_consent: 'Aanpassen toestemming',
-  Edit_hivetag: 'Aanpassen hive tag',
+  Edit_hivetag: 'Aanpassen kastlabel',
 
-  Hivetag: 'Hive tag | Hive tags',
+  Hivetag: 'Kastlabel | Kastlabels',
   Hivetag_exp_1:
-    "'Hive tags' zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met 'actie' worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ",
+    "'Kastlabels' zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je het kastlabel scant. Met 'actie' worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra het kastlabel is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De kastlabels kan je zelf printen, door ",
   Hivetag_download_text: 'deze pdf te downloaden.',
   Hivetag_exp_2:
-    ' Scan een hive tag om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
+    ' Scan een kastlabel om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
   qrcode: 'QR Code | QR Codes',
-  Qrcode_exp1: "Plak de hive tag met nummer '",
+  Qrcode_exp1: "Plak het kastlabel met nummer '",
   Qrcode_exp2: "' op een bijenkast.",
   Qrcode_note:
-    'N.B. Bovenstaande QR code komt niet overeen met de daadwerkelijke hive tag, deze is slechts als voorbeeld bedoeld.',
-  Download_hivetags: 'Download hive tags pdf',
-  Delete_hivetag: 'Verwijder hive tag',
+    'N.B. Bovenstaande QR code komt niet overeen met het daadwerkelijke kastlabel, deze is slechts als voorbeeld bedoeld.',
+  Download_hivetags: 'Download kastlabels pdf',
+  Delete_hivetag: 'Verwijder kastlabel',
   for_hive: 'voor bijenkast "',
-  Select_hivetag_number: 'Selecteer een hive tag nummer',
-  Add_hivetag: 'Voeg hive tag toe',
+  Select_hivetag_number: 'Selecteer een kastlabel nummer',
+  Add_hivetag: 'Voeg kastlabel toe',
   Select_hive: 'Selecteer een bijenkast | Selecteer bijenkasten',
   Select_hive_for_hivetag_exp:
     'Voor welke bijenkast wil je de actie uitvoeren? Selecteer één bijenkast.',
   Select_hivetag_action: 'Selecteer een actie',
   Select_hivetag_action_exp:
-    'Welke actie wil je uitvoeren wanneer je de hive tag scant?',
+    'Welke actie wil je uitvoeren wanneer je het kastlabel scant?',
   Hivetag_hive_in_overview: 'Toon bijenkast in het kastenoverzicht',
   Hivetag_new_inspection: 'Maak een nieuwe inspectie aan',
   Hivetag_edit_hive: 'Pas kastconfiguratie aan',
   Hivetag_view_inspections: 'Bekijk inspecties',
+  Hivetag_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000803807-qr-kastlabels',
+  Hivetags_url_text: 'Lees hier het support artikel over kastlabels',
   No_hivetags_left:
-    'Alle hive tags zijn momenteel in gebruik. Verwijder een bestaande hive tag om een nieuwe toe te kunnen voegen, of pas deze aan.',
+    'Alle kastlabels zijn momenteel in gebruik. Verwijder een bestaand kastlabel om een nieuwe toe te kunnen voegen, of pas deze aan.',
 
   Select_hives_for_consent: 'Selecteer bijenkasten voor toestemming',
   Select_hives_for_consent_exp:
@@ -941,7 +948,7 @@ const translations = {
   pwa_title: 'BEEP als app gebruiken?',
   pwa_body:
     'Voeg BEEP toe aan je beginscherm om het als web app en op volledig scherm te gebruiken. Je blijft dan ingelogd na de eerste keer inloggen.',
-  pwa_share_button_label: '1. Tik op het deel-icoon in de menubalk onderin.',
+  pwa_share_button_label: "1. Tik op het 'deel' icoon",
   pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
 
   Colony: 'Volk | Volken',
@@ -1109,11 +1116,10 @@ const translations = {
   api_token: 'Api token',
   save_api: 'Api token opslaan',
 
-  // TODO-VUE3 refactor into single term with prop
-  Fav_group_exp: 'Maak deze groep favoriet',
-  Fav_apiary_exp: 'Maak deze bijenstand favoriet',
   Fav_exp:
-    ' - deze zal bovenaan de lijst getoond worden en eerder worden ingeladen dan de rest',
+    'Maak deze {groupOrApiary} favoriet - deze zal bovenaan de lijst getoond worden en eerder worden ingeladen dan de rest',
+
+  Connect: 'Verbind',
 }
 
 export default translations

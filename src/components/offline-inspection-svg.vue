@@ -41,88 +41,84 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { svgData, svgStyles } from '@mixins/svgMixin'
-import svgCategory from '@/src/components/svg/svg-category.vue'
-import svgOverall from '@/src/components/svg/svg-overall.vue'
-import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
+import svgCategory from "@/src/components/svg/svg-category.vue";
+import svgOverall from "@/src/components/svg/svg-overall.vue";
+import svgPrintCorners from "@/src/components/svg/svg-print-corners.vue";
+import { appVersion } from "@mixins/methodsMixin";
+import { svgData, svgStyles } from "@mixins/svgMixin";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     svgCategory,
     svgOverall,
-    svgPrintCorners,
+    svgPrintCorners
   },
-  mixins: [svgData, svgStyles],
+  mixins: [appVersion, svgData, svgStyles],
   props: {
     selectedChecklist: {
       type: Object,
       default: null,
-      required: true,
+      required: true
     },
     checklistSvgAlreadySaved: {
       type: Object,
       default: null,
-      required: false,
+      required: false
     },
     checklistSvgDifferentAppVersion: {
       type: Boolean,
-      default: false,
+      default: false
     },
     checklistSvgId: {
       type: Number,
       default: null,
-      required: false,
+      required: false
     },
     newSvgName: {
       type: String,
       default: null,
-      required: false,
+      required: false
     },
     printMode: {
       type: Boolean,
-      default: false,
+      default: false
     },
     selectedMode: {
       type: String,
       default: null,
-      required: false,
+      required: false
     },
     totalPages: {
       type: Number,
       default: 1,
-      required: false,
-    },
-  },
-  emits: ['done-loading'],
-  data() {
-    return {
-      appVersion: process.env.VUE_APP_VERSION,
+      required: false
     }
   },
+  emits: ["done-loading"],
   computed: {
-    ...mapGetters('inspections', [
-      'svgMaxPageNr',
-      'svgPageNr',
-      'svgY',
-      'svgWarnings',
+    ...mapGetters("inspections", [
+      "svgMaxPageNr",
+      "svgPageNr",
+      "svgY",
+      "svgWarnings"
     ]),
     calcSvgHeight() {
       const removePage =
-        this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0
-      return (this.svgPageNr - removePage) * this.pageHeight + 'mm'
+        this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0;
+      return (this.svgPageNr - removePage) * this.pageHeight + "mm";
     },
     now() {
-      return this.$moment().format('YYYY-MM-DD HH:mm')
+      return this.$moment().format("YYYY-MM-DD HH:mm");
     },
     pages() {
-      return this.svgPageNr
+      return this.svgPageNr;
     },
     saveAsNewChecklistSvg() {
       return (
         this.checklistSvgAlreadySaved === null ||
         this.checklistSvgDifferentAppVersion
-      )
+      );
     },
     svgChecklistName() {
       return !this.saveAsNewChecklistSvg
@@ -130,16 +126,16 @@ export default {
         : this.newSvgName
         ? this.newSvgName
         : this.selectedChecklist.name +
-          ' (' +
+          " (" +
           this.now +
-          ') (v' +
+          ") (v" +
           this.appVersion +
-          ')'
-    },
+          ")";
+    }
   },
   mounted() {
-    console.log('svg mounted')
-    this.$emit('done-loading')
-  },
-}
+    console.log("svg mounted");
+    this.$emit("done-loading");
+  }
+};
 </script>
