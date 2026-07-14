@@ -92,14 +92,15 @@ export default {
     },
     modeButtons() {
       return [
-        {
-          if: !this.uploadMode,
-          mode: 'Upload',
-          text: this.$i18n.t('Upload_inspection'),
-          tooltip: this.$i18n.t('Upload_inspection_exp'),
-          class: '',
-          icon: 'mdi-camera-plus',
-        },
+        // temp? disabled as Pensoft image parser is offline
+        // {
+        //   if: !this.uploadMode,
+        //   mode: 'Upload',
+        //   text: this.$i18n.t('Upload_inspection'),
+        //   tooltip: this.$i18n.t('Upload_inspection_exp'),
+        //   class: '',
+        //   icon: 'mdi-camera-plus',
+        // },
         {
           if: !this.onlineMode,
           mode: 'Online',

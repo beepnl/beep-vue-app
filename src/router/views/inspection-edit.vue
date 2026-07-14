@@ -7,33 +7,33 @@
   >
     <h1 v-if="hiveNotEditable" class="unauthorized-title">
       {{
-        $t("sorry") +
-          ", " +
-          $tc("hive", 1) +
-          " " +
-          activeHive.name +
-          " " +
-          $t("not_editable")
+        $t('sorry') +
+        ', ' +
+        $tc('hive', 1) +
+        ' ' +
+        activeHive.name +
+        ' ' +
+        $t('not_editable')
       }}
     </h1>
 
     <h1
       v-if="
         editMode &&
-          activeInspection &&
-          activeInspection.owner === false &&
-          activeHive.owner === false
+        activeInspection &&
+        activeInspection.owner === false &&
+        activeHive.owner === false
       "
       class="unauthorized-title"
     >
       {{
-        $t("sorry") +
-          ", " +
-          $tc("inspection", 1) +
-          " " +
-          inspectionId +
-          " " +
-          $t("not_editable")
+        $t('sorry') +
+        ', ' +
+        $tc('inspection', 1) +
+        ' ' +
+        inspectionId +
+        ' ' +
+        $t('not_editable')
       }}
     </h1>
 
@@ -48,16 +48,16 @@
         <v-btn
           v-if="
             !uploadMode &&
-              selectedChecklist &&
-              selectedChecklist.owner &&
-              !mobile
+            selectedChecklist &&
+            selectedChecklist.owner &&
+            !mobile
           "
           class="mr-3"
           color="accent"
           @click="editChecklist"
         >
           <v-icon start color="accent">mdi-pencil</v-icon>
-          {{ $t("Edit_checklist") }}
+          {{ $t('Edit_checklist') }}
         </v-btn>
         <v-btn
           v-if="onlineMode"
@@ -65,11 +65,11 @@
           class="save-button-mobile-wide mr-1"
           :disabled="
             !valid ||
-              (selectedHives && selectedHives.length === 0) ||
-              showLoadingIcon ||
-              forceInspectionDate ||
-              invalidDate ||
-              (activeInspection && activeInspection.date === null)
+            (selectedHives && selectedHives.length === 0) ||
+            showLoadingIcon ||
+            forceInspectionDate ||
+            invalidDate ||
+            (activeInspection && activeInspection.date === null)
           "
           @click.prevent="confirmSaveInspection"
         >
@@ -82,7 +82,7 @@
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" start color="black">mdi-check</v-icon>
-          {{ $t("save") }}
+          {{ $t('save') }}
         </v-btn>
         <v-btn
           v-if="offlineMode"
@@ -92,7 +92,7 @@
           @click="confirmPrint"
         >
           <v-icon start>mdi-printer</v-icon>
-          {{ $t("Print") }}
+          {{ $t('Print') }}
         </v-btn>
         <v-btn
           v-if="uploadMode"
@@ -100,11 +100,11 @@
           class="save-button-mobile-wide mr-1"
           :disabled="
             !selectedChecklistSvg ||
-              showLoadingIcon ||
-              (uploadInspectionPayload &&
-                (uploadInspectionPayload.images.length < 1 ||
-                  typeof uploadInspectionPayload['data-user-locale'][0] !==
-                    'string'))
+            showLoadingIcon ||
+            (uploadInspectionPayload &&
+              (uploadInspectionPayload.images.length < 1 ||
+                typeof uploadInspectionPayload['data-user-locale'][0] !==
+                  'string'))
           "
           @click="uploadInspection"
         >
@@ -117,7 +117,7 @@
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" start>mdi-upload</v-icon>
-          {{ $t("Send_pictures") }}
+          {{ $t('Send_pictures') }}
         </v-btn>
       </v-toolbar>
 
@@ -209,13 +209,11 @@
                   v-if="selectedHiveSet"
                   v-model="allHivesSelected"
                   color="accent"
-                  :label="
-                    `${
-                      selectedHiveSet.users
-                        ? $t('select_all_editable_hives')
-                        : $t('select_all_hives')
-                    }`
-                  "
+                  :label="`${
+                    selectedHiveSet.users
+                      ? $t('select_all_editable_hives')
+                      : $t('select_all_hives')
+                  }`"
                   :disabled="offlineMode"
                   hide-details
                 ></v-switch>
@@ -248,8 +246,8 @@
             <InspectModeSelector
               v-if="
                 !editMode &&
-                  (permissions.includes('test-offline-input') ||
-                    permissions.includes('offline-input'))
+                (permissions.includes('test-offline-input') ||
+                  permissions.includes('offline-input'))
               "
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
@@ -298,7 +296,7 @@
                   :locale="locale"
                   :select-text="$t('ok')"
                   :cancel-text="$t('Cancel')"
-                  class=" text-accent"
+                  class="text-accent"
                   @update:model-value="datePickerIDUpdate"
                 />
               </div>
@@ -346,8 +344,8 @@
               <em
                 >{{
                   $t(
-                    (checklistSvgs.length === 0 ? "No_" : "") +
-                      "checklist_svg_exp"
+                    (checklistSvgs.length === 0 ? 'No_' : '') +
+                      'checklist_svg_exp'
                   )
                 }}
               </em>
@@ -372,7 +370,7 @@
               @click="editChecklist"
             >
               <v-icon color="accent" start>mdi-pencil</v-icon>
-              {{ $t("Edit_checklist") }}
+              {{ $t('Edit_checklist') }}
             </v-btn>
           </v-col>
 
@@ -380,8 +378,8 @@
             <InspectModeSelector
               v-if="
                 !editMode &&
-                  (permissions.includes('test-offline-input') ||
-                    permissions.includes('offline-input'))
+                (permissions.includes('test-offline-input') ||
+                  permissions.includes('offline-input'))
               "
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
@@ -390,7 +388,7 @@
 
           <v-col v-if="onlineMode && forceInspectionDate" cols="12">
             <v-alert type="error" prominent color="accent">
-              {{ $t("input_only_possible_when_date_present") }}
+              {{ $t('input_only_possible_when_date_present') }}
             </v-alert>
           </v-col>
         </v-row>
@@ -403,22 +401,18 @@
             class="mt-3"
           >
             <v-card-title
-              :class="
-                `hive-inspect-card-title ${
-                  showCategoriesByIndex[index]
-                    ? 'hive-inspect-card-title--border-bottom'
-                    : ''
-                } cursor-pointer d-flex align-center justify-space-between`
-              "
+              :class="`hive-inspect-card-title ${
+                showCategoriesByIndex[index]
+                  ? 'hive-inspect-card-title--border-bottom'
+                  : ''
+              } cursor-pointer d-flex align-center justify-space-between`"
               @click="toggleCategory(index)"
             >
               <span>{{ getLabel(mainCategory) }}</span>
               <v-icon
-                :class="
-                  `float-right toggle-icon mdi ${
-                    showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
-                  }`
-                "
+                :class="`float-right toggle-icon mdi ${
+                  showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
+                }`"
               ></v-icon>
             </v-card-title>
 
@@ -454,19 +448,15 @@
           <!-- General inspection items -->
           <v-card class="mt-3">
             <v-card-title
-              :class="
-                `hive-inspect-card-title ${
-                  showGeneral ? 'hive-inspect-card-title--border-bottom' : ''
-                } d-flex align-center justify-space-between`
-              "
+              :class="`hive-inspect-card-title ${
+                showGeneral ? 'hive-inspect-card-title--border-bottom' : ''
+              } d-flex align-center justify-space-between`"
             >
-              <span>{{ $t("overall") }}</span>
+              <span>{{ $t('overall') }}</span>
               <v-icon
-                :class="
-                  `float-right toggle-icon mdi ${
-                    showGeneral ? 'mdi-minus' : 'mdi-plus'
-                  }`
-                "
+                :class="`float-right toggle-icon mdi ${
+                  showGeneral ? 'mdi-minus' : 'mdi-plus'
+                }`"
                 @click="showGeneral = !showGeneral"
               ></v-icon>
             </v-card-title>
@@ -577,7 +567,7 @@
                                 :is-24="true"
                                 :teleport="true"
                                 :placeholder="$t('Set_notification_date')"
-                                class=" text-accent"
+                                class="text-accent"
                                 :locale="locale"
                                 :select-text="$t('ok')"
                                 :cancel-text="$t('Cancel')"
@@ -664,36 +654,36 @@
 </template>
 
 <script>
-import Confirm from "@/src/components/confirm-dialog.vue";
-import Api from "@api/Api";
-import ApiaryPreviewHiveSelector from "@components/apiary-preview-hive-selector.vue";
-import yesNoRating from "@components/input-fields/yes-no-rating.vue";
-import _ from "lodash";
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Api from '@api/Api'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import _ from 'lodash'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
-import Layout from "@/src/router/layouts/back-layout.vue";
-import labelWithDescription from "@components/input-fields/label-with-description.vue";
-import smileRating from "@components/input-fields/smile-rating.vue";
-import InspectModeSelector from "@components/inspect-mode-selector.vue";
-import OfflineInspection from "@components/offline-inspection.vue";
-import ParsedPages from "@components/parsed-pages.vue";
-import UploadInspection from "@components/upload-inspection.vue";
+import Layout from '@/src/router/layouts/back-layout.vue'
+import labelWithDescription from '@components/input-fields/label-with-description.vue'
+import smileRating from '@components/input-fields/smile-rating.vue'
+import InspectModeSelector from '@components/inspect-mode-selector.vue'
+import OfflineInspection from '@components/offline-inspection.vue'
+import ParsedPages from '@components/parsed-pages.vue'
+import UploadInspection from '@components/upload-inspection.vue'
 import {
   appVersion,
   getLabel,
   parseDate,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
-  readGeneralInspections
-} from "@mixins/methodsMixin";
-import { datePickerText } from "@mixins/momentMixin";
-import { defineAsyncComponent } from "vue";
-import { mapGetters } from "vuex";
+  readGeneralInspections,
+} from '@mixins/methodsMixin'
+import { datePickerText } from '@mixins/momentMixin'
+import { defineAsyncComponent } from 'vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ApiaryPreviewHiveSelector,
-    ChecklistFieldset: defineAsyncComponent(() =>
-      import("@components/checklist-fieldset.vue")
+    ChecklistFieldset: defineAsyncComponent(
+      () => import('@components/checklist-fieldset.vue')
     ), // needed to fix Vue recursive component error
     Confirm,
     InspectModeSelector,
@@ -703,7 +693,7 @@ export default {
     ParsedPages,
     smileRating,
     UploadInspection,
-    yesNoRating
+    yesNoRating,
   },
   mixins: [
     appVersion,
@@ -712,16 +702,16 @@ export default {
     parseDate,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
-    readGeneralInspections
+    readGeneralInspections,
   ],
-  data: function() {
+  data: function () {
     return {
       normalizerHiveSets(node) {
         return {
           id: node.treeselectId,
           label: node.name,
-          isDisabled: node.noEditableHives
-        };
+          isDisabled: node.noEditableHives,
+        }
       },
       normalizer(node) {
         return {
@@ -729,25 +719,25 @@ export default {
           label:
             node.name +
             (node.researches.length > 0
-              ? " (" +
-                this.$i18n.t("research") +
-                ": " +
+              ? ' (' +
+                this.$i18n.t('research') +
+                ': ' +
                 node.researches[0] +
-                ")"
-              : "")
-        };
+                ')'
+              : ''),
+        }
       },
       normalizerChecklistSvg(node) {
         return {
           id: node.id,
-          label: node.name + " (Print ID: " + node.id + ")"
-        };
+          label: node.name + ' (Print ID: ' + node.id + ')',
+        }
       },
       selectModes: [
-        { id: "Online", label: this.$i18n.t("Online_inspection") },
-        { id: "Offline", label: this.$i18n.t("Offline_inspection") }
+        { id: 'Online', label: this.$i18n.t('Online_inspection') },
+        { id: 'Offline', label: this.$i18n.t('Offline_inspection') },
       ],
-      selectedMode: "Online",
+      selectedMode: 'Online',
       selectedChecklist: null,
       activeInspection: null,
       selectedChecklistId: null,
@@ -765,9 +755,9 @@ export default {
       hiveNotEditable: false,
       isApiary: true,
       hiveSetId: null,
-      datePickerFormat: "yyyy-MM-dd HH:mm:ss",
-      dateFormat: "YYYY-MM-DD HH:mm:ss",
-      dateFormatSimple: "YYYY-MM-DD HH:mm",
+      datePickerFormat: 'yyyy-MM-dd HH:mm:ss',
+      dateFormat: 'YYYY-MM-DD HH:mm:ss',
+      dateFormatSimple: 'YYYY-MM-DD HH:mm',
       printMode: false,
       parsedImages: {
         location: [],
@@ -777,7 +767,7 @@ export default {
         attention: [],
         notes: [],
         reminder_date: [],
-        reminder: []
+        reminder: [],
       },
       forceParseMode: false,
       booleanDefault: [1, 0],
@@ -788,85 +778,85 @@ export default {
       testOutput: null, // disable for debugging
       enableTestOutput: false, // true for debugging
       showChecklistSvgExp: false,
-      printExpBullets: 4
-    };
+      printExpBullets: 4,
+    }
   },
   computed: {
-    ...mapGetters("auth", ["permissions"]),
-    ...mapGetters("inspections", [
-      "bulkInspection",
-      "checklist",
-      "checklists",
-      "checklistSvgs",
-      "inspectionEdited",
-      "parsedOfflineInput",
-      "svgMaxPageNr",
-      "svgPageNr",
-      "tempSavedInspection",
-      "uploadInspectionPayload"
+    ...mapGetters('auth', ['permissions']),
+    ...mapGetters('inspections', [
+      'bulkInspection',
+      'checklist',
+      'checklists',
+      'checklistSvgs',
+      'inspectionEdited',
+      'parsedOfflineInput',
+      'svgMaxPageNr',
+      'svgPageNr',
+      'tempSavedInspection',
+      'uploadInspectionPayload',
     ]),
-    ...mapGetters("locations", ["apiaries", "groups"]),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     allHivesSelected: {
       get() {
-        return this.selectedHives.length === this.editableHives.length;
+        return this.selectedHives.length === this.editableHives.length
       },
       set(value) {
         if (value === false) {
-          this.setBulkInspection(false);
-          this.selectedHives = [];
+          this.setBulkInspection(false)
+          this.selectedHives = []
         } else {
-          this.setBulkInspection(true);
-          this.selectedHives = [];
-          this.selectedHiveSet.hives.map(hive => {
+          this.setBulkInspection(true)
+          this.selectedHives = []
+          this.selectedHiveSet.hives.map((hive) => {
             if (hive.editable || hive.owner) {
-              this.selectedHives.push(hive.id);
+              this.selectedHives.push(hive.id)
             }
-            return hive;
-          });
+            return hive
+          })
         }
-      }
+      },
     },
     apiaryId() {
-      return this.$route.query.apiaryId || null;
+      return this.$route.query.apiaryId || null
     },
     checklistLink() {
-      let query = {};
+      let query = {}
       // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
       if (!this.offlineMode && this.hiveSetId) {
         query = {
           hiveId: this.hiveId,
-          inspectionId: this.inspectionId
-        };
+          inspectionId: this.inspectionId,
+        }
         this.isApiary
           ? (query.apiaryId = this.hiveSetId)
-          : (query.groupId = this.hiveSetId);
+          : (query.groupId = this.hiveSetId)
       }
 
       if (this.parseMode) {
-        query.checklistSvgId = this.checklistSvgId;
+        query.checklistSvgId = this.checklistSvgId
       }
 
       return {
-        name: "checklist",
+        name: 'checklist',
         params: { id: this.selectedChecklistId },
-        query
-      };
+        query,
+      }
     },
     checklistSvgAlreadySaved() {
       if (this.checklistSvgs.length > 0) {
         const svgsPresent = this.checklistSvgs.filter(
-          item => item.checklist_id === this.selectedChecklistId
-        );
+          (item) => item.checklist_id === this.selectedChecklistId
+        )
         if (svgsPresent.length > 0) {
           const svgNewer = svgsPresent.filter(
-            svg => svg.created_at > this.selectedChecklist.updated_at
-          );
-          return svgNewer.length > 0 ? svgNewer[svgNewer.length - 1] : null;
+            (svg) => svg.created_at > this.selectedChecklist.updated_at
+          )
+          return svgNewer.length > 0 ? svgNewer[svgNewer.length - 1] : null
         } else {
-          return null;
+          return null
         }
       } else {
-        return null;
+        return null
       }
     },
     checklistSvgDifferentAppVersion() {
@@ -874,21 +864,19 @@ export default {
         const svgAppVersion =
           this.checklistSvgAlreadySaved.app_version ||
           this.checklistSvgAlreadySaved.name.substring(
-            this.checklistSvgAlreadySaved.name.indexOf("(v") + 2,
-            this.checklistSvgAlreadySaved.name.lastIndexOf(")")
-          ); // TODO remove getting app version from name once app_version prop has been added to the checklist-svg, then replace by 'older' because for older checklist-svgs the app_version prop won't be present but it will always be older
-        return svgAppVersion !== this.appVersion; // no need to check if appVersion is higher, it will always be higher when it is different, because it only goes up
+            this.checklistSvgAlreadySaved.name.indexOf('(v') + 2,
+            this.checklistSvgAlreadySaved.name.lastIndexOf(')')
+          ) // TODO remove getting app version from name once app_version prop has been added to the checklist-svg, then replace by 'older' because for older checklist-svgs the app_version prop won't be present but it will always be older
+        return svgAppVersion !== this.appVersion // no need to check if appVersion is higher, it will always be higher when it is different, because it only goes up
       } else {
-        return false;
+        return false
       }
     },
     editMode() {
-      return this.inspectionId !== null;
+      return this.inspectionId !== null
     },
     endOfToday() {
-      return this.$moment()
-        .endOf("day")
-        .format(this.dateFormat);
+      return this.$moment().endOf('day').format(this.dateFormat)
     },
     forceInspectionDate() {
       return (
@@ -897,92 +885,92 @@ export default {
         this.invalidDate &&
         this.selectedChecklist !== null &&
         this.selectedChecklist.researches !== undefined &&
-        (this.selectedChecklist.researches.join().includes("B-GOOD") ||
-          this.selectedChecklist.researches.join().includes("BETTER-B"))
-      );
+        (this.selectedChecklist.researches.join().includes('B-GOOD') ||
+          this.selectedChecklist.researches.join().includes('BETTER-B'))
+      )
     },
     groupId() {
-      return this.$route.query.groupId || null;
+      return this.$route.query.groupId || null
     },
     hiveId() {
       return (
         parseInt(this.$route.query.hiveId) ||
         parseInt(this.$route.params.id) ||
         null
-      );
+      )
     },
     inspectionDate: {
       get() {
         if (
           this.activeInspection &&
-          typeof this.activeInspection.created_at !== "undefined"
+          typeof this.activeInspection.created_at !== 'undefined'
         ) {
-          return this.activeInspection.created_at;
+          return this.activeInspection.created_at
         } else if (
           this.activeInspection &&
           this.activeInspection.date !== null &&
-          this.activeInspection.date !== "Invalid date"
+          this.activeInspection.date !== 'Invalid date'
         ) {
-          return this.activeInspection.date;
+          return this.activeInspection.date
         } else {
-          return "";
+          return ''
         }
       },
       set(value) {
-        this.setActiveInspectionDate(value);
-      }
+        this.setActiveInspectionDate(value)
+      },
     },
     inspectionId() {
-      return parseInt(this.$route.params.inspection) || null;
+      return parseInt(this.$route.params.inspection) || null
     },
     invalidDate() {
       return (
-        this.inspectionDate === "Invalid date" || this.inspectionDate === ""
-      );
+        this.inspectionDate === 'Invalid date' || this.inspectionDate === ''
+      )
     },
     lastSelectedChecklistId: {
       get() {
-        return localStorage.beepLastSelectedChecklistId;
+        return localStorage.beepLastSelectedChecklistId
       },
       set(value) {
-        localStorage.beepLastSelectedChecklistId = value;
-      }
+        localStorage.beepLastSelectedChecklistId = value
+      },
     },
     locale() {
-      return this.$i18n.locale;
+      return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.display.xs;
+      return this.$vuetify.display.xs
     },
     modeText() {
-      return this.permissions.includes("test-offline-input") ||
-        this.permissions.includes("offline-input")
-        ? " - " + this.$i18n.t(this.selectedMode + "_inspection")
-        : "";
+      return this.permissions.includes('test-offline-input') ||
+        this.permissions.includes('offline-input')
+        ? ' - ' + this.$i18n.t(this.selectedMode + '_inspection')
+        : ''
     },
     offlineMode() {
-      return this.selectedMode === "Offline";
+      return this.selectedMode === 'Offline'
     },
     onlineMode() {
-      return this.selectedMode === "Online";
+      return this.selectedMode === 'Online'
     },
     uploadMode() {
-      return this.selectedMode === "Upload";
+      return this.selectedMode === 'Upload'
     },
     parseMode() {
       return (
-        (this.permissions.includes("test-offline-input") ||
-          this.permissions.includes("offline-input")) &&
-        (this.queriedMode === "parse" ||
+        (this.permissions.includes('test-offline-input') ||
+          this.permissions.includes('offline-input')) &&
+        (this.queriedMode === 'parse' ||
           this.forceParseMode === true ||
-          localStorage.beepSelectedInspectionMode === "Parse") // TODO remove queried parse mode when enableTestOutput is removed
-      );
+          localStorage.beepSelectedInspectionMode === 'Parse') // TODO remove queried parse mode when enableTestOutput is removed
+      )
     },
     preSelectedChecklistId() {
-      return parseInt(this.$route.query.checklistId) || null;
+      return parseInt(this.$route.query.checklistId) || null
     },
     queriedMode() {
-      return this.$route.query.mode;
+      return this.$route.query.mode
     },
     reminderDate: {
       get() {
@@ -990,177 +978,177 @@ export default {
           this.activeInspection &&
           this.activeInspection.reminder_date !== null
         ) {
-          return this.activeInspection.reminder_date;
+          return this.activeInspection.reminder_date
         } else {
-          return null;
+          return null
         }
       },
       set(value) {
-        if (value !== "" && value !== null) {
-          this.activeInspection.reminder_date = value;
-          this.setInspectionEdited(true);
+        if (value !== '' && value !== null) {
+          this.activeInspection.reminder_date = value
+          this.setInspectionEdited(true)
         } else {
-          this.activeInspection.reminder_date = null;
+          this.activeInspection.reminder_date = null
         }
-      }
+      },
     },
     selectedChecklistDuplicateNames() {
-      const checklist = { ...this.selectedChecklist };
-      const flattened = this.flattenItems(checklist.categories); // get array with all category names
+      const checklist = { ...this.selectedChecklist }
+      const flattened = this.flattenItems(checklist.categories) // get array with all category names
 
       const duplicates = [
-        ...new Set(flattened.filter((e, i, a) => a.indexOf(e) !== i)) // get all duplicate category names
-      ];
+        ...new Set(flattened.filter((e, i, a) => a.indexOf(e) !== i)), // get all duplicate category names
+      ]
 
-      return duplicates;
+      return duplicates
     },
     selectedChecklistWithSuffixes() {
       // add suffix to each category that has a duplicate name (because aws textract cannot deal with identical names on same page)
-      const checklist = { ...this.selectedChecklist };
+      const checklist = { ...this.selectedChecklist }
 
       // helper when adding suffixes, to keep track of how often a suffix has been used so which number the suffix should be
       const dupeTracker = Object.fromEntries(
-        [...this.selectedChecklistDuplicateNames].map(k => [k, 0])
-      );
+        [...this.selectedChecklistDuplicateNames].map((k) => [k, 0])
+      )
 
-      checklist.categories.forEach(cat =>
+      checklist.categories.forEach((cat) =>
         this.addSuffix(cat, cat.children, dupeTracker)
-      );
+      )
 
-      return checklist;
+      return checklist
     },
     selectedChecklistSvg() {
       const findItem = this.checklistSvgs.filter(
-        item => item.id === this.checklistSvgId
-      );
-      return findItem.length > 0 ? findItem[0] : null;
+        (item) => item.id === this.checklistSvgId
+      )
+      return findItem.length > 0 ? findItem[0] : null
     },
     setSelectedMode: {
       get() {
-        return this.selectedMode;
+        return this.selectedMode
       },
       set(value) {
-        if (value === "Upload" || value === "Offline") {
+        if (value === 'Upload' || value === 'Offline') {
           if (this.checklistSvgs.length === 0) {
-            this.readChecklistSvgs();
+            this.readChecklistSvgs()
           }
         }
-        this.selectedMode = value;
-        this.errorMessage = null;
-      }
+        this.selectedMode = value
+        this.errorMessage = null
+      },
     },
     sortedHiveSets() {
-      const treeselectArray = [];
+      const treeselectArray = []
       if (this.apiaries && this.apiaries.length > 0) {
-        const treeselectApiaries = JSON.parse(JSON.stringify(this.apiaries)); // clone without v-bind to avoid vuex warning when mutating
-        treeselectApiaries.map(apiary => {
-          apiary.treeselectId = parseInt("1" + apiary.id.toString());
-          return apiary;
-        });
+        const treeselectApiaries = JSON.parse(JSON.stringify(this.apiaries)) // clone without v-bind to avoid vuex warning when mutating
+        treeselectApiaries.map((apiary) => {
+          apiary.treeselectId = parseInt('1' + apiary.id.toString())
+          return apiary
+        })
         const sortedTreeselectApiaries = treeselectApiaries
           .slice()
-          .sort(function(a, b) {
+          .sort(function (a, b) {
             if (a.name > b.name) {
-              return 1;
+              return 1
             }
             if (b.name > a.name) {
-              return -1;
+              return -1
             }
-            return 0;
-          });
+            return 0
+          })
 
         treeselectArray.push({
           treeselectId: -1,
-          name: this.$i18n.tc("Location", 2),
-          children: sortedTreeselectApiaries
-        });
+          name: this.$i18n.tc('Location', 2),
+          children: sortedTreeselectApiaries,
+        })
       }
       if (this.groups && this.groups.length > 0) {
-        const treeselectGroups = JSON.parse(JSON.stringify(this.groups)); // clone without v-bind to avoid vuex warning when mutating
-        treeselectGroups.map(group => {
+        const treeselectGroups = JSON.parse(JSON.stringify(this.groups)) // clone without v-bind to avoid vuex warning when mutating
+        treeselectGroups.map((group) => {
           // groups with no editable hives will be disabled in the treeselect component
           group.noEditableHives =
-            group.hives.filter(hive => {
-              return hive.editable || hive.owner;
-            }).length === 0;
-          group.treeselectId = parseInt("2" + group.id.toString());
-          return group;
-        });
+            group.hives.filter((hive) => {
+              return hive.editable || hive.owner
+            }).length === 0
+          group.treeselectId = parseInt('2' + group.id.toString())
+          return group
+        })
         const sortedTreeselectGroups = treeselectGroups
           .slice()
-          .sort(function(a, b) {
+          .sort(function (a, b) {
             if (a.name > b.name) {
-              return 1;
+              return 1
             }
             if (b.name > a.name) {
-              return -1;
+              return -1
             }
-            return 0;
-          });
+            return 0
+          })
 
         treeselectArray.push({
           treeselectId: -2,
-          name: this.$i18n.tc("Group", 2),
-          children: sortedTreeselectGroups
-        });
+          name: this.$i18n.tc('Group', 2),
+          children: sortedTreeselectGroups,
+        })
       }
-      return treeselectArray;
+      return treeselectArray
     },
     totalPages() {
-      return this.svgPageNr - (this.svgMaxPageNr === null ? 0 : 1);
+      return this.svgPageNr - (this.svgMaxPageNr === null ? 0 : 1)
     },
     treeselectLabel() {
-      let label = "";
+      let label = ''
       if (this.apiaries.length > 0) {
         label =
-          this.$i18n.t("Select") +
-          " " +
-          this.$i18n.tc("location", 1) +
+          this.$i18n.t('Select') +
+          ' ' +
+          this.$i18n.tc('location', 1) +
           (this.groups.length > 0
-            ? " " + this.$i18n.t("or") + " " + this.$i18n.tc("group", 1)
-            : "");
+            ? ' ' + this.$i18n.t('or') + ' ' + this.$i18n.tc('group', 1)
+            : '')
       } else if (this.groups.length > 0) {
-        label = this.$i18n.t("Select") + " " + this.$i18n.tc("group", 1);
+        label = this.$i18n.t('Select') + ' ' + this.$i18n.tc('group', 1)
       }
-      return label;
-    }
+      return label
+    },
   },
   watch: {
     selectedHives() {
-      this.setActiveHive();
-    }
+      this.setActiveHive()
+    },
   },
   mounted() {
-    if (localStorage.beepSelectedInspectionMode === "Offline") {
-      this.$store.commit("inspections/resetSvgStates");
-      this.setSelectedMode = "Offline";
-      this.storeInspectionMode("");
+    if (localStorage.beepSelectedInspectionMode === 'Offline') {
+      this.$store.commit('inspections/resetSvgStates')
+      this.setSelectedMode = 'Offline'
+      this.storeInspectionMode('')
     }
 
     // If hive id is specified, first check if hive is present / accessible and editable
     this.getActiveHive(this.hiveId).then(() => {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
-        this.selectInitialHiveSet();
+        this.selectInitialHiveSet()
 
         if (
           !this.offlineMode &&
           localStorage.beepPreviousRoute !== undefined &&
-          localStorage.beepPreviousRoute === "checklist" &&
+          localStorage.beepPreviousRoute === 'checklist' &&
           this.tempSavedInspection !== null
         ) {
           // console.log('temp saved inspection', this.tempSavedInspection)
-          this.activeInspection = _.cloneDeep(this.tempSavedInspection);
-          this.initInspection();
+          this.activeInspection = _.cloneDeep(this.tempSavedInspection)
+          this.initInspection()
         } else {
-          this.setTempSavedInspection(null);
+          this.setTempSavedInspection(null)
 
           // If hive-inspect-edit route is used, retrieve to-be-edited inspection
           if (this.inspectionId !== null) {
-            this.getInspection(this.inspectionId).then(response => {
-              this.activeInspection = response;
-              this.activeInspection.date = this.activeInspection.created_at; // if date is empty, inspection cannot be saved. if it is set at another date (date of edit for example) the created_at will be changed after POSTing as well which is not desirable, to change the original inspection date when editing
-              this.initInspection();
-            });
+            this.getInspection(this.inspectionId).then((response) => {
+              this.activeInspection = response
+              this.activeInspection.date = this.activeInspection.created_at // if date is empty, inspection cannot be saved. if it is set at another date (date of edit for example) the created_at will be changed after POSTing as well which is not desirable, to change the original inspection date when editing
+              this.initInspection()
+            })
             // Else make an empty inspection object
           } else {
             this.activeInspection = {
@@ -1172,33 +1160,33 @@ export default {
               reminder: null,
               checklist_id: null,
               hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
-              items: {}
-            };
+              items: {},
+            }
 
             this.readChecklistsIfNotPresent().then(() => {
               if (this.preSelectedChecklistId !== null) {
-                this.getChecklistById(this.preSelectedChecklistId);
+                this.getChecklistById(this.preSelectedChecklistId)
               } else if (
                 this.lastSelectedChecklistId !== undefined &&
                 this.lastSelectedChecklistId !== null
               ) {
-                this.getChecklistById(this.lastSelectedChecklistId);
+                this.getChecklistById(this.lastSelectedChecklistId)
               } else {
-                this.setChecklist(this.checklist);
+                this.setChecklist(this.checklist)
               }
-            });
+            })
           }
         }
 
         if (this.parseMode) {
-          this.prepParseMode();
+          this.prepParseMode()
         }
 
-        this.setInspectionEdited(false);
-        this.setBulkInspection(this.selectedHives.length > 1);
-        this.ready = true;
-      });
-    });
+        this.setInspectionEdited(false)
+        this.setBulkInspection(this.selectedHives.length > 1)
+        this.ready = true
+      })
+    })
   },
   methods: {
     async createChecklistSvg() {
@@ -1208,36 +1196,36 @@ export default {
         !this.checklistSvgAlreadySaved ||
         this.checklistSvgDifferentAppVersion
       ) {
-        const svg = document.getElementById("checklist-svg").outerHTML;
-        const now = this.getNow(true);
+        const svg = document.getElementById('checklist-svg').outerHTML
+        const now = this.getNow(true)
         // pass new name to svg to make sure printed & saved checklist-svg have the same name
         this.newSvgName =
           this.selectedChecklist.name +
-          " (" +
+          ' (' +
           now +
-          ") (v" +
+          ') (v' +
           this.appVersion +
-          ")";
+          ')'
         const payload = {
           checklist_id: this.selectedChecklistId,
           svg,
           pages: this.totalPages,
           name: this.newSvgName,
-          last_print: now
-        };
+          last_print: now,
+        }
         try {
-          const response = await Api.postRequest("/checklist-svg", payload);
-          const checklistSvgId = response.data.id;
-          this.readChecklistSvgs();
-          return checklistSvgId;
+          const response = await Api.postRequest('/checklist-svg', payload)
+          const checklistSvgId = response.data.id
+          this.readChecklistSvgs()
+          return checklistSvgId
         } catch (error) {
           if (error.response) {
-            console.log("Error: ", error.response);
+            console.log('Error: ', error.response)
             this.errorMessage =
-              this.$i18n.tc("Error", 1) + ": " + error.response.data.message;
+              this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
           } else {
-            console.log("Error: ", error);
-            this.errorMessage = this.$i18n.t("something_wrong");
+            console.log('Error: ', error)
+            this.errorMessage = this.$i18n.t('something_wrong')
           }
         }
       }
@@ -1245,727 +1233,727 @@ export default {
     async getActiveHive(id) {
       if (id !== null) {
         try {
-          const response = await Api.readRequest("/hives/", id);
+          const response = await Api.readRequest('/hives/', id)
           if (response.data.length === 0) {
-            this.$router.push({ name: "404", query: { resource: "hive" } });
-            return false;
+            this.$router.push({ name: '404', query: { resource: 'hive' } })
+            return false
           }
-          this.activeHive = response.data.hives[0];
-          this.$store.commit("hives/setActiveHive", response.data.hives[0]);
+          this.activeHive = response.data.hives[0]
+          this.$store.commit('hives/setActiveHive', response.data.hives[0])
           if (!this.activeHive.editable && !this.activeHive.owner) {
-            this.hiveNotEditable = true;
+            this.hiveNotEditable = true
           }
-          return true;
+          return true
         } catch (error) {
           if (error.response) {
-            console.log(error.response);
+            console.log(error.response)
             if (error.response.status === 404) {
-              this.$router.push({ name: "404", query: { resource: "hive" } });
-              return false;
+              this.$router.push({ name: '404', query: { resource: 'hive' } })
+              return false
             }
           } else {
-            console.log("Error: ", error);
+            console.log('Error: ', error)
           }
         }
       } else {
-        return true;
+        return true
       }
     },
     async getChecklistById(id, switchChecklistExistingInspection = false) {
       try {
-        const response = await Api.readRequest("/inspections/lists?id=", id);
-        this.selectedChecklist = response.data.checklist;
-        this.selectedChecklistId = response.data.checklist.id;
-        this.lastSelectedChecklistId = response.data.checklist.id;
+        const response = await Api.readRequest('/inspections/lists?id=', id)
+        this.selectedChecklist = response.data.checklist
+        this.selectedChecklistId = response.data.checklist.id
+        this.lastSelectedChecklistId = response.data.checklist.id
 
         if (
           this.selectedChecklist !== null &&
           this.selectedChecklist.categories.length > 0
         ) {
-          const numberOfCategories = this.selectedChecklist.categories.length;
-          this.showCategoriesByIndex = [];
+          const numberOfCategories = this.selectedChecklist.categories.length
+          this.showCategoriesByIndex = []
           for (let i = 0; i < numberOfCategories; i++) {
-            this.showCategoriesByIndex.push(this.parseMode);
+            this.showCategoriesByIndex.push(this.parseMode)
           }
         }
 
-        const itemsObject = {};
-        this.selectedChecklist.category_ids.map(categoryId => {
-          itemsObject[categoryId] = null;
-          return categoryId;
-        });
+        const itemsObject = {}
+        this.selectedChecklist.category_ids.map((categoryId) => {
+          itemsObject[categoryId] = null
+          return categoryId
+        })
         // If existing inspection is being edited change its items array into object with category_ids (of the selected checklist) as keys and item values filled in if present
         if (
           this.inspectionId !== null &&
           Array.isArray(this.activeInspection.items)
         ) {
-          this.activeInspection.items.map(item => {
+          this.activeInspection.items.map((item) => {
             if (
-              item.type.indexOf("boolean") > -1 ||
-              item.type.indexOf("smileys") > -1 ||
+              item.type.indexOf('boolean') > -1 ||
+              item.type.indexOf('smileys') > -1 ||
               // item.type.indexOf('number') > -1 ||
-              item.type.indexOf("grade") > -1 ||
-              item.type.indexOf("number_degrees") > -1 ||
-              item.type.indexOf("number_percentage") > -1 ||
-              item.type.indexOf("score") > -1 ||
-              item.type.indexOf("slider") > -1
+              item.type.indexOf('grade') > -1 ||
+              item.type.indexOf('number_degrees') > -1 ||
+              item.type.indexOf('number_percentage') > -1 ||
+              item.type.indexOf('score') > -1 ||
+              item.type.indexOf('slider') > -1
               // item.type.indexOf('square') > -1
             ) {
-              itemsObject[item.category_id] = Number(item.value);
+              itemsObject[item.category_id] = Number(item.value)
             } else {
-              itemsObject[item.category_id] = item.value;
+              itemsObject[item.category_id] = item.value
             }
-            return item;
-          });
+            return item
+          })
           // For a new inspection, transfer values that have been filled in already for the old checklist to the newly selected checklist
           // and set date to current date only if checklist is owned, otherwise trigger forceInspectionDate mode (disable form until inspection date has been actively selected)
         } else {
           Object.entries(this.activeInspection.items).map(([key, value]) => {
             if (value !== null) {
-              itemsObject[key] = value;
+              itemsObject[key] = value
             }
-            return [key, value];
-          });
+            return [key, value]
+          })
           if (
             !switchChecklistExistingInspection &&
             this.tempSavedInspection === null
           ) {
             // force user to actively select inspection date when checklist is not owned and it is not present yet
             if (!this.selectedChecklist.owner) {
-              this.activeInspection.date = null;
+              this.activeInspection.date = null
             } else if (
               !this.parseMode &&
               this.selectedChecklist.owner &&
               (this.activeInspection.date === null || this.invalidDate)
             ) {
-              this.setActiveInspectionDate();
+              this.setActiveInspectionDate()
             }
           }
         }
-        this.activeInspection.items = itemsObject;
-        this.activeInspection.checklist_id = this.selectedChecklistId;
+        this.activeInspection.items = itemsObject
+        this.activeInspection.checklist_id = this.selectedChecklistId
 
-        return true;
+        return true
       } catch (error) {
         if (error.response) {
-          console.log("Error: ", error.response);
+          console.log('Error: ', error.response)
         } else {
-          console.log("Error: ", error);
+          console.log('Error: ', error)
         }
       }
     },
     async getInspection(id) {
       try {
-        const response = await Api.readRequest("/inspections/", id);
-        return response.data;
+        const response = await Api.readRequest('/inspections/', id)
+        return response.data
       } catch (error) {
         if (error.response) {
-          console.log(error.response);
+          console.log(error.response)
           if (error.response.status === 404) {
             this.$router.push({
-              name: "404",
-              query: { resource: "inspection" }
-            });
+              name: '404',
+              query: { resource: 'inspection' },
+            })
           }
         } else {
-          console.log("Error: ", error);
+          console.log('Error: ', error)
         }
       }
     },
     async readChecklistsIfNotPresent() {
       if (this.checklists.length === 0) {
         try {
-          const response = await Api.readRequest("/inspections/lists");
+          const response = await Api.readRequest('/inspections/lists')
           this.$store.commit(
-            "inspections/setChecklists",
+            'inspections/setChecklists',
             response.data.checklists
-          );
+          )
           this.$store.commit(
-            "inspections/setChecklist",
+            'inspections/setChecklist',
             response.data.checklist
-          );
-          return true;
+          )
+          return true
         } catch (error) {
           if (error.response) {
-            console.log("Error: ", error.response);
+            console.log('Error: ', error.response)
           } else {
-            console.log("Error: ", error);
+            console.log('Error: ', error)
           }
         }
       } else {
-        return true;
+        return true
       }
     },
     async readChecklistSvgs() {
       try {
-        const response = await Api.readRequest("/checklist-svg");
-        this.$store.commit("inspections/setData", {
-          prop: "checklistSvgs",
-          value: response.data
-        });
-        this.showChecklistSvgExp = response.data.length === 0;
+        const response = await Api.readRequest('/checklist-svg')
+        this.$store.commit('inspections/setData', {
+          prop: 'checklistSvgs',
+          value: response.data,
+        })
+        this.showChecklistSvgExp = response.data.length === 0
       } catch (error) {
         if (error.response) {
-          console.log("Error: ", error.response);
+          console.log('Error: ', error.response)
           this.errorMessage =
-            this.$i18n.tc("Error", 1) + ": " + error.response.data.message;
+            this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
         } else {
-          console.log("Error: ", error);
-          this.errorMessage = this.$i18n.t("something_wrong");
+          console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
         }
-        this.showLoadingIcon = false;
+        this.showLoadingIcon = false
       }
     },
     async saveInspection() {
       if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true;
-        const inspectionToSave = this.activeInspection;
-        inspectionToSave.hive_ids = this.selectedHives;
+        this.showLoadingIcon = true
+        const inspectionToSave = this.activeInspection
+        inspectionToSave.hive_ids = this.selectedHives
         // console.log('saving Inspection...')
         // console.log(inspectionToSave)
         try {
           const response = await Api.postRequest(
-            "/inspections/store",
+            '/inspections/store',
             inspectionToSave
-          );
-          let searchInspectionId = "";
+          )
+          let searchInspectionId = ''
           if (response.status === 201) {
-            searchInspectionId = response.data;
+            searchInspectionId = response.data
           }
-          let searchTerm = null;
+          let searchTerm = null
           this.activeHive === null
             ? (searchTerm = this.selectedHiveSet.name)
-            : (searchTerm = this.activeHive.location);
-          const lastHiveId = this.selectedHives[this.selectedHives.length - 1];
-          this.forceParseMode = false;
+            : (searchTerm = this.activeHive.location)
+          const lastHiveId = this.selectedHives[this.selectedHives.length - 1]
+          this.forceParseMode = false
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
               // update generalInspections in store for diary-list
               this.readGeneralInspections().then(() => {
                 // if previous page was inspections, return there (with inspection id as search term)
-                if (localStorage.beepPreviousRoute === "hive-inspections") {
+                if (localStorage.beepPreviousRoute === 'hive-inspections') {
                   this.$router.push({
-                    name: "hive-inspections",
+                    name: 'hive-inspections',
                     params: { id: lastHiveId },
-                    query: { search: "id=" + searchInspectionId }
-                  });
+                    query: { search: 'id=' + searchInspectionId },
+                  })
                   // if previous page was apiary-list, return there (with apiary or hive name as search term, N.B. this wont overwrite any stored hiveSearch terms if present)
-                } else if (localStorage.beepPreviousRoute === "home") {
+                } else if (localStorage.beepPreviousRoute === 'home') {
                   this.$router.push({
-                    name: "home",
-                    query: { search: searchTerm }
-                  });
+                    name: 'home',
+                    query: { search: searchTerm },
+                  })
                 } else {
-                  this.clearDiaryFilters();
+                  this.clearDiaryFilters()
                   setTimeout(() => {
                     this.$router.push({
-                      name: "diary",
-                      query: { search: "id=" + searchInspectionId }
-                    });
-                  }, 100); // wait for API to clear filters
+                      name: 'diary',
+                      query: { search: 'id=' + searchInspectionId },
+                    })
+                  }, 100) // wait for API to clear filters
                 }
-              });
-            });
-          }, 50); // wait for API to update inspections
+              })
+            })
+          }, 50) // wait for API to update inspections
         } catch (error) {
           if (error.response) {
-            console.log("Error: ", error.response);
+            console.log('Error: ', error.response)
             this.errorMessage =
-              this.$i18n.tc("Error", 1) + ": " + error.response.data.message;
+              this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
           } else {
-            console.log("Error: ", error);
-            this.errorMessage = this.$i18n.t("something_wrong");
+            console.log('Error: ', error)
+            this.errorMessage = this.$i18n.t('something_wrong')
           }
-          this.showLoadingIcon = false;
+          this.showLoadingIcon = false
         }
       }
     },
     async uploadInspection() {
-      this.showLoadingIcon = true;
+      this.showLoadingIcon = true
       try {
         const response = await Api.pensoftPostRequest(
           this.uploadInspectionPayload
-        );
-        const parsedOfflineInput = response.data;
-        this.$store.commit("inspections/setData", {
-          prop: "parsedOfflineInput",
-          value: parsedOfflineInput
-        });
+        )
+        const parsedOfflineInput = response.data
+        this.$store.commit('inspections/setData', {
+          prop: 'parsedOfflineInput',
+          value: parsedOfflineInput,
+        })
         setTimeout(() => {
-          this.errorMessage = null;
-          this.prepParseMode();
-        }, 500);
+          this.errorMessage = null
+          this.prepParseMode()
+        }, 500)
       } catch (error) {
-        let msg;
-        this.errorMessage = this.$i18n.tc("Error", 1) + ": ";
+        let msg
+        this.errorMessage = this.$i18n.tc('Error', 1) + ': '
         if (error.response) {
-          console.log("Error: ", error.response);
-          const e = error.response.data;
-          msg = e.errors ? e.errors : e.message ? e.message : e;
-          this.errorMessage += msg;
+          console.log('Error: ', error.response)
+          const e = error.response.data
+          msg = e.errors ? e.errors : e.message ? e.message : e
+          this.errorMessage += msg
         } else {
-          console.log("Error: ", error);
+          console.log('Error: ', error)
           msg = error.data
             ? error.data.message
               ? error.data.message
               : error.data
-            : error;
-          this.errorMessage += msg; // this.$i18n.t('something_wrong')
+            : error
+          this.errorMessage += msg // this.$i18n.t('something_wrong')
         }
-        this.showLoadingIcon = false;
+        this.showLoadingIcon = false
       }
     },
     clearDate() {
-      this.activeInspection.reminder_date = null;
+      this.activeInspection.reminder_date = null
     },
     clearDiaryFilters() {
-      this.$store.commit("inspections/clearFilters");
+      this.$store.commit('inspections/clearFilters')
     },
     confirmSaveInspection() {
       if (this.bulkInspection) {
         this.$refs.confirm
           .open(
-            this.$i18n.t("save") + " " + this.$i18n.tc("inspection", 1),
-            this.$i18n.t("save_bulkinspection_confirm"),
+            this.$i18n.t('save') + ' ' + this.$i18n.tc('inspection', 1),
+            this.$i18n.t('save_bulkinspection_confirm'),
             {
-              color: "red"
+              color: 'red',
             }
           )
           .then(() => {
-            this.saveInspection();
+            this.saveInspection()
           })
           .catch(() => {
-            return true;
-          });
+            return true
+          })
       } else {
-        this.saveInspection();
+        this.saveInspection()
       }
     },
     datePickerIDUpdate(e) {
-      this.inspectionDate = e;
+      this.inspectionDate = e
     },
     datePickerRDUpdate(e) {
-      this.reminderDate = e;
+      this.reminderDate = e
     },
     editChecklist() {
       if (this.selectedHiveSetId)
-        this.activeInspection.hive_ids = this.selectedHives;
+        this.activeInspection.hive_ids = this.selectedHives
       if (this.parseMode) {
-        this.storeInspectionMode("Parse");
+        this.storeInspectionMode('Parse')
       } else if (this.onlineMode) {
-        this.setTempSavedInspection(this.activeInspection);
+        this.setTempSavedInspection(this.activeInspection)
       } else if (this.offlineMode) {
-        this.storeInspectionMode("Offline");
+        this.storeInspectionMode('Offline')
       }
-      this.$router.push(this.checklistLink);
+      this.$router.push(this.checklistLink)
     },
     findHiveSetId(input) {
-      if (typeof input === "string") {
-        const value = input.toLowerCase();
+      if (typeof input === 'string') {
+        const value = input.toLowerCase()
         const findApiary = this.apiaries.filter(
-          ap => ap.name.toLowerCase() === value
-        );
+          (ap) => ap.name.toLowerCase() === value
+        )
         const findGroup = this.groups.filter(
-          gr => gr.name.toLowerCase() === value
-        );
+          (gr) => gr.name.toLowerCase() === value
+        )
 
         const id =
           findApiary.length > 0
-            ? "1" + findApiary[0].id.toString()
+            ? '1' + findApiary[0].id.toString()
             : findGroup.length > 0
-            ? "2" + findGroup[0].id.toString()
-            : null;
-        return id;
+              ? '2' + findGroup[0].id.toString()
+              : null
+        return id
       } else {
-        return null;
+        return null
       }
     },
     findHiveId(input) {
-      if (typeof input === "string" && this.selectedHiveSet) {
-        const value = input.toLowerCase();
+      if (typeof input === 'string' && this.selectedHiveSet) {
+        const value = input.toLowerCase()
         const findHive = this.selectedHiveSet.hives.filter(
-          hive => hive.name.toLowerCase() === value
-        );
+          (hive) => hive.name.toLowerCase() === value
+        )
 
-        const id = findHive.length > 0 ? findHive[0].id : null;
-        return id;
+        const id = findHive.length > 0 ? findHive[0].id : null
+        return id
       } else {
         // TODO: add else if for if hiveSet was not found, then first find hive and then select connected hiveSet
-        return null;
+        return null
       }
     },
     addSuffix(item, children, dupeTracker) {
-      return children.map(child => {
+      return children.map((child) => {
         if (
           this.selectedChecklistDuplicateNames.includes(child.name) &&
-          child.input !== "label"
+          child.input !== 'label'
         ) {
-          dupeTracker[child.name] += 1;
-          child.suffix = dupeTracker[child.name];
+          dupeTracker[child.name] += 1
+          child.suffix = dupeTracker[child.name]
         }
 
         if (child.children.length > 0) {
-          this.addSuffix(child, child.children, dupeTracker);
+          this.addSuffix(child, child.children, dupeTracker)
         }
 
-        return child;
-      });
+        return child
+      })
     },
     flattenItems(data) {
       return data.reduce((r, { input, children, name }) => {
-        if (input !== "label" && input !== "list_item") {
+        if (input !== 'label' && input !== 'list_item') {
           // skip labels because they don't have an svg input field
-          r.push(name);
+          r.push(name)
         }
 
         if (children.length) {
-          r.push(...this.flattenItems(children));
+          r.push(...this.flattenItems(children))
         }
 
-        return r;
-      }, []);
+        return r
+      }, [])
     },
     getNow(simple = false) {
       return this.$moment().format(
         simple ? this.dateFormatSimple : this.dateFormat
-      );
+      )
     },
     getParsedAnswer(id) {
       const parsedData =
-        this.enableTestOutput && this.queriedMode === "parse" // TODO remove when enableTestOutput is removed
+        this.enableTestOutput && this.queriedMode === 'parse' // TODO remove when enableTestOutput is removed
           ? this.testOutput
-          : this.parsedOfflineInput;
-      const items = parsedData.scans.map(el => {
+          : this.parsedOfflineInput
+      const items = parsedData.scans.map((el) => {
         return el.scan.filter(
-          answer =>
+          (answer) =>
             answer.parent_category_id !== undefined &&
             answer.parent_category_id === id
-        );
-      });
+        )
+      })
       if (items.length > 0 && items[0].length > 1) {
         // merge items for date type items
-        items[0][0].value = items[0][0].value.concat(items[0][1].value);
-        items[0][0].image = items[0][0].image.concat(items[0][1].image);
+        items[0][0].value = items[0][0].value.concat(items[0][1].value)
+        items[0][0].image = items[0][0].image.concat(items[0][1].image)
       }
-      return items.length > 0 ? items[0][0] : null;
+      return items.length > 0 ? items[0][0] : null
     },
     getParsedOverallAnswers() {
-      Object.keys(this.parsedImages).map(prop => {
-        const answer = this.getParsedAnswer(prop);
-        let value = null;
+      Object.keys(this.parsedImages).map((prop) => {
+        const answer = this.getParsedAnswer(prop)
+        let value = null
         if (answer && answer.value !== undefined) {
-          if (prop === "impression" || prop === "attention") {
-            const posAnswer = answer.value.filter(el => el === 1);
-            const checkboxIndex = answer.value.findIndex(value => value === 1);
+          if (prop === 'impression' || prop === 'attention') {
+            const posAnswer = answer.value.filter((el) => el === 1)
+            const checkboxIndex = answer.value.findIndex((value) => value === 1)
             value =
               posAnswer.length > 1
                 ? null // if multiple checkboxes are parsed as true, do not fill in a value and let user check via red eye
-                : prop === "impression"
-                ? checkboxIndex + 1
-                : checkboxIndex > -1
-                ? this.booleanDefault[checkboxIndex]
-                : null;
+                : prop === 'impression'
+                  ? checkboxIndex + 1
+                  : checkboxIndex > -1
+                    ? this.booleanDefault[checkboxIndex]
+                    : null
           } else {
-            if (prop.indexOf("date") === -1) {
-              value = answer.value[0] === "" ? null : answer.value[0];
+            if (prop.indexOf('date') === -1) {
+              value = answer.value[0] === '' ? null : answer.value[0]
             } else {
-              value = this.parseDate(answer.value[0]);
+              value = this.parseDate(answer.value[0])
             }
           }
         }
 
-        if (prop !== "location" && prop !== "hive") {
-          this.activeInspection[prop] = value;
-        } else if (prop === "location") {
-          const id = this.findHiveSetId(value);
-          this.selectHiveSet(id);
-          this.selectedHiveSetId = id !== null ? parseInt(id) : null;
-          this.selectedHives = [];
-        } else if (prop === "hive") {
-          const hiveId = this.findHiveId(value);
+        if (prop !== 'location' && prop !== 'hive') {
+          this.activeInspection[prop] = value
+        } else if (prop === 'location') {
+          const id = this.findHiveSetId(value)
+          this.selectHiveSet(id)
+          this.selectedHiveSetId = id !== null ? parseInt(id) : null
+          this.selectedHives = []
+        } else if (prop === 'hive') {
+          const hiveId = this.findHiveId(value)
 
           if (hiveId) {
-            this.selectHive(hiveId);
+            this.selectHive(hiveId)
           }
         }
 
         this.parsedImages[prop] =
-          answer && answer.image !== undefined ? answer.image : [];
+          answer && answer.image !== undefined ? answer.image : []
 
-        return prop;
-      });
+        return prop
+      })
     },
     initInspection() {
-      this.setActiveInspectionDate(this.activeInspection.date);
+      this.setActiveInspectionDate(this.activeInspection.date)
       this.preSelectedChecklistId
         ? this.getChecklistById(this.preSelectedChecklistId)
-        : this.getChecklistById(this.activeInspection.checklist_id);
-      this.readChecklistsIfNotPresent();
+        : this.getChecklistById(this.activeInspection.checklist_id)
+      this.readChecklistsIfNotPresent()
 
       if (
         this.activeInspection.hive_ids !== null &&
         this.activeInspection.hive_ids !== undefined
       ) {
-        this.selectedHives = this.activeInspection.hive_ids;
+        this.selectedHives = this.activeInspection.hive_ids
       }
 
       this.$store.commit(
-        "inspections/setSelectedInspectionId",
+        'inspections/setSelectedInspectionId',
         this.inspectionId
-      );
+      )
     },
     prepParseMode() {
       if (this.$route.query.checklistSvgId) {
         this.checklistSvgId = !isNaN(parseInt(this.$route.query.checklistSvgId))
           ? parseInt(this.$route.query.checklistSvgId)
-          : null;
+          : null
       }
       if (this.checklistSvgs.length === 0) {
         // TODO disable when enableTestOutput is disabled
-        this.readChecklistSvgs();
+        this.readChecklistSvgs()
       }
-      this.forceParseMode = true; // TODO finetune parse mode + where to switch it off?
-      this.setSelectedMode = "Online";
-      this.allHivesSelected = false;
-      this.getParsedOverallAnswers();
-      this.showLoadingIcon = false;
+      this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
+      this.setSelectedMode = 'Online'
+      this.allHivesSelected = false
+      this.getParsedOverallAnswers()
+      this.showLoadingIcon = false
       if (this.selectedChecklist) {
-        this.showCategoriesByIndex = [];
+        this.showCategoriesByIndex = []
         for (let i = 0; i < this.selectedChecklist.categories.length; i++) {
-          this.showCategoriesByIndex.push(true);
+          this.showCategoriesByIndex.push(true)
         }
       }
-      if (this.enableTestOutput && this.queriedMode === "parse") {
+      if (this.enableTestOutput && this.queriedMode === 'parse') {
         // TODO disable when enableTestOutput is disabled
-        this.$store.commit("inspections/setData", {
-          prop: "parsedOfflineInput",
-          value: this.testOutput
-        });
+        this.$store.commit('inspections/setData', {
+          prop: 'parsedOfflineInput',
+          value: this.testOutput,
+        })
       }
-      this.storeInspectionMode("");
+      this.storeInspectionMode('')
     },
     confirmPrint() {
-      let bullets = "";
+      let bullets = ''
       for (let n = 1; n <= this.printExpBullets; n++) {
-        bullets += "• " + this.$i18n.t("Print_checklist_exp_" + n) + "</br>";
+        bullets += '• ' + this.$i18n.t('Print_checklist_exp_' + n) + '</br>'
       }
       const htmlText =
-        "<p>" +
-        this.$i18n.t("Print_checklist_exp") +
-        "</p><p>" +
+        '<p>' +
+        this.$i18n.t('Print_checklist_exp') +
+        '</p><p>' +
         bullets +
-        "</p>";
+        '</p>'
 
       this.$refs.confirm
         .open(
-          this.$i18n.t("Print_checklist"),
+          this.$i18n.t('Print_checklist'),
           htmlText,
           {
-            color: "red"
+            color: 'red',
           },
           null,
           true
         )
         .then(() => {
-          this.print();
+          this.print()
         })
         .catch(() => {
-          return true;
-        });
+          return true
+        })
     },
     print() {
-      this.printMode = true;
+      this.printMode = true
       setTimeout(() => {
-        this.createChecklistSvg().then(id => {
-          this.checklistSvgId = id;
+        this.createChecklistSvg().then((id) => {
+          this.checklistSvgId = id
           setTimeout(() => {
-            window.print();
-            this.printMode = false;
-          }, 500);
-        });
-      }, 100);
+            window.print()
+            this.printMode = false
+          }, 500)
+        })
+      }, 100)
     },
     selectApiary(id) {
-      this.selectedHives = [];
-      this.editableHives = [];
-      const apiary = this.apiaries.filter(apiary => {
-        return apiary.id === id;
-      })[0];
+      this.selectedHives = []
+      this.editableHives = []
+      const apiary = this.apiaries.filter((apiary) => {
+        return apiary.id === id
+      })[0]
       if (apiary) {
-        apiary.hives.map(hive => {
-          this.selectedHives.push(hive.id);
-          this.editableHives.push(hive.id);
-          return hive;
-        });
+        apiary.hives.map((hive) => {
+          this.selectedHives.push(hive.id)
+          this.editableHives.push(hive.id)
+          return hive
+        })
         // only when selecting the apiary from the queried hive Id, select just that hive
         if (this.hiveId && apiary.id === this.activeHive.location_id) {
-          this.selectedHives = [this.hiveId];
+          this.selectedHives = [this.hiveId]
         }
-        this.selectedHiveSet = apiary;
-        this.setBulkInspection(this.selectedHives.length > 1);
+        this.selectedHiveSet = apiary
+        this.setBulkInspection(this.selectedHives.length > 1)
         // If apiary id doesn't exist return 404
       } else {
         this.$router.push({
-          name: "404",
-          query: { resource: "location" }
-        });
+          name: '404',
+          query: { resource: 'location' },
+        })
       }
     },
     selectChecklistSvg() {
       if (this.selectedChecklistSvg) {
-        const checklistId = this.selectedChecklistSvg.checklist_id;
+        const checklistId = this.selectedChecklistSvg.checklist_id
         // get digital checklist in order to have it preselected when opening the parsed offline input in onlineMode later
         if (this.selectedChecklistId !== checklistId) {
-          this.getChecklistById(checklistId);
+          this.getChecklistById(checklistId)
         }
       }
     },
     selectGroup(id) {
-      this.selectedHives = [];
-      this.editableHives = [];
-      const group = this.groups.filter(group => {
-        return group.id === id;
-      })[0];
+      this.selectedHives = []
+      this.editableHives = []
+      const group = this.groups.filter((group) => {
+        return group.id === id
+      })[0]
       if (group) {
-        group.hives.map(hive => {
+        group.hives.map((hive) => {
           if (hive.editable || hive.owner) {
-            this.selectedHives.push(hive.id);
-            this.editableHives.push(hive.id);
+            this.selectedHives.push(hive.id)
+            this.editableHives.push(hive.id)
           }
-          return hive;
-        });
+          return hive
+        })
         // only when selecting a group containing the queried hive Id, select just that hive
         if (this.hiveId && this.activeHive.group_ids.includes(group.id)) {
           // if hiveId is specified, only select it if editable
           if (this.editableHives.includes(this.hiveId)) {
-            this.selectedHives = [this.hiveId];
+            this.selectedHives = [this.hiveId]
           }
         }
-        this.selectedHiveSet = group;
-        this.setBulkInspection(this.selectedHives.length > 1);
+        this.selectedHiveSet = group
+        this.setBulkInspection(this.selectedHives.length > 1)
         // If group id doesn't exist return 404
       } else {
         this.$router.push({
-          name: "404",
-          query: { resource: "group" }
-        });
+          name: '404',
+          query: { resource: 'group' },
+        })
       }
     },
     selectHive(id) {
       if (this.editableHives.includes(id)) {
         if (!this.selectedHives.includes(id)) {
-          this.selectedHives.push(id);
+          this.selectedHives.push(id)
         } else {
-          this.selectedHives.splice(this.selectedHives.indexOf(id), 1);
+          this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
         }
-        this.setActiveHive(); // TODO-VUE3 workaround for watch(selectedHives) is not triggered when single hive is selected
-        this.setInspectionEdited(true);
+        this.setActiveHive() // TODO-VUE3 workaround for watch(selectedHives) is not triggered when single hive is selected
+        this.setInspectionEdited(true)
       }
-      this.setBulkInspection(this.selectedHives.length > 1);
+      this.setBulkInspection(this.selectedHives.length > 1)
     },
     selectFirstHiveSetFromList() {
       if (this.sortedHiveSets.length > 0) {
-        this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId;
-        this.selectHiveSet(this.selectedHiveSetId);
+        this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
+        this.selectHiveSet(this.selectedHiveSetId)
       }
     },
     selectHiveSet(id) {
       if (id) {
-        const stringId = id.toString();
-        this.isApiary = parseInt(stringId.substring(0, 1)) === 1;
-        this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1));
+        const stringId = id.toString()
+        this.isApiary = parseInt(stringId.substring(0, 1)) === 1
+        this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
         this.isApiary
           ? this.selectApiary(this.hiveSetId)
-          : this.selectGroup(this.hiveSetId);
+          : this.selectGroup(this.hiveSetId)
       } else {
-        this.selectedHiveSetId = null;
-        this.selectedHiveSet = null;
+        this.selectedHiveSetId = null
+        this.selectedHiveSet = null
       }
     },
     selectInitialHiveSet() {
       if (this.apiaryId) {
-        this.selectedHiveSetId = parseInt("1" + this.apiaryId); // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
-        this.selectApiary(parseInt(this.apiaryId));
+        this.selectedHiveSetId = parseInt('1' + this.apiaryId) // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
+        this.selectApiary(parseInt(this.apiaryId))
       } else if (this.groupId) {
-        this.selectedHiveSetId = parseInt("2" + this.groupId); // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
-        this.selectGroup(parseInt(this.groupId));
+        this.selectedHiveSetId = parseInt('2' + this.groupId) // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
+        this.selectGroup(parseInt(this.groupId))
       } else if (this.hiveId) {
         // if no apiary or group id is specified, select apiary if owner is true, else select group
         if (this.activeHive.owner) {
-          const apiaryId = this.activeHive.location_id;
-          this.selectedHiveSetId = parseInt("1" + apiaryId); // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
-          this.selectApiary(parseInt(apiaryId));
+          const apiaryId = this.activeHive.location_id
+          this.selectedHiveSetId = parseInt('1' + apiaryId) // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
+          this.selectApiary(parseInt(apiaryId))
         } else {
-          const groupId = this.activeHive.group_ids[0];
-          this.selectedHiveSetId = parseInt("2" + groupId); // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
-          this.selectGroup(parseInt(groupId));
+          const groupId = this.activeHive.group_ids[0]
+          this.selectedHiveSetId = parseInt('2' + groupId) // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
+          this.selectGroup(parseInt(groupId))
         }
       } else {
-        this.selectFirstHiveSetFromList();
+        this.selectFirstHiveSetFromList()
       }
     },
     setInspectionEdited(bool) {
-      this.$store.commit("inspections/setInspectionEdited", bool);
+      this.$store.commit('inspections/setInspectionEdited', bool)
     },
     setActiveHive() {
       if (this.selectedHives.length === 1) {
-        this.getActiveHive(this.selectedHives[0]);
+        this.getActiveHive(this.selectedHives[0])
       } else if (this.activeHive !== null) {
-        this.$store.commit("hives/setActiveHive", null);
+        this.$store.commit('hives/setActiveHive', null)
       }
     },
     setActiveInspectionDate(setDate = null) {
-      const date = setDate === null ? this.getNow() : setDate;
+      const date = setDate === null ? this.getNow() : setDate
 
       if (
         this.activeInspection &&
-        typeof this.activeInspection.created_at !== "undefined"
+        typeof this.activeInspection.created_at !== 'undefined'
       ) {
-        this.activeInspection.created_at = date;
+        this.activeInspection.created_at = date
       }
 
-      this.activeInspection.date = date;
+      this.activeInspection.date = date
 
-      this.$store.commit("inspections/setData", {
-        prop: "activeInspectionDate",
-        value: date
-      });
+      this.$store.commit('inspections/setData', {
+        prop: 'activeInspectionDate',
+        value: date,
+      })
     },
     setBulkInspection(bool) {
-      this.$store.commit("inspections/setData", {
-        prop: "bulkInspection",
-        value: bool
-      });
+      this.$store.commit('inspections/setData', {
+        prop: 'bulkInspection',
+        value: bool,
+      })
     },
     setChecklist(checklist) {
-      this.selectedChecklistId = checklist.id;
-      this.selectedChecklist = checklist;
-      this.lastSelectedChecklistId = checklist.id;
-      this.activeInspection.checklist_id = this.selectedChecklistId;
-      const itemsObject = {};
-      this.selectedChecklist.category_ids.map(categoryId => {
+      this.selectedChecklistId = checklist.id
+      this.selectedChecklist = checklist
+      this.lastSelectedChecklistId = checklist.id
+      this.activeInspection.checklist_id = this.selectedChecklistId
+      const itemsObject = {}
+      this.selectedChecklist.category_ids.map((categoryId) => {
         // TODO: what if category ids is empty?
-        itemsObject[categoryId] = null;
-        return categoryId;
-      });
-      this.activeInspection.items = itemsObject;
+        itemsObject[categoryId] = null
+        return categoryId
+      })
+      this.activeInspection.items = itemsObject
       if (this.selectedChecklist.owner) {
-        this.setActiveInspectionDate();
+        this.setActiveInspectionDate()
       }
     },
     setTempSavedInspection(inspection) {
-      this.$store.commit("inspections/setData", {
-        prop: "tempSavedInspection",
-        value: _.cloneDeep(inspection) // clone to fix vuex errors
-      });
+      this.$store.commit('inspections/setData', {
+        prop: 'tempSavedInspection',
+        value: _.cloneDeep(inspection), // clone to fix vuex errors
+      })
     },
     switchChecklist(id) {
       if (this.offlineMode) {
-        this.checklistSvgId = null;
-        this.svgReady = false;
+        this.checklistSvgId = null
+        this.svgReady = false
       }
 
-      this.$store.commit("inspections/resetSvgStates");
+      this.$store.commit('inspections/resetSvgStates')
 
       if (
         !this.offlineMode &&
@@ -1975,38 +1963,38 @@ export default {
       ) {
         this.$refs.confirm
           .open(
-            this.$i18n.t("Select") + " " + this.$i18n.tc("checklist", 1),
-            this.$i18n.t("change_checklist_confirm"),
+            this.$i18n.t('Select') + ' ' + this.$i18n.tc('checklist', 1),
+            this.$i18n.t('change_checklist_confirm'),
             {
-              color: "red"
+              color: 'red',
             }
           )
           .then(() => {
             // do not change date when switching checklist for an existing (temp saved or regular) inspection
-            this.getChecklistById(id, true);
+            this.getChecklistById(id, true)
           })
           .catch(() => {
-            return true;
-          });
+            return true
+          })
       } else {
-        this.getChecklistById(id);
+        this.getChecklistById(id)
       }
     },
     storeInspectionMode(value) {
-      localStorage.beepSelectedInspectionMode = value;
+      localStorage.beepSelectedInspectionMode = value
     },
     toggleCategory(index) {
-      this.showCategoriesByIndex[index] = !this.showCategoriesByIndex[index];
+      this.showCategoriesByIndex[index] = !this.showCategoriesByIndex[index]
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
-        value = value.substring(0, maxLength);
-        this.activeInspection[property] = value;
+        value = value.substring(0, maxLength)
+        this.activeInspection[property] = value
       }
-      this.setInspectionEdited(true);
-    }
-  }
-};
+      this.setInspectionEdited(true)
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -2033,7 +2021,7 @@ export default {
   max-width: calc(100% - 24px);
 }
 
-$orders: ("1", "2", "3");
+$orders: ('1', '2', '3');
 
 @each $o in $orders {
   .mobile-#{$o} {

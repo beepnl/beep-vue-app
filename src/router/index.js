@@ -27,6 +27,7 @@ const router = createRouter({
 
 router.onError((error, to) => {
   if (
+    error.message.includes('Failed to load module script') ||
     error.message.includes('Failed to fetch dynamically imported module') ||
     error.message.includes('Importing a module script failed')
   ) {
