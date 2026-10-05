@@ -2,7 +2,7 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="custom-text-overline mb-1">
-        <span class="lowercase">v</span>4.1.9 (19-05-2026) - Current version
+        <span class="lowercase">v</span>4.1.9 (05-10-2026) - Current version
       </div>
       <div class="rounded-border mb-4">
         <ul>
@@ -456,7 +456,7 @@
                 instead of "7 nov 2022").
               </li>
             </ul>
-            <span style="margin-top: 3px;"
+            <span style="margin-top: 3px"
               ><sup>*</sup>Table containing inspection data per hive, accessible
               via hive menu (click on a hive in the
               <router-link :to="{ name: 'home' }">Hives</router-link> overview →
@@ -675,9 +675,7 @@
       </div>
       <div class="rounded-border mb-4">
         <ul>
-          <li>
-            Swedish language has been added
-          </li>
+          <li> Swedish language has been added </li>
         </ul>
       </div>
 
@@ -1871,7 +1869,7 @@
             >
           </li>
           <li>
-            {{ $t("Whats_new") }}: this in-app overview of new features with
+            {{ $t('Whats_new') }}: this in-app overview of new features with
             links to the features themselves
           </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
@@ -1957,18 +1955,18 @@
 </template>
 
 <script>
-import Layout from "@/src/router/layouts/back-layout.vue";
+import Layout from '@/src/router/layouts/back-layout.vue'
 
 export default {
   components: {
-    Layout
+    Layout,
   },
   computed: {
     dutch() {
-      return this.$i18n.locale === "nl";
-    }
-  }
-};
+      return this.$i18n.locale === 'nl'
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
