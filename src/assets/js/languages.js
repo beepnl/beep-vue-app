@@ -15,6 +15,7 @@ const languages = {
     { lang: 'es', title: 'Spanish' },
     { lang: 'fi', title: 'Suomi' },
     { lang: 'sv', title: 'Svenska' },
+    { lang: 'tr', title: 'Türkçe' },
     { lang: 'ua', title: 'Українська' },
   ],
   unpublishedLanguageArray: [

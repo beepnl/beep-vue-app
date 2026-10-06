@@ -18,6 +18,7 @@ import pt from '@public/js/lang/pt'
 import ro from '@public/js/lang/ro'
 import ru from '@public/js/lang/ru'
 import sv from '@public/js/lang/sv'
+import tr from '@public/js/lang/tr'
 import ua from '@public/js/lang/ua'
 // import enUS from '@public/js/lang/en-US'
 import languages from '@assets/js/languages'
@@ -68,6 +69,7 @@ const i18n = new VueI18n({
     ro,
     ru,
     sv,
+    tr,
     ua,
     // add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
   },
