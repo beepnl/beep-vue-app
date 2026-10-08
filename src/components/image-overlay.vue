@@ -85,8 +85,8 @@ export default {
   max-height: 90vh;
   max-width: 90vw;
   @include for-phone-only {
-    max-width: 300px;
-    min-width: 70vw;
+    min-width: 80vw;
+    max-width: 320px;
   }
 }
 
