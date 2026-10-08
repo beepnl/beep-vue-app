@@ -955,6 +955,15 @@ export default {
 .filter-bar-inspections {
   top: 52px;
   max-width: 100vw;
+
+  .beep-search-field.v-input {
+    @include for-phone-only {
+      // keep the append (magnify) icon to the right of the input, not on top of it
+      grid-template-columns: max-content max-content max-content;
+      width: max-content;
+      max-width: 100%;
+    }
+  }
 }
 
 .pagination-text {
@@ -1091,6 +1100,7 @@ export default {
       border-radius: 4px;
       @include for-phone-only {
         max-width: 100%;
+        width: 40px;
       }
     }
     .filler {
