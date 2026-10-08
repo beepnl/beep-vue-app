@@ -19,7 +19,7 @@
                 :label="`${$t('Search')}`"
                 :class="`${
                   search !== null ? 'v-input--is-focused text-accent' : ''
-                } beep-search-field`"
+                } ${search ? 'has-append' : ''} beep-search-field`"
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"
                 clearable
@@ -34,7 +34,7 @@
                 @keydown.enter.prevent="readInspectionsForHiveId(id, suffix)"
               ></v-text-field>
             </v-col>
-            <v-card-actions class="pl-0">
+            <v-card-actions class="pl-1">
               <v-icon
                 :class="`${
                   filterByAttention ? 'text-red' : 'color-grey-filter'
@@ -955,6 +955,24 @@ export default {
 .filter-bar-inspections {
   top: 52px;
   max-width: 100vw;
+
+  .beep-search-field.v-input {
+    @include for-phone-only {
+      // keep the append (magnify) icon to the right of the input, not on top of it
+      grid-template-columns: max-content max-content max-content;
+      width: max-content;
+      max-width: 100%;
+      // shrink the input by the width of the append icon, so the other
+      // filter icons, pagination and add button keep their position
+      &.has-append :deep(.v-input__control) {
+        min-width: 75px !important;
+        max-width: 85px !important;
+      }
+      &.has-append :deep(.v-input__append) {
+        margin-inline-start: 6px !important;
+      }
+    }
+  }
 }
 
 .pagination-text {
@@ -978,10 +996,12 @@ export default {
   width: 100%;
   height: auto;
   overflow: auto;
+  overscroll-behavior: none;
 }
 
 .table-responsive {
   overflow-x: auto;
+  overscroll-behavior: none;
 
   table {
     width: 100%;
@@ -1091,6 +1111,7 @@ export default {
       border-radius: 4px;
       @include for-phone-only {
         max-width: 100%;
+        width: 40px;
       }
     }
     .filler {

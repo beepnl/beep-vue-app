@@ -25,15 +25,29 @@ const router = createRouter({
   },
 })
 
-router.onError((error, to) => {
-  if (
-    error.message.includes('Failed to load module script') ||
-    error.message.includes('Failed to fetch dynamically imported module') ||
-    error.message.includes('Importing a module script failed')
-  ) {
-    window.location = to.fullPath
-  }
+// Reload the app when a lazy loaded file can't be loaded, because a new version has been
+// deployed. Vite fires 'vite:preloadError' for this in every browser, whereas the error
+// messages differ per browser (iOS: "'text/html' is not a valid JavaScript MIME type.")
+let loadErrorEncountered = false
+
+window.addEventListener('vite:preloadError', () => {
+  loadErrorEncountered = true
+  // Deferred, so that router.onError can first reload into the route that was being opened.
+  // Otherwise (f.e. a lazy loaded component failed to load) reload the current page.
+  setTimeout(() => reloadApp())
 })
+
+function reloadApp(path) {
+  // Prevent reload loops, f.e. when a file is still missing after reloading
+  const lastReload = Number(sessionStorage.beepLoadErrorReloadedAt) || 0
+  if (Date.now() - lastReload < 10000) return
+  sessionStorage.beepLoadErrorReloadedAt = Date.now()
+
+  // Change the url and reload, instead of navigating to path, because a reload makes the
+  // browser revalidate index.html instead of possibly using an outdated cached copy
+  if (path) window.history.pushState(null, '', path)
+  window.location.reload()
+}
 
 // Before each route evaluates...
 router.beforeEach((routeTo, routeFrom) => {

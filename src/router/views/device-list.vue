@@ -10,7 +10,7 @@
         : $t('new_or_edited_but_not_saved_sensor_defs_warning')
     "
   >
-    <v-toolbar class="save-bar mt-0" density="compact" light>
+    <v-toolbar class="save-bar save-bar--back" density="compact" light>
       <v-spacer></v-spacer>
       <v-btn
         v-if="!mobile || ownedDevices.length === 0"
@@ -18,7 +18,7 @@
         color="accent"
         @click="addDevice"
       >
-        <v-icon color="accent" start>mdi-plus</v-icon>{{ $t("add_own_device") }}
+        <v-icon color="accent" start>mdi-plus</v-icon>{{ $t('add_own_device') }}
       </v-btn>
       <v-btn
         v-if="ownedDevices.length > 0"
@@ -42,7 +42,7 @@
           >mdi-check</v-icon
         >
         {{
-          deletedButNotSavedDevices ? $t("save_and_delete") : $t("save")
+          deletedButNotSavedDevices ? $t('save_and_delete') : $t('save')
         }}</v-btn
       >
     </v-toolbar>
@@ -72,13 +72,13 @@
             @click="addDevice"
           >
             <v-icon color="accent" start>mdi-plus</v-icon
-            >{{ $t("add_own_device") }}
+            >{{ $t('add_own_device') }}
           </v-btn>
         </v-col>
       </v-row>
       <div class="mb-2">
         <div v-if="ownedDevices.length > 0" class="custom-text-overline">
-          {{ $tc("device", ownedDevices.length) }}
+          {{ $tc('device', ownedDevices.length) }}
           <v-icon
             class="ml-1 icon-info cursor-pointer"
             :size="mobile ? 'x-small' : 'small'"
@@ -90,9 +90,9 @@
 
         <p v-if="showInfo" class="info-text mt-0 mb-4">
           <em
-            >{{ $t("devices_info_text") + " "
+            >{{ $t('devices_info_text') + ' '
             }}<a href="https://beep.nl/beep-base-app" target="_blank">{{
-              $t("devices_url_text")
+              $t('devices_url_text')
             }}</a></em
           >
         </p>
@@ -104,10 +104,10 @@
           <div class="text-center">
             <img
               :src="assetsUrl + '/img/beep-base-small.jpg'"
-              style=" width: 100%;max-width: 500px;"
+              style="width: 100%; max-width: 500px"
             />
           </div>
-          <div>{{ $t("beep_base_explanation") }}</div>
+          <div>{{ $t('beep_base_explanation') }}</div>
         </v-col>
         <v-col
           v-for="(ownedDevice, index) in ownedDevices"
@@ -116,21 +116,17 @@
           class="device-item density"
         >
           <v-card
-            :class="
-              `device-card ${
-                ownedDevice.delete === true ? 'device-delete' : ''
-              }`
-            "
+            :class="`device-card ${
+              ownedDevice.delete === true ? 'device-delete' : ''
+            }`"
           >
             <div
-              :class="
-                `device-title-row d-flex flex-no-wrap justify-flex-start align-center ${
-                  deviceExpanded(index) ? 'device-title-row--border-bottom' : ''
-                }`
-              "
-              style="width: 100%;"
+              :class="`device-title-row d-flex flex-no-wrap justify-flex-start align-center ${
+                deviceExpanded(index) ? 'device-title-row--border-bottom' : ''
+              }`"
+              style="width: 100%"
             >
-              <v-row class="ml-0 my-0 pl-0 py-0" style="width:100%;">
+              <v-row class="ml-0 my-0 pl-0 py-0" style="width: 100%">
                 <v-col
                   cols="6"
                   md="3"
@@ -152,7 +148,7 @@
                       rounded="0"
                       color="accent"
                       class="mt-n1"
-                      style="height: auto;"
+                      style="height: auto"
                     >
                     </v-avatar>
                   </div>
@@ -174,7 +170,7 @@
                     <router-link
                       :to="{
                         name: 'measurements-id',
-                        params: { id: ownedDevice.id }
+                        params: { id: ownedDevice.id },
                       }"
                     >
                       <v-icon size="small" color="accent">
@@ -190,13 +186,11 @@
                           v-if="ownedDevice.battery_voltage !== undefined"
                           class="mr-3"
                         >
-                          <v-icon size="small">
-                            mdi-battery
-                          </v-icon>
+                          <v-icon size="small"> mdi-battery </v-icon>
                           <span class="beep-label">{{
                             ownedDevice.battery_voltage !== null
-                              ? ownedDevice.battery_voltage.toFixed(2) + " V"
-                              : "?"
+                              ? ownedDevice.battery_voltage.toFixed(2) + ' V'
+                              : '?'
                           }}</span>
                         </div>
                       </span>
@@ -221,7 +215,7 @@
                                   ownedDevice.last_message_received,
                                   true
                                 )
-                              : "?"
+                              : '?'
                           }}</span>
                         </div>
                       </span>
@@ -235,19 +229,17 @@
                         <div
                           v-if="
                             ownedDevice.measurement_transmission_ratio !==
-                              undefined
+                            undefined
                           "
                           class="mr-3"
                         >
-                          <v-icon size="small">
-                            mdi-sync
-                          </v-icon>
+                          <v-icon size="small"> mdi-sync </v-icon>
                           <span class="beep-label">
                             {{
                               ownedDevice.measurement_transmission_ratio !==
                               null
                                 ? transmissionText(ownedDevice)
-                                : "?"
+                                : '?'
                             }}
                           </span>
                         </div>
@@ -260,11 +252,9 @@
 
               <div>
                 <v-icon
-                  :class="
-                    `color-grey-light px-6 mdi ${
-                      deviceExpanded(index) ? 'mdi-minus' : 'mdi-cog'
-                    }`
-                  "
+                  :class="`color-grey-light px-6 mdi ${
+                    deviceExpanded(index) ? 'mdi-minus' : 'mdi-cog'
+                  }`"
                   @click="toggleDevice(index)"
                 >
                 </v-icon>
@@ -281,12 +271,12 @@
                       class="save-button-mobile-wide"
                       @click="
                         postNativeAppMessage('EditBeepBase', {
-                          devEUI: ownedDevice.key
+                          devEUI: ownedDevice.key,
                         })
                       "
                     >
-                      <v-icon color="accent" start>{{ "mdi-bluetooth" }}</v-icon
-                      >{{ $t("Connect") }}
+                      <v-icon color="accent" start>{{ 'mdi-bluetooth' }}</v-icon
+                      >{{ $t('Connect') }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -303,7 +293,7 @@
                       v-model="ownedDevice.key"
                       :label="
                         $t('sensor_key') +
-                          (ownedDevice.type === 'beep' ? '*' : '')
+                        (ownedDevice.type === 'beep' ? '*' : '')
                       "
                       :disabled="ownedDevice.type === 'beep'"
                     />
@@ -335,7 +325,7 @@
                       "
                       :label="
                         $t('Firmware_version') +
-                          (ownedDevice.type === 'beep' ? ' BEEP base*' : '')
+                        (ownedDevice.type === 'beep' ? ' BEEP base*' : '')
                       "
                       :disabled="ownedDevice.type === 'beep'"
                       @update:model-value="
@@ -408,7 +398,7 @@
                           @click="addSensorDef(ownedDevice)"
                         >
                           <v-icon color="accent" start>mdi-plus</v-icon>
-                          {{ $t("Add_sensor_definition") }}
+                          {{ $t('Add_sensor_definition') }}
                         </v-btn>
                         <v-btn
                           v-if="mobile && ownedDevice.id"
@@ -418,13 +408,13 @@
                           <v-icon color="accent" start>mdi-plus</v-icon>
                           {{
                             ownedDevice.sensor_definitions.length === 0
-                              ? $t("Add_sensor_definition")
-                              : $t("add")
+                              ? $t('Add_sensor_definition')
+                              : $t('add')
                           }}
                         </v-btn>
                       </div>
                       <p v-if="showDescription" class="mt-n1 mb-3">
-                        <em>{{ $t("sensordef_info") }}</em>
+                        <em>{{ $t('sensordef_info') }}</em>
                       </p>
                     </div>
                     <div
@@ -439,35 +429,36 @@
                           <thead>
                             <tr>
                               <th class="text-left th--medium">
-                                {{ $t("Name") }}
+                                {{ $t('Name') }}
                               </th>
                               <th class="text-left th--medium">
-                                {{ $t("Inside") }}
+                                {{ $t('Inside') }}
                               </th>
                               <th class="text-left">
-                                {{ $t("Offset") }}
+                                {{ $t('Offset') }}
                               </th>
                               <th class="text-left">
-                                {{ $t("Multiplier") }}
+                                {{ $t('Multiplier') }}
                               </th>
                               <th class="text-left th--medium">
-                                {{ $t("Input") }}
+                                {{ $t('Input') }}
                               </th>
                               <th class="text-left th--medium">
-                                {{ $t("Output") }}
+                                {{ $t('Output') }}
                               </th>
                               <th class="text-left th--medium">
-                                {{ $t("Updated_at") }}
+                                {{ $t('Updated_at') }}
                               </th>
                               <th class="text-left">
-                                {{ $tc("Action", 2) }}
+                                {{ $tc('Action', 2) }}
                               </th>
                             </tr>
                           </thead>
                           <tbody>
                             <template
-                              v-for="(sensorDef,
-                              indexSensor) in sortedSensorDefinitions(
+                              v-for="(
+                                sensorDef, indexSensor
+                              ) in sortedSensorDefinitions(
                                 ownedDevice.sensor_definitions
                               )"
                               :key="indexSensor"
@@ -493,7 +484,7 @@
                       v-if="ownedDevice.type === 'beep'"
                       class="beep-label mb-0"
                     >
-                      <sup>*</sup>{{ $t("disabled_settings") }}
+                      <sup>*</sup>{{ $t('disabled_settings') }}
                     </div>
                   </v-col>
                   <v-col cols="12" md="6" class="d-flex">
@@ -504,12 +495,12 @@
                       @click="deleteDevice(ownedDevice, index)"
                     >
                       <v-icon color="red" start>{{
-                        ownedDevice.delete ? "mdi-refresh" : "mdi-delete"
+                        ownedDevice.delete ? 'mdi-refresh' : 'mdi-delete'
                       }}</v-icon
                       >{{
                         ownedDevice.delete
-                          ? $t("Undelete")
-                          : $t("remove_device")
+                          ? $t('Undelete')
+                          : $t('remove_device')
                       }}
                     </v-btn>
                   </v-col>
@@ -526,31 +517,31 @@
 </template>
 
 <script>
-import Api from "@api/Api";
-import Confirm from "@components/confirm-dialog.vue";
-import SensorDefinitionRow from "@components/sensor-definition-row.vue";
-import Layout from "@layouts/back-layout.vue";
+import Api from '@api/Api'
+import Confirm from '@components/confirm-dialog.vue'
+import SensorDefinitionRow from '@components/sensor-definition-row.vue'
+import Layout from '@layouts/back-layout.vue'
 import {
   nativeAppMethods,
   readApiariesAndGroups,
   readGeneralInspections,
-  readTaxonomy
-} from "@mixins/methodsMixin";
-import { momentify } from "@mixins/momentMixin";
-import { mapGetters } from "vuex";
+  readTaxonomy,
+} from '@mixins/methodsMixin'
+import { momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Confirm,
     Layout,
-    SensorDefinitionRow
+    SensorDefinitionRow,
   },
   mixins: [
     nativeAppMethods,
     momentify,
     readApiariesAndGroups,
     readGeneralInspections,
-    readTaxonomy
+    readTaxonomy,
   ],
   data() {
     return {
@@ -558,16 +549,16 @@ export default {
       errorMessage: null,
       normalizerHives(node) {
         return {
-          id: node.type === "apiary" ? node.name + " " + node.id : node.id,
+          id: node.type === 'apiary' ? node.name + ' ' + node.id : node.id,
           label: node.name,
-          children: node.hives
-        };
+          children: node.hives,
+        }
       },
       normalizerSensorTypes(node) {
         return {
           id: node.name,
-          label: node.trans.en
-        };
+          label: node.trans.en,
+        }
       },
       ready: false,
       showDevicesByIndex: [],
@@ -576,299 +567,300 @@ export default {
       showInfo: true,
       sensorDefEdited: false,
       assetsUrl:
-        import.meta.env.VITE_ASSETS_URL || import.meta.env.VITE_ETS_URL_FALLBACK
-    };
+        import.meta.env.VITE_ASSETS_URL ||
+        import.meta.env.VITE_ETS_URL_FALLBACK,
+    }
   },
   computed: {
-    ...mapGetters("locations", ["apiaries", "groups"]),
-    ...mapGetters("taxonomy", ["sensorTypesList"]),
+    ...mapGetters('locations', ['apiaries', 'groups']),
+    ...mapGetters('taxonomy', ['sensorTypesList']),
     deletedButNotSavedDevices() {
-      const unsavedDeletions = this.ownedDevices.filter(ownedDevice => {
-        return ownedDevice.delete;
-      });
-      return unsavedDeletions.length > 0;
+      const unsavedDeletions = this.ownedDevices.filter((ownedDevice) => {
+        return ownedDevice.delete
+      })
+      return unsavedDeletions.length > 0
     },
     mobile() {
-      return this.$vuetify.display.xs;
+      return this.$vuetify.display.xs
     },
     newButNotSavedSensorDefs() {
-      const unsavedChanges = this.ownedDevices.filter(ownedDevice => {
+      const unsavedChanges = this.ownedDevices.filter((ownedDevice) => {
         const unsavedSensorDefs = ownedDevice.sensor_definitions.filter(
-          sensorDef => {
-            return sensorDef.id === undefined;
+          (sensorDef) => {
+            return sensorDef.id === undefined
           }
-        );
-        return unsavedSensorDefs.length > 0;
-      });
+        )
+        return unsavedSensorDefs.length > 0
+      })
 
-      return unsavedChanges.length > 0;
+      return unsavedChanges.length > 0
     },
     ownedDevices() {
       const sortedOwnedDevices = this.devices
-        .filter(device => device.owner)
-        .sort(function(a, b) {
+        .filter((device) => device.owner)
+        .sort(function (a, b) {
           if (a.id > b.id) {
-            return -1;
+            return -1
           }
           if (b.id > a.id) {
-            return 1;
+            return 1
           }
-          return 0;
-        });
-      return sortedOwnedDevices;
-    }
+          return 0
+        })
+      return sortedOwnedDevices
+    },
   },
   created() {
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-      this.readApiariesAndGroups();
+      this.readApiariesAndGroups()
     }
     this.getDevicesForList().then(() => {
       this.readTaxonomy().then(() => {
-        this.ready = true;
-      });
-    });
+        this.ready = true
+      })
+    })
   },
   methods: {
     async getDevicesForList(save = false) {
       try {
-        this.$store.commit("devices/setData", {
-          prop: "devicesChecked",
-          value: true
-        });
+        this.$store.commit('devices/setData', {
+          prop: 'devicesChecked',
+          value: true,
+        })
 
-        const response = await Api.readRequest("/devices");
+        const response = await Api.readRequest('/devices')
 
         if (save) {
-          this.$store.commit("devices/setData", {
-            prop: "devices",
-            value: response.data
-          });
+          this.$store.commit('devices/setData', {
+            prop: 'devices',
+            value: response.data,
+          })
         }
 
-        const devices = response.data;
+        const devices = response.data
 
-        devices.map(device => {
-          device.delete = false; // otherwise Vue can't track the 'delete' property
+        devices.map((device) => {
+          device.delete = false // otherwise Vue can't track the 'delete' property
           if (device.sensor_definitions.length > 0) {
-            const sensorDefsWithDeleteProp = device.sensor_definitions;
-            sensorDefsWithDeleteProp.map(sensorDef => {
-              sensorDef.delete = false; // otherwise Vue can't track the 'delete' property
-              return sensorDef;
-            });
-            device.sensor_definitions = sensorDefsWithDeleteProp;
+            const sensorDefsWithDeleteProp = device.sensor_definitions
+            sensorDefsWithDeleteProp.map((sensorDef) => {
+              sensorDef.delete = false // otherwise Vue can't track the 'delete' property
+              return sensorDef
+            })
+            device.sensor_definitions = sensorDefsWithDeleteProp
           }
-          return true;
-        });
+          return true
+        })
 
-        this.devices = devices;
-        this.showDevicesByIndex = [];
+        this.devices = devices
+        this.showDevicesByIndex = []
         // NB don't commit these devices to store as they contain extra delete property which will yield vuex mutation errors later
-        return true;
+        return true
       } catch (error) {
-        console.log("Error: ", error);
+        console.log('Error: ', error)
       }
     },
     async saveDevices() {
-      this.errorMessage = null;
-      this.showLoadingIcon = true;
+      this.errorMessage = null
+      this.showLoadingIcon = true
       try {
         const response = await Api.postRequest(
-          "/devices/multiple",
+          '/devices/multiple',
           this.ownedDevices
-        );
+        )
         if (!response) {
           this.errorMessage =
-            this.$i18n.tc("Error", 1) + ": " + this.$i18n.t("not_saved_error");
-          this.showLoadingIcon = false;
+            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+          this.showLoadingIcon = false
         }
         this.getDevicesForList(true).then(() => {
-          this.showLoadingIcon = false;
-        });
-        this.readGeneralInspections();
-        this.readApiariesAndGroups(); // to update hive.sensors
-        return true;
+          this.showLoadingIcon = false
+        })
+        this.readGeneralInspections()
+        this.readApiariesAndGroups() // to update hive.sensors
+        return true
       } catch (error) {
-        this.showLoadingIcon = false;
+        this.showLoadingIcon = false
         if (error.response) {
-          console.log("Error: ", error.response);
-          const msg = error.response.data.message;
-          this.errorMessage = this.$i18n.t(msg);
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.errorMessage = this.$i18n.t(msg)
         } else {
-          this.errorMessage = this.$i18n.tc("Error", 1);
+          this.errorMessage = this.$i18n.tc('Error', 1)
         }
       }
     },
     addDevice() {
-      const key = this.randomString(16).toLowerCase();
+      const key = this.randomString(16).toLowerCase()
       this.devices.splice(0, 0, {
-        name: "Device " + (this.ownedDevices.length + 1),
+        name: 'Device ' + (this.ownedDevices.length + 1),
         key,
         owner: true,
-        sensor_definitions: []
-      });
+        sensor_definitions: [],
+      })
       if (this.showDevicesByIndex.length > 0) {
-        const updatedIndexes = this.showDevicesByIndex.map(function(index) {
-          return index + 1;
-        });
-        this.showDevicesByIndex = updatedIndexes;
+        const updatedIndexes = this.showDevicesByIndex.map(function (index) {
+          return index + 1
+        })
+        this.showDevicesByIndex = updatedIndexes
       }
-      this.toggleDevice(0);
+      this.toggleDevice(0)
     },
     addHiveName(event, device) {
-      device.hive_name = event.name;
-      device.location_name = event.location;
+      device.hive_name = event.name
+      device.location_name = event.location
     },
     addSensorDef(device) {
       device.sensor_definitions.push({
         device_id: device.id,
-        name: "Sensor " + (device.sensor_definitions.length + 1),
+        name: 'Sensor ' + (device.sensor_definitions.length + 1),
         inside: null,
         offset: 0,
         multiplier: 1,
         input_measurement_id: null,
         output_measurement_id: null,
-        updated_at: null
-      });
+        updated_at: null,
+      })
     },
     confirmSaveDevices() {
       const warningMessage = this.$i18n.t(
-        "new_or_edited_but_not_saved_sensor_defs_warning"
-      );
+        'new_or_edited_but_not_saved_sensor_defs_warning'
+      )
       if (this.newButNotSavedSensorDefs || this.sensorDefEdited) {
         this.$refs.confirm
           .open(
-            this.$i18n.t("save") + " " + this.$i18n.tc("device", 2),
+            this.$i18n.t('save') + ' ' + this.$i18n.tc('device', 2),
             null,
             {
-              color: "red"
+              color: 'red',
             },
             warningMessage
           )
           .then(() => {
-            this.saveDevices();
+            this.saveDevices()
           })
           .catch(() => {
-            return true;
-          });
+            return true
+          })
       } else {
-        this.saveDevices();
+        this.saveDevices()
       }
     },
     deleteDevice(device, index) {
-      if (typeof device.id === "undefined") {
-        return this.removeDevice(device.key, index);
+      if (typeof device.id === 'undefined') {
+        return this.removeDevice(device.key, index)
       }
-      const deviceInList = this.devices.filter(d => d.id === device.id)[0];
-      deviceInList.delete = !deviceInList.delete;
+      const deviceInList = this.devices.filter((d) => d.id === device.id)[0]
+      deviceInList.delete = !deviceInList.delete
     },
     deviceExpanded(index) {
       return this.showDevicesByIndex.length > 0
         ? this.showDevicesByIndex.indexOf(index) > -1
-        : false;
+        : false
     },
     randomString(length) {
-      let text = "";
+      let text = ''
       const possible =
-        "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz0123456789"; // excluded o and O to avoid confusion with 0
+        'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz0123456789' // excluded o and O to avoid confusion with 0
 
       for (let i = 0; i < length; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
       }
 
-      return text;
+      return text
     },
     removeDevice(key, showIndex) {
-      const deviceIndex = this.devices.findIndex(device => device.key === key);
-      this.devices.splice(deviceIndex, 1);
-      this.toggleDevice(showIndex);
+      const deviceIndex = this.devices.findIndex((device) => device.key === key)
+      this.devices.splice(deviceIndex, 1)
+      this.toggleDevice(showIndex)
       if (this.showDevicesByIndex.length > 0) {
-        const updatedIndexes = this.showDevicesByIndex.map(function(index) {
-          return index > showIndex ? index - 1 : index;
-        });
-        this.showDevicesByIndex = updatedIndexes;
+        const updatedIndexes = this.showDevicesByIndex.map(function (index) {
+          return index > showIndex ? index - 1 : index
+        })
+        this.showDevicesByIndex = updatedIndexes
       }
     },
     removeSensorDef(device, sensorDefinition) {
-      this.sensorDefEdited = false;
+      this.sensorDefEdited = false
       const sensorDefIndex = device.sensor_definitions
-        .map(function(sensorDef) {
-          return sensorDef.id;
+        .map(function (sensorDef) {
+          return sensorDef.id
         })
-        .indexOf(sensorDefinition.id);
-      if (device.sensor_definitions[sensorDefIndex] !== "undefined") {
-        device.sensor_definitions.splice(sensorDefIndex, 1);
+        .indexOf(sensorDefinition.id)
+      if (device.sensor_definitions[sensorDefIndex] !== 'undefined') {
+        device.sensor_definitions.splice(sensorDefIndex, 1)
       }
     },
     sortedSensorDefinitions(sensordefs) {
       // sort sensor_definitions: newly added first (if multiple new: sory by name), then first by output_abbr then input_abbr then updated_at
-      const sortedSensorDefs = sensordefs.slice().sort(function(a, b) {
+      const sortedSensorDefs = sensordefs.slice().sort(function (a, b) {
         if (a.updated_at === null && b.updated_at !== null) {
-          return -1;
+          return -1
         }
         if (b.updated_at === null && a.updated_at !== null) {
-          return 1;
+          return 1
         }
         if (b.updated_at === null && a.updated_at === null) {
           if (a.name > b.name) {
-            return -1;
+            return -1
           }
           if (b.name > a.name) {
-            return 1;
+            return 1
           }
         }
         if (a.updated_at !== null && b.updated_at !== null) {
           if (a.output_abbr > b.output_abbr) {
-            return 1;
+            return 1
           }
           if (b.output_abbr > a.output_abbr) {
-            return -1;
+            return -1
           }
           if (a.output_abbr === b.output_abbr) {
             if (a.input_abbr > b.input_abbr) {
-              return 1;
+              return 1
             }
             if (b.input_abbr > a.input_abbr) {
-              return -1;
+              return -1
             }
             if (a.input_abbr === b.input_abbr) {
               if (a.updated_at > b.updated_at) {
-                return -1;
+                return -1
               }
               if (b.updated_at < a.updated_at) {
-                return 1;
+                return 1
               }
-              return 0;
+              return 0
             }
           }
         }
-        return 0;
-      });
-      return sortedSensorDefs;
+        return 0
+      })
+      return sortedSensorDefs
     },
     toggleDevice(index) {
       if (this.deviceExpanded(index)) {
         this.showDevicesByIndex.splice(
           this.showDevicesByIndex.indexOf(index),
           1
-        );
+        )
       } else {
-        this.showDevicesByIndex.push(index);
+        this.showDevicesByIndex.push(index)
       }
     },
     transmissionText(device) {
       return device.measurement_transmission_ratio < 2
-        ? device.measurement_interval_min + " min"
+        ? device.measurement_interval_min + ' min'
         : device.measurement_interval_min +
-            " * " +
+            ' * ' +
             device.measurement_transmission_ratio +
-            " min";
+            ' min'
     },
     updateDevice(device, prop, value) {
-      device[prop] = value;
-    }
-  }
-};
+      device[prop] = value
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
