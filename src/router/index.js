@@ -37,10 +37,6 @@ window.addEventListener('vite:preloadError', () => {
   setTimeout(() => reloadApp())
 })
 
-router.onError((error, to) => {
-  if (loadErrorEncountered) reloadApp(to.fullPath)
-})
-
 function reloadApp(path) {
   // Prevent reload loops, f.e. when a file is still missing after reloading
   const lastReload = Number(sessionStorage.beepLoadErrorReloadedAt) || 0
