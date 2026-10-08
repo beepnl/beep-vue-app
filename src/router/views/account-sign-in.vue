@@ -45,7 +45,7 @@
           :class="fieldErrors.email ? 'text-error' : ''"
           :label="`${$t('email')}`"
           type="email"
-          :rules="[() => !!v || signinRules.email_required]"
+          :rules="[(v) => !!v || signinRules.email_required]"
           autocomplete="on"
         ></v-text-field>
         <v-text-field
@@ -54,7 +54,7 @@
           :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show ? 'text' : 'password'"
           :label="`${$t('password')}`"
-          :rules="[() => !!v || signinRules.password_required]"
+          :rules="[(v) => !!v || signinRules.password_required]"
           autocomplete="off"
           @click:append="show = !show"
         ></v-text-field>

@@ -598,6 +598,8 @@ export default {
             this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
           this.showLoadingIcon = false
         }
+        this.successMessage = response.data.message
+        this.showSuccessMessage = true
         setTimeout(() => {
           return this.readGroups().then(() => {
             this.$store.commit('locations/setData', {
