@@ -1545,7 +1545,9 @@ export default {
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       } else if (response.data.message) {
-        this.snackbar.text = response.data.message
+        this.snackbar.text = response.data.message.includes('_')
+          ? this.$i18n.t(response.data.message)
+          : response.data.message
         this.snackbar.show = true
       }
     },
