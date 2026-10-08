@@ -10,7 +10,7 @@
             <v-btn
               :to="{ name: 'dashboard-create' }"
               color="black"
-              :size="'default'"
+              :size="mobile ? 'small' : 'default'"
               class="save-button-mobile-wide"
             >
               <v-icon start>mdi-plus</v-icon>
