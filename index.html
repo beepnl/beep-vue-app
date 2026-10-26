@@ -125,6 +125,13 @@
 		</script>
 
 		<div id="app"></div>
-		<script type="module" src="/src/main.js"></script>
+		<!-- Offline mode: set VITE_OFFLINE_MODE = true to show public/offline.html instead of the app -->
+		<script type="module">
+			if (import.meta.env.VITE_OFFLINE_MODE === "true") {
+				window.location.replace("/offline.html");
+			} else {
+				import("/src/main.js");
+			}
+		</script>
 	</body>
 </html>
