@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="nl">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<title>BEEP - Tijdelijk offline</title>
+		<link rel="shortcut icon" type="image/png" href="/img/icons/icon_beep.png" />
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+
+			html,
+			body {
+				margin: 0;
+				min-height: 100%;
+			}
+
+			body {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				padding: 24px 16px;
+				background-color: #fffaf0;
+				color: #242424;
+				font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI",
+					Helvetica, Arial, sans-serif;
+				line-height: 1.5;
+			}
+
+			.card {
+				width: 100%;
+				max-width: 520px;
+				padding: 40px 32px;
+				background-color: #fff;
+				border-top: 6px solid #f8b133;
+				border-radius: 8px;
+				box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+				text-align: center;
+			}
+
+			.logo {
+				display: block;
+				width: 180px;
+				max-width: 60%;
+				height: auto;
+				margin: 0 auto 32px;
+			}
+
+			h1 {
+				margin: 0 0 16px;
+				font-size: 26px;
+				font-weight: 500;
+			}
+
+			p {
+				margin: 0 0 16px;
+				font-size: 16px;
+			}
+
+			.signature {
+				margin-top: 24px;
+				margin-bottom: 0;
+				font-weight: 500;
+				color: #f29100;
+			}
+
+			@media (max-width: 480px) {
+				.card {
+					padding: 32px 20px;
+				}
+
+				h1 {
+					font-size: 22px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<main class="card">
+			<img class="logo" src="/img/beep-logo-black.svg" alt="BEEP" />
+			<h1>We zijn even offline</h1>
+			<p>
+				app.beep.nl is tijdelijk niet bereikbaar. Vanwege de
+				PHP2Shell-kwetsbaarheid hebben wij onze systemen tijdelijk uitgezet.
+			</p>
+			<p>
+				We werken aan een oplossing en hopen de app zo snel mogelijk weer online
+				te kunnen zetten. Probeer het later nog eens.
+			</p>
+			<p>Excuses voor het ongemak.</p>
+			<p class="signature">Team BEEP</p>
+		</main>
+	</body>
+</html>

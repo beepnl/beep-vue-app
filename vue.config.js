@@ -26,6 +26,13 @@ module.exports = {
         !process.env.VUE_APP_TEST &&
         'warning'
     )
+
+    // Offline mode: serve public/offline.html instead of the app (app bundles are not injected)
+    if (process.env.VUE_APP_OFFLINE_MODE === 'true') {
+      config.plugin('html').tap(([options]) => [
+        { ...options, template: 'public/offline.html', inject: false },
+      ])
+    }
   },
   css: {
     // Enable CSS source maps. Disable for production build!
